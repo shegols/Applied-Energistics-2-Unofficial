@@ -28,6 +28,7 @@ import appeng.client.gui.widgets.GuiScrollbar;
 import appeng.container.implementations.ContainerCraftConfirm;
 import appeng.core.AELog;
 import appeng.core.localization.GuiText;
+import appeng.core.localization.GuiColors;
 import appeng.core.sync.GuiBridge;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketSwitchGuis;
@@ -214,7 +215,7 @@ public class GuiCraftConfirm extends AEBaseGui
 		final long BytesUsed = this.ccc.getUsedBytes();
 		final String byteUsed = NumberFormat.getInstance().format( BytesUsed );
 		final String Add = BytesUsed > 0 ? ( byteUsed + ' ' + GuiText.BytesUsed.getLocal() ) : GuiText.CalculatingWait.getLocal();
-		this.fontRendererObj.drawString( GuiText.CraftingPlan.getLocal() + " - " + Add, 8, 7, 4210752 );
+		this.fontRendererObj.drawString( GuiText.CraftingPlan.getLocal() + " - " + Add, 8, 7, GuiColors.CraftConfirmCraftingPlan.getColor() );
 
 		String dsp = null;
 
@@ -228,7 +229,7 @@ public class GuiCraftConfirm extends AEBaseGui
 		}
 
 		final int offset = ( 219 - this.fontRendererObj.getStringWidth( dsp ) ) / 2;
-		this.fontRendererObj.drawString( dsp, offset, 165, 4210752 );
+		this.fontRendererObj.drawString( dsp, offset, 165, GuiColors.CraftConfirmSimulation.getColor() );
 
 		final int sectionLength = 67;
 
@@ -281,7 +282,7 @@ public class GuiCraftConfirm extends AEBaseGui
 				{
 					String str = GuiText.FromStorage.getLocal() + ": " + converter.toWideReadableForm(stored.getStackSize());
 					final int w = 4 + this.fontRendererObj.getStringWidth( str );
-					this.fontRendererObj.drawString( str, (int) ( ( x * ( 1 + sectionLength ) + xo + sectionLength - 19 - ( w * 0.5 ) ) * 2 ), ( y * offY + yo + 6 - negY + downY ) * 2, 4210752 );
+					this.fontRendererObj.drawString( str, (int) ( ( x * ( 1 + sectionLength ) + xo + sectionLength - 19 - ( w * 0.5 ) ) * 2 ), ( y * offY + yo + 6 - negY + downY ) * 2, GuiColors.CraftConfirmFromStorage.getColor() );
 
 					if( this.tooltip == z - viewStart )
 					{
@@ -296,7 +297,7 @@ public class GuiCraftConfirm extends AEBaseGui
 				{
 					String str = GuiText.Missing.getLocal() + ": " + converter.toWideReadableForm( missingStack.getStackSize() );
 					final int w = 4 + this.fontRendererObj.getStringWidth( str );
-					this.fontRendererObj.drawString( str, (int) ( ( x * ( 1 + sectionLength ) + xo + sectionLength - 19 - ( w * 0.5 ) ) * 2 ), ( y * offY + yo + 6 - negY + downY ) * 2, 4210752 );
+					this.fontRendererObj.drawString( str, (int) ( ( x * ( 1 + sectionLength ) + xo + sectionLength - 19 - ( w * 0.5 ) ) * 2 ), ( y * offY + yo + 6 - negY + downY ) * 2, GuiColors.CraftConfirmMissing.getColor());
 
 					if( this.tooltip == z - viewStart )
 					{
@@ -311,7 +312,7 @@ public class GuiCraftConfirm extends AEBaseGui
 				{
 					String str = GuiText.ToCraft.getLocal() + ": " + converter.toWideReadableForm( pendingStack.getStackSize() );
 					final int w = 4 + this.fontRendererObj.getStringWidth( str );
-					this.fontRendererObj.drawString( str, (int) ( ( x * ( 1 + sectionLength ) + xo + sectionLength - 19 - ( w * 0.5 ) ) * 2 ), ( y * offY + yo + 6 - negY + downY ) * 2, 4210752 );
+					this.fontRendererObj.drawString( str, (int) ( ( x * ( 1 + sectionLength ) + xo + sectionLength - 19 - ( w * 0.5 ) ) * 2 ), ( y * offY + yo + 6 - negY + downY ) * 2, GuiColors.CraftConfirmToCraft.getColor() );
 
 					if( this.tooltip == z - viewStart )
 					{
@@ -346,7 +347,7 @@ public class GuiCraftConfirm extends AEBaseGui
 				{
 					final int startX = x * ( 1 + sectionLength ) + xo;
 					final int startY = posY - 4;
-					drawRect( startX, startY, startX + sectionLength, startY + offY, 0x1AFF0000 );
+					drawRect( startX, startY, startX + sectionLength, startY + offY, GuiColors.CraftConfirmMissingItem.getColor() );
 				}
 
 				x++;
