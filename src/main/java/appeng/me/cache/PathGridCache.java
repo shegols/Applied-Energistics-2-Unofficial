@@ -37,6 +37,7 @@ import appeng.me.pathfinding.*;
 import appeng.tile.networking.TileController;
 import appeng.util.Platform;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.logging.log4j.Level;
 
 import java.util.*;
 
@@ -219,6 +220,13 @@ public class PathGridCache implements IPathingGrid
 	@Override
 	public void removeNode( final IGridNode gridNode, final IGridHost machine )
 	{
+        if (AEConfig.instance.debugPathFinding)
+        {
+            final String coordinates = gridNode.getGridBlock().getLocation().toString();
+            AELog.info( "Repath is triggered by removing a node at [%s]", coordinates);
+            AELog.printStackTrace( Level.INFO );
+        }
+
 		if( machine instanceof TileController )
 		{
 			this.controllers.remove( machine );
@@ -243,6 +251,13 @@ public class PathGridCache implements IPathingGrid
 	@Override
 	public void addNode( final IGridNode gridNode, final IGridHost machine )
 	{
+        if (AEConfig.instance.debugPathFinding)
+        {
+            final String coordinates = gridNode.getGridBlock().getLocation().toString();
+            AELog.info( "Repath is triggered by adding a node at [%s]", coordinates);
+            AELog.printStackTrace( Level.INFO );
+        }
+
 		if( machine instanceof TileController )
 		{
 			this.controllers.add( (TileController) machine );
@@ -402,6 +417,13 @@ public class PathGridCache implements IPathingGrid
 	void updateNodReq( final MENetworkChannelChanged ev )
 	{
 		final IGridNode gridNode = ev.node;
+
+        if (AEConfig.instance.debugPathFinding)
+        {
+            final String coordinates = gridNode.getGridBlock().getLocation().toString();
+            AELog.info( "Repath is triggered by changing a node at [%s]", coordinates);
+            AELog.printStackTrace( Level.INFO );
+        }
 
 		if( gridNode.getGridBlock().getFlags().contains( GridFlags.REQUIRE_CHANNEL ) )
 		{

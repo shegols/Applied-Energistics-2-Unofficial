@@ -37,6 +37,7 @@ import appeng.me.pathfinding.IPathItem;
 import appeng.util.Platform;
 import appeng.util.ReadOnlyCollection;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.logging.log4j.Level;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -123,6 +124,13 @@ public class GridConnection implements IGridConnection, IPathItem
 
 		// a connection was destroyed RE-PATH!!
 		final IPathingGrid p = this.sideA.getInternalGrid().getCache( IPathingGrid.class );
+		if (AEConfig.instance.debugPathFinding)
+        {
+            final String aCoordinates = a.getGridBlock().getLocation().toString();
+            final String bCoordinates = b.getGridBlock().getLocation().toString();
+            AELog.info( "Repath is triggered by adding connection from [%s] to [%s]", aCoordinates, bCoordinates );
+            AELog.printStackTrace( Level.INFO );
+        }
 		p.repath();
 
 		this.sideA.addConnection( this );
@@ -170,6 +178,14 @@ public class GridConnection implements IGridConnection, IPathItem
 	@Override
 	public void destroy()
 	{
+        if (AEConfig.instance.debugPathFinding)
+        {
+            final String aCoordinates = sideA.getGridBlock().getLocation().toString();
+            final String bCoordinates = sideB.getGridBlock().getLocation().toString();
+            AELog.info( "Repath is triggered by destroying connection from [%s] to [%s]", aCoordinates, bCoordinates );
+            AELog.printStackTrace( Level.INFO );
+        }
+
 		// a connection was destroyed RE-PATH!!
 		final IPathingGrid p = this.sideA.getInternalGrid().getCache( IPathingGrid.class );
 		p.repath();
