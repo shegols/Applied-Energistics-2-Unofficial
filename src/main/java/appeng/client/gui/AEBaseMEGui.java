@@ -21,8 +21,10 @@ package appeng.client.gui;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.client.me.SlotME;
+import appeng.container.slot.SlotFake;
 import appeng.core.AEConfig;
 import appeng.core.localization.ButtonToolTips;
+import appeng.util.Platform;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -45,7 +47,8 @@ public abstract class AEBaseMEGui extends AEBaseGui
 		if( stack != null )
 		{
 			final Slot s = this.getSlot( mouseX, mouseY );
-			if( s instanceof SlotME )
+            final boolean isSlotME = s instanceof SlotME;
+			if( isSlotME || s instanceof SlotFake)
 			{
 				final int BigNumber = AEConfig.instance.useTerminalUseLargeFont() ? 999 : 9999;
 
@@ -53,8 +56,7 @@ public abstract class AEBaseMEGui extends AEBaseGui
 
 				try
 				{
-					final SlotME theSlotField = (SlotME) s;
-					myStack = theSlotField.getAEStack();
+                    myStack = Platform.getAEStackInSlot( s );
 				}
 				catch( final Throwable ignore )
 				{
@@ -64,7 +66,7 @@ public abstract class AEBaseMEGui extends AEBaseGui
 				{
 					if( myStack.getStackSize() > BigNumber || ( myStack.getStackSize() > 1 && stack.isItemDamaged() ) )
 					{
-						final String local = ButtonToolTips.ItemsStored.getLocal();
+						final String local = isSlotME ? ButtonToolTips.ItemsStored.getLocal() : ButtonToolTips.ItemCount.getLocal();
 						final String formattedAmount = NumberFormat.getNumberInstance( Locale.US ).format( myStack.getStackSize() );
 						final String format = String.format( local, formattedAmount );
 
@@ -99,7 +101,7 @@ public abstract class AEBaseMEGui extends AEBaseGui
 	protected void renderToolTip( final ItemStack stack, final int x, final int y )
 	{
 		final Slot s = this.getSlot( x, y );
-		if( s instanceof SlotME && stack != null )
+		if( ( s instanceof SlotME || s instanceof SlotFake ) && stack != null )
 		{
 			final int BigNumber = AEConfig.instance.useTerminalUseLargeFont() ? 999 : 9999;
 
@@ -107,8 +109,7 @@ public abstract class AEBaseMEGui extends AEBaseGui
 
 			try
 			{
-				final SlotME theSlotField = (SlotME) s;
-				myStack = theSlotField.getAEStack();
+				myStack = Platform.getAEStackInSlot( s );
 			}
 			catch( final Throwable ignore )
 			{
