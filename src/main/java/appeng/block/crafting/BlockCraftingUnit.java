@@ -70,12 +70,20 @@ public class BlockCraftingUnit extends AEBaseTileBlock
 			default:
 			case 0:
 				return super.getIcon( 0, 0 );
-			case 1:
-				return ExtraBlockTextures.BlockCraftingAccelerator.getIcon();
-			case FLAG_FORMED:
-				return ExtraBlockTextures.BlockCraftingUnitFit.getIcon();
-			case 1 | FLAG_FORMED:
-				return ExtraBlockTextures.BlockCraftingAcceleratorFit.getIcon();
+            case 1:
+                return ExtraBlockTextures.BlockCraftingAccelerator.getIcon();
+            case FLAG_FORMED:
+                return ExtraBlockTextures.BlockCraftingUnitFit.getIcon();
+            case 1 | FLAG_FORMED:
+                return ExtraBlockTextures.BlockCraftingAcceleratorFit.getIcon();
+            case 2:
+                return ExtraBlockTextures.BlockCraftingAccelerator4x.getIcon();
+            case 2 | FLAG_FORMED:
+                return ExtraBlockTextures.BlockCraftingAccelerator4xFit.getIcon();
+            case 3:
+                return ExtraBlockTextures.BlockCraftingAccelerator16x.getIcon();
+            case 3 | FLAG_FORMED:
+                return ExtraBlockTextures.BlockCraftingAccelerator16xFit.getIcon();
 		}
 	}
 
@@ -128,10 +136,16 @@ public class BlockCraftingUnit extends AEBaseTileBlock
 	@Override
 	public String getUnlocalizedName( final ItemStack is )
 	{
-		if( is.getItemDamage() == 1 )
-		{
-			return "tile.appliedenergistics2.BlockCraftingAccelerator";
-		}
+        if( is.getItemDamage() == 1 )
+        {
+            return "tile.appliedenergistics2.BlockCraftingAccelerator";
+        } else if( is.getItemDamage() == 2 )
+        {
+            return "tile.appliedenergistics2.BlockCraftingAccelerator4x";
+        } else if( is.getItemDamage() == 3 )
+        {
+            return "tile.appliedenergistics2.BlockCraftingAccelerator16x";
+        }
 
 		return this.getItemUnlocalizedName( is );
 	}

@@ -369,6 +369,8 @@ public final class Registration
 
 		target.blockCraftingUnit = this.converter.of( source.craftingUnit() );
 		target.blockCraftingAccelerator = this.converter.of( source.craftingAccelerator() );
+        target.blockCraftingAccelerator4x = this.converter.of( source.craftingAccelerator4x() );
+        target.blockCraftingAccelerator16x = this.converter.of( source.craftingAccelerator16x() );
 		target.blockCraftingMonitor = this.converter.of( source.craftingMonitor() );
 		target.blockCraftingStorage1k = this.converter.of( source.craftingStorage1k() );
 		target.blockCraftingStorage4k = this.converter.of( source.craftingStorage4k() );
