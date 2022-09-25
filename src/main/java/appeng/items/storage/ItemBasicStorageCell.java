@@ -18,6 +18,8 @@
 
 package appeng.items.storage;
 
+import static appeng.util.Utility.formatNumbers;
+
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
 import appeng.api.config.IncludeExclude;
@@ -104,11 +106,11 @@ public final class ItemBasicStorageCell extends AEBaseItem implements IStorageCe
             final ICellInventory cellInventory = handler.getCellInv();
 
             if (cellInventory != null) {
-                lines.add(cellInventory.getUsedBytes() + " " + GuiText.Of.getLocal() + ' '
-                        + cellInventory.getTotalBytes() + ' ' + GuiText.BytesUsed.getLocal());
+                lines.add(formatNumbers(cellInventory.getUsedBytes()) + " " + GuiText.Of.getLocal() + ' '
+                        + formatNumbers(cellInventory.getTotalBytes()) + ' ' + GuiText.BytesUsed.getLocal());
 
-                lines.add(cellInventory.getStoredItemTypes() + " " + GuiText.Of.getLocal() + ' '
-                        + cellInventory.getTotalItemTypes() + ' ' + GuiText.Types.getLocal());
+                lines.add(formatNumbers(cellInventory.getStoredItemTypes()) + " " + GuiText.Of.getLocal() + ' '
+                        + formatNumbers(cellInventory.getTotalItemTypes()) + ' ' + GuiText.Types.getLocal());
 
                 if (handler.isPreformatted()) {
                     String filter = cellInventory.getOreFilter();
