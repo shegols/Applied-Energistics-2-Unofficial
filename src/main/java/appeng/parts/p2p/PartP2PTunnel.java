@@ -341,11 +341,19 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
                     }
                     break;
 
+                case ME_INTERFACE:
+                    for (final ItemStack stack :
+                            parts.p2PTunnelMEInterface().maybeStack(1).asSet()) {
+                        newType = stack;
+                    }
+                    break;
+
                 default:
                     break;
             }
 
             if (newType != null && !Platform.isSameItem(newType, this.getItemStack())) {
+                if (new Throwable().getStackTrace()[2].getMethodName().equals("place")) return true;
                 final boolean oldOutput = this.isOutput();
                 final long myFreq = this.getFrequency();
 
