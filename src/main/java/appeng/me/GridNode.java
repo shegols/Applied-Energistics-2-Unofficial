@@ -26,8 +26,11 @@ import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AEColor;
 import appeng.api.util.DimensionalCoord;
 import appeng.api.util.IReadOnlyCollection;
+import appeng.core.AEConfig;
+import appeng.core.features.AEFeature;
 import appeng.core.worlddata.WorldData;
 import appeng.hooks.TickHandler;
+import appeng.me.cache.CraftingGridCache;
 import appeng.me.pathfinding.IPathItem;
 import appeng.util.IWorldCallable;
 import appeng.util.ReadOnlyCollection;
@@ -124,6 +127,8 @@ public class GridNode implements IGridNode, IPathItem {
     public void beginVisit(final IGridVisitor g) {
         final Object tracker = new Object();
 
+        CraftingGridCache.pauseRebuilds();
+
         LinkedList<GridNode> nextRun = new LinkedList<GridNode>();
         nextRun.add(this);
 
@@ -155,6 +160,8 @@ public class GridNode implements IGridNode, IPathItem {
                 }
             }
         }
+
+        CraftingGridCache.unpauseRebuilds();
     }
 
     @Override
@@ -295,7 +302,12 @@ public class GridNode implements IGridNode, IPathItem {
 
     @Override
     public boolean meetsChannelRequirements() {
-        return (!this.gridProxy.getFlags().contains(GridFlags.REQUIRE_CHANNEL) || this.getUsedChannels() > 0);
+        if (this.gridProxy.getFlags().contains(GridFlags.REQUIRE_CHANNEL)) {
+            if (AEConfig.instance.isFeatureEnabled(AEFeature.Channels)) {
+                return this.getUsedChannels() > 0;
+            }
+        }
+        return true;
     }
 
     @Override
