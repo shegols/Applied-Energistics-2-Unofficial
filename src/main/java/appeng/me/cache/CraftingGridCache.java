@@ -20,6 +20,7 @@ package appeng.me.cache;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
+import appeng.api.config.FuzzyMode;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
@@ -47,6 +48,7 @@ import appeng.me.helpers.GenericInterestManager;
 import appeng.tile.crafting.TileCraftingStorageTile;
 import appeng.tile.crafting.TileCraftingTile;
 import appeng.util.ItemSorters;
+import appeng.util.item.ItemList;
 import com.google.common.collect.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -80,14 +82,14 @@ public class CraftingGridCache
         CRAFTING_POOL = Executors.newCachedThreadPool(factory);
     }
 
-    private final Set<CraftingCPUCluster> craftingCPUClusters = new HashSet<CraftingCPUCluster>();
-    private final Set<ICraftingProvider> craftingProviders = new HashSet<ICraftingProvider>();
-    private final Map<IGridNode, ICraftingWatcher> craftingWatchers = new HashMap<IGridNode, ICraftingWatcher>();
+    private final Set<CraftingCPUCluster> craftingCPUClusters = new HashSet<>();
+    private final Set<ICraftingProvider> craftingProviders = new HashSet<>();
+    private final Map<IGridNode, ICraftingWatcher> craftingWatchers = new HashMap<>();
     private final IGrid grid;
-    private final Map<ICraftingPatternDetails, List<ICraftingMedium>> craftingMethods =
-            new HashMap<ICraftingPatternDetails, List<ICraftingMedium>>();
-    private final Map<IAEItemStack, ImmutableList<ICraftingPatternDetails>> craftableItems =
-            new HashMap<IAEItemStack, ImmutableList<ICraftingPatternDetails>>();
+    private final Map<ICraftingPatternDetails, List<ICraftingMedium>> craftingMethods = new HashMap<>();
+    // Used for fuzzy lookups
+    private final ItemList craftableItemSubstitutes = new ItemList();
+    private final Map<IAEItemStack, ImmutableList<ICraftingPatternDetails>> craftableItems = new HashMap<>();
     private final Set<IAEItemStack> emitableItems = new HashSet<IAEItemStack>();
     private final Map<String, CraftingLinkNexus> craftingLinks = new HashMap<String, CraftingLinkNexus>();
     private final Multimap<IAEStack, CraftingWatcher> interests = HashMultimap.create();
@@ -227,6 +229,7 @@ public class CraftingGridCache
         // erase list.
         this.craftingMethods.clear();
         this.craftableItems.clear();
+        this.craftableItemSubstitutes.clear();
         this.emitableItems.clear();
 
         // update the stuff that was in the list...
@@ -237,8 +240,7 @@ public class CraftingGridCache
             provider.provideCrafting(this);
         }
 
-        final Map<IAEItemStack, Set<ICraftingPatternDetails>> tmpCraft =
-                new HashMap<IAEItemStack, Set<ICraftingPatternDetails>>();
+        final Map<IAEItemStack, Set<ICraftingPatternDetails>> tmpCraft = new HashMap<>();
 
         // new craftables!
         for (final ICraftingPatternDetails details : this.craftingMethods.keySet()) {
@@ -247,11 +249,11 @@ public class CraftingGridCache
                 out.reset();
                 out.setCraftable(true);
 
-                Set<ICraftingPatternDetails> methods = tmpCraft.get(out);
-
-                if (methods == null) {
-                    tmpCraft.put(out, methods = new TreeSet<ICraftingPatternDetails>(COMPARATOR));
+                if (details.canBeSubstitute()) {
+                    this.craftableItemSubstitutes.add(out);
                 }
+
+                Set<ICraftingPatternDetails> methods = tmpCraft.computeIfAbsent(out, k -> new TreeSet<>(COMPARATOR));
 
                 methods.add(details);
             }
@@ -412,16 +414,41 @@ public class CraftingGridCache
             final ICraftingPatternDetails details,
             final int slotIndex,
             final World world) {
-        final ImmutableList<ICraftingPatternDetails> res = this.craftableItems.get(whatToCraft);
+        final ImmutableList<ICraftingPatternDetails> res;
+        if (details != null && details.canSubstitute()) {
+            final Collection<IAEItemStack> substitutions =
+                    this.craftableItemSubstitutes.findFuzzy(whatToCraft, FuzzyMode.IGNORE_ALL);
+            ImmutableList.Builder<ICraftingPatternDetails> allPatterns = ImmutableList.builder();
+            for (IAEItemStack alternative : substitutions) {
+                allPatterns.addAll(this.craftableItems.get(alternative));
+            }
+            res = allPatterns.build();
+        } else {
+            res = this.craftableItems.get(whatToCraft);
+        }
 
         if (res == null) {
             if (details != null && details.isCraftable()) {
                 for (final IAEItemStack ais : this.craftableItems.keySet()) {
-                    if (ais.getItem() == whatToCraft.getItem()
-                            && (!ais.getItem().getHasSubtypes()
-                                    || ais.getItemDamage() == whatToCraft.getItemDamage())) {
+                    final boolean perfectMatch = ais.getItem() == whatToCraft.getItem()
+                            && (!ais.getItem().getHasSubtypes() || ais.getItemDamage() == whatToCraft.getItemDamage());
+                    if (perfectMatch) {
                         if (details.isValidItemForSlot(slotIndex, ais.getItemStack(), world)) {
                             return this.craftableItems.get(ais);
+                        }
+                    }
+                }
+                // no perfect match found, look for substitutions
+                if (details.canSubstitute()) {
+                    for (final Map.Entry<IAEItemStack, ImmutableList<ICraftingPatternDetails>> entry :
+                            this.craftableItems.entrySet()) {
+                        final boolean canBeASubstitute =
+                                entry.getValue().stream().anyMatch(cp -> (cp != null) && cp.canBeSubstitute());
+                        if (canBeASubstitute && entry.getKey().fuzzyComparison(whatToCraft, FuzzyMode.IGNORE_ALL)) {
+                            if (details.isValidItemForSlot(
+                                    slotIndex, entry.getKey().getItemStack(), world)) {
+                                return entry.getValue();
+                            }
                         }
                     }
                 }
