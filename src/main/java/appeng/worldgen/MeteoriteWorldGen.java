@@ -35,77 +35,127 @@ import net.minecraft.world.chunk.IChunkProvider;
 public final class MeteoriteWorldGen implements IWorldGenerator {
     @Override
     public void generate(
-            final Random r,
+            final Random rng,
             final int chunkX,
             final int chunkZ,
-            final World w,
+            final World world,
             final IChunkProvider chunkGenerator,
             final IChunkProvider chunkProvider) {
-        if (WorldGenRegistry.INSTANCE.isWorldGenEnabled(WorldGenType.Meteorites, w)) {
+        if (WorldGenRegistry.INSTANCE.isWorldGenEnabled(WorldGenType.Meteorites, world)) {
+            // Find the meteorite grid cell corresponding to this chunk
+            final int gridCellSize = Math.max(8, AEConfig.instance.minMeteoriteDistance);
+            final int gridCellMargin = Math.max(1, gridCellSize / 10);
+            final int gridX = Math.floorDiv(chunkX << 4, gridCellSize);
+            final int gridZ = Math.floorDiv(chunkZ << 4, gridCellSize);
+            // Override chunk-based seed with grid-based seed, constructed in the same way as the FML-provided seed
+            Platform.seedFromGrid(rng, world.getSeed(), gridX, gridZ);
+            // Calculate a deterministic position of the meteorite in the grid cell
+            final boolean spawnSurfaceMeteor = rng.nextDouble() < AEConfig.instance.meteoriteSpawnChance;
+            final int meteorX =
+                    (gridX * gridCellSize) + rng.nextInt(gridCellSize - 2 * gridCellMargin) + gridCellMargin;
+            final int meteorZ =
+                    (gridZ * gridCellSize) + rng.nextInt(gridCellSize - 2 * gridCellMargin) + gridCellMargin;
+            final int meteorDepth = 180 + rng.nextInt(20);
+            final int meteorChunkX = meteorX >> 4;
+            final int meteorChunkZ = meteorZ >> 4;
+            long meteorSeed = rng.nextLong();
+            while (meteorSeed == 0) {
+                meteorSeed = rng.nextLong();
+            }
             // add new meteorites?
-            if (r.nextFloat() < AEConfig.instance.meteoriteSpawnChance) {
-                final int x = r.nextInt(16) + (chunkX << 4);
-                final int z = r.nextInt(16) + (chunkZ << 4);
-
-                final int depth = 180 + r.nextInt(20);
-                TickHandler.INSTANCE.addCallable(w, new MeteoriteSpawn(x, depth, z));
+            if ((meteorChunkX == chunkX) && (meteorChunkZ == chunkZ)) {
+                TickHandler.INSTANCE.addCallable(world, new ExistingMeteoriteSpawn(chunkX, chunkZ));
+                TickHandler.INSTANCE.addCallable(
+                        world,
+                        new MeteoriteSpawn(meteorX, spawnSurfaceMeteor ? meteorDepth : 128, meteorZ, meteorSeed));
             } else {
-                TickHandler.INSTANCE.addCallable(w, new MeteoriteSpawn(chunkX << 4, 128, chunkZ << 4));
+                TickHandler.INSTANCE.addCallable(world, new ExistingMeteoriteSpawn(chunkX, chunkZ));
             }
         } else {
-            WorldData.instance().compassData().service().updateArea(w, chunkX, chunkZ);
+            WorldData.instance().compassData().service().updateArea(world, chunkX, chunkZ);
         }
     }
 
-    private boolean tryMeteorite(final World w, int depth, final int x, final int z) {
-        for (int tries = 0; tries < 20; tries++) {
-            final MeteoritePlacer mp = new MeteoritePlacer();
+    /**
+     * Spawns blocks for meteorites that were previously generated in neighboring chunks
+     */
+    private static final class ExistingMeteoriteSpawn implements IWorldCallable<Object> {
+        private final int chunkX;
+        private final int chunkZ;
 
-            if (mp.spawnMeteorite(new ChunkOnly(w, x >> 4, z >> 4), x, depth, z)) {
-                final int px = x >> 4;
-                final int pz = z >> 4;
-
-                for (int cx = px - 6; cx < px + 6; cx++) {
-                    for (int cz = pz - 6; cz < pz + 6; cz++) {
-                        if (w.getChunkProvider().chunkExists(cx, cz)) {
-                            if (px == cx && pz == cz) {
-                                continue;
-                            }
-
-                            if (WorldData.instance().spawnData().hasGenerated(w.provider.dimensionId, cx, cz)) {
-                                final MeteoritePlacer mp2 = new MeteoritePlacer();
-                                mp2.spawnMeteorite(new ChunkOnly(w, cx, cz), mp.getSettings());
-                            }
-                        }
-                    }
-                }
-
-                return true;
-            }
-
-            depth -= 15;
-            if (depth < 40) {
-                return false;
-            }
+        public ExistingMeteoriteSpawn(int chunkX, int chunkZ) {
+            this.chunkX = chunkX;
+            this.chunkZ = chunkZ;
         }
 
-        return false;
+        private Iterable<NBTTagCompound> getNearByMeteorites(final World w, final int chunkX, final int chunkZ) {
+            return WorldData.instance().spawnData().getNearByMeteorites(w.provider.dimensionId, chunkX, chunkZ);
+        }
+
+        @Override
+        public Object call(final World world) throws Exception {
+            // Generate blocks for nearby meteorites
+            for (final NBTTagCompound data : this.getNearByMeteorites(world, chunkX, chunkZ)) {
+                final MeteoritePlacer mp = new MeteoritePlacer(new ChunkOnly(world, chunkX, chunkZ), data);
+                mp.spawnMeteorite();
+            }
+
+            WorldData.instance().spawnData().setGenerated(world.provider.dimensionId, chunkX, chunkZ);
+            WorldData.instance().compassData().service().updateArea(world, chunkX, chunkZ);
+            return null;
+        }
     }
 
-    private Iterable<NBTTagCompound> getNearByMeteorites(final World w, final int chunkX, final int chunkZ) {
-        return WorldData.instance().spawnData().getNearByMeteorites(w.provider.dimensionId, chunkX, chunkZ);
-    }
-
-    private class MeteoriteSpawn implements IWorldCallable<Object> {
+    private static final class MeteoriteSpawn implements IWorldCallable<Object> {
 
         private final int x;
         private final int z;
         private final int depth;
+        private final long seed;
 
-        public MeteoriteSpawn(final int x, final int depth, final int z) {
+        public MeteoriteSpawn(final int x, final int depth, final int z, final long seed) {
             this.x = x;
             this.z = z;
             this.depth = depth;
+            this.seed = seed;
+        }
+
+        private boolean tryMeteorite(final World w) {
+            int depth = this.depth;
+            for (int tries = 0; tries < 20; tries++) {
+                final MeteoritePlacer mp =
+                        new MeteoritePlacer(new ChunkOnly(w, x >> 4, z >> 4), this.seed, x, depth, z);
+
+                if (mp.spawnMeteoriteCenter()) {
+                    final int px = x >> 4;
+                    final int pz = z >> 4;
+
+                    for (int cx = px - 6; cx < px + 6; cx++) {
+                        for (int cz = pz - 6; cz < pz + 6; cz++) {
+                            if (w.getChunkProvider().chunkExists(cx, cz)) {
+                                if (px == cx && pz == cz) {
+                                    continue;
+                                }
+
+                                if (WorldData.instance().spawnData().hasGenerated(w.provider.dimensionId, cx, cz)) {
+                                    final MeteoritePlacer mp2 =
+                                            new MeteoritePlacer(new ChunkOnly(w, cx, cz), mp.getSettings());
+                                    mp2.spawnMeteorite();
+                                }
+                            }
+                        }
+                    }
+
+                    return true;
+                }
+
+                depth -= 15;
+                if (depth < 40) {
+                    return false;
+                }
+            }
+
+            return false;
         }
 
         @Override
@@ -113,22 +163,7 @@ public final class MeteoriteWorldGen implements IWorldGenerator {
             final int chunkX = this.x >> 4;
             final int chunkZ = this.z >> 4;
 
-            double minSqDist = Double.MAX_VALUE;
-
-            // near by meteorites!
-            for (final NBTTagCompound data : MeteoriteWorldGen.this.getNearByMeteorites(world, chunkX, chunkZ)) {
-                final MeteoritePlacer mp = new MeteoritePlacer();
-                mp.spawnMeteorite(new ChunkOnly(world, chunkX, chunkZ), data);
-
-                minSqDist = Math.min(minSqDist, mp.getSqDistance(this.x, this.z));
-            }
-
-            final boolean isCluster =
-                    (minSqDist < 30 * 30) && Platform.getRandomFloat() < AEConfig.instance.meteoriteClusterChance;
-
-            if (minSqDist > AEConfig.instance.minMeteoriteDistanceSq || isCluster) {
-                MeteoriteWorldGen.this.tryMeteorite(world, this.depth, this.x, this.z);
-            }
+            this.tryMeteorite(world);
 
             WorldData.instance().spawnData().setGenerated(world.provider.dimensionId, chunkX, chunkZ);
             WorldData.instance().compassData().service().updateArea(world, chunkX, chunkZ);
