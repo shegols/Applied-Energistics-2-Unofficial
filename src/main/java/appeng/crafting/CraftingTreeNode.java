@@ -221,8 +221,8 @@ public class CraftingTreeNode {
                         final MECraftingInventory subInv = new MECraftingInventory(inv, true, true, true);
                         pro.request(subInv, 1, src);
 
-                        this.what.setStackSize(l);
-                        final IAEItemStack available = subInv.extractItems(this.what, Actionable.MODULATE, src);
+                        final IAEItemStack available = subInv.extractItems(
+                                pro.getAmountCrafted(this.what).setStackSize(l), Actionable.MODULATE, src);
 
                         if (available != null) {
                             if (!subInv.commit(src)) {
