@@ -107,8 +107,9 @@ public abstract class UpgradeInventory extends AppEngInternalInventory implement
 
     private void updateUpgradeInfo() {
         this.cached = true;
-        this.patternCapacityUpgrades = this.inverterUpgrades = this.capacityUpgrades = this.redstoneUpgrades =
-                this.speedUpgrades = this.superSpeedUpgrades = this.fuzzyUpgrades = this.craftingUpgrades = this.oreFilterUpgrades = 0;
+        this.patternCapacityUpgrades = this.inverterUpgrades =
+                this.capacityUpgrades = this.redstoneUpgrades = this.speedUpgrades = this.superSpeedUpgrades =
+                        this.fuzzyUpgrades = this.craftingUpgrades = this.oreFilterUpgrades = 0;
 
         for (final ItemStack is : this) {
             if (is == null || is.getItem() == null || !(is.getItem() instanceof IUpgradeModule)) {
