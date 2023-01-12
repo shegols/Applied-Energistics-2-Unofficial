@@ -23,8 +23,11 @@
 
 package appeng.api.networking.crafting;
 
+import appeng.api.networking.security.BaseActionSource;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
+import appeng.crafting.MECraftingInventory;
+import java.util.concurrent.Future;
 
 public interface ICraftingJob {
 
@@ -51,4 +54,27 @@ public interface ICraftingJob {
      * @return the final output of the job.
      */
     IAEItemStack getOutput();
+
+    /**
+     * returns true if this needs more simulation.
+     *
+     * @param milli milliseconds of simulation
+     * @return true if this needs more simulation
+     */
+    boolean simulateFor(final int milli);
+
+    Future<ICraftingJob> schedule();
+
+    /**
+     * @return whether this job can run on the given cluster
+     */
+    default boolean supportsCPUCluster(final ICraftingCPU cluster) {
+        return false;
+    }
+
+    /**
+     * Begins crafting on a CPU cluster
+     */
+    default void startCrafting(
+            final MECraftingInventory storage, final ICraftingCPU craftingCPUCluster, final BaseActionSource src) {}
 }

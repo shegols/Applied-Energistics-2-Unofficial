@@ -20,7 +20,6 @@ package appeng.me.cache;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
-import appeng.api.config.FuzzyMode;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
@@ -39,10 +38,12 @@ import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
+import appeng.core.AEConfig;
 import appeng.crafting.CraftingJob;
 import appeng.crafting.CraftingLink;
 import appeng.crafting.CraftingLinkNexus;
 import appeng.crafting.CraftingWatcher;
+import appeng.crafting.v2.CraftingJobV2;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
 import appeng.me.helpers.GenericInterestManager;
 import appeng.tile.crafting.TileCraftingStorageTile;
@@ -411,56 +412,26 @@ public class CraftingGridCache
     }
 
     @Override
+    public ImmutableMap<IAEItemStack, ImmutableList<ICraftingPatternDetails>> getCraftingPatterns() {
+        return ImmutableMap.copyOf(this.craftableItems);
+    }
+
+    @Override
     public ImmutableCollection<ICraftingPatternDetails> getCraftingFor(
             final IAEItemStack whatToCraft,
             final ICraftingPatternDetails details,
             final int slotIndex,
             final World world) {
-        ImmutableList<ICraftingPatternDetails> res;
-        boolean normalMode = false;
-        if (details != null && details.canSubstitute()) {
-            final ImmutableList<ICraftingPatternDetails> substitutions = this.craftableItemSubstitutes.get(whatToCraft);
-            if (substitutions.isEmpty()) {
-                res = this.craftableItems.get(whatToCraft);
-                normalMode = true;
-            } else {
-                res = substitutions;
-            }
-        } else if (details == null) {
-            final ImmutableList<ICraftingPatternDetails> substitutions =
-                    this.craftableItemSubstitutes.getBeSubstitutePattern(whatToCraft);
-            if (substitutions.isEmpty()) {
-                res = this.craftableItems.get(whatToCraft);
-                normalMode = true;
-            } else {
-                res = this.craftableItems.get(whatToCraft);
-            }
-        } else {
-            res = this.craftableItems.get(whatToCraft);
-        }
+        final ImmutableList<ICraftingPatternDetails> res = this.craftableItems.get(whatToCraft);
 
         if (res == null) {
             if (details != null && details.isCraftable()) {
                 for (final IAEItemStack ais : this.craftableItems.keySet()) {
-                    final boolean perfectMatch = ais.getItem() == whatToCraft.getItem()
-                            && (!ais.getItem().getHasSubtypes() || ais.getItemDamage() == whatToCraft.getItemDamage());
-                    if (perfectMatch) {
+                    if (ais.getItem() == whatToCraft.getItem()
+                            && (!ais.getItem().getHasSubtypes()
+                                    || ais.getItemDamage() == whatToCraft.getItemDamage())) {
                         if (details.isValidItemForSlot(slotIndex, ais.getItemStack(), world)) {
                             return this.craftableItems.get(ais);
-                        }
-                    }
-                }
-                // no perfect match found, look for substitutions
-                if (details.canSubstitute() && !normalMode) {
-                    for (final Map.Entry<IAEItemStack, ImmutableList<ICraftingPatternDetails>> entry :
-                            this.craftableItems.entrySet()) {
-                        final boolean canBeASubstitute =
-                                entry.getValue().stream().anyMatch(cp -> (cp != null) && cp.canBeSubstitute());
-                        if (canBeASubstitute && entry.getKey().fuzzyComparison(whatToCraft, FuzzyMode.IGNORE_ALL)) {
-                            if (details.isValidItemForSlot(
-                                    slotIndex, entry.getKey().getItemStack(), world)) {
-                                return entry.getValue();
-                            }
                         }
                     }
                 }
@@ -470,6 +441,13 @@ public class CraftingGridCache
         }
 
         return res;
+    }
+
+    /**
+     * @return The task pool for executing crafting calculations.
+     */
+    public static ExecutorService getCraftingPool() {
+        return CRAFTING_POOL;
     }
 
     @Override
@@ -483,9 +461,19 @@ public class CraftingGridCache
             throw new IllegalArgumentException("Invalid Crafting Job Request");
         }
 
-        final CraftingJob job = new CraftingJob(world, grid, actionSrc, slotItem, cb);
+        final ICraftingJob job;
+        switch (AEConfig.instance.craftingCalculatorVersion) {
+            case 1:
+                job = new CraftingJob(world, grid, actionSrc, slotItem, cb);
+                break;
+            case 2:
+                job = new CraftingJobV2(world, grid, actionSrc, slotItem, cb);
+                break;
+            default:
+                throw new IllegalStateException("Invalid crafting calculator version");
+        }
 
-        return CRAFTING_POOL.submit(job, (ICraftingJob) job);
+        return job.schedule();
     }
 
     @Override

@@ -23,10 +23,7 @@ import appeng.api.config.Actionable;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
-import appeng.api.networking.crafting.ICraftingCallback;
-import appeng.api.networking.crafting.ICraftingGrid;
-import appeng.api.networking.crafting.ICraftingJob;
-import appeng.api.networking.crafting.ICraftingPatternDetails;
+import appeng.api.networking.crafting.*;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
@@ -37,14 +34,17 @@ import appeng.api.storage.data.IItemList;
 import appeng.api.util.DimensionalCoord;
 import appeng.core.AELog;
 import appeng.hooks.TickHandler;
+import appeng.me.cache.CraftingGridCache;
+import appeng.me.cluster.implementations.CraftingCPUCluster;
 import com.google.common.base.Stopwatch;
 import java.util.HashMap;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class CraftingJob implements Runnable, ICraftingJob {
+public class CraftingJob implements ICraftingJob, Runnable {
     private static final String LOG_CRAFTING_JOB =
             "CraftingJob (%s) issued by %s requesting [%s] using %s bytes took %s ms";
     private static final String LOG_MACHINE_SOURCE_DETAILS = "Machine[object=%s, %s]";
@@ -116,6 +116,11 @@ public class CraftingJob implements Runnable, ICraftingJob {
     void addMissing(IAEItemStack what) {
         what = what.copy();
         this.missing.add(what);
+    }
+
+    @Override
+    public Future<ICraftingJob> schedule() {
+        return CraftingGridCache.getCraftingPool().submit(this, this);
     }
 
     @Override
@@ -262,12 +267,6 @@ public class CraftingJob implements Runnable, ICraftingJob {
         return this.world;
     }
 
-    /**
-     * returns true if this needs more simulation.
-     *
-     * @param milli milliseconds of simulation
-     * @return true if this needs more simulation
-     */
     public boolean simulateFor(final int milli) {
         this.time = milli;
 
@@ -333,6 +332,17 @@ public class CraftingJob implements Runnable, ICraftingJob {
 
             AELog.crafting(LOG_CRAFTING_JOB, type, actionSource, itemToOutput, this.bytes, elapsedTime);
         }
+    }
+
+    @Override
+    public boolean supportsCPUCluster(ICraftingCPU cluster) {
+        return cluster instanceof CraftingCPUCluster;
+    }
+
+    @Override
+    public void startCrafting(MECraftingInventory storage, ICraftingCPU craftingCPUCluster, BaseActionSource src) {
+        CraftingCPUCluster cluster = (CraftingCPUCluster) craftingCPUCluster;
+        this.tree.setJob(storage, cluster, src);
     }
 
     private static class TwoIntegers {

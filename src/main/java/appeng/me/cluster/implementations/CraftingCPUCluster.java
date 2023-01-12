@@ -54,6 +54,7 @@ import com.google.common.collect.ImmutableSet;
 import cpw.mods.fml.common.FMLCommonHandler;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.IntStream;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -407,29 +408,46 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
         return null;
     }
 
-    private ArrayList<IAEItemStack> getExtractItems(IAEItemStack g, ICraftingPatternDetails details) {
-        ArrayList<IAEItemStack> list = new ArrayList<IAEItemStack>();
-        if (details.canBeSubstitute()) {
-            for (IAEItemStack fuzz : this.inventory.getItemList().findFuzzy(g, FuzzyMode.IGNORE_ALL)) {
-                if (!details.isCraftable() && fuzz.getStackSize() <= 0) continue;
+    private ArrayList<IAEItemStack> getExtractItems(IAEItemStack ingredient, ICraftingPatternDetails patternDetails) {
+        ArrayList<IAEItemStack> list = new ArrayList<>();
+        if (patternDetails.canSubstitute()) {
+            for (IAEItemStack fuzz : this.inventory.getItemList().findFuzzy(ingredient, FuzzyMode.IGNORE_ALL)) {
+                if (!patternDetails.isCraftable() && fuzz.getStackSize() <= 0) continue;
+                if (patternDetails.isCraftable()) {
+                    final IAEItemStack[] inputSlots = patternDetails.getInputs();
+                    final IAEItemStack finalIngredient =
+                            ingredient; // have to copy because of Java lambda capture rules here
+                    final int matchingSlot = IntStream.range(0, inputSlots.length)
+                            .filter(idx -> inputSlots[idx] != null && inputSlots[idx].equals(finalIngredient))
+                            .findFirst()
+                            .orElse(-1);
+                    if (matchingSlot < 0) {
+                        continue;
+                    }
+                    if (!patternDetails.isValidItemForSlot(matchingSlot, fuzz.getItemStack(), getWorld())) {
+                        // Skip invalid fuzzy matches
+                        continue;
+                    }
+                }
                 fuzz = fuzz.copy();
-                fuzz.setStackSize(g.getStackSize());
+                fuzz.setStackSize(ingredient.getStackSize());
                 final IAEItemStack ais = this.inventory.extractItems(fuzz, Actionable.SIMULATE, this.machineSrc);
                 final ItemStack is = ais == null ? null : ais.getItemStack();
 
-                if (is != null && is.stackSize == g.getStackSize()) {
+                if (is != null && is.stackSize == ingredient.getStackSize()) {
                     list.add(ais);
                     return list;
-                } else if (is != null && details.isCraftable()) {
-                    g = g.copy();
-                    g.decStackSize(is.stackSize);
+                } else if (is != null && patternDetails.isCraftable()) {
+                    ingredient = ingredient.copy();
+                    ingredient.decStackSize(is.stackSize);
                     list.add(ais);
                 }
             }
         } else {
-            final IAEItemStack extractItems = this.inventory.extractItems(g, Actionable.SIMULATE, this.machineSrc);
+            final IAEItemStack extractItems =
+                    this.inventory.extractItems(ingredient, Actionable.SIMULATE, this.machineSrc);
             final ItemStack is = extractItems == null ? null : extractItems.getItemStack();
-            if (is != null && is.stackSize == g.getStackSize()) {
+            if (is != null && is.stackSize == ingredient.getStackSize()) {
                 list.add(extractItems);
                 return list;
             }
@@ -704,11 +722,11 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
             return null;
         }
 
-        if (!(job instanceof CraftingJob)) {
+        if (this.isBusy() || !this.isActive() || this.availableStorage < job.getByteTotal()) {
             return null;
         }
 
-        if (this.isBusy() || !this.isActive() || this.availableStorage < job.getByteTotal()) {
+        if (!job.supportsCPUCluster(this)) {
             return null;
         }
 
@@ -718,7 +736,7 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
 
         try {
             this.waitingFor.resetStatus();
-            ((CraftingJob) job).getTree().setJob(ci, this, src);
+            job.startCrafting(ci, this, src);
             if (ci.commit(src)) {
                 this.finalOutput = job.getOutput();
                 this.waiting = false;
