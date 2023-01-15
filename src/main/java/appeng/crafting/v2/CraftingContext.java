@@ -31,9 +31,21 @@ public final class CraftingContext {
     public BaseActionSource actionSource;
 
     /**
-     * A working copy of the AE system's item list used for modelling what happens as crafting requests get resolved
+     * A working copy of the AE system's item list used for modelling what happens as crafting requests get resolved.
+     * Only extract, inject into {@link CraftingContext#byproductsInventory}.
      */
     public final MECraftingInventory itemModel;
+    /**
+     * An initially blank inventory for keeping all crafting byproduct outputs in.
+     * Extract from here before extracting from {@link CraftingContext#itemModel}. <p>
+     * It is separate from the item model, because at the end of the crafting calculation we must produce a list of items to extract from the system.
+     * When a crafting process puts those items back into the modelled inventory, and another process extract them the calculator would
+     * request withdrawing that byproduct directly from AE when setting up the crafting CPU.
+     * This would be wrong, it should assume that the item will be produced during crafting and does not need to be initially present in the system, which we achieve by separating byproducts.
+     *
+     * @see appeng.crafting.v2.resolvers.ExtractItemResolver ExtractItemResolver - separates the items extracted from AE vs from byproducts for the crafting plan
+     */
+    public final MECraftingInventory byproductsInventory;
     /**
      * A cache of how many items were present at the beginning of the crafting request, do not modify
      */
@@ -71,6 +83,7 @@ public final class CraftingContext {
         this.actionSource = actionSource;
         final IStorageGrid sg = meGrid.getCache(IStorageGrid.class);
         this.itemModel = new MECraftingInventory(sg.getItemInventory(), this.actionSource, true, false, true);
+        this.byproductsInventory = new MECraftingInventory();
         this.availableCache = new MECraftingInventory(sg.getItemInventory(), this.actionSource, false, false, false);
         this.availablePatterns = craftingGrid.getCraftingPatterns();
     }
@@ -220,8 +233,9 @@ public final class CraftingContext {
         }
 
         @Override
-        public void partialRefund(CraftingContext context, long amount) {
-            // no-op
+        public long partialRefund(CraftingContext context, long amount) {
+            // no-op, does not produce/consume any stacks
+            return 0;
         }
 
         @Override
