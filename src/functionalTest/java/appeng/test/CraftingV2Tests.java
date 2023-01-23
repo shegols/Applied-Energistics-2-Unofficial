@@ -218,4 +218,38 @@ public class CraftingV2Tests {
                 AEItemStack.create(new ItemStack(Blocks.planks, 0, 1)).setCountRequestable(4),
                 AEItemStack.create(new ItemStack(Blocks.chest, 0)).setCountRequestable(1));
     }
+
+    @Test
+    void canHandleCyclicalPatterns() {
+        MockAESystem aeSystem = new MockAESystem(dummyWorld);
+        aeSystem.addStoredItem(new ItemStack(Blocks.log, 4, 0));
+        aeSystem.newProcessingPattern()
+                .addInput(new ItemStack(Blocks.log, 1))
+                .addOutput(new ItemStack(Blocks.planks, 4))
+                .buildAndAdd();
+        aeSystem.newProcessingPattern()
+                .addInput(new ItemStack(Blocks.planks, 4))
+                .addOutput(new ItemStack(Blocks.log, 1))
+                .buildAndAdd();
+        for (int plankAmount = 1; plankAmount < 64; plankAmount++) {
+            final CraftingJobV2 job = aeSystem.makeCraftingJob(new ItemStack(Blocks.planks, plankAmount));
+            simulateJobAndCheck(job, SIMPLE_SIMULATION_TIMEOUT_MS);
+            assertEquals(job.isSimulation(), plankAmount > 16);
+        }
+    }
+
+    @Test
+    void strictNamedItems() {
+        MockAESystem aeSystem = new MockAESystem(dummyWorld);
+        aeSystem.addStoredItem(new ItemStack(Blocks.log, 4, 0).setStackDisplayName("Named Log"));
+        aeSystem.newProcessingPattern()
+                .addInput(new ItemStack(Blocks.log, 1))
+                .addOutput(new ItemStack(Blocks.planks, 4))
+                .allowBeingASubstitute()
+                .buildAndAdd();
+
+        final CraftingJobV2 job = aeSystem.makeCraftingJob(new ItemStack(Blocks.planks, 1));
+        simulateJobAndCheck(job, SIMPLE_SIMULATION_TIMEOUT_MS);
+        assertEquals(true, job.isSimulation()); // Don't use renamed items
+    }
 }

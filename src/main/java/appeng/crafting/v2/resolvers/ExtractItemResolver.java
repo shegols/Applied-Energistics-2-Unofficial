@@ -13,14 +13,12 @@ import java.util.*;
 import javax.annotation.Nonnull;
 
 public class ExtractItemResolver implements CraftingRequestResolver<IAEItemStack> {
-    public static class ExtractItemTask extends CraftingTask {
-        public final CraftingRequest<IAEItemStack> request;
+    public static class ExtractItemTask extends CraftingTask<IAEItemStack> {
         public final List<IAEItemStack> removedFromSystem = new ArrayList<>();
         public final List<IAEItemStack> removedFromByproducts = new ArrayList<>();
 
         public ExtractItemTask(CraftingRequest<IAEItemStack> request) {
-            super(CraftingTask.PRIORITY_EXTRACT); // always try to extract items first
-            this.request = request;
+            super(request, CraftingTask.PRIORITY_EXTRACT); // always try to extract items first
         }
 
         @Override
@@ -122,9 +120,6 @@ public class ExtractItemResolver implements CraftingRequestResolver<IAEItemStack
 
         @Override
         public void populatePlan(IItemList<IAEItemStack> targetPlan) {
-            for (IAEItemStack removed : removedFromByproducts) {
-                targetPlan.addRequestable(removed.copy().setCountRequestable(removed.getStackSize()));
-            }
             for (IAEItemStack removed : removedFromSystem) {
                 targetPlan.add(removed.copy());
             }
