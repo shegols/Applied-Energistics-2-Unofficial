@@ -1,26 +1,15 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.effects;
 
-import appeng.client.texture.ExtraBlockTextures;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.particle.EntityBreakingFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.Item;
@@ -28,6 +17,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import appeng.client.texture.ExtraBlockTextures;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class EnergyFx extends EntityBreakingFX {
@@ -38,8 +31,8 @@ public class EnergyFx extends EntityBreakingFX {
     private final int startBlkY;
     private final int startBlkZ;
 
-    public EnergyFx(
-            final World par1World, final double par2, final double par4, final double par6, final Item par8Item) {
+    public EnergyFx(final World par1World, final double par2, final double par4, final double par6,
+            final Item par8Item) {
         super(par1World, par2, par4, par6, par8Item);
         this.particleGravity = 0;
         this.particleBlue = 255;
@@ -62,14 +55,8 @@ public class EnergyFx extends EntityBreakingFX {
     }
 
     @Override
-    public void renderParticle(
-            final Tessellator par1Tessellator,
-            final float par2,
-            final float par3,
-            final float par4,
-            final float par5,
-            final float par6,
-            final float par7) {
+    public void renderParticle(final Tessellator par1Tessellator, final float par2, final float par3, final float par4,
+            final float par5, final float par6, final float par7) {
         final float f6 = this.particleTextureIndex.getMinU();
         final float f7 = this.particleTextureIndex.getMaxU();
         final float f8 = this.particleTextureIndex.getMinV();
@@ -87,15 +74,34 @@ public class EnergyFx extends EntityBreakingFX {
         if (blkX == this.startBlkX && blkY == this.startBlkY && blkZ == this.startBlkZ) {
             final float f14 = 1.0F;
             par1Tessellator.setColorRGBA_F(
-                    this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha);
+                    this.particleRed * f14,
+                    this.particleGreen * f14,
+                    this.particleBlue * f14,
+                    this.particleAlpha);
             par1Tessellator.addVertexWithUV(
-                    f11 - par3 * f10 - par6 * f10, f12 - par4 * f10, f13 - par5 * f10 - par7 * f10, f7, f9);
+                    f11 - par3 * f10 - par6 * f10,
+                    f12 - par4 * f10,
+                    f13 - par5 * f10 - par7 * f10,
+                    f7,
+                    f9);
             par1Tessellator.addVertexWithUV(
-                    f11 - par3 * f10 + par6 * f10, f12 + par4 * f10, f13 - par5 * f10 + par7 * f10, f7, f8);
+                    f11 - par3 * f10 + par6 * f10,
+                    f12 + par4 * f10,
+                    f13 - par5 * f10 + par7 * f10,
+                    f7,
+                    f8);
             par1Tessellator.addVertexWithUV(
-                    f11 + par3 * f10 + par6 * f10, f12 + par4 * f10, f13 + par5 * f10 + par7 * f10, f6, f8);
+                    f11 + par3 * f10 + par6 * f10,
+                    f12 + par4 * f10,
+                    f13 + par5 * f10 + par7 * f10,
+                    f6,
+                    f8);
             par1Tessellator.addVertexWithUV(
-                    f11 + par3 * f10 - par6 * f10, f12 - par4 * f10, f13 + par5 * f10 - par7 * f10, f6, f9);
+                    f11 + par3 * f10 - par6 * f10,
+                    f12 - par4 * f10,
+                    f13 + par5 * f10 - par7 * f10,
+                    f6,
+                    f9);
         }
     }
 

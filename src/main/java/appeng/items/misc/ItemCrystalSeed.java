@@ -1,22 +1,33 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.misc;
+
+import java.util.EnumSet;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IMaterials;
@@ -32,22 +43,6 @@ import appeng.util.Platform;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.EnumSet;
-import java.util.List;
-import javax.annotation.Nullable;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
 public class ItemCrystalSeed extends AEBaseItem implements IGrowableCrystal {
 
@@ -81,16 +76,13 @@ public class ItemCrystalSeed extends AEBaseItem implements IGrowableCrystal {
     public static ResolverResult getResolver(final int certus2) {
         ResolverResult resolver = null;
 
-        for (ItemStack crystalSeedStack : AEApi.instance()
-                .definitions()
-                .items()
-                .crystalSeed()
-                .maybeStack(1)
-                .asSet()) {
+        for (ItemStack crystalSeedStack : AEApi.instance().definitions().items().crystalSeed().maybeStack(1).asSet()) {
             crystalSeedStack.setItemDamage(certus2);
             crystalSeedStack = newStyle(crystalSeedStack);
             resolver = new ResolverResult(
-                    "ItemCrystalSeed", crystalSeedStack.getItemDamage(), crystalSeedStack.getTagCompound());
+                    "ItemCrystalSeed",
+                    crystalSeedStack.getItemDamage(),
+                    crystalSeedStack.getTagCompound());
         }
 
         return resolver;
@@ -121,20 +113,17 @@ public class ItemCrystalSeed extends AEBaseItem implements IGrowableCrystal {
         final int size = is.stackSize;
 
         if (newDamage == CERTUS + SINGLE_OFFSET) {
-            for (final ItemStack quartzStack :
-                    materials.purifiedCertusQuartzCrystal().maybeStack(size).asSet()) {
+            for (final ItemStack quartzStack : materials.purifiedCertusQuartzCrystal().maybeStack(size).asSet()) {
                 return quartzStack;
             }
         }
         if (newDamage == NETHER + SINGLE_OFFSET) {
-            for (final ItemStack quartzStack :
-                    materials.purifiedNetherQuartzCrystal().maybeStack(size).asSet()) {
+            for (final ItemStack quartzStack : materials.purifiedNetherQuartzCrystal().maybeStack(size).asSet()) {
                 return quartzStack;
             }
         }
         if (newDamage == FLUIX + SINGLE_OFFSET) {
-            for (final ItemStack quartzStack :
-                    materials.purifiedFluixCrystal().maybeStack(size).asSet()) {
+            for (final ItemStack quartzStack : materials.purifiedFluixCrystal().maybeStack(size).asSet()) {
                 return quartzStack;
             }
         }
@@ -159,8 +148,8 @@ public class ItemCrystalSeed extends AEBaseItem implements IGrowableCrystal {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addCheckedInformation(
-            final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
+    public void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+            final boolean displayMoreInfo) {
         lines.add(ButtonToolTips.DoesntDespawn.getLocal());
         final int progress = this.getProgress(stack) % SINGLE_OFFSET;
         lines.add(Math.floor((float) progress / (float) (SINGLE_OFFSET / 100)) + "%");
@@ -265,8 +254,12 @@ public class ItemCrystalSeed extends AEBaseItem implements IGrowableCrystal {
 
     @Override
     public Entity createEntity(final World world, final Entity location, final ItemStack itemstack) {
-        final EntityGrowingCrystal egc =
-                new EntityGrowingCrystal(world, location.posX, location.posY, location.posZ, itemstack);
+        final EntityGrowingCrystal egc = new EntityGrowingCrystal(
+                world,
+                location.posX,
+                location.posY,
+                location.posZ,
+                itemstack);
 
         egc.motionX = location.motionX;
         egc.motionY = location.motionY;
@@ -280,8 +273,8 @@ public class ItemCrystalSeed extends AEBaseItem implements IGrowableCrystal {
     }
 
     @Override
-    protected void getCheckedSubItems(
-            final Item sameItem, final CreativeTabs creativeTab, final List<ItemStack> itemStacks) {
+    protected void getCheckedSubItems(final Item sameItem, final CreativeTabs creativeTab,
+            final List<ItemStack> itemStacks) {
         // lvl 0
         itemStacks.add(newStyle(new ItemStack(this, 1, CERTUS)));
         itemStacks.add(newStyle(new ItemStack(this, 1, NETHER)));

@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.automation;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Vec3;
 
 import appeng.api.config.*;
 import appeng.api.networking.IGridNode;
@@ -44,17 +42,15 @@ import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import appeng.util.prioitylist.OreFilteredList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Vec3;
 
 public class PartExportBus extends PartSharedItemBus implements ICraftingRequester {
+
     private final MultiCraftingTracker craftingTracker = new MultiCraftingTracker(this, 9);
     private final BaseActionSource mySrc;
     private long itemToSend = 1;
@@ -101,8 +97,8 @@ public class PartExportBus extends PartSharedItemBus implements ICraftingRequest
             final IEnergyGrid energy = this.getProxy().getEnergy();
             final ICraftingGrid cg = this.getProxy().getCrafting();
             final FuzzyMode fzMode = (FuzzyMode) this.getConfigManager().getSetting(Settings.FUZZY_MODE);
-            final SchedulingMode schedulingMode =
-                    (SchedulingMode) this.getConfigManager().getSetting(Settings.SCHEDULING_MODE);
+            final SchedulingMode schedulingMode = (SchedulingMode) this.getConfigManager()
+                    .getSetting(Settings.SCHEDULING_MODE);
 
             if (destination != null) {
                 if (this.getInstalledUpgrades(Upgrades.ORE_FILTER) == 0) {
@@ -116,15 +112,14 @@ public class PartExportBus extends PartSharedItemBus implements ICraftingRequest
                         if (ais == null || this.itemToSend <= 0 || this.craftOnly()) {
                             if (this.isCraftingEnabled()) {
                                 this.didSomething = this.craftingTracker.handleCrafting(
-                                                slotToExport,
-                                                this.itemToSend,
-                                                ais,
-                                                destination,
-                                                this.getTile().getWorldObj(),
-                                                this.getProxy().getGrid(),
-                                                cg,
-                                                this.mySrc)
-                                        || this.didSomething;
+                                        slotToExport,
+                                        this.itemToSend,
+                                        ais,
+                                        destination,
+                                        this.getTile().getWorldObj(),
+                                        this.getProxy().getGrid(),
+                                        cg,
+                                        this.mySrc) || this.didSomething;
                             }
                             continue;
                         }
@@ -132,8 +127,8 @@ public class PartExportBus extends PartSharedItemBus implements ICraftingRequest
                         final long before = this.itemToSend;
 
                         if (this.getInstalledUpgrades(Upgrades.FUZZY) > 0) {
-                            for (final IAEItemStack o :
-                                    ImmutableList.copyOf(inv.getStorageList().findFuzzy(ais, fzMode))) {
+                            for (final IAEItemStack o : ImmutableList
+                                    .copyOf(inv.getStorageList().findFuzzy(ais, fzMode))) {
                                 this.pushItemIntoTarget(destination, energy, inv, o);
                                 if (this.itemToSend <= 0) {
                                     break;
@@ -145,15 +140,14 @@ public class PartExportBus extends PartSharedItemBus implements ICraftingRequest
 
                         if (this.itemToSend == before && this.isCraftingEnabled()) {
                             this.didSomething = this.craftingTracker.handleCrafting(
-                                            slotToExport,
-                                            this.itemToSend,
-                                            ais,
-                                            destination,
-                                            this.getTile().getWorldObj(),
-                                            this.getProxy().getGrid(),
-                                            cg,
-                                            this.mySrc)
-                                    || this.didSomething;
+                                    slotToExport,
+                                    this.itemToSend,
+                                    ais,
+                                    destination,
+                                    this.getTile().getWorldObj(),
+                                    this.getProxy().getGrid(),
+                                    cg,
+                                    this.mySrc) || this.didSomething;
                         }
                     }
 
@@ -208,8 +202,8 @@ public class PartExportBus extends PartSharedItemBus implements ICraftingRequest
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x, final int y, final int z, final IPartRenderHelper rh, final RenderBlocks renderer) {
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {
         this.setRenderCache(rh.useSimplifiedRendering(x, y, z, this, this.getRenderCache()));
         rh.setTexture(
                 CableBusTextures.PartExportSides.getIcon(),
@@ -322,11 +316,8 @@ public class PartExportBus extends PartSharedItemBus implements ICraftingRequest
         return this.getInstalledUpgrades(Upgrades.CRAFTING) > 0;
     }
 
-    private void pushItemIntoTarget(
-            final InventoryAdaptor d,
-            final IEnergyGrid energy,
-            final IMEInventory<IAEItemStack> inv,
-            IAEItemStack ais) {
+    private void pushItemIntoTarget(final InventoryAdaptor d, final IEnergyGrid energy,
+            final IMEInventory<IAEItemStack> inv, IAEItemStack ais) {
         final ItemStack is = ais.getItemStack();
         is.stackSize = (int) this.itemToSend;
 

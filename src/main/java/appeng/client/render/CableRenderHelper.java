@@ -1,35 +1,29 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.parts.IFacadeContainer;
 import appeng.api.parts.IFacadePart;
 import appeng.api.parts.IPart;
 import appeng.parts.BusCollisionHelper;
 import appeng.parts.CableBusContainer;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class CableRenderHelper {
 
@@ -58,8 +52,7 @@ public class CableRenderHelper {
                 renderer.renderAllFaces = true;
 
                 renderer.flipTexture = false;
-                renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth =
-                        renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
+                renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
 
                 part.renderStatic(te.xCoord, te.yCoord, te.zCoord, BusRenderHelper.INSTANCE, renderer);
 
@@ -81,7 +74,12 @@ public class CableRenderHelper {
                     this.setSide(s);
                     final BusRenderHelper brh = BusRenderHelper.INSTANCE;
                     final BusCollisionHelper bch = new BusCollisionHelper(
-                            boxes, brh.getWorldX(), brh.getWorldY(), brh.getWorldZ(), null, true);
+                            boxes,
+                            brh.getWorldX(),
+                            brh.getWorldY(),
+                            brh.getWorldZ(),
+                            null,
+                            true);
                     part.getBoxes(bch);
                 }
             }
@@ -127,8 +125,7 @@ public class CableRenderHelper {
                     }
 
                     renderer.flipTexture = false;
-                    renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth =
-                            renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
+                    renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
 
                     this.setSide(s);
                     fPart.renderStatic(
@@ -197,8 +194,8 @@ public class CableRenderHelper {
         BusRenderHelper.INSTANCE.setOrientation(ax, ay, az);
     }
 
-    public void renderDynamic(
-            final CableBusContainer cableBusContainer, final double x, final double y, final double z) {
+    public void renderDynamic(final CableBusContainer cableBusContainer, final double x, final double y,
+            final double z) {
         for (final ForgeDirection s : ForgeDirection.values()) {
             final IPart part = cableBusContainer.getPart(s);
 

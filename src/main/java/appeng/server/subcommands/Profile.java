@@ -1,8 +1,5 @@
 package appeng.server.subcommands;
 
-import appeng.api.networking.IGridHost;
-import appeng.me.Grid;
-import appeng.server.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -11,7 +8,12 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.api.networking.IGridHost;
+import appeng.me.Grid;
+import appeng.server.ISubCommand;
+
 public class Profile implements ISubCommand {
+
     @Override
     public String getHelp(MinecraftServer srv) {
         return "commands.ae2.Profiler";
@@ -39,8 +41,7 @@ public class Profile implements ISubCommand {
                 sender.addChatMessage(new ChatComponentTranslation("commands.ae2.ProfilerFailed"));
                 return;
             }
-            Grid grid = (Grid)
-                    ((IGridHost) tile).getGridNode(ForgeDirection.UNKNOWN).getGrid();
+            Grid grid = (Grid) ((IGridHost) tile).getGridNode(ForgeDirection.UNKNOWN).getGrid();
             if (grid == null) {
                 sender.addChatMessage(new ChatComponentTranslation("commands.ae2.ProfilerGridDown"));
                 return;

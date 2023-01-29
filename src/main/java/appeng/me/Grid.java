@@ -1,22 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 import appeng.api.AEApi;
 import appeng.api.networking.*;
@@ -27,15 +22,12 @@ import appeng.core.worlddata.WorldData;
 import appeng.hooks.TickHandler;
 import appeng.me.cache.CraftingGridCache;
 import appeng.util.ReadOnlyCollection;
-import java.util.*;
-import java.util.Map.Entry;
 
 public class Grid implements IGrid {
+
     private final NetworkEventBus eventBus = new NetworkEventBus();
-    private final Map<Class<? extends IGridHost>, MachineSet> machines =
-            new HashMap<Class<? extends IGridHost>, MachineSet>();
-    private final Map<Class<? extends IGridCache>, GridCacheWrapper> caches =
-            new HashMap<Class<? extends IGridCache>, GridCacheWrapper>();
+    private final Map<Class<? extends IGridHost>, MachineSet> machines = new HashMap<Class<? extends IGridHost>, MachineSet>();
+    private final Map<Class<? extends IGridCache>, GridCacheWrapper> caches = new HashMap<Class<? extends IGridCache>, GridCacheWrapper>();
     private GridNode pivot;
     private int priority; // how import is this network?
     private GridStorage myStorage;
@@ -47,8 +39,8 @@ public class Grid implements IGrid {
     public Grid(final GridNode center) {
         this.pivot = center;
 
-        final Map<Class<? extends IGridCache>, IGridCache> myCaches =
-                AEApi.instance().registries().gridCache().createCacheInstance(this);
+        final Map<Class<? extends IGridCache>, IGridCache> myCaches = AEApi.instance().registries().gridCache()
+                .createCacheInstance(this);
         for (final Entry<Class<? extends IGridCache>, IGridCache> c : myCaches.entrySet()) {
             final Class<? extends IGridCache> key = c.getKey();
             final IGridCache value = c.getValue();

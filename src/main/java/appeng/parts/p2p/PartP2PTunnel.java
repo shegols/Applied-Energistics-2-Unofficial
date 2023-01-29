@@ -1,22 +1,28 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.p2p;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -40,23 +46,14 @@ import appeng.me.cache.helpers.TunnelCollection;
 import appeng.parts.PartBasicState;
 import appeng.util.Platform;
 import buildcraft.api.tools.IToolWrench;
+
 import com.google.common.base.Optional;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import java.util.Collection;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicState {
+
     private final TunnelCollection type = new TunnelCollection<T>(null, this.getClass());
     private boolean output;
     private long freq;
@@ -65,8 +62,8 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
         super(is);
     }
 
-    public TunnelCollection<T> getCollection(
-            final Collection<PartP2PTunnel> collection, final Class<? extends PartP2PTunnel> c) {
+    public TunnelCollection<T> getCollection(final Collection<PartP2PTunnel> collection,
+            final Class<? extends PartP2PTunnel> c) {
         if (this.type.matches(c)) {
             this.type.setSource(collection);
             return this.type;
@@ -129,8 +126,7 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
      * @return If enabled it returns the icon of an AE quartz block, else vanilla quartz block icon
      */
     protected IIcon getTypeTexture() {
-        final Optional<Block> maybeBlock =
-                AEApi.instance().definitions().blocks().quartz().maybeBlock();
+        final Optional<Block> maybeBlock = AEApi.instance().definitions().blocks().quartz().maybeBlock();
         if (maybeBlock.isPresent()) {
             return maybeBlock.get().getIcon(0, 0);
         } else {
@@ -140,8 +136,8 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x, final int y, final int z, final IPartRenderHelper rh, final RenderBlocks renderer) {
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {
         this.setRenderCache(rh.useSimplifiedRendering(x, y, z, this, this.getRenderCache()));
         rh.setTexture(this.getTypeTexture());
 
@@ -175,15 +171,13 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
 
     @Override
     public ItemStack getItemStack(final PartItemStack type) {
-        if (type == PartItemStack.World
-                || type == PartItemStack.Network
+        if (type == PartItemStack.World || type == PartItemStack.Network
                 || type == PartItemStack.Wrench
                 || type == PartItemStack.Pick) {
             return super.getItemStack(type);
         }
 
-        final Optional<ItemStack> maybeMEStack =
-                AEApi.instance().definitions().parts().p2PTunnelME().maybeStack(1);
+        final Optional<ItemStack> maybeMEStack = AEApi.instance().definitions().parts().p2PTunnelME().maybeStack(1);
         if (maybeMEStack.isPresent()) {
             return maybeMEStack.get();
         }
@@ -272,78 +266,67 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
 
             switch (tt) {
                 case LIGHT:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelLight().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelLight().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
 
                 case RF_POWER:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelRF().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelRF().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
 
                 case FLUID:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelLiquids().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelLiquids().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
 
                 case IC2_POWER:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelEU().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelEU().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
 
                 case ITEM:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelItems().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelItems().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
 
                 case ME:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelME().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelME().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
 
                 case REDSTONE:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelRedstone().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelRedstone().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
 
                 case COMPUTER_MESSAGE:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelOpenComputers().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelOpenComputers().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
 
                 case PRESSURE:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelPneumaticCraft().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelPneumaticCraft().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
 
                 case GT_POWER:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelGregtech().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelGregtech().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
 
                 case ME_INTERFACE:
-                    for (final ItemStack stack :
-                            parts.p2PTunnelMEInterface().maybeStack(1).asSet()) {
+                    for (final ItemStack stack : parts.p2PTunnelMEInterface().maybeStack(1).asSet()) {
                         newType = stack;
                     }
                     break;
@@ -392,8 +375,12 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
             if (input == null) player.addChatMessage(PlayerMessages.TunnelNotConnected.get());
             else {
                 TileEntity t = input.getTile();
-                player.addChatMessage(new ChatComponentTranslation(
-                        PlayerMessages.TunnelInputIsAt.getName(), t.xCoord, t.yCoord, t.zCoord));
+                player.addChatMessage(
+                        new ChatComponentTranslation(
+                                PlayerMessages.TunnelInputIsAt.getName(),
+                                t.xCoord,
+                                t.yCoord,
+                                t.zCoord));
             }
         } else {
             try {
@@ -403,9 +390,8 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
                     player.addChatMessage(PlayerMessages.TunnelOutputsAreAt.get());
                     for (PartP2PTunnel t : oo) {
                         TileEntity te = t.getTile();
-                        if (te != null)
-                            player.addChatMessage(
-                                    new ChatComponentText("(" + te.xCoord + ", " + te.yCoord + ", " + te.zCoord + ")"));
+                        if (te != null) player.addChatMessage(
+                                new ChatComponentText("(" + te.xCoord + ", " + te.yCoord + ", " + te.zCoord + ")"));
                     }
                 }
             } catch (GridAccessException ignored) {
@@ -496,10 +482,9 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
             i.setCustomNameInternal(name);
             try {
                 for (T o : getOutputs()) o.setCustomNameInternal(name);
-            } catch (GridAccessException ignored) {
-            }
+            } catch (GridAccessException ignored) {}
         } else // let unlinked tunnel have a name
-        super.setCustomName(name);
+            super.setCustomName(name);
     }
 
     void setCustomNameInternal(String name) {

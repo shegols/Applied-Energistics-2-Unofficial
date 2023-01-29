@@ -1,22 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.sync.packets;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.world.World;
 
 import appeng.client.render.effects.MatterCannonFX;
 import appeng.core.sync.AppEngPacket;
@@ -26,10 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.world.World;
 
 public class PacketMatterCannon extends AppEngPacket {
 
@@ -53,14 +46,8 @@ public class PacketMatterCannon extends AppEngPacket {
     }
 
     // api
-    public PacketMatterCannon(
-            final double x,
-            final double y,
-            final double z,
-            final float dx,
-            final float dy,
-            final float dz,
-            final byte len) {
+    public PacketMatterCannon(final double x, final double y, final double z, final float dx, final float dy,
+            final float dz, final byte len) {
         final float dl = dx * dx + dy * dy + dz * dz;
         final float dlz = (float) Math.sqrt(dl);
 
@@ -94,11 +81,14 @@ public class PacketMatterCannon extends AppEngPacket {
             final World world = FMLClientHandler.instance().getClient().theWorld;
             for (int a = 1; a < this.len; a++) {
                 final MatterCannonFX fx = new MatterCannonFX(
-                        world, this.x + this.dx * a, this.y + this.dy * a, this.z + this.dz * a, Items.diamond);
+                        world,
+                        this.x + this.dx * a,
+                        this.y + this.dy * a,
+                        this.z + this.dz * a,
+                        Items.diamond);
 
                 Minecraft.getMinecraft().effectRenderer.addEffect(fx);
             }
-        } catch (final Exception ignored) {
-        }
+        } catch (final Exception ignored) {}
     }
 }

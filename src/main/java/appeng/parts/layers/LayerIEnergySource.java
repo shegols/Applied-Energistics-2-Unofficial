@@ -1,22 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.layers;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
@@ -27,10 +24,6 @@ import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import ic2.api.energy.tile.IEnergySource;
 import ic2.api.energy.tile.IEnergyTile;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class LayerIEnergySource extends LayerBase implements IEnergySource {
 
@@ -64,8 +57,8 @@ public class LayerIEnergySource extends LayerBase implements IEnergySource {
 
         if (!this.isInIC2() && Platform.isServer() && this.isTileValid()) {
             this.getLayerFlags().add(LayerFlags.IC2_ENET);
-            MinecraftForge.EVENT_BUS.post(
-                    new ic2.api.energy.event.EnergyTileLoadEvent((IEnergyTile) this.getEnergySourceTile()));
+            MinecraftForge.EVENT_BUS
+                    .post(new ic2.api.energy.event.EnergyTileLoadEvent((IEnergyTile) this.getEnergySourceTile()));
         }
     }
 
@@ -76,8 +69,8 @@ public class LayerIEnergySource extends LayerBase implements IEnergySource {
 
         if (this.isInIC2() && Platform.isServer()) {
             this.getLayerFlags().remove(LayerFlags.IC2_ENET);
-            MinecraftForge.EVENT_BUS.post(
-                    new ic2.api.energy.event.EnergyTileUnloadEvent((IEnergyTile) this.getEnergySourceTile()));
+            MinecraftForge.EVENT_BUS
+                    .post(new ic2.api.energy.event.EnergyTileUnloadEvent((IEnergyTile) this.getEnergySourceTile()));
         }
     }
 

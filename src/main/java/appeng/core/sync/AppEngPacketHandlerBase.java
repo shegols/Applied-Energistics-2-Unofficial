@@ -1,34 +1,29 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.sync;
 
-import appeng.core.sync.packets.*;
-import io.netty.buffer.ByteBuf;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import appeng.core.sync.packets.*;
+import io.netty.buffer.ByteBuf;
+
 public class AppEngPacketHandlerBase {
+
     private static final Map<Class<? extends AppEngPacket>, PacketTypes> REVERSE_LOOKUP = new HashMap<>();
 
     public enum PacketTypes {
+
         PACKET_COMPASS_REQUEST(PacketCompassRequest.class),
 
         PACKET_COMPASS_RESPONSE(PacketCompassResponse.class),
@@ -92,8 +87,7 @@ public class AppEngPacketHandlerBase {
             Constructor<? extends AppEngPacket> x = null;
             try {
                 x = this.packetClass.getConstructor(ByteBuf.class);
-            } catch (final NoSuchMethodException | SecurityException ignored) {
-            }
+            } catch (final NoSuchMethodException | SecurityException ignored) {}
 
             this.packetConstructor = x;
             REVERSE_LOOKUP.put(this.packetClass, this);
@@ -112,9 +106,8 @@ public class AppEngPacketHandlerBase {
             return REVERSE_LOOKUP.get(c);
         }
 
-        public AppEngPacket parsePacket(final ByteBuf in)
-                throws InstantiationException, IllegalAccessException, IllegalArgumentException,
-                        InvocationTargetException {
+        public AppEngPacket parsePacket(final ByteBuf in) throws InstantiationException, IllegalAccessException,
+                IllegalArgumentException, InvocationTargetException {
             return this.packetConstructor.newInstance(in);
         }
     }

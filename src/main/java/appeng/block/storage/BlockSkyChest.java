@@ -1,36 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.block.storage;
 
-import appeng.api.AEApi;
-import appeng.block.AEBaseTileBlock;
-import appeng.client.render.blocks.RenderBlockSkyChest;
-import appeng.core.features.AEFeature;
-import appeng.core.sync.GuiBridge;
-import appeng.helpers.ICustomCollision;
-import appeng.tile.storage.TileSkyChest;
-import appeng.util.Platform;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -45,6 +28,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import appeng.api.AEApi;
+import appeng.block.AEBaseTileBlock;
+import appeng.client.render.blocks.RenderBlockSkyChest;
+import appeng.core.features.AEFeature;
+import appeng.core.sync.GuiBridge;
+import appeng.helpers.ICustomCollision;
+import appeng.tile.storage.TileSkyChest;
+import appeng.util.Platform;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockSkyChest extends AEBaseTileBlock implements ICustomCollision {
 
@@ -69,13 +63,8 @@ public class BlockSkyChest extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public ItemStack getPickBlock(
-            final MovingObjectPosition target,
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player) {
+    public ItemStack getPickBlock(final MovingObjectPosition target, final World world, final int x, final int y,
+            final int z, final EntityPlayer player) {
         final ItemStack is = super.getPickBlock(target, world, x, y, z, player);
         is.setItemDamage(world.getBlockMetadata(x, y, z));
 
@@ -91,8 +80,7 @@ public class BlockSkyChest extends AEBaseTileBlock implements ICustomCollision {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int direction, final int metadata) {
-        for (final Block skyStoneBlock :
-                AEApi.instance().definitions().blocks().skyStone().maybeBlock().asSet()) {
+        for (final Block skyStoneBlock : AEApi.instance().definitions().blocks().skyStone().maybeBlock().asSet()) {
             return skyStoneBlock.getIcon(direction, metadata);
         }
 
@@ -100,16 +88,8 @@ public class BlockSkyChest extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public boolean onActivated(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onActivated(final World w, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float hitX, final float hitY, final float hitZ) {
         if (Platform.isServer()) {
             Platform.openGUI(
                     player,
@@ -142,20 +122,14 @@ public class BlockSkyChest extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(
-            final World w, final int x, final int y, final int z, final Entity thePlayer, final boolean isVisual) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final int x, final int y,
+            final int z, final Entity thePlayer, final boolean isVisual) {
         return Collections.singletonList(computeAABB(w, x, y, z));
     }
 
     @Override
-    public void addCollidingBlockToList(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final AxisAlignedBB bb,
-            final List<AxisAlignedBB> out,
-            final Entity e) {
+    public void addCollidingBlockToList(final World w, final int x, final int y, final int z, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         out.add(computeAABB(w, x, y, z));
     }
 

@@ -1,11 +1,13 @@
 package appeng.api.definitions;
 
-import com.google.common.base.Optional;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.world.IBlockAccess;
 
+import com.google.common.base.Optional;
+
 public interface IBlockDefinition extends IItemDefinition {
+
     /**
      * @return the {@link Block} implementation if applicable
      */

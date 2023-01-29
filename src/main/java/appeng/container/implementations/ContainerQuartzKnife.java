@@ -1,22 +1,22 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 import appeng.api.AEApi;
 import appeng.container.AEBaseContainer;
@@ -27,13 +27,6 @@ import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.tile.inventory.IAEAppEngInventory;
 import appeng.tile.inventory.InvOperation;
 import appeng.util.Platform;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 public class ContainerQuartzKnife extends AEBaseContainer implements IAEAppEngInventory, IInventory {
 
@@ -48,8 +41,13 @@ public class ContainerQuartzKnife extends AEBaseContainer implements IAEAppEngIn
         super(ip, null, null);
         this.toolInv = te;
 
-        this.metals =
-                new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.METAL_INGOTS, this.inSlot, 0, 94, 44, ip);
+        this.metals = new SlotRestrictedInput(
+                SlotRestrictedInput.PlacableItemType.METAL_INGOTS,
+                this.inSlot,
+                0,
+                94,
+                44,
+                ip);
         this.addSlotToContainer(this.metals);
 
         this.output = new QuartzKnifeOutput(this, 0, 134, 44, -1);
@@ -95,12 +93,8 @@ public class ContainerQuartzKnife extends AEBaseContainer implements IAEAppEngIn
     public void saveChanges() {}
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removedStack,
-            final ItemStack newStack) {}
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {}
 
     @Override
     public int getSizeInventory() {
@@ -116,12 +110,8 @@ public class ContainerQuartzKnife extends AEBaseContainer implements IAEAppEngIn
 
         if (SlotRestrictedInput.isMetalIngot(input)) {
             if (this.myName.length() > 0) {
-                for (final ItemStack namePressStack : AEApi.instance()
-                        .definitions()
-                        .materials()
-                        .namePress()
-                        .maybeStack(1)
-                        .asSet()) {
+                for (final ItemStack namePressStack : AEApi.instance().definitions().materials().namePress()
+                        .maybeStack(1).asSet()) {
                     final NBTTagCompound compound = Platform.openNbtData(namePressStack);
                     compound.setString("InscribeName", this.myName);
 

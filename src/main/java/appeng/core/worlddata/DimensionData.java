@@ -1,37 +1,33 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.worlddata;
+
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.network.NetworkManager;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 
 import appeng.api.util.WorldCoord;
 import appeng.core.AEConfig;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketNewStorageDimension;
 import appeng.hooks.TickHandler;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.network.NetworkManager;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 
 /**
  * @author thatsIch
@@ -39,6 +35,7 @@ import net.minecraftforge.common.config.Property;
  * @since rv3 30.05.2015
  */
 final class DimensionData implements IWorldDimensionData, IOnWorldStartable, IOnWorldStoppable {
+
     private static final String CONFIG_CATEGORY = "DimensionManager";
     private static final String CONFIG_KEY = "StorageCells";
     private static final int[] STORAGE_CELLS_DEFAULT = new int[0];
@@ -135,14 +132,12 @@ final class DimensionData implements IWorldDimensionData, IOnWorldStartable, IOn
     @Override
     public void sendToPlayer(@Nullable final NetworkManager manager) {
         if (manager != null) {
-            for (final int newDim : this.config
-                    .get(PACKAGE_DEST_CATEGORY, PACKAGE_KEY_CATEGORY, PACKAGE_DEF_CATEGORY)
+            for (final int newDim : this.config.get(PACKAGE_DEST_CATEGORY, PACKAGE_KEY_CATEGORY, PACKAGE_DEF_CATEGORY)
                     .getIntList()) {
                 manager.scheduleOutboundPacket((new PacketNewStorageDimension(newDim)).getProxy());
             }
         } else {
-            for (final TickHandler.PlayerColor pc :
-                    TickHandler.INSTANCE.getPlayerColors().values()) {
+            for (final TickHandler.PlayerColor pc : TickHandler.INSTANCE.getPlayerColors().values()) {
                 NetworkHandler.instance.sendToAll(pc.getPacket());
             }
         }

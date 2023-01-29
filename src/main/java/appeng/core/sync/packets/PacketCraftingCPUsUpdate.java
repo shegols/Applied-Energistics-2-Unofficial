@@ -1,18 +1,21 @@
 package appeng.core.sync.packets;
 
+import java.io.IOException;
+import java.util.Collection;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+
 import appeng.client.gui.widgets.ICraftingCPUTableHolder;
 import appeng.container.implementations.CraftingCPUStatus;
 import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.network.INetworkInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import java.io.IOException;
-import java.util.Collection;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketCraftingCPUsUpdate extends AppEngPacket {
+
     private final CraftingCPUStatus[] cpus;
 
     public PacketCraftingCPUsUpdate(final ByteBuf stream) {

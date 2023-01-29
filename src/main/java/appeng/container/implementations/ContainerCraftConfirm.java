@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import java.io.IOException;
+import java.util.concurrent.Future;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -48,16 +53,6 @@ import appeng.parts.reporting.PartPatternTerminal;
 import appeng.parts.reporting.PartPatternTerminalEx;
 import appeng.parts.reporting.PartTerminal;
 import appeng.util.Platform;
-import java.io.IOException;
-import java.util.concurrent.Future;
-import javax.annotation.Nonnull;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.World;
 
 public class ContainerCraftConfirm extends AEBaseContainer implements ICraftingCPUSelectorContainer {
 
@@ -141,11 +136,11 @@ public class ContainerCraftConfirm extends AEBaseContainer implements ICraftingC
                 try {
                     final PacketMEInventoryUpdate storageUpdate = new PacketMEInventoryUpdate((byte) 0);
                     final PacketMEInventoryUpdate pendingUpdate = new PacketMEInventoryUpdate((byte) 1);
-                    final PacketMEInventoryUpdate missingUpdate =
-                            this.result.isSimulation() ? new PacketMEInventoryUpdate((byte) 2) : null;
+                    final PacketMEInventoryUpdate missingUpdate = this.result.isSimulation()
+                            ? new PacketMEInventoryUpdate((byte) 2)
+                            : null;
 
-                    final IItemList<IAEItemStack> plan =
-                            AEApi.instance().storage().createItemList();
+                    final IItemList<IAEItemStack> plan = AEApi.instance().storage().createItemList();
                     this.result.populatePlan(plan);
 
                     this.setUsedBytes(this.result.getByteTotal());
@@ -265,12 +260,11 @@ public class ContainerCraftConfirm extends AEBaseContainer implements ICraftingC
         }
 
         if (originalGui != null && this.getOpenContext() != null) {
-            NetworkHandler.instance.sendTo(
-                    new PacketSwitchGuis(originalGui), (EntityPlayerMP) this.getInventoryPlayer().player);
+            NetworkHandler.instance
+                    .sendTo(new PacketSwitchGuis(originalGui), (EntityPlayerMP) this.getInventoryPlayer().player);
 
             final TileEntity te = this.getOpenContext().getTile();
-            Platform.openGUI(
-                    this.getInventoryPlayer().player, te, this.getOpenContext().getSide(), originalGui);
+            Platform.openGUI(this.getInventoryPlayer().player, te, this.getOpenContext().getSide(), originalGui);
         }
     }
 

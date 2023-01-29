@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.api;
+
+import java.io.IOException;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 
 import appeng.api.networking.crafting.ICraftingLink;
 import appeng.api.networking.crafting.ICraftingRequester;
@@ -31,10 +29,6 @@ import appeng.crafting.CraftingLink;
 import appeng.util.Platform;
 import appeng.util.item.*;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 public class ApiStorage implements IStorageHelper {
 
@@ -79,20 +73,14 @@ public class ApiStorage implements IStorageHelper {
     }
 
     @Override
-    public IAEItemStack poweredExtraction(
-            final IEnergySource energy,
-            final IMEInventory<IAEItemStack> cell,
-            final IAEItemStack request,
-            final BaseActionSource src) {
+    public IAEItemStack poweredExtraction(final IEnergySource energy, final IMEInventory<IAEItemStack> cell,
+            final IAEItemStack request, final BaseActionSource src) {
         return Platform.poweredExtraction(energy, cell, request, src);
     }
 
     @Override
-    public IAEItemStack poweredInsert(
-            final IEnergySource energy,
-            final IMEInventory<IAEItemStack> cell,
-            final IAEItemStack input,
-            final BaseActionSource src) {
+    public IAEItemStack poweredInsert(final IEnergySource energy, final IMEInventory<IAEItemStack> cell,
+            final IAEItemStack input, final BaseActionSource src) {
         return Platform.poweredInsert(energy, cell, input, src);
     }
 }

@@ -1,22 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.powersink;
+
+import java.util.EnumSet;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -27,9 +24,6 @@ import appeng.api.networking.events.MENetworkPowerStorage.PowerEventType;
 import appeng.tile.AEBaseInvTile;
 import appeng.tile.TileEvent;
 import appeng.tile.events.TileEventType;
-import java.util.EnumSet;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class AERootPoweredTile extends AEBaseInvTile implements IAEPowerStorage {
 
@@ -73,7 +67,8 @@ public abstract class AERootPoweredTile extends AEBaseInvTile implements IAEPowe
 
     public final double injectExternalPower(final PowerUnits input, final double amt) {
         return PowerUnits.AE.convertTo(
-                input, this.funnelPowerIntoStorage(input.convertTo(PowerUnits.AE, amt), Actionable.MODULATE));
+                input,
+                this.funnelPowerIntoStorage(input.convertTo(PowerUnits.AE, amt), Actionable.MODULATE));
     }
 
     protected double funnelPowerIntoStorage(final double power, final Actionable mode) {

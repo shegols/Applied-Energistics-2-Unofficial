@@ -1,22 +1,22 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.helpers;
+
+import java.util.Collections;
+import java.util.EnumSet;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.networking.*;
@@ -37,13 +37,8 @@ import appeng.me.cache.P2PCache;
 import appeng.parts.networking.PartCable;
 import appeng.tile.AEBaseTile;
 import appeng.util.Platform;
+
 import com.mojang.authlib.GameProfile;
-import java.util.Collections;
-import java.util.EnumSet;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class AENetworkProxy implements IGridBlock {
 
@@ -60,8 +55,8 @@ public class AENetworkProxy implements IGridBlock {
     private double idleDraw = 1.0;
     private EntityPlayer owner;
 
-    public AENetworkProxy(
-            final IGridProxyable te, final String nbtName, final ItemStack visual, final boolean inWorld) {
+    public AENetworkProxy(final IGridProxyable te, final String nbtName, final ItemStack visual,
+            final boolean inWorld) {
         this.gp = te;
         this.nbtName = nbtName;
         this.worldNode = inWorld;

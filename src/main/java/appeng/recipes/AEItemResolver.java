@@ -1,22 +1,16 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.recipes;
+
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IDefinitions;
@@ -33,7 +27,6 @@ import appeng.items.materials.MaterialType;
 import appeng.items.misc.ItemCrystalSeed;
 import appeng.items.parts.ItemMultiPart;
 import appeng.items.parts.PartType;
-import net.minecraft.item.ItemStack;
 
 public class AEItemResolver implements ISubItemResolver {
 
@@ -50,8 +43,8 @@ public class AEItemResolver implements ISubItemResolver {
             }
 
             if (itemName.startsWith("LumenPaintBall.")) {
-                return this.paintBall(
-                        items.coloredLumenPaintBall(), itemName.substring(itemName.indexOf('.') + 1), true);
+                return this
+                        .paintBall(items.coloredLumenPaintBall(), itemName.substring(itemName.indexOf('.') + 1), true);
             }
 
             if (itemName.equals("CableGlass")) {
@@ -63,8 +56,7 @@ public class AEItemResolver implements ISubItemResolver {
             }
 
             if (itemName.equals("CableCovered")) {
-                return new ResolverResultSet(
-                        "CableCovered", parts.cableCovered().allStacks(1));
+                return new ResolverResultSet("CableCovered", parts.cableCovered().allStacks(1));
             }
 
             if (itemName.startsWith("CableCovered.")) {
@@ -88,8 +80,7 @@ public class AEItemResolver implements ISubItemResolver {
             }
 
             if (itemName.equals("CableDenseCovered")) {
-                return new ResolverResultSet(
-                        "CableDenseCovered", parts.cableDenseCovered().allStacks(1));
+                return new ResolverResultSet("CableDenseCovered", parts.cableDenseCovered().allStacks(1));
             }
 
             if (itemName.startsWith("CableDenseCovered.")) {
@@ -97,8 +88,7 @@ public class AEItemResolver implements ISubItemResolver {
             }
 
             if (itemName.equals("CableUltraDenseSmart")) {
-                return new ResolverResultSet(
-                        "CableUltraDenseSmart", parts.cableUltraDenseSmart().allStacks(1));
+                return new ResolverResultSet("CableUltraDenseSmart", parts.cableUltraDenseSmart().allStacks(1));
             }
 
             if (itemName.startsWith("CableUltraDenseSmart.")) {
@@ -106,8 +96,7 @@ public class AEItemResolver implements ISubItemResolver {
             }
 
             if (itemName.equals("CableUltraDenseCovered")) {
-                return new ResolverResultSet(
-                        "CableUltraDenseCovered", parts.cableUltraDenseCovered().allStacks(1));
+                return new ResolverResultSet("CableUltraDenseCovered", parts.cableUltraDenseCovered().allStacks(1));
             }
 
             if (itemName.startsWith("CableUltraDenseCovered.")) {
@@ -132,8 +121,7 @@ public class AEItemResolver implements ISubItemResolver {
                 final String materialName = itemName.substring(itemName.indexOf('.') + 1);
                 final MaterialType mt = MaterialType.valueOf(materialName);
                 // itemName = itemName.substring( 0, itemName.indexOf( "." ) );
-                if (mt.getItemInstance() == ItemMultiMaterial.instance
-                        && mt.getDamageValue() >= 0
+                if (mt.getItemInstance() == ItemMultiMaterial.instance && mt.getDamageValue() >= 0
                         && mt.isRegistered()) {
                     return new ResolverResult("ItemMultiMaterial", mt.getDamageValue());
                 }

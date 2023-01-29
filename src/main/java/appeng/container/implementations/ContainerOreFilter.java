@@ -1,5 +1,8 @@
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.tileentity.TileEntity;
+
 import appeng.api.parts.IPart;
 import appeng.client.gui.widgets.MEGuiTextField;
 import appeng.container.AEBaseContainer;
@@ -8,10 +11,9 @@ import appeng.helpers.IOreFilterable;
 import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
 
 public class ContainerOreFilter extends AEBaseContainer {
+
     private final IOreFilterable filterHost;
 
     @SideOnly(Side.CLIENT)

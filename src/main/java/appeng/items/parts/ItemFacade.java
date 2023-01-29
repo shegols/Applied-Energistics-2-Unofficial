@@ -1,22 +1,32 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.parts;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockGlass;
+import net.minecraft.block.BlockStainedGlass;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.exceptions.MissingDefinition;
@@ -33,22 +43,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockGlass;
-import net.minecraft.block.BlockStainedGlass;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemFacade extends AEBaseItem implements IFacadeItem, IAlphaPassItem {
 
@@ -69,17 +63,8 @@ public class ItemFacade extends AEBaseItem implements IFacadeItem, IAlphaPassIte
     }
 
     @Override
-    public boolean onItemUse(
-            final ItemStack is,
-            final EntityPlayer player,
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onItemUse(final ItemStack is, final EntityPlayer player, final World w, final int x, final int y,
+            final int z, final int side, final float hitX, final float hitY, final float hitZ) {
         return AEApi.instance().partHelper().placeBus(is, x, y, z, side, player, w);
     }
 
@@ -98,8 +83,8 @@ public class ItemFacade extends AEBaseItem implements IFacadeItem, IAlphaPassIte
     }
 
     @Override
-    protected void getCheckedSubItems(
-            final Item sameItem, final CreativeTabs creativeTab, final List<ItemStack> itemStacks) {
+    protected void getCheckedSubItems(final Item sameItem, final CreativeTabs creativeTab,
+            final List<ItemStack> itemStacks) {
         this.calculateSubTypes();
         itemStacks.addAll(this.subTypes);
     }
@@ -147,8 +132,8 @@ public class ItemFacade extends AEBaseItem implements IFacadeItem, IAlphaPassIte
         final boolean enableGlass = b instanceof BlockGlass || b instanceof BlockStainedGlass;
         final boolean disableOre = b instanceof OreQuartz;
 
-        final boolean defaultValue =
-                (b.isOpaqueCube() && !b.getTickRandomly() && !hasTile && !disableOre) || enableGlass;
+        final boolean defaultValue = (b.isOpaqueCube() && !b.getTickRandomly() && !hasTile && !disableOre)
+                || enableGlass;
         if (FacadeConfig.instance.checkEnabled(b, metadata, defaultValue)) {
             if (returnItem) {
                 return l;
@@ -229,8 +214,7 @@ public class ItemFacade extends AEBaseItem implements IFacadeItem, IAlphaPassIte
     }
 
     public ItemStack createFromIDs(final int[] ids) {
-        for (final ItemStack facadeStack :
-                AEApi.instance().definitions().items().facade().maybeStack(1).asSet()) {
+        for (final ItemStack facadeStack : AEApi.instance().definitions().items().facade().maybeStack(1).asSet()) {
             final NBTTagCompound facadeTag = new NBTTagCompound();
             facadeTag.setIntArray("x", ids.clone());
             facadeStack.setTagCompound(facadeTag);

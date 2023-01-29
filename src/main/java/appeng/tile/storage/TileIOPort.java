@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.storage;
+
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -54,15 +55,9 @@ import appeng.util.IConfigManagerHost;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.inv.WrapperInventoryRange;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IConfigManagerHost, IGridTickable {
+
     private static final int INPUT_SLOT_INDEX_TOP_LEFT = 0;
     private static final int INPUT_SLOT_INDEX_TOP_RIGHT = 1;
     private static final int INPUT_SLOT_INDEX_CENTER_LEFT = 2;
@@ -80,22 +75,11 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
 
     private final ConfigManager manager;
 
-    private final int[] input = {
-        INPUT_SLOT_INDEX_TOP_LEFT,
-        INPUT_SLOT_INDEX_TOP_RIGHT,
-        INPUT_SLOT_INDEX_CENTER_LEFT,
-        INPUT_SLOT_INDEX_CENTER_RIGHT,
-        INPUT_SLOT_INDEX_BOTTOM_LEFT,
-        INPUT_SLOT_INDEX_BOTTOM_RIGHT
-    };
-    private final int[] output = {
-        OUTPUT_SLOT_INDEX_TOP_LEFT,
-        OUTPUT_SLOT_INDEX_TOP_RIGHT,
-        OUTPUT_SLOT_INDEX_CENTER_LEFT,
-        OUTPUT_SLOT_INDEX_CENTER_RIGHT,
-        OUTPUT_SLOT_INDEX_BOTTOM_LEFT,
-        OUTPUT_SLOT_INDEX_BOTTOM_RIGHT
-    };
+    private final int[] input = { INPUT_SLOT_INDEX_TOP_LEFT, INPUT_SLOT_INDEX_TOP_RIGHT, INPUT_SLOT_INDEX_CENTER_LEFT,
+            INPUT_SLOT_INDEX_CENTER_RIGHT, INPUT_SLOT_INDEX_BOTTOM_LEFT, INPUT_SLOT_INDEX_BOTTOM_RIGHT };
+    private final int[] output = { OUTPUT_SLOT_INDEX_TOP_LEFT, OUTPUT_SLOT_INDEX_TOP_RIGHT,
+            OUTPUT_SLOT_INDEX_CENTER_LEFT, OUTPUT_SLOT_INDEX_CENTER_RIGHT, OUTPUT_SLOT_INDEX_BOTTOM_LEFT,
+            OUTPUT_SLOT_INDEX_BOTTOM_RIGHT };
 
     private final AppEngInternalInventory cells;
     private final UpgradeInventory upgrades;
@@ -118,8 +102,7 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
         this.mySrc = new MachineSource(this);
         this.lastRedstoneState = YesNo.UNDECIDED;
 
-        final Block ioPortBlock =
-                AEApi.instance().definitions().blocks().iOPort().maybeBlock().get();
+        final Block ioPortBlock = AEApi.instance().definitions().blocks().iOPort().maybeBlock().get();
         this.upgrades = new BlockUpgradeInventory(ioPortBlock, this, 3);
     }
 
@@ -234,11 +217,7 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {
         if (this.cells == inv) {
             this.updateTask();
@@ -314,10 +293,8 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
         }
 
         try {
-            final IMEInventory<IAEItemStack> itemNet =
-                    this.getProxy().getStorage().getItemInventory();
-            final IMEInventory<IAEFluidStack> fluidNet =
-                    this.getProxy().getStorage().getFluidInventory();
+            final IMEInventory<IAEItemStack> itemNet = this.getProxy().getStorage().getItemInventory();
+            final IMEInventory<IAEFluidStack> fluidNet = this.getProxy().getStorage().getFluidInventory();
             final IEnergySource energy = this.getProxy().getEnergy();
             for (int x = 0; x < 6; x++) {
                 final ItemStack is = this.cells.getStackInSlot(x);
@@ -328,8 +305,8 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
 
                         if (this.manager.getSetting(Settings.OPERATION_MODE) == OperationMode.EMPTY) {
                             if (itemInv != null) {
-                                ItemsToMove = this.transferContents(
-                                        energy, itemInv, itemNet, ItemsToMove, StorageChannel.ITEMS);
+                                ItemsToMove = this
+                                        .transferContents(energy, itemInv, itemNet, ItemsToMove, StorageChannel.ITEMS);
                             }
                             if (fluidInv != null) {
                                 ItemsToMove = this.transferContents(
@@ -341,8 +318,8 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
                             }
                         } else {
                             if (itemInv != null) {
-                                ItemsToMove = this.transferContents(
-                                        energy, itemNet, itemInv, ItemsToMove, StorageChannel.ITEMS);
+                                ItemsToMove = this
+                                        .transferContents(energy, itemNet, itemInv, ItemsToMove, StorageChannel.ITEMS);
                             }
                             if (fluidInv != null) {
                                 ItemsToMove = this.transferContents(
@@ -391,12 +368,8 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
         return this.cachedFluid;
     }
 
-    private long transferContents(
-            final IEnergySource energy,
-            final IMEInventory src,
-            final IMEInventory destination,
-            long itemsToMove,
-            final StorageChannel chan) {
+    private long transferContents(final IEnergySource energy, final IMEInventory src, final IMEInventory destination,
+            long itemsToMove, final StorageChannel chan) {
         final IItemList<? extends IAEStack> myList;
         if (src instanceof IMEMonitor) {
             myList = ((IMEMonitor) src).getStorageList();
@@ -466,8 +439,8 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
 
     private boolean moveSlot(final int x) {
         final WrapperInventoryRange wir = new WrapperInventoryRange(this, this.output, true);
-        final ItemStack result =
-                InventoryAdaptor.getAdaptor(wir, ForgeDirection.UNKNOWN).addItems(this.getStackInSlot(x));
+        final ItemStack result = InventoryAdaptor.getAdaptor(wir, ForgeDirection.UNKNOWN)
+                .addItems(this.getStackInSlot(x));
 
         if (result == null) {
             this.setInventorySlotContents(x, null);

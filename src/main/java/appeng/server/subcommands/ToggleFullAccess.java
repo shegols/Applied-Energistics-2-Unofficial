@@ -1,14 +1,17 @@
 package appeng.server.subcommands;
 
-import appeng.me.cache.SecurityCache;
-import appeng.server.ISubCommand;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
+import appeng.me.cache.SecurityCache;
+import appeng.server.ISubCommand;
+
+import com.mojang.authlib.GameProfile;
+
 public class ToggleFullAccess implements ISubCommand {
+
     @Override
     public String getHelp(MinecraftServer srv) {
         return "commands.ae2.ToggleFullAccess";
@@ -27,8 +30,7 @@ public class ToggleFullAccess implements ISubCommand {
                 sender.addChatMessage(
                         new ChatComponentText("Player " + profile.getName() + " has admin access revoked"));
             }
-        } else
-            sender.addChatMessage(
-                    new ChatComponentText("The command is intended to be used in game, not from the server console"));
+        } else sender.addChatMessage(
+                new ChatComponentText("The command is intended to be used in game, not from the server console"));
     }
 }

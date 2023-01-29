@@ -1,12 +1,13 @@
 package appeng.integration.modules;
 
+import net.minecraft.block.Block;
+
 import appeng.api.AEApi;
 import appeng.api.definitions.IBlocks;
 import appeng.helpers.Reflected;
 import appeng.integration.IIntegrationModule;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
 
 public class Chisel implements IIntegrationModule {
 

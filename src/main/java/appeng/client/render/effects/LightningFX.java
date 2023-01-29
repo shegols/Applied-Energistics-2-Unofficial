@@ -1,24 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.effects;
 
 import java.util.Random;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
@@ -27,6 +20,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class LightningFX extends EntityFX {
+
     private static final Random RANDOM_GENERATOR = new Random();
     private static final int STEPS = 5;
 
@@ -35,27 +29,14 @@ public class LightningFX extends EntityFX {
     private final double[] verticesWithUV = new double[3];
     private boolean hasData = false;
 
-    public LightningFX(
-            final World w,
-            final double x,
-            final double y,
-            final double z,
-            final double r,
-            final double g,
+    public LightningFX(final World w, final double x, final double y, final double z, final double r, final double g,
             final double b) {
         this(w, x, y, z, r, g, b, 6);
         this.regen();
     }
 
-    protected LightningFX(
-            final World w,
-            final double x,
-            final double y,
-            final double z,
-            final double r,
-            final double g,
-            final double b,
-            final int maxAge) {
+    protected LightningFX(final World w, final double x, final double y, final double z, final double r, final double g,
+            final double b, final int maxAge) {
         super(w, x, y, z, r, g, b);
         this.precomputedSteps = new double[LightningFX.STEPS][3];
         this.motionX = 0;
@@ -71,12 +52,12 @@ public class LightningFX extends EntityFX {
         double lastDirectionZ = (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9;
 
         for (int s = 0; s < LightningFX.STEPS; s++) {
-            this.precomputedSteps[s][0] =
-                    lastDirectionX = (lastDirectionX + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
-            this.precomputedSteps[s][1] =
-                    lastDirectionY = (lastDirectionY + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
-            this.precomputedSteps[s][2] =
-                    lastDirectionZ = (lastDirectionZ + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
+            this.precomputedSteps[s][0] = lastDirectionX = (lastDirectionX
+                    + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
+            this.precomputedSteps[s][1] = lastDirectionY = (lastDirectionY
+                    + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
+            this.precomputedSteps[s][2] = lastDirectionZ = (lastDirectionZ
+                    + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
         }
     }
 
@@ -91,18 +72,15 @@ public class LightningFX extends EntityFX {
     }
 
     @Override
-    public void renderParticle(
-            final Tessellator tess,
-            final float l,
-            final float rX,
-            final float rY,
-            final float rZ,
-            final float rYZ,
-            final float rXY) {
+    public void renderParticle(final Tessellator tess, final float l, final float rX, final float rY, final float rZ,
+            final float rYZ, final float rXY) {
         final float j = 1.0f;
 
         tess.setColorRGBA_F(
-                this.particleRed * j * 0.9f, this.particleGreen * j * 0.95f, this.particleBlue * j, this.particleAlpha);
+                this.particleRed * j * 0.9f,
+                this.particleGreen * j * 0.95f,
+                this.particleBlue * j,
+                this.particleAlpha);
 
         if (this.particleAge == 3) {
             this.regen();

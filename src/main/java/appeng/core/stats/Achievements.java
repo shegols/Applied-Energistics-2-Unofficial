@@ -1,32 +1,26 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.stats;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IItemDefinition;
 import appeng.api.util.AEColor;
 import appeng.api.util.AEColoredItemDefinition;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Achievement;
 
 public enum Achievements {
+
     // done
     Compass(-2, -4, AEApi.instance().definitions().blocks().skyCompass(), AchievementType.Craft),
 
@@ -52,8 +46,8 @@ public enum Achievements {
     PatternTerminal(-8, -2, AEApi.instance().definitions().parts().patternTerminal(), AchievementType.Craft),
 
     // done
-    ChargedQuartz(
-            0, -4, AEApi.instance().definitions().materials().certusQuartzCrystalCharged(), AchievementType.Pickup),
+    ChargedQuartz(0, -4, AEApi.instance().definitions().materials().certusQuartzCrystalCharged(),
+            AchievementType.Pickup),
 
     // done
     Fluix(0, -2, AEApi.instance().definitions().materials().fluixCrystal(), AchievementType.Pickup),
@@ -62,8 +56,8 @@ public enum Achievements {
     Charger(0, 0, AEApi.instance().definitions().blocks().charger(), AchievementType.Craft),
 
     // done
-    CrystalGrowthAccelerator(
-            -2, 0, AEApi.instance().definitions().blocks().quartzGrowthAccelerator(), AchievementType.Craft),
+    CrystalGrowthAccelerator(-2, 0, AEApi.instance().definitions().blocks().quartzGrowthAccelerator(),
+            AchievementType.Craft),
 
     // done
     GlassCable(2, 0, AEApi.instance().definitions().parts().cableGlass(), AchievementType.Craft),
@@ -78,11 +72,9 @@ public enum Achievements {
     Networking2(4, 0, AEApi.instance().definitions().parts().cableSmart(), AchievementType.Custom),
 
     // done
-    Networking3(
-            4,
-            2,
-            AEApi.instance().definitions().parts().cableDense(),
-            AchievementType.Custom), // todo achievement for dense covered cables
+    Networking3(4, 2, AEApi.instance().definitions().parts().cableDense(), AchievementType.Custom), // todo achievement
+                                                                                                    // for dense covered
+                                                                                                    // cables
 
     // done
     P2P(2, -2, AEApi.instance().definitions().parts().p2PTunnelME(), AchievementType.Craft),

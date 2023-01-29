@@ -1,36 +1,30 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.stats;
 
-import appeng.core.AEConfig;
-import appeng.core.features.AEFeature;
-import cpw.mods.fml.common.eventhandler.EventBus;
 import java.util.ArrayList;
+
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 
+import appeng.core.AEConfig;
+import appeng.core.features.AEFeature;
+import cpw.mods.fml.common.eventhandler.EventBus;
+
 /**
- * Registers any items a player is picking up or is crafting.
- * Registered items are added to the player stats.
- * This will only happen if the {@link AEFeature#Achievements} feature is enabled.
+ * Registers any items a player is picking up or is crafting. Registered items are added to the player stats. This will
+ * only happen if the {@link AEFeature#Achievements} feature is enabled.
  */
 public class PlayerStatsRegistration {
+
     /**
      * {@link cpw.mods.fml.common.eventhandler.EventBus} to which the handlers might get posted to depending if the
      * feature is enabled
@@ -95,8 +89,9 @@ public class PlayerStatsRegistration {
                 }
             }
 
-            final AchievementPage ae2AchievementPage =
-                    new AchievementPage("Applied Energistics 2", list.toArray(new Achievement[list.size()]));
+            final AchievementPage ae2AchievementPage = new AchievementPage(
+                    "Applied Energistics 2",
+                    list.toArray(new Achievement[list.size()]));
             AchievementPage.registerAchievementPage(ae2AchievementPage);
         }
     }

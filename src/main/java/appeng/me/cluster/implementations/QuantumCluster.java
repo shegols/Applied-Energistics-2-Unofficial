@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.cluster.implementations;
+
+import java.util.Iterator;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.world.WorldEvent;
 
 import appeng.api.AEApi;
 import appeng.api.events.LocatableEventAnnounce;
@@ -31,14 +33,6 @@ import appeng.me.cluster.IAECluster;
 import appeng.tile.qnb.TileQuantumBridge;
 import appeng.util.iterators.ChainedIterator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import java.util.Iterator;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.world.WorldEvent;
 
 public class QuantumCluster implements ILocatable, IAECluster {
 
@@ -94,8 +88,7 @@ public class QuantumCluster implements ILocatable, IAECluster {
             }
         }
 
-        final ILocatable myOtherSide = this.otherSide == 0
-                ? null
+        final ILocatable myOtherSide = this.otherSide == 0 ? null
                 : AEApi.instance().registries().locatable().getLocatableBy(this.otherSide);
 
         boolean shutdown = false;
@@ -152,8 +145,7 @@ public class QuantumCluster implements ILocatable, IAECluster {
     }
 
     private boolean canUseNode(final long qe) {
-        final QuantumCluster qc =
-                (QuantumCluster) AEApi.instance().registries().locatable().getLocatableBy(qe);
+        final QuantumCluster qc = (QuantumCluster) AEApi.instance().registries().locatable().getLocatableBy(qe);
         if (qc != null) {
             final World theWorld = qc.center.getWorldObj();
             if (!qc.isDestroyed) {
@@ -228,8 +220,7 @@ public class QuantumCluster implements ILocatable, IAECluster {
     }
 
     public boolean isCorner(final TileQuantumBridge tileQuantumBridge) {
-        return this.getRing()[0] == tileQuantumBridge
-                || this.getRing()[2] == tileQuantumBridge
+        return this.getRing()[0] == tileQuantumBridge || this.getRing()[2] == tileQuantumBridge
                 || this.getRing()[4] == tileQuantumBridge
                 || this.getRing()[6] == tileQuantumBridge;
     }

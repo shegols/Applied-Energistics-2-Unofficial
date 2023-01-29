@@ -1,22 +1,54 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.util;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.security.InvalidParameterException;
+import java.text.DecimalFormat;
+import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S21PacketChunkData;
+import net.minecraft.server.management.PlayerManager;
+import net.minecraft.stats.Achievement;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -60,50 +92,15 @@ import appeng.util.item.OreHelper;
 import appeng.util.item.OreReference;
 import appeng.util.prioitylist.IPartitionList;
 import buildcraft.api.tools.IToolWrench;
+
 import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.security.InvalidParameterException;
-import java.text.DecimalFormat;
-import java.util.*;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.*;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S21PacketChunkData;
-import net.minecraft.server.management.PlayerManager;
-import net.minecraft.stats.Achievement;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * @author AlgorithmX2
@@ -126,8 +123,9 @@ public class Platform {
     private static Class playerInstance;
     private static Method getOrCreateChunkWatcher;
     private static Method sendToAllPlayersWatchingChunk;
-    private static GameProfile fakeProfile =
-            new GameProfile(UUID.fromString("839eb18c-50bc-400c-8291-9383f09763e7"), "[AE2Player]");
+    private static GameProfile fakeProfile = new GameProfile(
+            UUID.fromString("839eb18c-50bc-400c-8291-9383f09763e7"),
+            "[AE2Player]");
 
     public static Random getRandom() {
         return RANDOM_GENERATOR;
@@ -138,14 +136,14 @@ public class Platform {
     }
 
     /**
-     * Seed a random number generator from a world seed and grid location.
-     * The grid can be any arbitrary set of coordinates, e.g. chunk position or block position.
-     * This method guarantees that for the same inputs (worldSeed, x, z) the same seed will be used.
+     * Seed a random number generator from a world seed and grid location. The grid can be any arbitrary set of
+     * coordinates, e.g. chunk position or block position. This method guarantees that for the same inputs (worldSeed,
+     * x, z) the same seed will be used.
      *
-     * @param rng The generator to re-seed.
+     * @param rng       The generator to re-seed.
      * @param worldSeed Global seed independent of the grid position
-     * @param x X location in the grid
-     * @param z Z location in the grid
+     * @param x         X location in the grid
+     * @param z         Z location in the grid
      */
     public static void seedFromGrid(final Random rng, final long worldSeed, final long x, final long z) {
         rng.setSeed(worldSeed);
@@ -178,7 +176,7 @@ public class Platform {
             unitName = "J";
         }
 
-        final String[] preFixes = {"k", "M", "G", "T", "P", "T", "P", "E", "Z", "Y"};
+        final String[] preFixes = { "k", "M", "G", "T", "P", "T", "P", "E", "Z", "Y" };
         String level = "";
         int offset = 0;
         while (p > 1000 && offset < preFixes.length) {
@@ -292,11 +290,8 @@ public class Platform {
         return e == SearchBoxMode.NEI_MANUAL_SEARCH && !IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.NEI);
     }
 
-    public static void openGUI(
-            @Nonnull final EntityPlayer p,
-            @Nullable final TileEntity tile,
-            @Nullable final ForgeDirection side,
-            @Nonnull final GuiBridge type) {
+    public static void openGUI(@Nonnull final EntityPlayer p, @Nullable final TileEntity tile,
+            @Nullable final ForgeDirection side, @Nonnull final GuiBridge type) {
         if (isClient()) {
             return;
         }
@@ -370,8 +365,7 @@ public class Platform {
             return true;
         }
 
-        if ((ta == null && tb == null)
-                || (ta != null && ta.hasNoTags() && tb == null)
+        if ((ta == null && tb == null) || (ta != null && ta.hasNoTags() && tb == null)
                 || (tb != null && tb.hasNoTags() && ta == null)
                 || (ta != null && ta.hasNoTags() && tb != null && tb.hasNoTags())) {
             return true;
@@ -665,8 +659,12 @@ public class Platform {
                         final double offset_x = (getRandomInt() % 32 - 16) / 82;
                         final double offset_y = (getRandomInt() % 32 - 16) / 82;
                         final double offset_z = (getRandomInt() % 32 - 16) / 82;
-                        final EntityItem ei =
-                                new EntityItem(w, 0.5 + offset_x + x, 0.5 + offset_y + y, 0.2 + offset_z + z, i.copy());
+                        final EntityItem ei = new EntityItem(
+                                w,
+                                0.5 + offset_x + x,
+                                0.5 + offset_y + y,
+                                0.2 + offset_z + z,
+                                i.copy());
                         w.spawnEntityInWorld(ei);
                     }
                 }
@@ -746,8 +744,7 @@ public class Platform {
         try {
             // if this fails for some reason, try the other method.
             return Loader.isModLoaded(modid);
-        } catch (final Throwable ignored) {
-        }
+        } catch (final Throwable ignored) {}
 
         for (final ModContainer f : Loader.instance().getActiveModList()) {
             if (f.getModId().equals(modid)) {
@@ -841,8 +838,8 @@ public class Platform {
         return false;
     }
 
-    public static boolean isWrench(
-            final EntityPlayer player, final ItemStack eq, final int x, final int y, final int z) {
+    public static boolean isWrench(final EntityPlayer player, final ItemStack eq, final int x, final int y,
+            final int z) {
         if (eq != null) {
             try {
                 if (eq.getItem() instanceof IToolWrench) {
@@ -1073,10 +1070,10 @@ public class Platform {
                 } else if (mode == FuzzyMode.PERCENT_99) {
                     return (a.getItemDamageForDisplay() > 1) == (b.getItemDamageForDisplay() > 1);
                 } else {
-                    final float percentDamagedOfA =
-                            1.0f - (float) a.getItemDamageForDisplay() / (float) a.getMaxDamage();
-                    final float percentDamagedOfB =
-                            1.0f - (float) b.getItemDamageForDisplay() / (float) b.getMaxDamage();
+                    final float percentDamagedOfA = 1.0f
+                            - (float) a.getItemDamageForDisplay() / (float) a.getMaxDamage();
+                    final float percentDamagedOfB = 1.0f
+                            - (float) b.getItemDamageForDisplay() / (float) b.getMaxDamage();
 
                     return (percentDamagedOfA > mode.breakPoint) == (percentDamagedOfB > mode.breakPoint);
                 }
@@ -1102,14 +1099,13 @@ public class Platform {
         }
 
         /*
-         * // test ore dictionary.. int OreID = getOreID( a ); if ( OreID != -1 ) return OreID == getOreID( b );
-         * if ( Mode != FuzzyMode.IGNORE_ALL ) { if ( a.hasTagCompound() && !isShared( a.getTagCompound() ) ) { a =
-         * Platform.getSharedItemStack( AEItemStack.create( a ) ); }
-         * if ( b.hasTagCompound() && !isShared( b.getTagCompound() ) ) { b = Platform.getSharedItemStack(
-         * AEItemStack.create( b ) ); }
-         * // test regular items with damage values and what not... if ( isShared( a.getTagCompound() ) && isShared(
-         * b.getTagCompound() ) && a.itemID == b.itemID ) { return ((AppEngSharedNBTTagCompound)
-         * a.getTagCompound()).compareFuzzyWithRegistry( (AppEngSharedNBTTagCompound) b.getTagCompound() ); } }
+         * // test ore dictionary.. int OreID = getOreID( a ); if ( OreID != -1 ) return OreID == getOreID( b ); if (
+         * Mode != FuzzyMode.IGNORE_ALL ) { if ( a.hasTagCompound() && !isShared( a.getTagCompound() ) ) { a =
+         * Platform.getSharedItemStack( AEItemStack.create( a ) ); } if ( b.hasTagCompound() && !isShared(
+         * b.getTagCompound() ) ) { b = Platform.getSharedItemStack( AEItemStack.create( b ) ); } // test regular items
+         * with damage values and what not... if ( isShared( a.getTagCompound() ) && isShared( b.getTagCompound() ) &&
+         * a.itemID == b.itemID ) { return ((AppEngSharedNBTTagCompound) a.getTagCompound()).compareFuzzyWithRegistry(
+         * (AppEngSharedNBTTagCompound) b.getTagCompound() ); } }
          */
 
         return a.isItemEqual(b);
@@ -1139,8 +1135,8 @@ public class Platform {
         return new LookDirection(vec3, vec31);
     }
 
-    public static MovingObjectPosition rayTrace(
-            final EntityPlayer p, final boolean hitBlocks, final boolean hitEntities) {
+    public static MovingObjectPosition rayTrace(final EntityPlayer p, final boolean hitBlocks,
+            final boolean hitEntities) {
         final World w = p.getEntityWorld();
 
         final float f = 1.0F;
@@ -1161,13 +1157,12 @@ public class Platform {
         final Vec3 vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
 
         final AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(
-                        Math.min(vec3.xCoord, vec31.xCoord),
-                        Math.min(vec3.yCoord, vec31.yCoord),
-                        Math.min(vec3.zCoord, vec31.zCoord),
-                        Math.max(vec3.xCoord, vec31.xCoord),
-                        Math.max(vec3.yCoord, vec31.yCoord),
-                        Math.max(vec3.zCoord, vec31.zCoord))
-                .expand(16, 16, 16);
+                Math.min(vec3.xCoord, vec31.xCoord),
+                Math.min(vec3.yCoord, vec31.yCoord),
+                Math.min(vec3.zCoord, vec31.zCoord),
+                Math.max(vec3.xCoord, vec31.xCoord),
+                Math.max(vec3.yCoord, vec31.yCoord),
+                Math.max(vec3.zCoord, vec31.zCoord)).expand(16, 16, 16);
 
         Entity entity = null;
         double closest = 9999999.0D;
@@ -1224,11 +1219,8 @@ public class Platform {
         return 0;
     }
 
-    public static <StackType extends IAEStack> StackType poweredExtraction(
-            final IEnergySource energy,
-            final IMEInventory<StackType> cell,
-            final StackType request,
-            final BaseActionSource src) {
+    public static <StackType extends IAEStack> StackType poweredExtraction(final IEnergySource energy,
+            final IMEInventory<StackType> cell, final StackType request, final BaseActionSource src) {
         final StackType possible = cell.extractItems((StackType) request.copy(), Actionable.SIMULATE, src);
 
         long retrieved = 0;
@@ -1256,11 +1248,8 @@ public class Platform {
         return null;
     }
 
-    public static <StackType extends IAEStack> StackType poweredInsert(
-            final IEnergySource energy,
-            final IMEInventory<StackType> cell,
-            final StackType input,
-            final BaseActionSource src) {
+    public static <StackType extends IAEStack> StackType poweredInsert(final IEnergySource energy,
+            final IMEInventory<StackType> cell, final StackType input, final BaseActionSource src) {
         final StackType possible = cell.injectItems((StackType) input.copy(), Actionable.SIMULATE, src);
 
         long stored = input.getStackSize();
@@ -1269,14 +1258,16 @@ public class Platform {
         }
         long typeMultiplier = input instanceof IAEFluidStack ? 1000 : 1;
 
-        final double availablePower = energy.extractAEPower(
-                Platform.ceilDiv(stored, typeMultiplier), Actionable.SIMULATE, PowerMultiplier.CONFIG);
+        final double availablePower = energy
+                .extractAEPower(Platform.ceilDiv(stored, typeMultiplier), Actionable.SIMULATE, PowerMultiplier.CONFIG);
 
         final long itemToAdd = Math.min((long) (availablePower * typeMultiplier + 0.9), stored);
 
         if (itemToAdd > 0) {
             energy.extractAEPower(
-                    Platform.ceilDiv(stored, typeMultiplier), Actionable.MODULATE, PowerMultiplier.CONFIG);
+                    Platform.ceilDiv(stored, typeMultiplier),
+                    Actionable.MODULATE,
+                    PowerMultiplier.CONFIG);
 
             if (itemToAdd < input.getStackSize()) {
                 final long original = input.getStackSize();
@@ -1307,8 +1298,8 @@ public class Platform {
     }
 
     @SuppressWarnings("unchecked")
-    public static void postChanges(
-            final IStorageGrid gs, final ItemStack removed, final ItemStack added, final BaseActionSource src) {
+    public static void postChanges(final IStorageGrid gs, final ItemStack removed, final ItemStack added,
+            final BaseActionSource src) {
         final IItemList<IAEItemStack> itemChanges = AEApi.instance().storage().createItemList();
         final IItemList<IAEFluidStack> fluidChanges = AEApi.instance().storage().createFluidList();
         IMEInventory<IAEItemStack> myItems = null;
@@ -1351,11 +1342,8 @@ public class Platform {
         }
     }
 
-    public static <T extends IAEStack<T>> void postListChanges(
-            final IItemList<T> before,
-            final IItemList<T> after,
-            final IMEMonitorHandlerReceiver<T> meMonitorPassthrough,
-            final BaseActionSource source) {
+    public static <T extends IAEStack<T>> void postListChanges(final IItemList<T> before, final IItemList<T> after,
+            final IMEMonitorHandlerReceiver<T> meMonitorPassthrough, final BaseActionSource source) {
         final LinkedList<T> changes = new LinkedList<T>();
 
         for (final T is : before) {
@@ -1434,8 +1422,18 @@ public class Platform {
         final boolean b_isSecure = isPowered(b.getGrid()) && b.getLastSecurityKey() != -1;
 
         if (AEConfig.instance.isFeatureEnabled(AEFeature.LogSecurityAudits)) {
-            AELog.info("Audit: " + a_isSecure + " : " + b_isSecure + " @ " + a.getLastSecurityKey() + " vs "
-                    + b.getLastSecurityKey() + " & " + a.getPlayerID() + " vs " + b.getPlayerID());
+            AELog.info(
+                    "Audit: " + a_isSecure
+                            + " : "
+                            + b_isSecure
+                            + " @ "
+                            + a.getLastSecurityKey()
+                            + " vs "
+                            + b.getLastSecurityKey()
+                            + " & "
+                            + a.getPlayerID()
+                            + " vs "
+                            + b.getPlayerID());
         }
 
         // can't do that son...
@@ -1539,37 +1537,32 @@ public class Platform {
         }
     }
 
-    public static ItemStack extractItemsByRecipe(
-            final IEnergySource energySrc,
-            final BaseActionSource mySrc,
-            final IMEMonitor<IAEItemStack> src,
-            final World w,
-            final IRecipe r,
-            final ItemStack output,
-            final InventoryCrafting ci,
-            final ItemStack providedTemplate,
-            final int slot,
-            final IItemList<IAEItemStack> items,
-            final Actionable realForFake,
+    public static ItemStack extractItemsByRecipe(final IEnergySource energySrc, final BaseActionSource mySrc,
+            final IMEMonitor<IAEItemStack> src, final World w, final IRecipe r, final ItemStack output,
+            final InventoryCrafting ci, final ItemStack providedTemplate, final int slot,
+            final IItemList<IAEItemStack> items, final Actionable realForFake,
             final IPartitionList<IAEItemStack> filter) {
         return extractItemsByRecipe(
-                energySrc, mySrc, src, w, r, output, ci, providedTemplate, slot, items, realForFake, filter, 1);
+                energySrc,
+                mySrc,
+                src,
+                w,
+                r,
+                output,
+                ci,
+                providedTemplate,
+                slot,
+                items,
+                realForFake,
+                filter,
+                1);
     }
 
-    public static ItemStack extractItemsByRecipe(
-            final IEnergySource energySrc,
-            final BaseActionSource mySrc,
-            final IMEMonitor<IAEItemStack> src,
-            final World w,
-            final IRecipe r,
-            final ItemStack output,
-            final InventoryCrafting ci,
-            final ItemStack providedTemplate,
-            final int slot,
-            final IItemList<IAEItemStack> items,
-            final Actionable realForFake,
-            final IPartitionList<IAEItemStack> filter,
-            int multiple) {
+    public static ItemStack extractItemsByRecipe(final IEnergySource energySrc, final BaseActionSource mySrc,
+            final IMEMonitor<IAEItemStack> src, final World w, final IRecipe r, final ItemStack output,
+            final InventoryCrafting ci, final ItemStack providedTemplate, final int slot,
+            final IItemList<IAEItemStack> items, final Actionable realForFake,
+            final IPartitionList<IAEItemStack> filter, int multiple) {
         if (energySrc.extractAEPower(multiple, Actionable.SIMULATE, PowerMultiplier.CONFIG) > 0.9) {
             if (providedTemplate == null) {
                 return null;
@@ -1661,8 +1654,8 @@ public class Platform {
         return ci;
     }
 
-    public static void notifyBlocksOfNeighbors(
-            final World worldObj, final int xCoord, final int yCoord, final int zCoord) {
+    public static void notifyBlocksOfNeighbors(final World worldObj, final int xCoord, final int yCoord,
+            final int zCoord) {
         if (!worldObj.isRemote) {
             TickHandler.INSTANCE.addCallable(worldObj, new BlockUpdate(xCoord, yCoord, zCoord));
         }
@@ -1674,8 +1667,8 @@ public class Platform {
         }
 
         if (type == AEFeature.CertusQuartzTools) {
-            final IItemDefinition certusQuartzCrystal =
-                    AEApi.instance().definitions().materials().certusQuartzCrystal();
+            final IItemDefinition certusQuartzCrystal = AEApi.instance().definitions().materials()
+                    .certusQuartzCrystal();
 
             return certusQuartzCrystal.isSameAs(b);
         }
@@ -1732,7 +1725,7 @@ public class Platform {
                 getOrCreateChunkWatcher = ReflectionHelper.findMethod(
                         PlayerManager.class,
                         pm,
-                        new String[] {"getOrCreateChunkWatcher", "func_72690_a"},
+                        new String[] { "getOrCreateChunkWatcher", "func_72690_a" },
                         int.class,
                         int.class,
                         boolean.class);
@@ -1747,13 +1740,13 @@ public class Platform {
                         sendToAllPlayersWatchingChunk = ReflectionHelper.findMethod(
                                 Platform.playerInstance,
                                 playerInstance,
-                                new String[] {"sendToAllPlayersWatchingChunk", "func_151251_a"},
+                                new String[] { "sendToAllPlayersWatchingChunk", "func_151251_a" },
                                 Packet.class);
                     }
 
                     if (sendToAllPlayersWatchingChunk != null) {
-                        sendToAllPlayersWatchingChunk.invoke(
-                                playerInstance, new S21PacketChunkData(c, false, verticalBits));
+                        sendToAllPlayersWatchingChunk
+                                .invoke(playerInstance, new S21PacketChunkData(c, false, verticalBits));
                     }
                 }
             }

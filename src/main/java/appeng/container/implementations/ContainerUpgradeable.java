@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 import appeng.api.config.*;
 import appeng.api.implementations.IUpgradeableHost;
@@ -30,11 +28,6 @@ import appeng.items.contents.NetworkToolViewer;
 import appeng.items.tools.ToolNetworkTool;
 import appeng.parts.automation.PartExportBus;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class ContainerUpgradeable extends AEBaseContainer implements IOptionalSlotHost {
 
@@ -86,8 +79,8 @@ public class ContainerUpgradeable extends AEBaseContainer implements IOptionalSl
             if (pii != null && pii.getItem() instanceof ToolNetworkTool) {
                 this.lockPlayerInventorySlot(x);
                 this.tbSlot = x;
-                this.tbInventory =
-                        (NetworkToolViewer) ((IGuiItem) pii.getItem()).getGuiObject(pii, w, xCoord, yCoord, zCoord);
+                this.tbInventory = (NetworkToolViewer) ((IGuiItem) pii.getItem())
+                        .getGuiObject(pii, w, xCoord, yCoord, zCoord);
                 break;
             }
         }
@@ -95,14 +88,14 @@ public class ContainerUpgradeable extends AEBaseContainer implements IOptionalSl
         if (this.hasToolbox()) {
             for (int v = 0; v < 3; v++) {
                 for (int u = 0; u < 3; u++) {
-                    this.addSlotToContainer((new SlotRestrictedInput(
+                    this.addSlotToContainer(
+                            (new SlotRestrictedInput(
                                     SlotRestrictedInput.PlacableItemType.UPGRADES,
                                     this.tbInventory,
                                     u + v * 3,
                                     186 + u * 18,
                                     this.getHeight() - 82 + v * 18,
-                                    this.getInventoryPlayer()))
-                            .setPlayerSide());
+                                    this.getInventoryPlayer())).setPlayerSide());
                 }
             }
         }
@@ -143,44 +136,44 @@ public class ContainerUpgradeable extends AEBaseContainer implements IOptionalSl
     protected void setupUpgrades() {
         final IInventory upgrades = this.getUpgradeable().getInventoryByName("upgrades");
         if (this.availableUpgrades() > 0) {
-            this.addSlotToContainer((new SlotRestrictedInput(
+            this.addSlotToContainer(
+                    (new SlotRestrictedInput(
                             SlotRestrictedInput.PlacableItemType.UPGRADES,
                             upgrades,
                             0,
                             187,
                             8,
-                            this.getInventoryPlayer()))
-                    .setNotDraggable());
+                            this.getInventoryPlayer())).setNotDraggable());
         }
         if (this.availableUpgrades() > 1) {
-            this.addSlotToContainer((new SlotRestrictedInput(
+            this.addSlotToContainer(
+                    (new SlotRestrictedInput(
                             SlotRestrictedInput.PlacableItemType.UPGRADES,
                             upgrades,
                             1,
                             187,
                             8 + 18,
-                            this.getInventoryPlayer()))
-                    .setNotDraggable());
+                            this.getInventoryPlayer())).setNotDraggable());
         }
         if (this.availableUpgrades() > 2) {
-            this.addSlotToContainer((new SlotRestrictedInput(
+            this.addSlotToContainer(
+                    (new SlotRestrictedInput(
                             SlotRestrictedInput.PlacableItemType.UPGRADES,
                             upgrades,
                             2,
                             187,
                             8 + 18 * 2,
-                            this.getInventoryPlayer()))
-                    .setNotDraggable());
+                            this.getInventoryPlayer())).setNotDraggable());
         }
         if (this.availableUpgrades() > 3) {
-            this.addSlotToContainer((new SlotRestrictedInput(
+            this.addSlotToContainer(
+                    (new SlotRestrictedInput(
                             SlotRestrictedInput.PlacableItemType.UPGRADES,
                             upgrades,
                             3,
                             187,
                             8 + 18 * 3,
-                            this.getInventoryPlayer()))
-                    .setNotDraggable());
+                            this.getInventoryPlayer())).setNotDraggable());
         }
     }
 

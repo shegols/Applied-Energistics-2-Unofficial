@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.sync.packets;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.client.ClientHelper;
 import appeng.client.render.effects.EnergyFx;
@@ -28,14 +29,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class PacketTransitionEffect extends AppEngPacket {
 
@@ -55,8 +48,8 @@ public class PacketTransitionEffect extends AppEngPacket {
     }
 
     // api
-    public PacketTransitionEffect(
-            final double x, final double y, final double z, final ForgeDirection dir, final boolean wasBlock) {
+    public PacketTransitionEffect(final double x, final double y, final double z, final ForgeDirection dir,
+            final boolean wasBlock) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -84,18 +77,12 @@ public class PacketTransitionEffect extends AppEngPacket {
             if (CommonHelper.proxy.shouldAddParticles(Platform.getRandom())) {
                 final EnergyFx fx = new EnergyFx(
                         world,
-                        this.x
-                                + (this.mode
-                                        ? (Platform.getRandomInt() % 100) * 0.01
-                                        : (Platform.getRandomInt() % 100) * 0.005 - 0.25),
-                        this.y
-                                + (this.mode
-                                        ? (Platform.getRandomInt() % 100) * 0.01
-                                        : (Platform.getRandomInt() % 100) * 0.005 - 0.25),
-                        this.z
-                                + (this.mode
-                                        ? (Platform.getRandomInt() % 100) * 0.01
-                                        : (Platform.getRandomInt() % 100) * 0.005 - 0.25),
+                        this.x + (this.mode ? (Platform.getRandomInt() % 100) * 0.01
+                                : (Platform.getRandomInt() % 100) * 0.005 - 0.25),
+                        this.y + (this.mode ? (Platform.getRandomInt() % 100) * 0.01
+                                : (Platform.getRandomInt() % 100) * 0.005 - 0.25),
+                        this.z + (this.mode ? (Platform.getRandomInt() % 100) * 0.01
+                                : (Platform.getRandomInt() % 100) * 0.005 - 0.25),
                         Items.diamond);
 
                 if (!this.mode) {
@@ -113,9 +100,8 @@ public class PacketTransitionEffect extends AppEngPacket {
         if (this.mode) {
             final Block block = world.getBlock((int) this.x, (int) this.y, (int) this.z);
 
-            Minecraft.getMinecraft()
-                    .getSoundHandler()
-                    .playSound(new PositionedSoundRecord(
+            Minecraft.getMinecraft().getSoundHandler().playSound(
+                    new PositionedSoundRecord(
                             new ResourceLocation(block.stepSound.getBreakSound()),
                             (block.stepSound.getVolume() + 1.0F) / 2.0F,
                             block.stepSound.getPitch() * 0.8F,

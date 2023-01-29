@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
+
+import java.util.EnumSet;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.util.AEColor;
 import appeng.block.networking.BlockWireless;
@@ -27,14 +29,6 @@ import appeng.client.texture.ExtraBlockTextures;
 import appeng.client.texture.OffsetIcon;
 import appeng.tile.networking.TileWireless;
 import appeng.util.Platform;
-import java.util.EnumSet;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class RenderBlockWireless extends BaseBlockRender<BlockWireless, TileWireless> {
 
@@ -50,12 +44,8 @@ public class RenderBlockWireless extends BaseBlockRender<BlockWireless, TileWire
     }
 
     @Override
-    public void renderInventory(
-            final BlockWireless blk,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockWireless blk, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         this.blk = blk;
         this.centerX = 0;
         this.centerY = 0;
@@ -70,9 +60,23 @@ public class RenderBlockWireless extends BaseBlockRender<BlockWireless, TileWire
 
         IIcon r = CableBusTextures.PartMonitorSidesStatus.getIcon();
         ri.setTemporaryRenderIcons(
-                r, r, CableBusTextures.PartMonitorSides.getIcon(), CableBusTextures.PartMonitorSides.getIcon(), r, r);
+                r,
+                r,
+                CableBusTextures.PartMonitorSides.getIcon(),
+                CableBusTextures.PartMonitorSides.getIcon(),
+                r,
+                r);
         this.renderBlockBounds(
-                renderer, 5, 5, 0, 11, 11, 1, ForgeDirection.EAST, ForgeDirection.UP, ForgeDirection.SOUTH);
+                renderer,
+                5,
+                5,
+                0,
+                11,
+                11,
+                1,
+                ForgeDirection.EAST,
+                ForgeDirection.UP,
+                ForgeDirection.SOUTH);
         this.renderInvBlock(EnumSet.allOf(ForgeDirection.class), blk, is, tess, 0xffffff, renderer);
 
         r = CableBusTextures.PartWirelessSides.getIcon();
@@ -84,7 +88,16 @@ public class RenderBlockWireless extends BaseBlockRender<BlockWireless, TileWire
                 r,
                 r);
         this.renderBlockBounds(
-                renderer, 5, 5, 1, 11, 11, 2, ForgeDirection.EAST, ForgeDirection.UP, ForgeDirection.SOUTH);
+                renderer,
+                5,
+                5,
+                1,
+                11,
+                11,
+                2,
+                ForgeDirection.EAST,
+                ForgeDirection.UP,
+                ForgeDirection.SOUTH);
         this.renderInvBlock(EnumSet.allOf(ForgeDirection.class), blk, is, tess, 0xffffff, renderer);
 
         tess.startDrawingQuads();
@@ -101,8 +114,8 @@ public class RenderBlockWireless extends BaseBlockRender<BlockWireless, TileWire
                 r,
                 r);
 
-        final ForgeDirection[] sides = {ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.UP, ForgeDirection.DOWN
-        };
+        final ForgeDirection[] sides = { ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.UP,
+                ForgeDirection.DOWN };
 
         int s = 1;
 
@@ -140,13 +153,8 @@ public class RenderBlockWireless extends BaseBlockRender<BlockWireless, TileWire
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockWireless blk,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer) {
+    public boolean renderInWorld(final BlockWireless blk, final IBlockAccess world, final int x, final int y,
+            final int z, final RenderBlocks renderer) {
         final TileWireless tw = blk.getTileEntity(world, x, y, z);
         this.blk = blk;
 
@@ -201,9 +209,8 @@ public class RenderBlockWireless extends BaseBlockRender<BlockWireless, TileWire
                     r,
                     r);
 
-            final ForgeDirection[] sides = {
-                ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.UP, ForgeDirection.DOWN
-            };
+            final ForgeDirection[] sides = { ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.UP,
+                    ForgeDirection.DOWN };
 
             int s = 1;
 
@@ -282,8 +289,8 @@ public class RenderBlockWireless extends BaseBlockRender<BlockWireless, TileWire
         return true;
     }
 
-    private void renderTorchAtAngle(
-            final RenderBlocks renderer, final ForgeDirection x, final ForgeDirection y, final ForgeDirection z) {
+    private void renderTorchAtAngle(final RenderBlocks renderer, final ForgeDirection x, final ForgeDirection y,
+            final ForgeDirection z) {
         final IIcon r = (this.hasChan ? CableBusTextures.BlockWirelessOn.getIcon() : this.blk.getIcon(0, 0));
         final IIcon sides = new OffsetIcon(r, 0.0f, -2.0f);
 

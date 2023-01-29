@@ -1,33 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.debug;
 
-import appeng.api.util.WorldCoord;
-import appeng.client.texture.MissingIcon;
-import appeng.core.AELog;
-import appeng.core.features.AEFeature;
-import appeng.items.AEBaseItem;
-import appeng.util.Platform;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,6 +22,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+
+import appeng.api.util.WorldCoord;
+import appeng.client.texture.MissingIcon;
+import appeng.core.AELog;
+import appeng.core.features.AEFeature;
+import appeng.items.AEBaseItem;
+import appeng.util.Platform;
 
 public class ToolEraser extends AEBaseItem {
 
@@ -50,17 +44,8 @@ public class ToolEraser extends AEBaseItem {
     }
 
     @Override
-    public boolean onItemUseFirst(
-            final ItemStack stack,
-            final EntityPlayer player,
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onItemUseFirst(final ItemStack stack, final EntityPlayer player, final World world, final int x,
+            final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ) {
         if (ForgeEventFactory.onItemUseStart(player, stack, 1) <= 0) return true;
 
         if (Platform.isClient()) {
@@ -70,10 +55,10 @@ public class ToolEraser extends AEBaseItem {
         final Block blk = world.getBlock(x, y, z);
         final int meta = world.getBlockMetadata(x, y, z);
 
-        if (blk != null
-                && ForgeEventFactory.onPlayerInteract(
-                                player, PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, x, y, z, side, world)
-                        .isCanceled()) return true;
+        if (blk != null && ForgeEventFactory
+                .onPlayerInteract(player, PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, x, y, z, side, world)
+                .isCanceled())
+            return true;
 
         List<WorldCoord> next = new LinkedList<WorldCoord>();
         next.add(new WorldCoord(x, y, z));
@@ -106,8 +91,8 @@ public class ToolEraser extends AEBaseItem {
         return true;
     }
 
-    private void wrappedAdd(
-            final World world, final int i, final int y, final int z, final Collection<WorldCoord> next) {
+    private void wrappedAdd(final World world, final int i, final int y, final int z,
+            final Collection<WorldCoord> next) {
         next.add(new WorldCoord(i, y, z));
     }
 }

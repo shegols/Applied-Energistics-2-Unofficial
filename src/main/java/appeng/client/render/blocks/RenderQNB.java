@@ -1,34 +1,18 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.IBlocks;
-import appeng.api.definitions.IDefinitions;
-import appeng.api.definitions.IParts;
-import appeng.api.util.AEColor;
-import appeng.block.qnb.BlockQuantumBase;
-import appeng.client.render.BaseBlockRender;
-import appeng.client.texture.ExtraBlockTextures;
-import appeng.tile.qnb.TileQuantumBridge;
 import java.util.Collection;
 import java.util.EnumSet;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -39,7 +23,18 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.api.AEApi;
+import appeng.api.definitions.IBlocks;
+import appeng.api.definitions.IDefinitions;
+import appeng.api.definitions.IParts;
+import appeng.api.util.AEColor;
+import appeng.block.qnb.BlockQuantumBase;
+import appeng.client.render.BaseBlockRender;
+import appeng.client.texture.ExtraBlockTextures;
+import appeng.tile.qnb.TileQuantumBridge;
+
 public class RenderQNB extends BaseBlockRender<BlockQuantumBase, TileQuantumBridge> {
+
     private static final float DEFAULT_RENDER_MIN = 2.0f / 16.0f;
     private static final float DEFAULT_RENDER_MAX = 14.0f / 16.0f;
 
@@ -50,12 +45,8 @@ public class RenderQNB extends BaseBlockRender<BlockQuantumBase, TileQuantumBrid
     private static final float CENTER_POWERED_RENDER_MAX = 16.01f / 16.0f;
 
     @Override
-    public void renderInventory(
-            final BlockQuantumBase block,
-            final ItemStack item,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockQuantumBase block, final ItemStack item, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         renderer.setRenderBounds(
                 DEFAULT_RENDER_MIN,
                 DEFAULT_RENDER_MIN,
@@ -67,13 +58,8 @@ public class RenderQNB extends BaseBlockRender<BlockQuantumBase, TileQuantumBrid
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockQuantumBase block,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer) {
+    public boolean renderInWorld(final BlockQuantumBase block, final IBlockAccess world, final int x, final int y,
+            final int z, final RenderBlocks renderer) {
         final TileQuantumBridge tqb = block.getTileEntity(world, x, y, z);
 
         if (tqb == null) {
@@ -174,20 +160,41 @@ public class RenderQNB extends BaseBlockRender<BlockQuantumBase, TileQuantumBrid
                         Tessellator.instance.setBrightness(bn << 20 | bn << 4);
                         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                             this.renderFace(
-                                    x, y, z, block, ExtraBlockTextures.BlockQRingCornerLight.getIcon(), renderer, side);
+                                    x,
+                                    y,
+                                    z,
+                                    block,
+                                    ExtraBlockTextures.BlockQRingCornerLight.getIcon(),
+                                    renderer,
+                                    side);
                         }
                     }
                 } else {
                     renderer.setRenderBounds(
-                            0, DEFAULT_RENDER_MIN, DEFAULT_RENDER_MIN, 1, DEFAULT_RENDER_MAX, DEFAULT_RENDER_MAX);
+                            0,
+                            DEFAULT_RENDER_MIN,
+                            DEFAULT_RENDER_MIN,
+                            1,
+                            DEFAULT_RENDER_MAX,
+                            DEFAULT_RENDER_MAX);
                     renderer.renderStandardBlock(block, x, y, z);
 
                     renderer.setRenderBounds(
-                            DEFAULT_RENDER_MIN, 0, DEFAULT_RENDER_MIN, DEFAULT_RENDER_MAX, 1, DEFAULT_RENDER_MAX);
+                            DEFAULT_RENDER_MIN,
+                            0,
+                            DEFAULT_RENDER_MIN,
+                            DEFAULT_RENDER_MAX,
+                            1,
+                            DEFAULT_RENDER_MAX);
                     renderer.renderStandardBlock(block, x, y, z);
 
                     renderer.setRenderBounds(
-                            DEFAULT_RENDER_MIN, DEFAULT_RENDER_MIN, 0, DEFAULT_RENDER_MAX, DEFAULT_RENDER_MAX, 1);
+                            DEFAULT_RENDER_MIN,
+                            DEFAULT_RENDER_MIN,
+                            0,
+                            DEFAULT_RENDER_MAX,
+                            DEFAULT_RENDER_MAX,
+                            1);
                     renderer.renderStandardBlock(block, x, y, z);
 
                     if (tqb.isPowered()) {
@@ -204,7 +211,13 @@ public class RenderQNB extends BaseBlockRender<BlockQuantumBase, TileQuantumBrid
                         Tessellator.instance.setBrightness(bn << 20 | bn << 4);
                         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                             this.renderFace(
-                                    x, y, z, block, ExtraBlockTextures.BlockQRingEdgeLight.getIcon(), renderer, side);
+                                    x,
+                                    y,
+                                    z,
+                                    block,
+                                    ExtraBlockTextures.BlockQRingEdgeLight.getIcon(),
+                                    renderer,
+                                    side);
                         }
                     }
                 }
@@ -215,16 +228,8 @@ public class RenderQNB extends BaseBlockRender<BlockQuantumBase, TileQuantumBrid
         return true;
     }
 
-    private void renderCableAt(
-            final double thickness,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final BlockQuantumBase block,
-            final RenderBlocks renderer,
-            final IIcon texture,
-            final double pull,
+    private void renderCableAt(final double thickness, final IBlockAccess world, final int x, final int y, final int z,
+            final BlockQuantumBase block, final RenderBlocks renderer, final IIcon texture, final double pull,
             final Collection<ForgeDirection> connections) {
         block.getRendererInstance().setTemporaryRenderIcon(texture);
 

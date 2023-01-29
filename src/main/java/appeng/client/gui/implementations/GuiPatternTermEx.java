@@ -1,5 +1,13 @@
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 import appeng.api.config.*;
 import appeng.api.storage.ITerminalHost;
 import appeng.client.gui.widgets.GuiImgButton;
@@ -11,13 +19,9 @@ import appeng.core.localization.GuiColors;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
-import java.io.IOException;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 public class GuiPatternTermEx extends GuiMEMonitorable {
+
     private static final String SUBSITUTION_DISABLE = "0";
     private static final String SUBSITUTION_ENABLE = "1";
 
@@ -48,25 +52,30 @@ public class GuiPatternTermEx extends GuiMEMonitorable {
 
         try {
             if (this.encodeBtn == btn) {
-                NetworkHandler.instance.sendToServer(new PacketValueConfig(
-                        "PatternTerminalEx.Encode",
-                        isCtrlKeyDown() ? (isShiftKeyDown() ? "6" : "1") : (isShiftKeyDown() ? "2" : "1")));
+                NetworkHandler.instance.sendToServer(
+                        new PacketValueConfig(
+                                "PatternTerminalEx.Encode",
+                                isCtrlKeyDown() ? (isShiftKeyDown() ? "6" : "1") : (isShiftKeyDown() ? "2" : "1")));
             } else if (this.clearBtn == btn) {
                 NetworkHandler.instance.sendToServer(new PacketValueConfig("PatternTerminalEx.Clear", "1"));
             } else if (this.invertBtn == btn) {
                 NetworkHandler.instance.sendToServer(
                         new PacketValueConfig("PatternTerminalEx.Invert", container.inverted ? "0" : "1"));
             } else if (this.substitutionsEnabledBtn == btn || this.substitutionsDisabledBtn == btn) {
-                NetworkHandler.instance.sendToServer(new PacketValueConfig(
-                        "PatternTerminalEx.Substitute",
-                        this.substitutionsEnabledBtn == btn ? SUBSITUTION_DISABLE : SUBSITUTION_ENABLE));
+                NetworkHandler.instance.sendToServer(
+                        new PacketValueConfig(
+                                "PatternTerminalEx.Substitute",
+                                this.substitutionsEnabledBtn == btn ? SUBSITUTION_DISABLE : SUBSITUTION_ENABLE));
             } else if (this.beSubstitutionsEnabledBtn == btn || this.beSubstitutionsDisabledBtn == btn) {
-                NetworkHandler.instance.sendToServer(new PacketValueConfig(
-                        "PatternTerminalEx.BeSubstitute",
-                        this.beSubstitutionsEnabledBtn == btn ? SUBSITUTION_DISABLE : SUBSITUTION_ENABLE));
+                NetworkHandler.instance.sendToServer(
+                        new PacketValueConfig(
+                                "PatternTerminalEx.BeSubstitute",
+                                this.beSubstitutionsEnabledBtn == btn ? SUBSITUTION_DISABLE : SUBSITUTION_ENABLE));
             } else if (doubleBtn == btn) {
-                NetworkHandler.instance.sendToServer(new PacketValueConfig(
-                        "PatternTerminalEx.Double", Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? "1" : "0"));
+                NetworkHandler.instance.sendToServer(
+                        new PacketValueConfig(
+                                "PatternTerminalEx.Double",
+                                Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? "1" : "0"));
             }
         } catch (final IOException e) {
             // TODO Auto-generated catch block
@@ -79,32 +88,50 @@ public class GuiPatternTermEx extends GuiMEMonitorable {
         super.initGui();
 
         this.substitutionsEnabledBtn = new GuiImgButton(
-                this.guiLeft + 97, this.guiTop + this.ySize - 163, Settings.ACTIONS, ItemSubstitution.ENABLED);
+                this.guiLeft + 97,
+                this.guiTop + this.ySize - 163,
+                Settings.ACTIONS,
+                ItemSubstitution.ENABLED);
         this.substitutionsEnabledBtn.setHalfSize(true);
         this.buttonList.add(this.substitutionsEnabledBtn);
 
         this.substitutionsDisabledBtn = new GuiImgButton(
-                this.guiLeft + 97, this.guiTop + this.ySize - 163, Settings.ACTIONS, ItemSubstitution.DISABLED);
+                this.guiLeft + 97,
+                this.guiTop + this.ySize - 163,
+                Settings.ACTIONS,
+                ItemSubstitution.DISABLED);
         this.substitutionsDisabledBtn.setHalfSize(true);
         this.buttonList.add(this.substitutionsDisabledBtn);
 
         this.beSubstitutionsEnabledBtn = new GuiImgButton(
-                this.guiLeft + 97, this.guiTop + this.ySize - 143, Settings.ACTIONS, PatternBeSubstitution.ENABLED);
+                this.guiLeft + 97,
+                this.guiTop + this.ySize - 143,
+                Settings.ACTIONS,
+                PatternBeSubstitution.ENABLED);
         this.beSubstitutionsEnabledBtn.setHalfSize(true);
         this.buttonList.add(this.beSubstitutionsEnabledBtn);
 
         this.beSubstitutionsDisabledBtn = new GuiImgButton(
-                this.guiLeft + 97, this.guiTop + this.ySize - 143, Settings.ACTIONS, PatternBeSubstitution.DISABLED);
+                this.guiLeft + 97,
+                this.guiTop + this.ySize - 143,
+                Settings.ACTIONS,
+                PatternBeSubstitution.DISABLED);
         this.beSubstitutionsDisabledBtn.setHalfSize(true);
         this.buttonList.add(this.beSubstitutionsDisabledBtn);
 
         this.clearBtn = new GuiImgButton(
-                this.guiLeft + 87, this.guiTop + this.ySize - 163, Settings.ACTIONS, ActionItems.CLOSE);
+                this.guiLeft + 87,
+                this.guiTop + this.ySize - 163,
+                Settings.ACTIONS,
+                ActionItems.CLOSE);
         this.clearBtn.setHalfSize(true);
         this.buttonList.add(this.clearBtn);
 
         this.encodeBtn = new GuiImgButton(
-                this.guiLeft + 147, this.guiTop + this.ySize - 142, Settings.ACTIONS, ActionItems.ENCODE);
+                this.guiLeft + 147,
+                this.guiTop + this.ySize - 142,
+                Settings.ACTIONS,
+                ActionItems.ENCODE);
         this.buttonList.add(this.encodeBtn);
 
         invertBtn = new GuiImgButton(
@@ -116,7 +143,10 @@ public class GuiPatternTermEx extends GuiMEMonitorable {
         this.buttonList.add(this.invertBtn);
 
         this.doubleBtn = new GuiImgButton(
-                this.guiLeft + 97, this.guiTop + this.ySize - 153, Settings.ACTIONS, ActionItems.DOUBLE);
+                this.guiLeft + 97,
+                this.guiTop + this.ySize - 153,
+                Settings.ACTIONS,
+                ActionItems.DOUBLE);
         this.doubleBtn.setHalfSize(true);
         this.buttonList.add(this.doubleBtn);
 
@@ -223,8 +253,10 @@ public class GuiPatternTermEx extends GuiMEMonitorable {
     private void changeActivePage() {
 
         try {
-            NetworkHandler.instance.sendToServer(new PacketValueConfig(
-                    "PatternTerminalEx.ActivePage", String.valueOf(this.processingScrollBar.getCurrentScroll())));
+            NetworkHandler.instance.sendToServer(
+                    new PacketValueConfig(
+                            "PatternTerminalEx.ActivePage",
+                            String.valueOf(this.processingScrollBar.getCurrentScroll())));
         } catch (final IOException e) {
             e.printStackTrace();
         }

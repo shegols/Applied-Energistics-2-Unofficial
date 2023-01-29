@@ -1,29 +1,15 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
 
-import appeng.block.misc.BlockSkyCompass;
-import appeng.client.render.BaseBlockRender;
-import appeng.client.render.model.ModelCompass;
-import appeng.hooks.CompassManager;
-import appeng.hooks.CompassResult;
-import appeng.tile.misc.TileSkyCompass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -34,12 +20,22 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import appeng.block.misc.BlockSkyCompass;
+import appeng.client.render.BaseBlockRender;
+import appeng.client.render.model.ModelCompass;
+import appeng.hooks.CompassManager;
+import appeng.hooks.CompassResult;
+import appeng.tile.misc.TileSkyCompass;
+
 public class RenderBlockSkyCompass extends BaseBlockRender<BlockSkyCompass, TileSkyCompass> {
-    private static final ResourceLocation TEXTURE_SKY_COMPASS =
-            new ResourceLocation("appliedenergistics2", "textures/models/compass.png");
+
+    private static final ResourceLocation TEXTURE_SKY_COMPASS = new ResourceLocation(
+            "appliedenergistics2",
+            "textures/models/compass.png");
 
     private final ModelCompass model = new ModelCompass();
 
@@ -48,12 +44,8 @@ public class RenderBlockSkyCompass extends BaseBlockRender<BlockSkyCompass, Tile
     }
 
     @Override
-    public void renderInventory(
-            final BlockSkyCompass blk,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockSkyCompass blk, final ItemStack is, final RenderBlocks renderer,
+            ItemRenderType type, final Object[] obj) {
         if (type == ItemRenderType.INVENTORY) {
             boolean isGood = false;
             final IInventory inv = Minecraft.getMinecraft().thePlayer.inventory;
@@ -96,8 +88,7 @@ public class RenderBlockSkyCompass extends BaseBlockRender<BlockSkyCompass, Tile
 
         long now = System.currentTimeMillis();
 
-        if (type == ItemRenderType.EQUIPPED_FIRST_PERSON
-                || type == ItemRenderType.INVENTORY
+        if (type == ItemRenderType.EQUIPPED_FIRST_PERSON || type == ItemRenderType.INVENTORY
                 || type == ItemRenderType.EQUIPPED) {
             EntityPlayer p = Minecraft.getMinecraft().thePlayer;
             float rYaw = p.rotationYaw;
@@ -149,26 +140,14 @@ public class RenderBlockSkyCompass extends BaseBlockRender<BlockSkyCompass, Tile
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockSkyCompass blk,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer) {
+    public boolean renderInWorld(final BlockSkyCompass blk, final IBlockAccess world, final int x, final int y,
+            final int z, final RenderBlocks renderer) {
         return true;
     }
 
     @Override
-    public void renderTile(
-            final BlockSkyCompass block,
-            final TileSkyCompass skyCompass,
-            final Tessellator tess,
-            final double x,
-            final double y,
-            final double z,
-            final float partialTick,
-            final RenderBlocks renderer) {
+    public void renderTile(final BlockSkyCompass block, final TileSkyCompass skyCompass, final Tessellator tess,
+            final double x, final double y, final double z, final float partialTick, final RenderBlocks renderer) {
         if (skyCompass == null) {
             return;
         }
@@ -192,8 +171,8 @@ public class RenderBlockSkyCompass extends BaseBlockRender<BlockSkyCompass, Tile
         CompassResult cr = null;
 
         if (skyCompass.getForward() == ForgeDirection.UP || skyCompass.getForward() == ForgeDirection.DOWN) {
-            cr = CompassManager.INSTANCE.getCompassDirection(
-                    0, skyCompass.xCoord, skyCompass.yCoord, skyCompass.zCoord);
+            cr = CompassManager.INSTANCE
+                    .getCompassDirection(0, skyCompass.xCoord, skyCompass.yCoord, skyCompass.zCoord);
         } else {
             cr = new CompassResult(false, true, 0);
         }
@@ -203,8 +182,9 @@ public class RenderBlockSkyCompass extends BaseBlockRender<BlockSkyCompass, Tile
                 now %= 100000;
                 this.model.renderAll((now / 50000.0f) * (float) Math.PI * 500.0f);
             } else {
-                this.model.renderAll((float)
-                        (skyCompass.getForward() == ForgeDirection.DOWN ? this.flipidiy(cr.getRad()) : cr.getRad()));
+                this.model.renderAll(
+                        (float) (skyCompass.getForward() == ForgeDirection.DOWN ? this.flipidiy(cr.getRad())
+                                : cr.getRad()));
             }
         } else {
             now %= 1000000;

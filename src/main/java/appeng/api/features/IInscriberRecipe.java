@@ -1,15 +1,17 @@
 package appeng.api.features;
 
-import com.google.common.base.Optional;
 import java.util.List;
+
 import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
+
+import com.google.common.base.Optional;
 
 /**
  * Registration Records for {@link IInscriberRegistry}
  * <p>
- * You have to pay attention though, that recipes are not mirrored,
- * where the top and bottom slots are switching places.
+ * You have to pay attention though, that recipes are not mirrored, where the top and bottom slots are switching places.
  * <p>
  * This is applied on runtime.
  *
@@ -18,6 +20,7 @@ import net.minecraft.item.ItemStack;
  * @since rv2
  */
 public interface IInscriberRecipe {
+
     /**
      * the current inputs
      *

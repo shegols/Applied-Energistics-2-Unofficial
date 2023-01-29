@@ -1,22 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IDefinitions;
@@ -41,12 +38,9 @@ import appeng.parts.reporting.PartPatternTerminalEx;
 import appeng.parts.reporting.PartTerminal;
 import appeng.util.calculators.ArithHelper;
 import appeng.util.calculators.Calculator;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 
 public class GuiCraftAmount extends AEBaseGui {
+
     private GuiTextField amountToCraft;
     private GuiTabButton originalGuiBtn;
 
@@ -97,8 +91,7 @@ public class GuiCraftAmount extends AEBaseGui {
         final IParts parts = definitions.parts();
 
         if (target instanceof WirelessTerminalGuiObject) {
-            for (final ItemStack wirelessTerminalStack :
-                    definitions.items().wirelessTerminal().maybeStack(1).asSet()) {
+            for (final ItemStack wirelessTerminalStack : definitions.items().wirelessTerminal().maybeStack(1).asSet()) {
                 myIcon = wirelessTerminalStack;
             }
 
@@ -136,11 +129,19 @@ public class GuiCraftAmount extends AEBaseGui {
         if (this.originalGui != null && myIcon != null) {
             this.buttonList.add(
                     this.originalGuiBtn = new GuiTabButton(
-                            this.guiLeft + 154, this.guiTop, myIcon, myIcon.getDisplayName(), itemRender));
+                            this.guiLeft + 154,
+                            this.guiTop,
+                            myIcon,
+                            myIcon.getDisplayName(),
+                            itemRender));
         }
 
         this.amountToCraft = new GuiTextField(
-                this.fontRendererObj, this.guiLeft + 62, this.guiTop + 57, 59, this.fontRendererObj.FONT_HEIGHT);
+                this.fontRendererObj,
+                this.guiLeft + 62,
+                this.guiTop + 57,
+                59,
+                this.fontRendererObj.FONT_HEIGHT);
         this.amountToCraft.setEnableBackgroundDrawing(false);
         this.amountToCraft.setMaxStringLength(16);
         this.amountToCraft.setTextColor(GuiColors.CraftAmountToCraft.getColor());
@@ -152,8 +153,8 @@ public class GuiCraftAmount extends AEBaseGui {
 
     @Override
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
-        this.fontRendererObj.drawString(
-                GuiText.SelectAmount.getLocal(), 8, 6, GuiColors.CraftAmountSelectAmount.getColor());
+        this.fontRendererObj
+                .drawString(GuiText.SelectAmount.getLocal(), 8, 6, GuiColors.CraftAmountSelectAmount.getColor());
     }
 
     @Override
@@ -222,8 +223,9 @@ public class GuiCraftAmount extends AEBaseGui {
         }
 
         final boolean isPlus = btn == this.plus1 || btn == this.plus10 || btn == this.plus100 || btn == this.plus1000;
-        final boolean isMinus =
-                btn == this.minus1 || btn == this.minus10 || btn == this.minus100 || btn == this.minus1000;
+        final boolean isMinus = btn == this.minus1 || btn == this.minus10
+                || btn == this.minus100
+                || btn == this.minus1000;
 
         if (isPlus || isMinus) {
             this.addQty(this.getQty(btn));

@@ -1,22 +1,26 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.config.Settings;
 import appeng.api.config.Upgrades;
@@ -42,20 +46,12 @@ import appeng.util.inv.AdaptorIInventory;
 import appeng.util.inv.AdaptorPlayerHand;
 import appeng.util.inv.ItemSlot;
 import appeng.util.inv.WrapperInvSlot;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public final class ContainerInterfaceTerminal extends AEBaseContainer {
+
     /**
      * this stuff is all server side..
      */
@@ -130,8 +126,8 @@ public final class ContainerInterfaceTerminal extends AEBaseContainer {
 
         if (!this.data.hasNoTags()) {
             try {
-                NetworkHandler.instance.sendTo(
-                        new PacketCompressedNBT(this.data), (EntityPlayerMP) this.getPlayerInv().player);
+                NetworkHandler.instance
+                        .sendTo(new PacketCompressedNBT(this.data), (EntityPlayerMP) this.getPlayerInv().player);
             } catch (final IOException e) {
                 // :P
             }
@@ -162,7 +158,8 @@ public final class ContainerInterfaceTerminal extends AEBaseContainer {
                     if (hasItemInHand) {
                         for (int s = 0; s < interfaceHandler.getSizeInventory(); s++) {
                             if (Platform.isSameItemPrecise(
-                                    interfaceHandler.getStackInSlot(s), player.inventory.getItemStack())) {
+                                    interfaceHandler.getStackInSlot(s),
+                                    player.inventory.getItemStack())) {
                                 canInsert = false;
                                 break;
                             }
@@ -173,8 +170,7 @@ public final class ContainerInterfaceTerminal extends AEBaseContainer {
                                 player.inventory.setItemStack(interfaceSlot.addItems(player.inventory.getItemStack()));
                             } else {
                                 inSlot = inSlot.copy();
-                                final ItemStack inHand =
-                                        player.inventory.getItemStack().copy();
+                                final ItemStack inHand = player.inventory.getItemStack().copy();
 
                                 theSlot.setInventorySlotContents(0, null);
                                 player.inventory.setItemStack(null);
@@ -199,7 +195,8 @@ public final class ContainerInterfaceTerminal extends AEBaseContainer {
                     if (hasItemInHand) {
                         for (int s = 0; s < interfaceHandler.getSizeInventory(); s++) {
                             if (Platform.isSameItemPrecise(
-                                    interfaceHandler.getStackInSlot(s), player.inventory.getItemStack())) {
+                                    interfaceHandler.getStackInSlot(s),
+                                    player.inventory.getItemStack())) {
                                 canInsert = false;
                                 break;
                             }
@@ -297,8 +294,7 @@ public final class ContainerInterfaceTerminal extends AEBaseContainer {
                 for (final IGridNode gn : this.grid.getMachines(PartP2PInterface.class)) {
                     final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                     final DualityInterface dual = ih.getInterfaceDuality();
-                    if (gn.isActive()
-                            && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES
+                    if (gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES
                             && !((PartP2PInterface) ih).isOutput()) {
                         for (int i = 0; i <= dual.getInstalledUpgrades(Upgrades.PATTERN_CAPACITY); ++i) {
                             this.diList.put(ih, new InvTracker(dual, dual.getPatterns(), dual.getTermName(), i * 9, 9));
@@ -372,12 +368,8 @@ public final class ContainerInterfaceTerminal extends AEBaseContainer {
         private final int Z;
         private final int dim;
 
-        public InvTracker(
-                final DualityInterface dual,
-                final IInventory patterns,
-                final String unlocalizedName,
-                int offset,
-                int size) {
+        public InvTracker(final DualityInterface dual, final IInventory patterns, final String unlocalizedName,
+                int offset, int size) {
             this.server = patterns;
             this.client = new AppEngInternalInventory(null, size);
             this.unlocalizedName = unlocalizedName;

@@ -1,22 +1,26 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Mouse;
 
 import akka.japi.Pair;
 import appeng.api.config.*;
@@ -38,15 +42,6 @@ import codechicken.nei.VisiblityData;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
 import cpw.mods.fml.common.Optional;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Mouse;
 
 @Optional.Interface(modid = "NotEnoughItems", iface = "codechicken.nei.api.INEIGuiHandler")
 public class GuiUpgradeable extends AEBaseGui implements INEIGuiHandler {
@@ -85,15 +80,27 @@ public class GuiUpgradeable extends AEBaseGui implements INEIGuiHandler {
 
     @SuppressWarnings("unchecked")
     protected void addButtons() {
-        this.redstoneMode =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
-        this.fuzzyMode =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
+        this.redstoneMode = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 8,
+                Settings.REDSTONE_CONTROLLED,
+                RedstoneMode.IGNORE);
+        this.fuzzyMode = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 28,
+                Settings.FUZZY_MODE,
+                FuzzyMode.IGNORE_ALL);
         this.craftMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.CRAFT_ONLY, YesNo.NO);
-        this.schedulingMode =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.SCHEDULING_MODE, SchedulingMode.DEFAULT);
-        this.oreFilter =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.ACTIONS, ActionItems.ORE_FILTER);
+        this.schedulingMode = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 68,
+                Settings.SCHEDULING_MODE,
+                SchedulingMode.DEFAULT);
+        this.oreFilter = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 28,
+                Settings.ACTIONS,
+                ActionItems.ORE_FILTER);
 
         this.buttonList.add(this.craftMode);
         this.buttonList.add(this.redstoneMode);
@@ -105,9 +112,15 @@ public class GuiUpgradeable extends AEBaseGui implements INEIGuiHandler {
     @Override
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         this.fontRendererObj.drawString(
-                this.getGuiDisplayName(this.getName().getLocal()), 8, 6, GuiColors.UpgradableTitle.getColor());
+                this.getGuiDisplayName(this.getName().getLocal()),
+                8,
+                6,
+                GuiColors.UpgradableTitle.getColor());
         this.fontRendererObj.drawString(
-                GuiText.inventory.getLocal(), 8, this.ySize - 96 + 3, GuiColors.UpgradableInventory.getColor());
+                GuiText.inventory.getLocal(),
+                8,
+                this.ySize - 96 + 3,
+                GuiColors.UpgradableInventory.getColor());
 
         if (this.redstoneMode != null) {
             this.redstoneMode.set(this.cvb.getRedStoneMode());
@@ -145,8 +158,9 @@ public class GuiUpgradeable extends AEBaseGui implements INEIGuiHandler {
             this.redstoneMode.setVisibility(this.bc.getInstalledUpgrades(Upgrades.REDSTONE) > 0);
         }
         if (this.fuzzyMode != null) {
-            this.fuzzyMode.setVisibility(this.bc.getInstalledUpgrades(Upgrades.FUZZY) > 0
-                    && this.bc.getInstalledUpgrades(Upgrades.ORE_FILTER) == 0);
+            this.fuzzyMode.setVisibility(
+                    this.bc.getInstalledUpgrades(Upgrades.FUZZY) > 0
+                            && this.bc.getInstalledUpgrades(Upgrades.ORE_FILTER) == 0);
         }
         if (this.craftMode != null) {
             this.craftMode.setVisibility(this.bc.getInstalledUpgrades(Upgrades.CRAFTING) > 0);

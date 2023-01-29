@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.slot;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IDefinitions;
@@ -32,15 +34,6 @@ import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.ICellWorkbenchItem;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.util.Platform;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * @author AlgorithmX2
@@ -55,13 +48,8 @@ public class SlotRestrictedInput extends AppEngSlot {
     private boolean allowEdit = true;
     private int stackLimit = -1;
 
-    public SlotRestrictedInput(
-            final PlacableItemType valid,
-            final IInventory i,
-            final int slotIndex,
-            final int x,
-            final int y,
-            final InventoryPlayer p) {
+    public SlotRestrictedInput(final PlacableItemType valid, final IInventory i, final int slotIndex, final int x,
+            final int y, final InventoryPlayer p) {
         super(i, slotIndex, x, y);
         this.which = valid;
         this.setIIcon(valid.IIcon);
@@ -153,8 +141,7 @@ public class SlotRestrictedInput extends AppEngSlot {
                     return true;
                 }
 
-                for (final ItemStack optional :
-                        AEApi.instance().registries().inscriber().getOptionals()) {
+                for (final ItemStack optional : AEApi.instance().registries().inscriber().getOptionals()) {
                     if (Platform.isSameItemPrecise(optional, i)) {
                         return true;
                     }
@@ -165,8 +152,7 @@ public class SlotRestrictedInput extends AppEngSlot {
             case INSCRIBER_INPUT:
                 return true; /*
                               * for (ItemStack is : Inscribe.inputs) if ( Platform.isSameItemPrecise( is, i ) ) return
-                              * true;
-                              * return false;
+                              * true; return false;
                               */
 
             case METAL_INGOTS:
@@ -242,8 +228,8 @@ public class SlotRestrictedInput extends AppEngSlot {
             return true;
         }
 
-        for (final String name :
-                new String[] {"Copper", "Tin", "Obsidian", "Iron", "Lead", "Bronze", "Brass", "Nickel", "Aluminium"}) {
+        for (final String name : new String[] { "Copper", "Tin", "Obsidian", "Iron", "Lead", "Bronze", "Brass",
+                "Nickel", "Aluminium" }) {
             for (final ItemStack ingot : OreDictionary.getOres("ingot" + name)) {
                 if (Platform.isSameItemPrecise(i, ingot)) {
                     return true;
@@ -263,6 +249,7 @@ public class SlotRestrictedInput extends AppEngSlot {
     }
 
     public enum PlacableItemType {
+
         STORAGE_CELLS(15),
         ORE(16 + 15),
         STORAGE_COMPONENT(3 * 16 + 15),

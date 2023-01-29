@@ -1,34 +1,29 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.widgets;
 
-import appeng.client.texture.ExtraBlockTextures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import appeng.client.texture.ExtraBlockTextures;
+
 public class GuiTabButton extends GuiButton implements ITooltip {
+
     private final RenderItem itemRenderer;
     private final String message;
     private int hideEdge = 0;
@@ -72,8 +67,7 @@ public class GuiTabButton extends GuiButton implements ITooltip {
         if (this.visible) {
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             minecraft.renderEngine.bindTexture(ExtraBlockTextures.GuiTexture("guis/states.png"));
-            this.field_146123_n = x >= this.xPosition
-                    && y >= this.yPosition
+            this.field_146123_n = x >= this.xPosition && y >= this.yPosition
                     && x < this.xPosition + this.width
                     && y < this.yPosition + this.height;
 
@@ -88,7 +82,12 @@ public class GuiTabButton extends GuiButton implements ITooltip {
                 uv_x = this.myIcon - uv_y * 16;
 
                 this.drawTexturedModalRect(
-                        offsetX + this.xPosition + 3, this.yPosition + 3, uv_x * 16, uv_y * 16, 16, 16);
+                        offsetX + this.xPosition + 3,
+                        this.yPosition + 3,
+                        uv_x * 16,
+                        uv_y * 16,
+                        16,
+                        16);
             }
 
             this.mouseDragged(minecraft, x, y);

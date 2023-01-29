@@ -1,26 +1,15 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
 
-import appeng.block.grindstone.BlockCrank;
-import appeng.client.render.BaseBlockRender;
-import appeng.tile.grindstone.TileCrank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderHelper;
@@ -30,7 +19,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
+import appeng.block.grindstone.BlockCrank;
+import appeng.client.render.BaseBlockRender;
+import appeng.tile.grindstone.TileCrank;
 
 public class RenderBlockCrank extends BaseBlockRender<BlockCrank, TileCrank> {
 
@@ -39,12 +33,8 @@ public class RenderBlockCrank extends BaseBlockRender<BlockCrank, TileCrank> {
     }
 
     @Override
-    public void renderInventory(
-            final BlockCrank blk,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockCrank blk, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         renderer.renderAllFaces = true;
 
         renderer.setRenderBounds(0.5D - 0.05, 0.5D - 0.5, 0.5D - 0.05, 0.5D + 0.05, 0.5D + 0.3, 0.5D + 0.05);
@@ -57,26 +47,14 @@ public class RenderBlockCrank extends BaseBlockRender<BlockCrank, TileCrank> {
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockCrank imb,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
+    public boolean renderInWorld(final BlockCrank imb, final IBlockAccess world, final int x, final int y, final int z,
             final RenderBlocks renderer) {
         return true;
     }
 
     @Override
-    public void renderTile(
-            final BlockCrank blk,
-            final TileCrank tile,
-            final Tessellator tess,
-            final double x,
-            final double y,
-            final double z,
-            final float f,
-            final RenderBlocks renderBlocks) {
+    public void renderTile(final BlockCrank blk, final TileCrank tile, final Tessellator tess, final double x,
+            final double y, final double z, final float f, final RenderBlocks renderBlocks) {
         if (tile.getUp() == null || tile.getUp() == ForgeDirection.UNKNOWN) {
             return;
         }

@@ -1,17 +1,21 @@
 package appeng.util.prioitylist;
 
-import appeng.api.storage.data.IAEItemStack;
-import appeng.core.AELog;
 import java.util.HashMap;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.StringUtils;
 
+import appeng.api.storage.data.IAEItemStack;
+import appeng.core.AELog;
+
 public class OreFilteredList implements IPartitionList<IAEItemStack> {
+
     private final Predicate<IAEItemStack> filterPredicate;
 
     public OreFilteredList(String filter) {
@@ -49,9 +53,7 @@ public class OreFilteredList implements IPartitionList<IAEItemStack> {
         if (notAWildcard(f)) {
             final Predicate<String> test = Pattern.compile(f).asPredicate();
             matcher = (is) -> is != null
-                    && IntStream.of(OreDictionary.getOreIDs(is))
-                            .mapToObj(OreDictionary::getOreName)
-                            .anyMatch(test);
+                    && IntStream.of(OreDictionary.getOreIDs(is)).mapToObj(OreDictionary::getOreName).anyMatch(test);
         } else if (!f.isEmpty()) {
             String[] filters = f.split("[&|]");
             String lastFilter = null;
@@ -83,6 +85,7 @@ public class OreFilteredList implements IPartitionList<IAEItemStack> {
     }
 
     private static class OreListMatcher implements Predicate<IAEItemStack> {
+
         final HashMap<ItemRef, Boolean> cache = new HashMap<>();
         final Predicate<ItemStack> matcher;
 
@@ -97,8 +100,7 @@ public class OreFilteredList implements IPartitionList<IAEItemStack> {
     }
 
     private static boolean notAWildcard(String f) {
-        return f.contains("\\")
-                || f.contains("^")
+        return f.contains("\\") || f.contains("^")
                 || f.contains("$")
                 || f.contains("+")
                 || f.contains("(")
@@ -108,6 +110,7 @@ public class OreFilteredList implements IPartitionList<IAEItemStack> {
     }
 
     private static class ItemRef {
+
         private final Item ref;
         private final int damage;
         private final int hash;
@@ -132,17 +135,15 @@ public class OreFilteredList implements IPartitionList<IAEItemStack> {
 
         @Override
         public String toString() {
-            return "ItemRef [ref=" + this.ref.getUnlocalizedName() + ", damage=" + this.damage + ", hash=" + this.hash
-                    + ']';
+            return "ItemRef [ref=" + this.ref
+                    .getUnlocalizedName() + ", damage=" + this.damage + ", hash=" + this.hash + ']';
         }
     }
 
     private static Predicate<ItemStack> filterToItemStackPredicate(String filter) {
         final Predicate<String> test = filterToPredicate(filter);
         return (is) -> is != null
-                && IntStream.of(OreDictionary.getOreIDs(is))
-                        .mapToObj(OreDictionary::getOreName)
-                        .anyMatch(test);
+                && IntStream.of(OreDictionary.getOreIDs(is)).mapToObj(OreDictionary::getOreName).anyMatch(test);
     }
 
     private static Predicate<String> filterToPredicate(String filter) {

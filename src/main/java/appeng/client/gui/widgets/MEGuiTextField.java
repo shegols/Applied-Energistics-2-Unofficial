@@ -1,38 +1,31 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.widgets;
 
-import appeng.core.localization.GuiColors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
+
 import org.lwjgl.input.Keyboard;
 
+import appeng.core.localization.GuiColors;
+
 /**
- * A modified version of the Minecraft text field.
- * You can initialize it over the full element span.
- * The mouse click area is increased to the full element
- * subtracted with the defined padding.
+ * A modified version of the Minecraft text field. You can initialize it over the full element span. The mouse click
+ * area is increased to the full element subtracted with the defined padding.
  * <p>
  * The rendering does pay attention to the size of the '_' caret.
  */
 public class MEGuiTextField implements ITooltip {
+
     protected GuiTextField field;
 
     private static final int PADDING = 2;
@@ -48,12 +41,11 @@ public class MEGuiTextField implements ITooltip {
     public int h;
 
     /**
-     * Uses the values to instantiate a padded version of a text field.
-     * Pays attention to the '_' caret.
+     * Uses the values to instantiate a padded version of a text field. Pays attention to the '_' caret.
      *
-     * @param width        absolute width
-     * @param height       absolute height
-     * @param tooltip      tooltip message
+     * @param width   absolute width
+     * @param height  absolute height
+     * @param tooltip tooltip message
      */
     public MEGuiTextField(final int width, final int height, final String tooltip) {
         final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
@@ -132,10 +124,8 @@ public class MEGuiTextField implements ITooltip {
         final String oldText = getText();
         boolean handled = field.textboxKeyTyped(keyChar, keyID);
 
-        if (!handled
-                && (keyID == Keyboard.KEY_RETURN
-                        || keyID == Keyboard.KEY_NUMPADENTER
-                        || keyID == Keyboard.KEY_ESCAPE)) {
+        if (!handled && (keyID == Keyboard.KEY_RETURN || keyID == Keyboard.KEY_NUMPADENTER
+                || keyID == Keyboard.KEY_ESCAPE)) {
             setFocused(false);
         }
 

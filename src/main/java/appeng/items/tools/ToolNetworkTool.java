@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.tools;
+
+import java.util.EnumSet;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import appeng.api.implementations.guiobjects.IGuiItem;
 import appeng.api.implementations.guiobjects.IGuiItemObject;
@@ -38,18 +43,8 @@ import appeng.items.contents.NetworkToolViewer;
 import appeng.transformer.annotations.Integration.Interface;
 import appeng.util.Platform;
 import buildcraft.api.tools.IToolWrench;
+
 import com.google.common.base.Optional;
-import java.util.EnumSet;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 @Interface(iface = "buildcraft.api.tools.IToolWrench", iname = IntegrationType.BuildCraftCore)
 public class ToolNetworkTool extends AEBaseItem implements IGuiItem, IAEWrench, IToolWrench {
@@ -90,35 +85,28 @@ public class ToolNetworkTool extends AEBaseItem implements IGuiItem, IAEWrench, 
     }
 
     @Override
-    public boolean onItemUseFirst(
-            final ItemStack is,
-            final EntityPlayer player,
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onItemUseFirst(final ItemStack is, final EntityPlayer player, final World world, final int x,
+            final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ) {
         if (ForgeEventFactory.onItemUseStart(player, is, 1) <= 0) return true;
 
         Block blk = world.getBlock(x, y, z);
-        if (blk != null)
-            if (ForgeEventFactory.onPlayerInteract(
-                            player,
-                            blk.isAir(world, x, y, z)
-                                    ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR
-                                    : PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK,
-                            x,
-                            y,
-                            z,
-                            side,
-                            world)
-                    .isCanceled()) return true;
+        if (blk != null) if (ForgeEventFactory.onPlayerInteract(
+                player,
+                blk.isAir(world, x, y, z) ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR
+                        : PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK,
+                x,
+                y,
+                z,
+                side,
+                world).isCanceled())
+            return true;
 
-        final MovingObjectPosition mop =
-                new MovingObjectPosition(x, y, z, side, Vec3.createVectorHelper(hitX, hitY, hitZ));
+        final MovingObjectPosition mop = new MovingObjectPosition(
+                x,
+                y,
+                z,
+                side,
+                Vec3.createVectorHelper(hitX, hitY, hitZ));
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof IPartHost) {
             final SelectedPart part = ((IPartHost) te).selectPart(mop.hitVec);
@@ -139,22 +127,13 @@ public class ToolNetworkTool extends AEBaseItem implements IGuiItem, IAEWrench, 
     }
 
     @Override
-    public boolean doesSneakBypassUse(
-            final World world, final int x, final int y, final int z, final EntityPlayer player) {
+    public boolean doesSneakBypassUse(final World world, final int x, final int y, final int z,
+            final EntityPlayer player) {
         return true;
     }
 
-    public boolean serverSideToolLogic(
-            final ItemStack is,
-            final EntityPlayer p,
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean serverSideToolLogic(final ItemStack is, final EntityPlayer p, final World w, final int x,
+            final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ) {
         if (side >= 0) {
             if (!Platform.hasPermissions(new DimensionalCoord(w, x, y, z), p)) {
                 return false;
@@ -162,18 +141,16 @@ public class ToolNetworkTool extends AEBaseItem implements IGuiItem, IAEWrench, 
 
             final Block b = w.getBlock(x, y, z);
 
-            if (b != null)
-                if (ForgeEventFactory.onPlayerInteract(
-                                p,
-                                b.isAir(w, x, y, z)
-                                        ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR
-                                        : PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK,
-                                x,
-                                y,
-                                z,
-                                side,
-                                w)
-                        .isCanceled()) return false;
+            if (b != null) if (ForgeEventFactory.onPlayerInteract(
+                    p,
+                    b.isAir(w, x, y, z) ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR
+                            : PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK,
+                    x,
+                    y,
+                    z,
+                    side,
+                    w).isCanceled())
+                return false;
 
             if (b != null && !p.isSneaking()) {
                 final TileEntity te = w.getTileEntity(x, y, z);

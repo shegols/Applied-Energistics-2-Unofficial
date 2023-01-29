@@ -1,12 +1,5 @@
 package appeng.tile.powersink;
 
-import appeng.api.config.Actionable;
-import appeng.api.config.PowerUnits;
-import appeng.integration.IntegrationType;
-import appeng.transformer.annotations.Integration;
-import appeng.util.Platform;
-import gregtech.api.interfaces.tileentity.IEnergyConnected;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -15,8 +8,17 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerUnits;
+import appeng.integration.IntegrationType;
+import appeng.transformer.annotations.Integration;
+import appeng.util.Platform;
+import gregtech.api.interfaces.tileentity.IEnergyConnected;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
 @Integration.Interface(iname = IntegrationType.GT, iface = "gregtech.api.interfaces.tileentity.IEnergyConnected")
 public abstract class GTPowerSink extends AERootPoweredTile implements IEnergyConnected {
+
     @Override
     public long injectEnergyUnits(byte side, long voltage, long amperage) {
         double e = PowerUnits.EU.convertTo(PowerUnits.AE, voltage * amperage);

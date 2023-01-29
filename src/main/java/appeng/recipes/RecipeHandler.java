@@ -1,22 +1,28 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.recipes;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IBlocks;
@@ -39,23 +45,14 @@ import appeng.items.misc.ItemCrystalSeed;
 import appeng.items.parts.ItemMultiPart;
 import appeng.recipes.handlers.IWebsiteSerializer;
 import appeng.recipes.handlers.OreRegistration;
+
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
+
 import cpw.mods.fml.common.LoaderState;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-import javax.annotation.Nonnull;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 /**
  * @author AlgorithmX2
@@ -64,6 +61,7 @@ import net.minecraft.item.ItemStack;
  * @since rv0
  */
 public class RecipeHandler implements IRecipeHandler {
+
     private final RecipeData data;
     private final List<String> tokens = new LinkedList<String>();
 
@@ -90,8 +88,7 @@ public class RecipeHandler implements IRecipeHandler {
             for (final ItemStack is : i.getItemStackSet()) {
                 return this.getName(is);
             }
-        } catch (final RecipeError ignored) {
-        } catch (final Throwable t) {
+        } catch (final RecipeError ignored) {} catch (final Throwable t) {
             t.printStackTrace();
             // :P
         }
@@ -170,8 +167,7 @@ public class RecipeHandler implements IRecipeHandler {
             }
         } else if (is.getItem() instanceof ItemMultiMaterial) {
             realName = realName.replace("ItemMultiMaterial", "ItemMaterial");
-            realName +=
-                    '.' + ((ItemMultiMaterial) is.getItem()).getTypeByStack(is).name();
+            realName += '.' + ((ItemMultiMaterial) is.getItem()).getTypeByStack(is).name();
         } else if (is.getItem() instanceof ItemMultiPart) {
             realName = realName.replace("ItemMultiPart", "ItemPart");
             realName += '.' + ((ItemMultiPart) is.getItem()).getTypeByStack(is).name();
@@ -479,42 +475,42 @@ public class RecipeHandler implements IRecipeHandler {
                 final String operation = this.tokens.remove(0).toLowerCase();
 
                 if (operation.equals("exceptions")
-                        && (this.tokens.get(0).equals("true")
-                                || this.tokens.get(0).equals("false"))) {
+                        && (this.tokens.get(0).equals("true") || this.tokens.get(0).equals("false"))) {
                     if (this.tokens.size() == 1) {
                         this.data.exceptions = this.tokens.get(0).equals("true");
                     } else {
                         throw new RecipeError("exceptions must be true or false explicitly.");
                     }
                 } else if (operation.equals("crash")
-                        && (this.tokens.get(0).equals("true")
-                                || this.tokens.get(0).equals("false"))) {
-                    if (this.tokens.size() == 1) {
-                        this.data.crash = this.tokens.get(0).equals("true");
+                        && (this.tokens.get(0).equals("true") || this.tokens.get(0).equals("false"))) {
+                            if (this.tokens.size() == 1) {
+                                this.data.crash = this.tokens.get(0).equals("true");
+                            } else {
+                                throw new RecipeError("crash must be true or false explicitly.");
+                            }
+                        } else
+                    if (operation.equals("erroronmissing")) {
+                        if (this.tokens.size() == 1
+                                && (this.tokens.get(0).equals("true") || this.tokens.get(0).equals("false"))) {
+                            this.data.errorOnMissing = this.tokens.get(0).equals("true");
+                        } else {
+                            throw new RecipeError("erroronmissing must be true or false explicitly.");
+                        }
+                    } else if (operation.equals("import")) {
+                        if (this.tokens.size() == 1) {
+                            (new RecipeHandler(this)).parseRecipes(loader, this.tokens.get(0));
+                        } else {
+                            throw new RecipeError("Import must have exactly 1 input.");
+                        }
                     } else {
-                        throw new RecipeError("crash must be true or false explicitly.");
+                        throw new RecipeError(
+                                operation + ": " + this.tokens.toString() + "; recipe without an output.");
                     }
-                } else if (operation.equals("erroronmissing")) {
-                    if (this.tokens.size() == 1
-                            && (this.tokens.get(0).equals("true")
-                                    || this.tokens.get(0).equals("false"))) {
-                        this.data.errorOnMissing = this.tokens.get(0).equals("true");
-                    } else {
-                        throw new RecipeError("erroronmissing must be true or false explicitly.");
-                    }
-                } else if (operation.equals("import")) {
-                    if (this.tokens.size() == 1) {
-                        (new RecipeHandler(this)).parseRecipes(loader, this.tokens.get(0));
-                    } else {
-                        throw new RecipeError("Import must have exactly 1 input.");
-                    }
-                } else {
-                    throw new RecipeError(operation + ": " + this.tokens.toString() + "; recipe without an output.");
-                }
             }
         } catch (final RecipeError e) {
-            AELog.warn("Recipe Error '" + e.getMessage() + "' near line:" + line + " in " + file + " with: "
-                    + this.tokens.toString());
+            AELog.warn(
+                    "Recipe Error '" + e
+                            .getMessage() + "' near line:" + line + " in " + file + " with: " + this.tokens.toString());
             if (this.data.exceptions) {
                 AELog.debug(e);
             }

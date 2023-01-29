@@ -1,5 +1,12 @@
 package appeng.parts.reporting;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.data.IAEItemStack;
@@ -10,13 +17,9 @@ import appeng.helpers.Reflected;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.tile.inventory.BiggerAppEngInventory;
 import appeng.tile.inventory.InvOperation;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class PartPatternTerminalEx extends AbstractPartTerminal {
+
     private static final CableBusTextures FRONT_BRIGHT_ICON = CableBusTextures.PartPatternTerm_Bright;
     private static final CableBusTextures FRONT_DARK_ICON = CableBusTextures.PartPatternTerm_Dark;
     private static final CableBusTextures FRONT_COLORED_ICON = CableBusTextures.PartPatternTerm_Colored;
@@ -90,12 +93,8 @@ public class PartPatternTerminalEx extends AbstractPartTerminal {
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removedStack,
-            final ItemStack newStack) {
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         if (inv == this.pattern && slot == 1) {
             final ItemStack stack = this.pattern.getStackInSlot(1);
 
@@ -104,8 +103,8 @@ public class PartPatternTerminalEx extends AbstractPartTerminal {
                 final NBTTagCompound encodedValue = stack.getTagCompound();
 
                 if (encodedValue != null) {
-                    final ICraftingPatternDetails details = pattern.getPatternForItem(
-                            stack, this.getHost().getTile().getWorldObj());
+                    final ICraftingPatternDetails details = pattern
+                            .getPatternForItem(stack, this.getHost().getTile().getWorldObj());
                     final boolean substitute = encodedValue.getBoolean("substitute");
                     final IAEItemStack[] inItems;
                     final IAEItemStack[] outItems;
@@ -114,8 +113,8 @@ public class PartPatternTerminalEx extends AbstractPartTerminal {
 
                     if (details == null) {
                         inItems = PatternHelper.loadIAEItemStackFromNBT(encodedValue.getTagList("in", 10), true, null);
-                        outItems =
-                                PatternHelper.loadIAEItemStackFromNBT(encodedValue.getTagList("out", 10), false, null);
+                        outItems = PatternHelper
+                                .loadIAEItemStackFromNBT(encodedValue.getTagList("out", 10), false, null);
                     } else {
                         inItems = details.getInputs();
                         outItems = details.getOutputs();

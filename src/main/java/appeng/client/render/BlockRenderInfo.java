@@ -1,29 +1,22 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render;
+
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.block.AEBaseBlock;
 import appeng.client.texture.FlippableIcon;
 import appeng.client.texture.TmpFlippableIcon;
 import appeng.tile.AEBaseTile;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockRenderInfo {
 
@@ -46,13 +39,8 @@ public class BlockRenderInfo {
         this.rendererInstance = inst;
     }
 
-    public void updateIcons(
-            final FlippableIcon bottom,
-            final FlippableIcon top,
-            final FlippableIcon north,
-            final FlippableIcon south,
-            final FlippableIcon east,
-            final FlippableIcon west) {
+    public void updateIcons(final FlippableIcon bottom, final FlippableIcon top, final FlippableIcon north,
+            final FlippableIcon south, final FlippableIcon east, final FlippableIcon west) {
         this.topIcon = top;
         this.bottomIcon = bottom;
         this.southIcon = south;
@@ -75,13 +63,8 @@ public class BlockRenderInfo {
         }
     }
 
-    public void setTemporaryRenderIcons(
-            final IIcon nTopIcon,
-            final IIcon nBottomIcon,
-            final IIcon nSouthIcon,
-            final IIcon nNorthIcon,
-            final IIcon nEastIcon,
-            final IIcon nWestIcon) {
+    public void setTemporaryRenderIcons(final IIcon nTopIcon, final IIcon nBottomIcon, final IIcon nSouthIcon,
+            final IIcon nNorthIcon, final IIcon nEastIcon, final IIcon nWestIcon) {
         this.tmpTopIcon.setOriginal(nTopIcon == null ? this.getTexture(ForgeDirection.UP) : nTopIcon);
         this.tmpBottomIcon.setOriginal(nBottomIcon == null ? this.getTexture(ForgeDirection.DOWN) : nBottomIcon);
         this.tmpSouthIcon.setOriginal(nSouthIcon == null ? this.getTexture(ForgeDirection.SOUTH) : nSouthIcon);
@@ -132,8 +115,7 @@ public class BlockRenderInfo {
     }
 
     boolean isValid() {
-        return this.topIcon != null
-                && this.bottomIcon != null
+        return this.topIcon != null && this.bottomIcon != null
                 && this.southIcon != null
                 && this.northIcon != null
                 && this.eastIcon != null

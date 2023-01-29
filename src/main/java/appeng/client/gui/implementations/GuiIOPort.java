@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Mouse;
 
 import appeng.api.AEApi;
 import appeng.api.config.FullnessMode;
@@ -31,10 +29,6 @@ import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketConfigButton;
 import appeng.tile.storage.TileIOPort;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Mouse;
 
 public class GuiIOPort extends GuiUpgradeable {
 
@@ -50,11 +44,20 @@ public class GuiIOPort extends GuiUpgradeable {
     @SuppressWarnings("unchecked")
     protected void addButtons() {
         this.redstoneMode = new GuiImgButton(
-                this.guiLeft - 18, this.guiTop + 28, Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
-        this.fullMode =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.FULLNESS_MODE, FullnessMode.EMPTY);
-        this.operationMode =
-                new GuiImgButton(this.guiLeft + 80, this.guiTop + 17, Settings.OPERATION_MODE, OperationMode.EMPTY);
+                this.guiLeft - 18,
+                this.guiTop + 28,
+                Settings.REDSTONE_CONTROLLED,
+                RedstoneMode.IGNORE);
+        this.fullMode = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 8,
+                Settings.FULLNESS_MODE,
+                FullnessMode.EMPTY);
+        this.operationMode = new GuiImgButton(
+                this.guiLeft + 80,
+                this.guiTop + 17,
+                Settings.OPERATION_MODE,
+                OperationMode.EMPTY);
 
         this.buttonList.add(this.operationMode);
         this.buttonList.add(this.redstoneMode);
@@ -63,10 +66,10 @@ public class GuiIOPort extends GuiUpgradeable {
 
     @Override
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
-        this.fontRendererObj.drawString(
-                this.getGuiDisplayName(GuiText.IOPort.getLocal()), 8, 6, GuiColors.IOPortTitle.getColor());
-        this.fontRendererObj.drawString(
-                GuiText.inventory.getLocal(), 8, this.ySize - 96 + 3, GuiColors.IOPortInventory.getColor());
+        this.fontRendererObj
+                .drawString(this.getGuiDisplayName(GuiText.IOPort.getLocal()), 8, 6, GuiColors.IOPortTitle.getColor());
+        this.fontRendererObj
+                .drawString(GuiText.inventory.getLocal(), 8, this.ySize - 96 + 3, GuiColors.IOPortInventory.getColor());
 
         if (this.redstoneMode != null) {
             this.redstoneMode.set(this.cvb.getRedStoneMode());
@@ -87,13 +90,11 @@ public class GuiIOPort extends GuiUpgradeable {
 
         final IDefinitions definitions = AEApi.instance().definitions();
 
-        for (final ItemStack cell1kStack :
-                definitions.items().cell1k().maybeStack(1).asSet()) {
+        for (final ItemStack cell1kStack : definitions.items().cell1k().maybeStack(1).asSet()) {
             this.drawItem(offsetX + 66 - 8, offsetY + 17, cell1kStack);
         }
 
-        for (final ItemStack driveStack :
-                definitions.blocks().drive().maybeStack(1).asSet()) {
+        for (final ItemStack driveStack : definitions.blocks().drive().maybeStack(1).asSet()) {
             this.drawItem(offsetX + 94 + 8, offsetY + 17, driveStack);
         }
     }

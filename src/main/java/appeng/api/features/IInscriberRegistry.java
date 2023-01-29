@@ -2,7 +2,9 @@ package appeng.api.features;
 
 import java.util.Collection;
 import java.util.Set;
+
 import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 
 /**
@@ -13,6 +15,7 @@ import net.minecraft.item.ItemStack;
  * @since rv2
  */
 public interface IInscriberRegistry {
+
     /**
      * An immutable copy of currently registered recipes.
      * <p>
@@ -50,8 +53,8 @@ public interface IInscriberRegistry {
     IInscriberRecipeBuilder builder();
 
     /**
-     * add a new recipe the easy way, duplicates will not be added.
-     * Added recipes will be automatically added to the optionals and inputs.
+     * add a new recipe the easy way, duplicates will not be added. Added recipes will be automatically added to the
+     * optionals and inputs.
      *
      * @param recipe new recipe
      * @throws IllegalArgumentException if null is added

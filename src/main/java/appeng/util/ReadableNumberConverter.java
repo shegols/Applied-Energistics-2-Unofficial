@@ -13,6 +13,7 @@ import java.text.Format;
  * @since rv2
  */
 public enum ReadableNumberConverter implements ISlimReadableNumberConverter, IWideReadableNumberConverter {
+
     INSTANCE;
 
     /**

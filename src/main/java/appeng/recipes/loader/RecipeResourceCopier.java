@@ -1,24 +1,15 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.recipes.loader;
 
-import com.google.common.base.Preconditions;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,8 +24,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.annotation.Nonnull;
+
 import org.apache.commons.io.FileUtils;
+
+import com.google.common.base.Preconditions;
 
 /**
  * copies recipes in jars onto file system includes the readme, needs to be modified if other files needs to be handled
@@ -44,6 +39,7 @@ import org.apache.commons.io.FileUtils;
  * @since rv3 11.05.2015
  */
 public class RecipeResourceCopier {
+
     /**
      * Most expected size of recipes found
      */
@@ -76,7 +72,8 @@ public class RecipeResourceCopier {
      * @param identifier  only copy files which end with the identifier
      * @param destination destination folder to which the recipes are copied to
      * @throws URISyntaxException       {@see #getResourceListing}
-     * @throws IOException              {@see #getResourceListing} and if copying the detected resource to file is not possible
+     * @throws IOException              {@see #getResourceListing} and if copying the detected resource to file is not
+     *                                  possible
      * @throws NullPointerException     if either parameter is <tt>null</tt>
      * @throws IllegalArgumentException if destination is not a directory
      */
@@ -92,12 +89,12 @@ public class RecipeResourceCopier {
      * @param destination destination folder to which the recipes are copied to
      * @param directory   the folder to copy.
      * @throws URISyntaxException {@see #getResourceListing}
-     * @throws IOException        {@see #getResourceListing} and if copying the detected resource to file is not possible
+     * @throws IOException        {@see #getResourceListing} and if copying the detected resource to file is not
+     *                            possible
      * @see {RecipeResourceCopier#copyTo(File)}
      */
-    private void copyTo(
-            @Nonnull final String identifier, @Nonnull final File destination, @Nonnull final String directory)
-            throws URISyntaxException, IOException {
+    private void copyTo(@Nonnull final String identifier, @Nonnull final File destination,
+            @Nonnull final String directory) throws URISyntaxException, IOException {
         assert identifier != null;
         assert destination != null;
         assert directory != null;
@@ -126,9 +123,8 @@ public class RecipeResourceCopier {
      * @param fileName    the file to copy
      * @throws IOException if copying the file is not possible
      */
-    private void copyFile(
-            @Nonnull final File destination, @Nonnull final String directory, @Nonnull final String fileName)
-            throws IOException {
+    private void copyFile(@Nonnull final File destination, @Nonnull final String directory,
+            @Nonnull final String fileName) throws IOException {
         assert destination != null;
         assert directory != null;
         assert fileName != null;
@@ -144,7 +140,8 @@ public class RecipeResourceCopier {
     }
 
     /**
-     * List directory contents for a resource folder. Not recursive. This is basically a brute-force implementation. Works for regular files and also JARs.
+     * List directory contents for a resource folder. Not recursive. This is basically a brute-force implementation.
+     * Works for regular files and also JARs.
      *
      * @param clazz Any java class that lives in the same place as the resources you want.
      * @param path  Should end with "/", but not start with one.
@@ -186,8 +183,7 @@ public class RecipeResourceCopier {
 
         if (dirURL == null) {
             /*
-             * In case of a jar file, we can't actually find a directory.
-             * Have to assume the same jar as clazz.
+             * In case of a jar file, we can't actually find a directory. Have to assume the same jar as clazz.
              */
             final String className = clazz.getName();
             final Matcher matcher = DOT_COMPILE_PATTERN.matcher(className);
@@ -205,8 +201,8 @@ public class RecipeResourceCopier {
                 final JarFile jar = new JarFile(URLDecoder.decode(jarPath, UTF_8_ENCODING));
                 try {
                     final Enumeration<JarEntry> entries = jar.entries(); // gives ALL entries in jar
-                    final Collection<String> result =
-                            new HashSet<String>(INITIAL_RESOURCE_CAPACITY); // avoid duplicates
+                    final Collection<String> result = new HashSet<String>(INITIAL_RESOURCE_CAPACITY); // avoid
+                                                                                                      // duplicates
 
                     // in case it is a
                     // subdirectory

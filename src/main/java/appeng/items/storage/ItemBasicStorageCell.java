@@ -1,22 +1,28 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.storage;
+
+import java.text.NumberFormat;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
@@ -41,23 +47,14 @@ import appeng.items.contents.CellUpgrades;
 import appeng.items.materials.MaterialType;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
+
 import com.google.common.base.Optional;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.text.NumberFormat;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class ItemBasicStorageCell extends AEBaseItem implements IStorageCell, IItemGroup {
+
     protected MaterialType component;
     protected int totalBytes;
     protected int perType;
@@ -102,33 +99,39 @@ public class ItemBasicStorageCell extends AEBaseItem implements IStorageCell, II
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addCheckedInformation(
-            final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
-        final IMEInventoryHandler<?> inventory =
-                AEApi.instance().registries().cell().getCellInventory(stack, null, StorageChannel.ITEMS);
+    public void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+            final boolean displayMoreInfo) {
+        final IMEInventoryHandler<?> inventory = AEApi.instance().registries().cell()
+                .getCellInventory(stack, null, StorageChannel.ITEMS);
 
         if (inventory instanceof ICellInventoryHandler) {
             final ICellInventoryHandler handler = (ICellInventoryHandler) inventory;
             final ICellInventory cellInventory = handler.getCellInv();
 
             if (cellInventory != null) {
-                lines.add(NumberFormat.getInstance().format(cellInventory.getUsedBytes()) + " " + GuiText.Of.getLocal()
-                        + ' ' + NumberFormat.getInstance().format(cellInventory.getTotalBytes()) + ' '
-                        + GuiText.BytesUsed.getLocal());
+                lines.add(
+                        NumberFormat.getInstance().format(cellInventory.getUsedBytes()) + " "
+                                + GuiText.Of.getLocal()
+                                + ' '
+                                + NumberFormat.getInstance().format(cellInventory.getTotalBytes())
+                                + ' '
+                                + GuiText.BytesUsed.getLocal());
 
-                lines.add(NumberFormat.getInstance().format(cellInventory.getStoredItemTypes()) + " "
-                        + GuiText.Of.getLocal() + ' '
-                        + NumberFormat.getInstance().format(cellInventory.getTotalItemTypes()) + ' '
-                        + GuiText.Types.getLocal());
+                lines.add(
+                        NumberFormat.getInstance().format(cellInventory.getStoredItemTypes()) + " "
+                                + GuiText.Of.getLocal()
+                                + ' '
+                                + NumberFormat.getInstance().format(cellInventory.getTotalItemTypes())
+                                + ' '
+                                + GuiText.Types.getLocal());
 
                 if (handler.isPreformatted()) {
                     String filter = cellInventory.getOreFilter();
 
                     if (filter.isEmpty()) {
                         final String list = (handler.getIncludeExcludeMode() == IncludeExclude.WHITELIST
-                                        ? GuiText.Included
-                                        : GuiText.Excluded)
-                                .getLocal();
+                                ? GuiText.Included
+                                : GuiText.Excluded).getLocal();
 
                         if (handler.isFuzzy()) {
                             lines.add(GuiText.Partitioned.getLocal() + " - " + list + ' ' + GuiText.Fuzzy.getLocal());
@@ -137,9 +140,7 @@ public class ItemBasicStorageCell extends AEBaseItem implements IStorageCell, II
                         }
                         if (GuiScreen.isShiftKeyDown()) {
                             lines.add(GuiText.Filter.getLocal() + ": ");
-                            for (int i = 0;
-                                    i < cellInventory.getConfigInventory().getSizeInventory();
-                                    ++i) {
+                            for (int i = 0; i < cellInventory.getConfigInventory().getSizeInventory(); ++i) {
                                 ItemStack s = cellInventory.getConfigInventory().getStackInSlot(i);
                                 if (s != null) lines.add(s.getDisplayName());
                             }
@@ -243,15 +244,15 @@ public class ItemBasicStorageCell extends AEBaseItem implements IStorageCell, II
         return stack;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private boolean disassembleDrive(final ItemStack stack, final World world, final EntityPlayer player) {
         if (player.isSneaking()) {
             if (Platform.isClient()) {
                 return false;
             }
             final InventoryPlayer playerInventory = player.inventory;
-            final IMEInventoryHandler inv =
-                    AEApi.instance().registries().cell().getCellInventory(stack, null, StorageChannel.ITEMS);
+            final IMEInventoryHandler inv = AEApi.instance().registries().cell()
+                    .getCellInventory(stack, null, StorageChannel.ITEMS);
             if (inv != null && playerInventory.getCurrentItem() == stack) {
                 final InventoryAdaptor ia = InventoryAdaptor.getAdaptor(player, ForgeDirection.UNKNOWN);
                 final IItemList<IAEItemStack> list = inv.getAvailableItems(StorageChannel.ITEMS.createList());
@@ -275,8 +276,7 @@ public class ItemBasicStorageCell extends AEBaseItem implements IStorageCell, II
                     }
 
                     // drop empty storage cell case
-                    for (final ItemStack storageCellStack :
-                            getStorageCellCase().maybeStack(1).asSet()) {
+                    for (final ItemStack storageCellStack : getStorageCellCase().maybeStack(1).asSet()) {
                         final ItemStack extraA = ia.addItems(storageCellStack);
                         if (extraA != null) {
                             player.dropPlayerItemWithRandomChoice(extraA, false);
@@ -299,17 +299,8 @@ public class ItemBasicStorageCell extends AEBaseItem implements IStorageCell, II
     }
 
     @Override
-    public boolean onItemUseFirst(
-            final ItemStack stack,
-            final EntityPlayer player,
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onItemUseFirst(final ItemStack stack, final EntityPlayer player, final World world, final int x,
+            final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ) {
         if (ForgeEventFactory.onItemUseStart(player, stack, 1) <= 0) return true;
 
         return this.disassembleDrive(stack, world, player);
@@ -317,11 +308,7 @@ public class ItemBasicStorageCell extends AEBaseItem implements IStorageCell, II
 
     @Override
     public ItemStack getContainerItem(final ItemStack itemStack) {
-        for (final ItemStack stack : AEApi.instance()
-                .definitions()
-                .materials()
-                .emptyStorageCell()
-                .maybeStack(1)
+        for (final ItemStack stack : AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1)
                 .asSet()) {
             return stack;
         }

@@ -1,36 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.facade;
 
-import appeng.api.AEApi;
-import appeng.api.parts.*;
-import appeng.client.render.BusRenderHelper;
-import appeng.client.render.RenderBlocksWorkaround;
-import appeng.core.AELog;
-import appeng.integration.IntegrationRegistry;
-import appeng.integration.IntegrationType;
-import appeng.integration.abstraction.IBuildCraftTransport;
-import appeng.util.Platform;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.EnumSet;
+
 import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -44,7 +27,20 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
+import appeng.api.AEApi;
+import appeng.api.parts.*;
+import appeng.client.render.BusRenderHelper;
+import appeng.client.render.RenderBlocksWorkaround;
+import appeng.core.AELog;
+import appeng.integration.IntegrationRegistry;
+import appeng.integration.IntegrationType;
+import appeng.integration.abstraction.IBuildCraftTransport;
+import appeng.util.Platform;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class FacadePart implements IFacadePart, IBoxProvider {
 
@@ -86,14 +82,8 @@ public class FacadePart implements IFacadePart, IBoxProvider {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x,
-            final int y,
-            final int z,
-            final IPartRenderHelper instance2,
-            final RenderBlocks renderer,
-            final IFacadeContainer fc,
-            final AxisAlignedBB busBounds,
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper instance2,
+            final RenderBlocks renderer, final IFacadeContainer fc, final AxisAlignedBB busBounds,
             final boolean renderStilt) {
         if (this.facade != null) {
             final BusRenderHelper instance = (BusRenderHelper) instance2;
@@ -115,8 +105,8 @@ public class FacadePart implements IFacadePart, IBoxProvider {
                     IIcon myIcon = null;
                     if (this.notAEFacade()
                             && IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.BuildCraftTransport)) {
-                        final IBuildCraftTransport bc = (IBuildCraftTransport)
-                                IntegrationRegistry.INSTANCE.getInstance(IntegrationType.BuildCraftTransport);
+                        final IBuildCraftTransport bc = (IBuildCraftTransport) IntegrationRegistry.INSTANCE
+                                .getInstance(IntegrationType.BuildCraftTransport);
                         myIcon = bc.getCobbleStructurePipeTexture();
                     }
 
@@ -156,11 +146,9 @@ public class FacadePart implements IFacadePart, IBoxProvider {
 
                         try {
                             color = ib.getColorFromItemStack(randomItem, 0);
-                        } catch (final Throwable ignored) {
-                        }
+                        } catch (final Throwable ignored) {}
 
-                        renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth =
-                                renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
+                        renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
                         instance.setBounds(0, 0, 16 - this.thickness, 16, 16, 16);
                         instance.prepareBounds(renderer);
 
@@ -183,40 +171,45 @@ public class FacadePart implements IFacadePart, IBoxProvider {
                             rbw.setCalculations(false);
                             rbw.setFaces(this.calculateFaceOpenFaces(rbw.blockAccess, fc, x, y, z, this.side));
 
-                            ((RenderBlocksWorkaround) renderer)
-                                    .setTexture(
-                                            blk.getIcon(
-                                                    ForgeDirection.DOWN.ordinal(),
-                                                    ib.getMetadata(randomItem.getItemDamage())),
-                                            blk.getIcon(
-                                                    ForgeDirection.UP.ordinal(),
-                                                    ib.getMetadata(randomItem.getItemDamage())),
-                                            blk.getIcon(
-                                                    ForgeDirection.NORTH.ordinal(),
-                                                    ib.getMetadata(randomItem.getItemDamage())),
-                                            blk.getIcon(
-                                                    ForgeDirection.SOUTH.ordinal(),
-                                                    ib.getMetadata(randomItem.getItemDamage())),
-                                            blk.getIcon(
-                                                    ForgeDirection.WEST.ordinal(),
-                                                    ib.getMetadata(randomItem.getItemDamage())),
-                                            blk.getIcon(
-                                                    ForgeDirection.EAST.ordinal(),
-                                                    ib.getMetadata(randomItem.getItemDamage())));
+                            ((RenderBlocksWorkaround) renderer).setTexture(
+                                    blk.getIcon(
+                                            ForgeDirection.DOWN.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())),
+                                    blk.getIcon(
+                                            ForgeDirection.UP.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())),
+                                    blk.getIcon(
+                                            ForgeDirection.NORTH.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())),
+                                    blk.getIcon(
+                                            ForgeDirection.SOUTH.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())),
+                                    blk.getIcon(
+                                            ForgeDirection.WEST.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())),
+                                    blk.getIcon(
+                                            ForgeDirection.EAST.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())));
                         } else {
                             instance.setTexture(
                                     blk.getIcon(
-                                            ForgeDirection.DOWN.ordinal(), ib.getMetadata(randomItem.getItemDamage())),
+                                            ForgeDirection.DOWN.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())),
                                     blk.getIcon(
-                                            ForgeDirection.UP.ordinal(), ib.getMetadata(randomItem.getItemDamage())),
+                                            ForgeDirection.UP.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())),
                                     blk.getIcon(
-                                            ForgeDirection.NORTH.ordinal(), ib.getMetadata(randomItem.getItemDamage())),
+                                            ForgeDirection.NORTH.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())),
                                     blk.getIcon(
-                                            ForgeDirection.SOUTH.ordinal(), ib.getMetadata(randomItem.getItemDamage())),
+                                            ForgeDirection.SOUTH.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())),
                                     blk.getIcon(
-                                            ForgeDirection.WEST.ordinal(), ib.getMetadata(randomItem.getItemDamage())),
+                                            ForgeDirection.WEST.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())),
                                     blk.getIcon(
-                                            ForgeDirection.EAST.ordinal(), ib.getMetadata(randomItem.getItemDamage())));
+                                            ForgeDirection.EAST.ordinal(),
+                                            ib.getMetadata(randomItem.getItemDamage())));
                         }
 
                         if (busBounds == null) {
@@ -254,9 +247,29 @@ public class FacadePart implements IFacadePart, IBoxProvider {
                         } else {
                             if (this.side == ForgeDirection.UP || this.side == ForgeDirection.DOWN) {
                                 this.renderSegmentBlockCurrentBounds(
-                                        instance, x, y, z, renderer, 0.0, 0.0, busBounds.maxZ, 1.0, 1.0, 1.0);
+                                        instance,
+                                        x,
+                                        y,
+                                        z,
+                                        renderer,
+                                        0.0,
+                                        0.0,
+                                        busBounds.maxZ,
+                                        1.0,
+                                        1.0,
+                                        1.0);
                                 this.renderSegmentBlockCurrentBounds(
-                                        instance, x, y, z, renderer, 0.0, 0.0, 0.0, 1.0, 1.0, busBounds.minZ);
+                                        instance,
+                                        x,
+                                        y,
+                                        z,
+                                        renderer,
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        1.0,
+                                        1.0,
+                                        busBounds.minZ);
                                 this.renderSegmentBlockCurrentBounds(
                                         instance,
                                         x,
@@ -291,9 +304,29 @@ public class FacadePart implements IFacadePart, IBoxProvider {
                                 }
 
                                 this.renderSegmentBlockCurrentBounds(
-                                        instance, x, y, z, renderer, busBounds.maxX, 0.0, 0.0, 1.0, 1.0, 1.0);
+                                        instance,
+                                        x,
+                                        y,
+                                        z,
+                                        renderer,
+                                        busBounds.maxX,
+                                        0.0,
+                                        0.0,
+                                        1.0,
+                                        1.0,
+                                        1.0);
                                 this.renderSegmentBlockCurrentBounds(
-                                        instance, x, y, z, renderer, 0.0, 0.0, 0.0, busBounds.minX, 1.0, 1.0);
+                                        instance,
+                                        x,
+                                        y,
+                                        z,
+                                        renderer,
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        busBounds.minX,
+                                        1.0,
+                                        1.0);
                                 this.renderSegmentBlockCurrentBounds(
                                         instance,
                                         x,
@@ -336,9 +369,29 @@ public class FacadePart implements IFacadePart, IBoxProvider {
                                 }
 
                                 this.renderSegmentBlockCurrentBounds(
-                                        instance, x, y, z, renderer, 0.0, 0.0, busBounds.maxZ, 1.0, 1.0, 1.0);
+                                        instance,
+                                        x,
+                                        y,
+                                        z,
+                                        renderer,
+                                        0.0,
+                                        0.0,
+                                        busBounds.maxZ,
+                                        1.0,
+                                        1.0,
+                                        1.0);
                                 this.renderSegmentBlockCurrentBounds(
-                                        instance, x, y, z, renderer, 0.0, 0.0, 0.0, 1.0, 1.0, busBounds.minZ);
+                                        instance,
+                                        x,
+                                        y,
+                                        z,
+                                        renderer,
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        1.0,
+                                        1.0,
+                                        busBounds.minZ);
                                 this.renderSegmentBlockCurrentBounds(
                                         instance,
                                         x,
@@ -489,8 +542,8 @@ public class FacadePart implements IFacadePart, IBoxProvider {
 
             return facade.getTextureItem(this.facade);
         } else if (IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.BuildCraftTransport)) {
-            final IBuildCraftTransport bc = (IBuildCraftTransport)
-                    IntegrationRegistry.INSTANCE.getInstance(IntegrationType.BuildCraftTransport);
+            final IBuildCraftTransport bc = (IBuildCraftTransport) IntegrationRegistry.INSTANCE
+                    .getInstance(IntegrationType.BuildCraftTransport);
 
             return bc.getTextureForFacade(this.facade);
         }
@@ -498,20 +551,16 @@ public class FacadePart implements IFacadePart, IBoxProvider {
         return null;
     }
 
-    private EnumSet<ForgeDirection> calculateFaceOpenFaces(
-            final IBlockAccess blockAccess,
-            final IFacadeContainer fc,
-            final int x,
-            final int y,
-            final int z,
-            final ForgeDirection side) {
+    private EnumSet<ForgeDirection> calculateFaceOpenFaces(final IBlockAccess blockAccess, final IFacadeContainer fc,
+            final int x, final int y, final int z, final ForgeDirection side) {
         final EnumSet<ForgeDirection> out = EnumSet.of(side, side.getOpposite());
         final IFacadePart facade = fc.getFacade(side);
 
         for (final ForgeDirection it : ForgeDirection.VALID_DIRECTIONS) {
-            if (!out.contains(it)
-                    && this.hasAlphaDiff(
-                            blockAccess.getTileEntity(x + it.offsetX, y + it.offsetY, z + it.offsetZ), side, facade)) {
+            if (!out.contains(it) && this.hasAlphaDiff(
+                    blockAccess.getTileEntity(x + it.offsetX, y + it.offsetY, z + it.offsetZ),
+                    side,
+                    facade)) {
                 out.add(it);
             }
         }
@@ -547,20 +596,16 @@ public class FacadePart implements IFacadePart, IBoxProvider {
         /*
          * if ( out.contains( ForgeDirection.EAST ) && (side.offsetZ != 0) ) { IFacadePart fp = fc.getFacade(
          * ForgeDirection.EAST ); if ( fp != null && (fp.isTransparent() == facade.isTransparent()) ) out.remove(
-         * ForgeDirection.EAST ); }
-         * if ( out.contains( ForgeDirection.WEST ) && (side.offsetZ != 0) ) { IFacadePart fp = fc.getFacade(
-         * ForgeDirection.WEST ); if ( fp != null && (fp.isTransparent() == facade.isTransparent()) ) out.remove(
-         * ForgeDirection.WEST ); }
-         * if ( out.contains( ForgeDirection.NORTH ) && (side.offsetY != 0) ) { IFacadePart fp = fc.getFacade(
-         * ForgeDirection.NORTH ); if ( fp != null && (fp.isTransparent() == facade.isTransparent()) ) out.remove(
-         * ForgeDirection.NORTH ); }
-         * if ( out.contains( ForgeDirection.SOUTH ) && (side.offsetY != 0) ) { IFacadePart fp = fc.getFacade(
-         * ForgeDirection.SOUTH ); if ( fp != null && (fp.isTransparent() == facade.isTransparent()) ) out.remove(
-         * ForgeDirection.SOUTH ); }
-         * if ( out.contains( ForgeDirection.EAST ) && (side.offsetY != 0) ) { IFacadePart fp = fc.getFacade(
-         * ForgeDirection.EAST ); if ( fp != null && (fp.isTransparent() == facade.isTransparent()) ) out.remove(
-         * ForgeDirection.EAST ); }
-         * if ( out.contains( ForgeDirection.WEST ) && (side.offsetY != 0) ) { IFacadePart fp = fc.getFacade(
+         * ForgeDirection.EAST ); } if ( out.contains( ForgeDirection.WEST ) && (side.offsetZ != 0) ) { IFacadePart fp =
+         * fc.getFacade( ForgeDirection.WEST ); if ( fp != null && (fp.isTransparent() == facade.isTransparent()) )
+         * out.remove( ForgeDirection.WEST ); } if ( out.contains( ForgeDirection.NORTH ) && (side.offsetY != 0) ) {
+         * IFacadePart fp = fc.getFacade( ForgeDirection.NORTH ); if ( fp != null && (fp.isTransparent() ==
+         * facade.isTransparent()) ) out.remove( ForgeDirection.NORTH ); } if ( out.contains( ForgeDirection.SOUTH ) &&
+         * (side.offsetY != 0) ) { IFacadePart fp = fc.getFacade( ForgeDirection.SOUTH ); if ( fp != null &&
+         * (fp.isTransparent() == facade.isTransparent()) ) out.remove( ForgeDirection.SOUTH ); } if ( out.contains(
+         * ForgeDirection.EAST ) && (side.offsetY != 0) ) { IFacadePart fp = fc.getFacade( ForgeDirection.EAST ); if (
+         * fp != null && (fp.isTransparent() == facade.isTransparent()) ) out.remove( ForgeDirection.EAST ); } if (
+         * out.contains( ForgeDirection.WEST ) && (side.offsetY != 0) ) { IFacadePart fp = fc.getFacade(
          * ForgeDirection.WEST ); if ( fp != null && (fp.isTransparent() == facade.isTransparent()) ) out.remove(
          * ForgeDirection.WEST ); }
          */
@@ -568,18 +613,9 @@ public class FacadePart implements IFacadePart, IBoxProvider {
     }
 
     @SideOnly(Side.CLIENT)
-    private void renderSegmentBlockCurrentBounds(
-            final IPartRenderHelper instance,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer,
-            final double minX,
-            final double minY,
-            final double minZ,
-            final double maxX,
-            final double maxY,
-            final double maxZ) {
+    private void renderSegmentBlockCurrentBounds(final IPartRenderHelper instance, final int x, final int y,
+            final int z, final RenderBlocks renderer, final double minX, final double minY, final double minZ,
+            final double maxX, final double maxY, final double maxZ) {
         final double oldMinX = renderer.renderMinX;
         final double oldMinY = renderer.renderMinY;
         final double oldMinZ = renderer.renderMinZ;

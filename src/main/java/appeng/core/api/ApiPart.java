@@ -1,22 +1,35 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.api;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.*;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.commons.Remapper;
+import org.objectweb.asm.commons.RemappingClassAdapter;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
 
 import appeng.api.parts.CableRenderMode;
 import appeng.api.parts.IPartHelper;
@@ -31,25 +44,8 @@ import appeng.integration.abstraction.IFMP;
 import appeng.parts.PartPlacement;
 import appeng.tile.networking.TileCableBus;
 import appeng.util.Platform;
+
 import com.google.common.base.Joiner;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.util.*;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.commons.Remapper;
-import org.objectweb.asm.commons.RemappingClassAdapter;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
 
 public class ApiPart implements IPartHelper {
 
@@ -222,18 +218,18 @@ public class ApiPart implements IPartHelper {
             final ClassLoader loader = this.getClass().getClassLoader(); // ClassLoader.getSystemClassLoader();
             final Class<ClassLoader> root = ClassLoader.class;
             final Class<? extends ClassLoader> cls = loader.getClass();
-            final Method defineClassMethod =
-                    root.getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
-            final Method runTransformersMethod =
-                    cls.getDeclaredMethod("runTransformers", String.class, String.class, byte[].class);
+            final Method defineClassMethod = root
+                    .getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
+            final Method runTransformersMethod = cls
+                    .getDeclaredMethod("runTransformers", String.class, String.class, byte[].class);
 
             runTransformersMethod.setAccessible(true);
             defineClassMethod.setAccessible(true);
             try {
-                final Object[] argsA = {name, name, b};
+                final Object[] argsA = { name, name, b };
                 b = (byte[]) runTransformersMethod.invoke(loader, argsA);
 
-                final Object[] args = {name, b, 0, b.length};
+                final Object[] args = { name, b, 0, b.length };
                 clazz = (Class) defineClassMethod.invoke(loader, args);
             } finally {
                 runTransformersMethod.setAccessible(false);
@@ -257,8 +253,7 @@ public class ApiPart implements IPartHelper {
             } else {
                 AELog.info("Layer " + layer + " not registered, " + layerInterface + " already has a layer.");
             }
-        } catch (final Throwable ignored) {
-        }
+        } catch (final Throwable ignored) {}
 
         return false;
     }
@@ -271,14 +266,8 @@ public class ApiPart implements IPartHelper {
     }
 
     @Override
-    public boolean placeBus(
-            final ItemStack is,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final EntityPlayer player,
-            final World w) {
+    public boolean placeBus(final ItemStack is, final int x, final int y, final int z, final int side,
+            final EntityPlayer player, final World w) {
         return PartPlacement.place(is, x, y, z, side, player, w, PartPlacement.PlaceType.PLACE_ITEM, 0);
     }
 

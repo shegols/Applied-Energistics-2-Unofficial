@@ -1,26 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.util.item;
 
+import java.io.IOException;
+
 import appeng.api.storage.data.IAEStack;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
 
 public abstract class AEStack<StackType extends IAEStack> implements IAEStack<StackType> {
 
@@ -115,8 +108,7 @@ public abstract class AEStack<StackType extends IAEStack> implements IAEStack<St
 
     @Override
     public void writeToPacket(final ByteBuf i) throws IOException {
-        final byte mask = (byte) (this.getType(0)
-                | (this.getType(this.stackSize) << 2)
+        final byte mask = (byte) (this.getType(0) | (this.getType(this.stackSize) << 2)
                 | (this.getType(this.countRequestable) << 4)
                 | ((byte) (this.isCraftable ? 1 : 0) << 6)
                 | (this.hasTagCompound() ? 1 : 0) << 7);

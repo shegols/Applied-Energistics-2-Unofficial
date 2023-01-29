@@ -35,10 +35,8 @@ public class ArithHelper {
     /**
      * multiplication
      *
-     * @param v1
-     *            p1
-     * @param v2
-     *            p2
+     * @param v1 p1
+     * @param v2 p2
      * @return mul
      */
     public static String mul(String v1, String v2) {
@@ -50,10 +48,8 @@ public class ArithHelper {
     /**
      * division. e = 10^-10
      *
-     * @param v1
-     *            p1
-     * @param v2
-     *            p2
+     * @param v1 p1
+     * @param v2 p2
      * @return div
      */
     public static String div(String v1, String v2) {
@@ -65,7 +61,7 @@ public class ArithHelper {
     /**
      * rounding
      *
-     * @param v p
+     * @param v     p
      * @param scale scale
      * @return result
      */

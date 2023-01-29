@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.block.misc;
+
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.block.AEBaseTileBlock;
@@ -31,17 +36,6 @@ import appeng.tile.misc.TileCharger;
 import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
 
@@ -61,16 +55,8 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public boolean onActivated(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onActivated(final World w, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float hitX, final float hitY, final float hitZ) {
         if (player.isSneaking()) {
             return false;
         }
@@ -100,10 +86,7 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
         if (tile instanceof TileCharger) {
             final TileCharger tc = (TileCharger) tile;
 
-            if (AEApi.instance()
-                    .definitions()
-                    .materials()
-                    .certusQuartzCrystalCharged()
+            if (AEApi.instance().definitions().materials().certusQuartzCrystalCharged()
                     .isSameAs(tc.getStackInSlot(0))) {
                 final double xOff = 0.0;
                 final double yOff = 0.0;
@@ -111,8 +94,14 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
 
                 for (int bolts = 0; bolts < 3; bolts++) {
                     if (CommonHelper.proxy.shouldAddParticles(r)) {
-                        final LightningFX fx =
-                                new LightningFX(w, xOff + 0.5 + x, yOff + 0.5 + y, zOff + 0.5 + z, 0.0D, 0.0D, 0.0D);
+                        final LightningFX fx = new LightningFX(
+                                w,
+                                xOff + 0.5 + x,
+                                yOff + 0.5 + y,
+                                zOff + 0.5 + z,
+                                0.0D,
+                                0.0D,
+                                0.0D);
                         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
                     }
                 }
@@ -121,15 +110,15 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(
-            final World w, final int x, final int y, final int z, final Entity e, final boolean isVisual) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final int x, final int y,
+            final int z, final Entity e, final boolean isVisual) {
         final TileCharger tile = this.getTileEntity(w, x, y, z);
         if (tile != null) {
             final double twoPixels = 2.0 / 16.0;
             final ForgeDirection up = tile.getUp();
             final ForgeDirection forward = tile.getForward();
-            final AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(
-                    twoPixels, twoPixels, twoPixels, 1.0 - twoPixels, 1.0 - twoPixels, 1.0 - twoPixels);
+            final AxisAlignedBB bb = AxisAlignedBB
+                    .getBoundingBox(twoPixels, twoPixels, twoPixels, 1.0 - twoPixels, 1.0 - twoPixels, 1.0 - twoPixels);
 
             if (up.offsetX != 0) {
                 bb.minX = 0;
@@ -173,14 +162,8 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public void addCollidingBlockToList(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final AxisAlignedBB bb,
-            final List<AxisAlignedBB> out,
-            final Entity e) {
+    public void addCollidingBlockToList(final World w, final int x, final int y, final int z, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         out.add(AxisAlignedBB.getBoundingBox(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
     }
 }

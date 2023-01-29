@@ -1,14 +1,17 @@
 package appeng.test.mockme;
 
-import appeng.api.networking.*;
-import appeng.api.util.AEColor;
-import appeng.api.util.DimensionalCoord;
 import java.util.EnumSet;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.api.networking.*;
+import appeng.api.util.AEColor;
+import appeng.api.util.DimensionalCoord;
+
 public class MockGridBlock implements IGridBlock {
+
     @Override
     public double getIdlePowerUsage() {
         return 0;

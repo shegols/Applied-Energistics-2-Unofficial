@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
 public class MeteoriteBlockPutter {
+
     public boolean put(final IMeteoriteWorld w, final int i, final int j, final int k, final Block blk) {
         final Block original = w.getBlock(i, j, k);
 

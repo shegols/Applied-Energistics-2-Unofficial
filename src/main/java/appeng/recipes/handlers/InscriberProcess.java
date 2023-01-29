@@ -1,5 +1,11 @@
 package appeng.recipes.handlers;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+
 import appeng.api.exceptions.MissingIngredientError;
 import appeng.api.exceptions.RecipeError;
 import appeng.api.exceptions.RegistrationError;
@@ -7,9 +13,6 @@ import appeng.api.recipes.ICraftHandler;
 import appeng.api.recipes.IIngredient;
 import appeng.recipes.RecipeHandler;
 import appeng.util.Platform;
-import java.util.List;
-import javax.annotation.Nullable;
-import net.minecraft.item.ItemStack;
 
 /**
  * basic inscriber process for recipes
@@ -20,6 +23,7 @@ import net.minecraft.item.ItemStack;
  * @since rv0
  */
 public abstract class InscriberProcess implements ICraftHandler, IWebsiteSerializer {
+
     @Nullable
     private IIngredient imprintable;
 

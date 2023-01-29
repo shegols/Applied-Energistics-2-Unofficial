@@ -1,35 +1,30 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.transformer.asm;
 
-import appeng.helpers.Reflected;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import java.net.URL;
 import java.net.URLConnection;
+
 import net.minecraft.launchwrapper.IClassTransformer;
 import net.minecraft.launchwrapper.LaunchClassLoader;
+
 import org.apache.logging.log4j.Level;
 
+import appeng.helpers.Reflected;
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+
 /*
- * It is a ClassTransformer which can transformer the older AE2 api class that some addons including,
- * which can occur the crash due to java.lang.NoSuchMethodError.
- * See also : https://github.com/xsun2001/Applied-Energistics-2-Unofficial/issues/1
+ * It is a ClassTransformer which can transformer the older AE2 api class that some addons including, which can occur
+ * the crash due to java.lang.NoSuchMethodError. See also :
+ * https://github.com/xsun2001/Applied-Energistics-2-Unofficial/issues/1
  */
 @Reflected
 public class ApiRepairer implements IClassTransformer {

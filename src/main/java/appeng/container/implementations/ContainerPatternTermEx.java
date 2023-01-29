@@ -3,16 +3,9 @@ package appeng.container.implementations;
 import static appeng.container.implementations.ContainerPatternTerm.canDoubleStacks;
 import static appeng.container.implementations.ContainerPatternTerm.doubleStacksInternal;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.IDefinitions;
-import appeng.api.storage.ITerminalHost;
-import appeng.container.guisync.GuiSync;
-import appeng.container.slot.*;
-import appeng.helpers.IContainerCraftingPacket;
-import appeng.parts.reporting.PartPatternTerminalEx;
-import appeng.util.Platform;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
@@ -23,8 +16,18 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import appeng.api.AEApi;
+import appeng.api.definitions.IDefinitions;
+import appeng.api.storage.ITerminalHost;
+import appeng.container.guisync.GuiSync;
+import appeng.container.slot.*;
+import appeng.helpers.IContainerCraftingPacket;
+import appeng.parts.reporting.PartPatternTerminalEx;
+import appeng.util.Platform;
+
 public class ContainerPatternTermEx extends ContainerMEMonitorable
         implements IOptionalSlotHost, IContainerCraftingPacket {
+
     private static final int CRAFTING_GRID_PAGES = 2;
     private static final int CRAFTING_GRID_WIDTH = 4;
     private static final int CRAFTING_GRID_HEIGHT = 4;
@@ -35,15 +38,8 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
         private static final int POSITION_SHIFT = 9000;
         private boolean hidden = false;
 
-        public ProcessingSlotFake(
-                IInventory inv,
-                IOptionalSlotHost containerBus,
-                int idx,
-                int x,
-                int y,
-                int offX,
-                int offY,
-                int groupNum) {
+        public ProcessingSlotFake(IInventory inv, IOptionalSlotHost containerBus, int idx, int x, int y, int offX,
+                int offY, int groupNum) {
             super(inv, containerBus, idx, x, y, offX, offY, groupNum);
             this.setRenderDisabled(false);
         }
@@ -58,8 +54,8 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
 
     private final PartPatternTerminalEx patternTerminal;
 
-    private final ProcessingSlotFake[] craftingSlots =
-            new ProcessingSlotFake[CRAFTING_GRID_SLOTS * CRAFTING_GRID_PAGES];
+    private final ProcessingSlotFake[] craftingSlots = new ProcessingSlotFake[CRAFTING_GRID_SLOTS
+            * CRAFTING_GRID_PAGES];
     private final ProcessingSlotFake[] outputSlots = new ProcessingSlotFake[CRAFTING_GRID_SLOTS * CRAFTING_GRID_PAGES];
 
     private final SlotRestrictedInput patternSlotIN;
@@ -89,8 +85,8 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
             for (int y = 0; y < CRAFTING_GRID_HEIGHT; y++) {
                 for (int x = 0; x < CRAFTING_GRID_WIDTH; x++) {
                     this.addSlotToContainer(
-                            this.craftingSlots[x + y * CRAFTING_GRID_WIDTH + page * CRAFTING_GRID_SLOTS] =
-                                    new ProcessingSlotFake(
+                            this.craftingSlots[x + y * CRAFTING_GRID_WIDTH
+                                    + page * CRAFTING_GRID_SLOTS] = new ProcessingSlotFake(
                                             crafting,
                                             this,
                                             x + y * CRAFTING_GRID_WIDTH + page * CRAFTING_GRID_SLOTS,
@@ -105,8 +101,8 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
             for (int x = 0; x < CRAFTING_GRID_WIDTH; x++) {
                 for (int y = 0; y < CRAFTING_GRID_HEIGHT; y++) {
                     this.addSlotToContainer(
-                            this.outputSlots[x * CRAFTING_GRID_HEIGHT + y + page * CRAFTING_GRID_SLOTS] =
-                                    new ProcessingSlotFake(
+                            this.outputSlots[x * CRAFTING_GRID_HEIGHT + y
+                                    + page * CRAFTING_GRID_SLOTS] = new ProcessingSlotFake(
                                             output,
                                             this,
                                             x * CRAFTING_GRID_HEIGHT + y + page * CRAFTING_GRID_SLOTS,
@@ -185,12 +181,8 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
             }
 
             // add a new encoded pattern.
-            for (final ItemStack encodedPatternStack : AEApi.instance()
-                    .definitions()
-                    .items()
-                    .encodedPattern()
-                    .maybeStack(1)
-                    .asSet()) {
+            for (final ItemStack encodedPatternStack : AEApi.instance().definitions().items().encodedPattern()
+                    .maybeStack(1).asSet()) {
                 output = encodedPatternStack;
                 this.patternSlotOUT.putStack(output);
             }
@@ -313,10 +305,10 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
         for (int page = 0; page < CRAFTING_GRID_PAGES; page++) {
             for (int y = 0; y < CRAFTING_GRID_HEIGHT; y++) {
                 for (int x = 0; x < CRAFTING_GRID_WIDTH; x++) {
-                    this.craftingSlots[x + y * CRAFTING_GRID_WIDTH + page * CRAFTING_GRID_SLOTS].setHidden(
-                            page != activePage || x > 0 && inverted);
-                    this.outputSlots[x * CRAFTING_GRID_HEIGHT + y + page * CRAFTING_GRID_SLOTS].setHidden(
-                            page != activePage || x > 0 && !inverted);
+                    this.craftingSlots[x + y * CRAFTING_GRID_WIDTH + page * CRAFTING_GRID_SLOTS]
+                            .setHidden(page != activePage || x > 0 && inverted);
+                    this.outputSlots[x * CRAFTING_GRID_HEIGHT + y + page * CRAFTING_GRID_SLOTS]
+                            .setHidden(page != activePage || x > 0 && !inverted);
                 }
             }
         }

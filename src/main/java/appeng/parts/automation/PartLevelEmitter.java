@@ -1,22 +1,31 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.automation;
+
+import java.util.Collection;
+import java.util.Random;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.config.*;
 import appeng.api.networking.IGridNode;
@@ -56,29 +65,9 @@ import appeng.tile.inventory.InvOperation;
 import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Collection;
-import java.util.Random;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class PartLevelEmitter extends PartUpgradeable
-        implements IEnergyWatcherHost,
-                IStackWatcherHost,
-                ICraftingWatcherHost,
-                IMEMonitorHandlerReceiver<IAEItemStack>,
-                ICraftingProvider,
-                IGridTickable {
+public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherHost, IStackWatcherHost,
+        ICraftingWatcherHost, IMEMonitorHandlerReceiver<IAEItemStack>, ICraftingProvider, IGridTickable {
 
     private static final int FLAG_ON = 8;
 
@@ -167,10 +156,9 @@ public class PartLevelEmitter extends PartUpgradeable
             return this.prevState;
         }
 
-        final boolean flipState =
-                this.getConfigManager().getSetting(Settings.REDSTONE_EMITTER) == RedstoneMode.LOW_SIGNAL;
-        return flipState
-                ? this.reportingValue >= this.lastReportedValue + 1
+        final boolean flipState = this.getConfigManager().getSetting(Settings.REDSTONE_EMITTER)
+                == RedstoneMode.LOW_SIGNAL;
+        return flipState ? this.reportingValue >= this.lastReportedValue + 1
                 : this.reportingValue < this.lastReportedValue + 1;
     }
 
@@ -217,10 +205,7 @@ public class PartLevelEmitter extends PartUpgradeable
         }
 
         try {
-            this.getProxy()
-                    .getGrid()
-                    .postEvent(new MENetworkCraftingPatternChange(
-                            this, this.getProxy().getNode()));
+            this.getProxy().getGrid().postEvent(new MENetworkCraftingPatternChange(this, this.getProxy().getNode()));
         } catch (final GridAccessException e1) {
             // :/
         }
@@ -254,10 +239,7 @@ public class PartLevelEmitter extends PartUpgradeable
 
         try {
             if (this.getInstalledUpgrades(Upgrades.FUZZY) > 0 || myStack == null) {
-                this.getProxy()
-                        .getStorage()
-                        .getItemInventory()
-                        .addListener(this, this.getProxy().getGrid());
+                this.getProxy().getStorage().getItemInventory().addListener(this, this.getProxy().getGrid());
             } else {
                 this.getProxy().getStorage().getItemInventory().removeListener(this);
 
@@ -306,14 +288,9 @@ public class PartLevelEmitter extends PartUpgradeable
     }
 
     @Override
-    public void onStackChange(
-            final IItemList o,
-            final IAEStack fullStack,
-            final IAEStack diffStack,
-            final BaseActionSource src,
-            final StorageChannel chan) {
-        if (chan == StorageChannel.ITEMS
-                && fullStack.equals(this.config.getAEStackInSlot(0))
+    public void onStackChange(final IItemList o, final IAEStack fullStack, final IAEStack diffStack,
+            final BaseActionSource src, final StorageChannel chan) {
+        if (chan == StorageChannel.ITEMS && fullStack.equals(this.config.getAEStackInSlot(0))
                 && this.getInstalledUpgrades(Upgrades.FUZZY) == 0) {
             this.lastReportedValue = fullStack.getStackSize();
             this.updateState();
@@ -366,9 +343,7 @@ public class PartLevelEmitter extends PartUpgradeable
     }
 
     @Override
-    public void postChange(
-            final IBaseMonitor<IAEItemStack> monitor,
-            final Iterable<IAEItemStack> change,
+    public void postChange(final IBaseMonitor<IAEItemStack> monitor, final Iterable<IAEItemStack> change,
             final BaseActionSource actionSource) {
         if (canDoWork()) {
             if (delayedUpdatesQueued) {
@@ -613,8 +588,8 @@ public class PartLevelEmitter extends PartUpgradeable
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x, final int y, final int z, final IPartRenderHelper rh, final RenderBlocks renderer) {
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {
         rh.setTexture(this.getItemStack().getIconIndex());
         // rh.setTexture( CableBusTextures.ItemPartLevelEmitterOn.getIcon() );
 
@@ -627,8 +602,7 @@ public class PartLevelEmitter extends PartUpgradeable
         renderer.renderAllFaces = true;
 
         final Tessellator tess = Tessellator.instance;
-        tess.setBrightness(rh.getBlock()
-                .getMixedBrightnessForBlock(this.getHost().getTile().getWorldObj(), x, y, z));
+        tess.setBrightness(rh.getBlock().getMixedBrightnessForBlock(this.getHost().getTile().getWorldObj(), x, y, z));
         tess.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
         this.renderTorchAtAngle(x, y, z);
@@ -689,12 +663,8 @@ public class PartLevelEmitter extends PartUpgradeable
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removedStack,
-            final ItemStack newStack) {
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         if (inv == this.config) {
             this.configureWatchers();
         }

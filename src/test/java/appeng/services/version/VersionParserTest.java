@@ -2,13 +2,15 @@ package appeng.services.version;
 
 import static org.junit.Assert.*;
 
-import appeng.services.version.exceptions.*;
 import org.junit.Test;
+
+import appeng.services.version.exceptions.*;
 
 /**
  * Tests for {@link VersionParser}
  */
 public final class VersionParserTest {
+
     private static final String GITHUB_VERSION = "rv2.beta.8";
     private static final String GITHUB_INVALID_REVISION = "2.beta.8";
     private static final String GITHUB_INVALID_CHANNEL = "rv2.gamma.8";

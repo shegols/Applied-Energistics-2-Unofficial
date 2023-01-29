@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.integration.modules;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IBlockDefinition;
@@ -32,11 +30,8 @@ import appeng.integration.modules.BCHelpers.AEGenericSchematicTile;
 import appeng.integration.modules.BCHelpers.AERotatableBlockSchematic;
 import buildcraft.api.blueprints.BuilderAPI;
 import buildcraft.api.blueprints.ISchematicRegistry;
+
 import com.google.common.base.Optional;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
 /**
  * The builder has no interface, because it provides no functionality
@@ -47,6 +42,7 @@ import net.minecraft.item.ItemStack;
  */
 @Reflected
 public class BuildCraftBuilder implements IIntegrationModule {
+
     @Reflected
     public static BuildCraftBuilder instance;
 
@@ -86,8 +82,7 @@ public class BuildCraftBuilder implements IIntegrationModule {
                 }
 
                 final Block block = maybeBlock.get();
-                if (block instanceof IOrientableBlock
-                        && ((IOrientableBlock) block).usesMetadata()
+                if (block instanceof IOrientableBlock && ((IOrientableBlock) block).usesMetadata()
                         && !(def instanceof ITileDefinition)) {
                     schematicRegistry.registerSchematicBlock(block, AERotatableBlockSchematic.class);
                 } else if (maybeMultiPart.isSameAs(new ItemStack(block))) {

@@ -1,22 +1,29 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core;
+
+import java.io.File;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.oredict.RecipeSorter.Category;
 
 import appeng.api.AEApi;
 import appeng.api.IAppEngApi;
@@ -68,27 +75,18 @@ import appeng.tile.AEBaseTile;
 import appeng.util.Platform;
 import appeng.worldgen.MeteoriteWorldGen;
 import appeng.worldgen.QuartzWorldGen;
+
 import com.google.common.base.Preconditions;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
-import java.io.File;
-import javax.annotation.Nonnull;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
 
 public final class Registration {
+
     private final RecipeHandler recipeHandler;
     private final DefinitionConverter converter;
     private BiomeGenBase storageBiome;
@@ -133,8 +131,7 @@ public final class Registration {
         this.assignItems(items, apiItems);
 
         // Register all detected handlers and features (items, blocks) in pre-init
-        for (final IFeatureHandler handler :
-                definitions.getFeatureHandlerRegistry().getRegisteredFeatureHandlers()) {
+        for (final IFeatureHandler handler : definitions.getFeatureHandlerRegistry().getRegisteredFeatureHandlers()) {
             handler.register();
         }
 
@@ -174,8 +171,8 @@ public final class Registration {
         if (config.storageProviderID == -1 && force) {
             config.storageProviderID = -11;
 
-            while (!DimensionManager.registerProviderType(
-                    config.storageProviderID, StorageWorldProvider.class, false)) {
+            while (!DimensionManager
+                    .registerProviderType(config.storageProviderID, StorageWorldProvider.class, false)) {
                 config.storageProviderID--;
             }
 
@@ -464,9 +461,7 @@ public final class Registration {
         target.itemLumenPaintBall = source.coloredLumenPaintBall();
     }
 
-    void initialize(
-            @Nonnull final FMLInitializationEvent event,
-            @Nonnull final File recipeDirectory,
+    void initialize(@Nonnull final FMLInitializationEvent event, @Nonnull final File recipeDirectory,
             @Nonnull final CustomRecipeConfig customRecipeConfig) {
         Preconditions.checkNotNull(event);
         Preconditions.checkNotNull(recipeDirectory);
@@ -484,9 +479,10 @@ public final class Registration {
         recipeLoader.run();
 
         partHelper.registerNewLayer(
-                "appeng.parts.layers.LayerISidedInventory", "net.minecraft.inventory.ISidedInventory");
-        partHelper.registerNewLayer(
-                "appeng.parts.layers.LayerIFluidHandler", "net.minecraftforge.fluids.IFluidHandler");
+                "appeng.parts.layers.LayerISidedInventory",
+                "net.minecraft.inventory.ISidedInventory");
+        partHelper
+                .registerNewLayer("appeng.parts.layers.LayerIFluidHandler", "net.minecraftforge.fluids.IFluidHandler");
         partHelper.registerNewLayer(
                 "appeng.parts.layers.LayerITileStorageMonitorable",
                 "appeng.api.implementations.tiles.ITileStorageMonitorable");
@@ -513,8 +509,7 @@ public final class Registration {
         registries.cell().addCellHandler(new BasicCellHandler());
         registries.cell().addCellHandler(new CreativeCellHandler());
 
-        for (final ItemStack ammoStack :
-                api.definitions().materials().matterBall().maybeStack(1).asSet()) {
+        for (final ItemStack ammoStack : api.definitions().materials().matterBall().maybeStack(1).asSet()) {
             final double weight = 32;
 
             registries.matterCannon().registerAmmo(ammoStack, weight);
@@ -522,8 +517,9 @@ public final class Registration {
 
         this.recipeHandler.injectRecipes();
 
-        final PlayerStatsRegistration registration =
-                new PlayerStatsRegistration(FMLCommonHandler.instance().bus(), AEConfig.instance);
+        final PlayerStatsRegistration registration = new PlayerStatsRegistration(
+                FMLCommonHandler.instance().bus(),
+                AEConfig.instance);
         registration.registerAchievementHandlers();
         registration.registerAchievements();
 
@@ -539,7 +535,10 @@ public final class Registration {
         if (AEConfig.instance.isFeatureEnabled(AEFeature.EnableFacadeCrafting)) {
             GameRegistry.addRecipe(new FacadeRecipe());
             RecipeSorter.register(
-                    "appliedenergistics2:facade", FacadeRecipe.class, Category.SHAPED, "after:minecraft:shaped");
+                    "appliedenergistics2:facade",
+                    FacadeRecipe.class,
+                    Category.SHAPED,
+                    "after:minecraft:shaped");
         }
     }
 
@@ -661,8 +660,7 @@ public final class Registration {
         // Inscriber
         Upgrades.SPEED.registerItem(blocks.inscriber(), 3);
 
-        for (final Item wirelessTerminalItem :
-                items.wirelessTerminal().maybeItem().asSet()) {
+        for (final Item wirelessTerminalItem : items.wirelessTerminal().maybeItem().asSet()) {
             registries.wireless().registerWirelessHandler((IWirelessTermHandler) wirelessTerminalItem);
         }
 
@@ -671,12 +669,10 @@ public final class Registration {
 
             final IMaterials materials = definitions.materials();
 
-            for (final ItemStack crystal :
-                    materials.certusQuartzCrystal().maybeStack(1).asSet()) {
+            for (final ItemStack crystal : materials.certusQuartzCrystal().maybeStack(1).asSet()) {
                 d.addItem(new WeightedRandomChestContent(crystal, 1, 4, 2));
             }
-            for (final ItemStack dust :
-                    materials.certusQuartzDust().maybeStack(1).asSet()) {
+            for (final ItemStack dust : materials.certusQuartzDust().maybeStack(1).asSet()) {
                 d.addItem(new WeightedRandomChestContent(dust, 1, 4, 2));
             }
         }

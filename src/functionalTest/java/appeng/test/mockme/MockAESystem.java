@@ -1,5 +1,14 @@
 package appeng.test.mockme;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
+
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.networking.crafting.ICraftingGrid;
@@ -17,15 +26,9 @@ import appeng.me.cache.GridStorageCache;
 import appeng.me.storage.MEPassThrough;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
 
 public class MockAESystem implements ICellProvider {
+
     public final World world;
     public final MockGrid grid = new MockGrid();
     public final BaseActionSource dummyActionSource = new BaseActionSource();
@@ -44,7 +47,9 @@ public class MockAESystem implements ICellProvider {
         final IAEItemStack aeStack = AEItemStack.create(stack);
         this.itemStorage.injectItems(aeStack, Actionable.MODULATE, dummyActionSource);
         this.sgCache.postAlterationOfStoredItems(
-                StorageChannel.ITEMS, Collections.singletonList(aeStack), dummyActionSource);
+                StorageChannel.ITEMS,
+                Collections.singletonList(aeStack),
+                dummyActionSource);
         return this;
     }
 
@@ -67,6 +72,7 @@ public class MockAESystem implements ICellProvider {
     }
 
     public class PatternBuilder {
+
         public final boolean isCrafting;
         public final List<ItemStack> inputs = new ArrayList<>(9);
         public final List<ItemStack> outputs = new ArrayList<>(9);
@@ -108,11 +114,7 @@ public class MockAESystem implements ICellProvider {
         }
 
         public void buildAndAdd() {
-            final ItemStack encodedPattern = AEApi.instance()
-                    .definitions()
-                    .items()
-                    .encodedPattern()
-                    .maybeStack(1)
+            final ItemStack encodedPattern = AEApi.instance().definitions().items().encodedPattern().maybeStack(1)
                     .get();
             final NBTTagCompound patternTags = new NBTTagCompound();
             patternTags.setBoolean("crafting", isCrafting);
@@ -145,8 +147,9 @@ public class MockAESystem implements ICellProvider {
 
     // Simulated inventories
     private final MECraftingInventory itemStorage = new MECraftingInventory();
-    private final IMEInventoryHandler<IAEItemStack> storageHandler =
-            new MEPassThrough<>(itemStorage, StorageChannel.ITEMS);
+    private final IMEInventoryHandler<IAEItemStack> storageHandler = new MEPassThrough<>(
+            itemStorage,
+            StorageChannel.ITEMS);
 
     @Override
     public List<IMEInventoryHandler> getCellArray(StorageChannel channel) {

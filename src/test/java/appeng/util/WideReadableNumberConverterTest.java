@@ -12,6 +12,7 @@ import org.junit.Test;
  * @since rv2
  */
 public final class WideReadableNumberConverterTest {
+
     private static final long NUMBER_NEG_999999 = -999999L;
     private static final String RESULT_NEG_999999 = "-0M";
 

@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
+
+import java.util.EnumSet;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.util.AEColor;
@@ -28,14 +30,6 @@ import appeng.client.render.BusRenderer;
 import appeng.client.texture.ExtraBlockTextures;
 import appeng.tile.crafting.TileCraftingMonitorTile;
 import appeng.tile.crafting.TileCraftingTile;
-import java.util.EnumSet;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class RenderBlockCraftingCPU<B extends BlockCraftingUnit, T extends TileCraftingTile>
         extends BaseBlockRender<B, T> {
@@ -49,8 +43,8 @@ public class RenderBlockCraftingCPU<B extends BlockCraftingUnit, T extends TileC
     }
 
     @Override
-    public boolean renderInWorld(
-            final B blk, final IBlockAccess w, final int x, final int y, final int z, RenderBlocks renderer) {
+    public boolean renderInWorld(final B blk, final IBlockAccess w, final int x, final int y, final int z,
+            RenderBlocks renderer) {
         final TileCraftingTile craftingTile = blk.getTileEntity(w, x, y, z);
 
         if (craftingTile == null) {
@@ -65,11 +59,7 @@ public class RenderBlockCraftingCPU<B extends BlockCraftingUnit, T extends TileC
         IIcon nonForward = theIcon;
 
         if (isMonitor) {
-            for (final Block craftingBlock : AEApi.instance()
-                    .definitions()
-                    .blocks()
-                    .craftingUnit()
-                    .maybeBlock()
+            for (final Block craftingBlock : AEApi.instance().definitions().blocks().craftingUnit().maybeBlock()
                     .asSet()) {
                 nonForward = craftingBlock.getIcon(0, meta | (formed ? 8 : 0));
             }
@@ -153,8 +143,8 @@ public class RenderBlockCraftingCPU<B extends BlockCraftingUnit, T extends TileC
         }
     }
 
-    private boolean isConnected(
-            final IBlockAccess w, final int x, final int y, final int z, final ForgeDirection side) {
+    private boolean isConnected(final IBlockAccess w, final int x, final int y, final int z,
+            final ForgeDirection side) {
         final int tileYPos = y + side.offsetY;
 
         if (0 <= tileYPos && tileYPos <= 255) {
@@ -166,18 +156,9 @@ public class RenderBlockCraftingCPU<B extends BlockCraftingUnit, T extends TileC
         }
     }
 
-    private void renderCorner(
-            final BusRenderHelper i,
-            final RenderBlocks renderer,
-            final IBlockAccess w,
-            final int x,
-            final int y,
-            final int z,
-            final ForgeDirection up,
-            final ForgeDirection east,
-            final ForgeDirection south) {
-        if (this.isConnected(w, x, y, z, up)
-                || this.isConnected(w, x, y, z, east)
+    private void renderCorner(final BusRenderHelper i, final RenderBlocks renderer, final IBlockAccess w, final int x,
+            final int y, final int z, final ForgeDirection up, final ForgeDirection east, final ForgeDirection south) {
+        if (this.isConnected(w, x, y, z, up) || this.isConnected(w, x, y, z, east)
                 || this.isConnected(w, x, y, z, south)) {
             return;
         }
@@ -204,19 +185,9 @@ public class RenderBlockCraftingCPU<B extends BlockCraftingUnit, T extends TileC
         return def;
     }
 
-    private void handleSide(
-            final B blk,
-            final int meta,
-            final int x,
-            final int y,
-            final int z,
-            final BusRenderHelper i,
-            final RenderBlocks renderer,
-            final IIcon color,
-            final boolean emitsLight,
-            final boolean isMonitor,
-            final ForgeDirection side,
-            final IBlockAccess w) {
+    private void handleSide(final B blk, final int meta, final int x, final int y, final int z, final BusRenderHelper i,
+            final RenderBlocks renderer, final IIcon color, final boolean emitsLight, final boolean isMonitor,
+            final ForgeDirection side, final IBlockAccess w) {
         if (this.isConnected(w, x, y, z, side)) {
             return;
         }
@@ -241,7 +212,10 @@ public class RenderBlockCraftingCPU<B extends BlockCraftingUnit, T extends TileC
                 if (!emitsLight) {
                     if (color == ExtraBlockTextures.BlockCraftingMonitorFit_Light.getIcon()) {
                         final int b = w.getLightBrightnessForSkyBlocks(
-                                x + side.offsetX, y + side.offsetY, z + side.offsetZ, 0);
+                                x + side.offsetX,
+                                y + side.offsetY,
+                                z + side.offsetZ,
+                                0);
 
                         final TileCraftingMonitorTile sr = blk.getTileEntity(w, x, y, z);
                         final AEColor col = sr.getColor();
@@ -252,11 +226,21 @@ public class RenderBlockCraftingCPU<B extends BlockCraftingUnit, T extends TileC
 
                         Tessellator.instance.setColorOpaque_I(col.mediumVariant);
                         i.renderFace(
-                                x, y, z, ExtraBlockTextures.BlockCraftingMonitorFit_Medium.getIcon(), side, renderer);
+                                x,
+                                y,
+                                z,
+                                ExtraBlockTextures.BlockCraftingMonitorFit_Medium.getIcon(),
+                                side,
+                                renderer);
 
                         Tessellator.instance.setColorOpaque_I(col.blackVariant);
                         i.renderFace(
-                                x, y, z, ExtraBlockTextures.BlockCraftingMonitorFit_Dark.getIcon(), side, renderer);
+                                x,
+                                y,
+                                z,
+                                ExtraBlockTextures.BlockCraftingMonitorFit_Dark.getIcon(),
+                                side,
+                                renderer);
                     } else {
                         i.renderBlockCurrentBounds(x, y, z, renderer);
                     }
@@ -272,12 +256,22 @@ public class RenderBlockCraftingCPU<B extends BlockCraftingUnit, T extends TileC
                         Tessellator.instance.setColorOpaque_I(col.mediumVariant);
                         Tessellator.instance.setBrightness(13 << 20 | 13 << 4);
                         i.renderFace(
-                                x, y, z, ExtraBlockTextures.BlockCraftingMonitorFit_Medium.getIcon(), side, renderer);
+                                x,
+                                y,
+                                z,
+                                ExtraBlockTextures.BlockCraftingMonitorFit_Medium.getIcon(),
+                                side,
+                                renderer);
 
                         Tessellator.instance.setColorOpaque_I(col.blackVariant);
                         Tessellator.instance.setBrightness(13 << 20 | 13 << 4);
                         i.renderFace(
-                                x, y, z, ExtraBlockTextures.BlockCraftingMonitorFit_Dark.getIcon(), side, renderer);
+                                x,
+                                y,
+                                z,
+                                ExtraBlockTextures.BlockCraftingMonitorFit_Dark.getIcon(),
+                                side,
+                                renderer);
                     } else {
                         Tessellator.instance.setColorOpaque_F(1.0f, 1.0f, 1.0f);
                         Tessellator.instance.setBrightness(13 << 20 | 13 << 4);
@@ -292,11 +286,9 @@ public class RenderBlockCraftingCPU<B extends BlockCraftingUnit, T extends TileC
                 continue;
             }
 
-            if ((side.offsetX != 0 || side.offsetZ != 0)
-                    && (a == ForgeDirection.NORTH
-                            || a == ForgeDirection.EAST
-                            || a == ForgeDirection.WEST
-                            || a == ForgeDirection.SOUTH)) {
+            if ((side.offsetX != 0 || side.offsetZ != 0) && (a == ForgeDirection.NORTH || a == ForgeDirection.EAST
+                    || a == ForgeDirection.WEST
+                    || a == ForgeDirection.SOUTH)) {
                 i.setTexture(ExtraBlockTextures.BlockCraftingUnitRingLongRotated.getIcon());
             } else if ((side.offsetY != 0) && (a == ForgeDirection.EAST || a == ForgeDirection.WEST)) {
                 i.setTexture(ExtraBlockTextures.BlockCraftingUnitRingLongRotated.getIcon());

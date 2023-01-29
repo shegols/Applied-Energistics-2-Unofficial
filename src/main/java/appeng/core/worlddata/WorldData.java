@@ -1,48 +1,44 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.worlddata;
 
-import appeng.core.AEConfig;
-import appeng.services.CompassService;
-import appeng.services.compass.CompassThreadFactory;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.ThreadFactory;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
+
+import appeng.core.AEConfig;
+import appeng.services.CompassService;
+import appeng.services.compass.CompassThreadFactory;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 
 /**
  * Singleton access to anything related to world-based data.
  * <p>
  * Data will change depending which world is loaded. Will probably not affect SMP at all since only one world is loaded,
- * but SSP more, cause they play on
- * different worlds.
+ * but SSP more, cause they play on different worlds.
  *
  * @author thatsIch
  * @version rv3 - 02.11.2015
  * @since rv3 30.05.2015
  */
 public final class WorldData implements IWorldData {
+
     private static final String AE2_DIRECTORY_NAME = "AE2";
     private static final String SETTING_FILE_NAME = "settings.cfg";
     private static final String SPAWNDATA_DIR_NAME = "spawndata";

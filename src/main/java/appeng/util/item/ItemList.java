@@ -1,34 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.util.item;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
+
+import net.minecraftforge.oredict.OreDictionary;
+
 import appeng.api.config.FuzzyMode;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
-import java.util.*;
-import java.util.concurrent.ConcurrentSkipListMap;
-import net.minecraftforge.oredict.OreDictionary;
 
 public final class ItemList implements IItemList<IAEItemStack> {
 
-    private final NavigableMap<IAEItemStack, IAEItemStack> records =
-            new ConcurrentSkipListMap<IAEItemStack, IAEItemStack>();
+    private final NavigableMap<IAEItemStack, IAEItemStack> records = new ConcurrentSkipListMap<IAEItemStack, IAEItemStack>();
 
     @Override
     public void add(final IAEItemStack option) {
@@ -71,14 +64,17 @@ public final class ItemList implements IItemList<IAEItemStack> {
             if (or.getAEEquivalents().size() == 1) {
                 final IAEItemStack is = or.getAEEquivalents().get(0);
 
-                return this.findFuzzyDamage(
-                        (AEItemStack) is, fuzzy, is.getItemDamage() == OreDictionary.WILDCARD_VALUE);
+                return this
+                        .findFuzzyDamage((AEItemStack) is, fuzzy, is.getItemDamage() == OreDictionary.WILDCARD_VALUE);
             } else {
                 final Collection<IAEItemStack> output = new LinkedList<IAEItemStack>();
 
                 for (final IAEItemStack is : or.getAEEquivalents()) {
-                    output.addAll(this.findFuzzyDamage(
-                            (AEItemStack) is, fuzzy, is.getItemDamage() == OreDictionary.WILDCARD_VALUE));
+                    output.addAll(
+                            this.findFuzzyDamage(
+                                    (AEItemStack) is,
+                                    fuzzy,
+                                    is.getItemDamage() == OreDictionary.WILDCARD_VALUE));
                 }
 
                 return output;
@@ -112,8 +108,8 @@ public final class ItemList implements IItemList<IAEItemStack> {
     }
 
     /*
-     * public void clean() { Iterator<StackType> i = iterator(); while (i.hasNext()) { StackType AEI =
-     * i.next(); if ( !AEI.isMeaningful() ) i.remove(); } }
+     * public void clean() { Iterator<StackType> i = iterator(); while (i.hasNext()) { StackType AEI = i.next(); if (
+     * !AEI.isMeaningful() ) i.remove(); } }
      */
 
     @Override
@@ -191,8 +187,8 @@ public final class ItemList implements IItemList<IAEItemStack> {
         return this.records.put(itemStack, itemStack);
     }
 
-    private Collection<IAEItemStack> findFuzzyDamage(
-            final AEItemStack filter, final FuzzyMode fuzzy, final boolean ignoreMeta) {
+    private Collection<IAEItemStack> findFuzzyDamage(final AEItemStack filter, final FuzzyMode fuzzy,
+            final boolean ignoreMeta) {
         final IAEItemStack low = filter.getLow(fuzzy, ignoreMeta);
         final IAEItemStack high = filter.getHigh(fuzzy, ignoreMeta);
 

@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import java.io.IOException;
+import java.nio.BufferOverflowException;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -50,16 +55,6 @@ import appeng.me.helpers.ChannelPowerSrc;
 import appeng.util.ConfigManager;
 import appeng.util.IConfigManagerHost;
 import appeng.util.Platform;
-import java.io.IOException;
-import java.nio.BufferOverflowException;
-import javax.annotation.Nonnull;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ContainerMEMonitorable extends AEBaseContainer
         implements IConfigManagerHost, IConfigurableObject, IMEMonitorHandlerReceiver<IAEItemStack> {
@@ -84,8 +79,8 @@ public class ContainerMEMonitorable extends AEBaseContainer
         this(ip, monitorable, true);
     }
 
-    protected ContainerMEMonitorable(
-            final InventoryPlayer ip, final ITerminalHost monitorable, final boolean bindInventory) {
+    protected ContainerMEMonitorable(final InventoryPlayer ip, final ITerminalHost monitorable,
+            final boolean bindInventory) {
         super(
                 ip,
                 monitorable instanceof TileEntity ? (TileEntity) monitorable : null,
@@ -117,8 +112,10 @@ public class ContainerMEMonitorable extends AEBaseContainer
                         this.networkNode = node;
                         final IGrid g = node.getGrid();
                         if (g != null) {
-                            this.setPowerSource(new ChannelPowerSrc(
-                                    this.networkNode, (IEnergySource) g.getCache(IEnergyGrid.class)));
+                            this.setPowerSource(
+                                    new ChannelPowerSrc(
+                                            this.networkNode,
+                                            (IEnergySource) g.getCache(IEnergyGrid.class)));
                         }
                     }
                 }
@@ -169,7 +166,8 @@ public class ContainerMEMonitorable extends AEBaseContainer
                     for (final Object crafter : this.crafters) {
                         try {
                             NetworkHandler.instance.sendTo(
-                                    new PacketValueConfig(set.name(), sideLocal.name()), (EntityPlayerMP) crafter);
+                                    new PacketValueConfig(set.name(), sideLocal.name()),
+                                    (EntityPlayerMP) crafter);
                         } catch (final IOException e) {
                             AELog.debug(e);
                         }
@@ -210,8 +208,8 @@ public class ContainerMEMonitorable extends AEBaseContainer
             this.updatePowerStatus();
 
             final boolean oldAccessible = this.canAccessViewCells;
-            this.canAccessViewCells =
-                    this.host instanceof WirelessTerminalGuiObject || this.hasAccess(SecurityPermissions.BUILD, false);
+            this.canAccessViewCells = this.host instanceof WirelessTerminalGuiObject
+                    || this.hasAccess(SecurityPermissions.BUILD, false);
             if (this.canAccessViewCells != oldAccessible) {
                 for (int y = 0; y < 5; y++) {
                     if (this.cellView[y] != null) {
@@ -305,9 +303,7 @@ public class ContainerMEMonitorable extends AEBaseContainer
     }
 
     @Override
-    public void postChange(
-            final IBaseMonitor<IAEItemStack> monitor,
-            final Iterable<IAEItemStack> change,
+    public void postChange(final IBaseMonitor<IAEItemStack> monitor, final Iterable<IAEItemStack> change,
             final BaseActionSource source) {
         for (final IAEItemStack is : change) {
             this.items.add(is);

@@ -1,22 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.block;
+
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.util.IOrientable;
 import appeng.api.util.IOrientableBlock;
@@ -29,15 +32,6 @@ import appeng.tile.AEBaseTile;
 import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class AEBaseItemBlock extends ItemBlock {
 
@@ -64,16 +58,13 @@ public class AEBaseItemBlock extends ItemBlock {
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("unchecked")
-    public final void addInformation(
-            final ItemStack itemStack, final EntityPlayer player, final List toolTip, final boolean advancedTooltips) {
+    public final void addInformation(final ItemStack itemStack, final EntityPlayer player, final List toolTip,
+            final boolean advancedTooltips) {
         this.addCheckedInformation(itemStack, player, toolTip, advancedTooltips);
     }
 
     @SideOnly(Side.CLIENT)
-    public void addCheckedInformation(
-            final ItemStack itemStack,
-            final EntityPlayer player,
-            final List<String> toolTip,
+    public void addCheckedInformation(final ItemStack itemStack, final EntityPlayer player, final List<String> toolTip,
             final boolean advancedToolTips) {
         this.blockType.addInformation(itemStack, player, toolTip, advancedToolTips);
     }
@@ -89,17 +80,8 @@ public class AEBaseItemBlock extends ItemBlock {
     }
 
     @Override
-    public boolean placeBlockAt(
-            final ItemStack stack,
-            final EntityPlayer player,
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ,
+    public boolean placeBlockAt(final ItemStack stack, final EntityPlayer player, final World w, final int x,
+            final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ,
             final int metadata) {
         ForgeDirection up = ForgeDirection.UNKNOWN;
         ForgeDirection forward = ForgeDirection.UNKNOWN;
@@ -174,11 +156,8 @@ public class AEBaseItemBlock extends ItemBlock {
                 }
 
                 if (ori.canBeRotated() && !this.blockType.hasCustomRotation()) {
-                    if (ori.getForward() == null
-                            || ori.getUp() == null
-                            || // null
-                            tile.getForward() == ForgeDirection.UNKNOWN
-                            || ori.getUp() == ForgeDirection.UNKNOWN) {
+                    if (ori.getForward() == null || ori.getUp() == null || // null
+                            tile.getForward() == ForgeDirection.UNKNOWN || ori.getUp() == ForgeDirection.UNKNOWN) {
                         ori.setOrientation(forward, up);
                     }
                 }

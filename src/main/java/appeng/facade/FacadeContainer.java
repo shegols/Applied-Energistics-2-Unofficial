@@ -1,22 +1,22 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.facade;
+
+import java.io.IOException;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.parts.IFacadeContainer;
@@ -28,12 +28,6 @@ import appeng.integration.abstraction.IBuildCraftTransport;
 import appeng.items.parts.ItemFacade;
 import appeng.parts.CableBusStorage;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class FacadeContainer implements IFacadeContainer {
 
@@ -116,20 +110,15 @@ public class FacadeContainer implements IFacadeContainer {
                 ids[0] = Math.abs(ids[0]);
 
                 if (isBC && IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.BuildCraftTransport)) {
-                    final IBuildCraftTransport bc = (IBuildCraftTransport)
-                            IntegrationRegistry.INSTANCE.getInstance(IntegrationType.BuildCraftTransport);
-                    final IFacadePart created =
-                            bc.createFacadePart((Block) Block.blockRegistry.getObjectById(ids[0]), ids[1], side);
+                    final IBuildCraftTransport bc = (IBuildCraftTransport) IntegrationRegistry.INSTANCE
+                            .getInstance(IntegrationType.BuildCraftTransport);
+                    final IFacadePart created = bc
+                            .createFacadePart((Block) Block.blockRegistry.getObjectById(ids[0]), ids[1], side);
                     changed = changed || this.storage.getFacade(x) == null;
 
                     this.storage.setFacade(x, created);
                 } else if (!isBC) {
-                    for (final Item facadeItem : AEApi.instance()
-                            .definitions()
-                            .items()
-                            .facade()
-                            .maybeItem()
-                            .asSet()) {
+                    for (final Item facadeItem : AEApi.instance().definitions().items().facade().maybeItem().asSet()) {
                         final ItemFacade ifa = (ItemFacade) facadeItem;
                         final ItemStack facade = ifa.createFromIDs(ids);
                         if (facade != null) {
@@ -159,11 +148,12 @@ public class FacadeContainer implements IFacadeContainer {
                     final Item i = is.getItem();
                     if (i instanceof IFacadeItem) {
                         this.storage.setFacade(
-                                x, ((IFacadeItem) i).createPartFromItemStack(is, ForgeDirection.getOrientation(x)));
+                                x,
+                                ((IFacadeItem) i).createPartFromItemStack(is, ForgeDirection.getOrientation(x)));
                     } else {
                         if (IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.BuildCraftTransport)) {
-                            final IBuildCraftTransport bc = (IBuildCraftTransport)
-                                    IntegrationRegistry.INSTANCE.getInstance(IntegrationType.BuildCraftTransport);
+                            final IBuildCraftTransport bc = (IBuildCraftTransport) IntegrationRegistry.INSTANCE
+                                    .getInstance(IntegrationType.BuildCraftTransport);
                             if (bc.isFacade(is)) {
                                 this.storage.setFacade(x, bc.createFacadePart(is, ForgeDirection.getOrientation(x)));
                             }

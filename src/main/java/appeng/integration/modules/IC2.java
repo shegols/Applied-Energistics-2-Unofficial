@@ -1,22 +1,18 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.integration.modules;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
 
 import appeng.api.AEApi;
 import appeng.api.IAppEngApi;
@@ -31,11 +27,9 @@ import appeng.integration.IntegrationType;
 import appeng.integration.abstraction.IIC2;
 import ic2.api.energy.tile.IEnergyTile;
 import ic2.api.recipe.RecipeInputItemStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
 
 public class IC2 implements IIC2, IIntegrationModule {
+
     @Reflected
     public static IC2 instance;
 
@@ -72,10 +66,9 @@ public class IC2 implements IIC2, IIntegrationModule {
         reg.addNewAttunement(this.getItem("splitterCableItem"), TunnelType.IC2_POWER);
 
         try {
-            AEApi.instance().registries().movable().whiteListTileEntity((Class<? extends TileEntity>)
-                    Class.forName("ic2.core.crop.TileEntityCrop"));
-        } catch (ClassNotFoundException ignored) {
-        }
+            AEApi.instance().registries().movable()
+                    .whiteListTileEntity((Class<? extends TileEntity>) Class.forName("ic2.core.crop.TileEntityCrop"));
+        } catch (ClassNotFoundException ignored) {}
         // this is gone?
         // AEApi.INSTANCE().registries().matterCannon().registerAmmo( getItem( "uraniumDrop" ), 238.0289 );
     }

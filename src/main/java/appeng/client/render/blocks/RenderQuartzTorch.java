@@ -1,28 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
 
-import appeng.api.util.IOrientable;
-import appeng.block.AEBaseBlock;
-import appeng.client.render.BaseBlockRender;
-import appeng.tile.AEBaseTile;
 import java.util.EnumSet;
+
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
@@ -31,6 +20,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.api.util.IOrientable;
+import appeng.block.AEBaseBlock;
+import appeng.client.render.BaseBlockRender;
+import appeng.tile.AEBaseTile;
+
 public class RenderQuartzTorch extends BaseBlockRender<AEBaseBlock, AEBaseTile> {
 
     public RenderQuartzTorch() {
@@ -38,12 +32,8 @@ public class RenderQuartzTorch extends BaseBlockRender<AEBaseBlock, AEBaseTile> 
     }
 
     @Override
-    public void renderInventory(
-            final AEBaseBlock blk,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final AEBaseBlock blk, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         final Tessellator tess = Tessellator.instance;
 
         final float Point3 = 7.0f / 16.0f;
@@ -57,7 +47,12 @@ public class RenderQuartzTorch extends BaseBlockRender<AEBaseBlock, AEBaseTile> 
         final float zOff = 0.0f;
 
         renderer.setRenderBounds(
-                Point3 + xOff, renderBottom + yOff, Point3 + zOff, Point12 + xOff, renderTop + yOff, Point12 + zOff);
+                Point3 + xOff,
+                renderBottom + yOff,
+                Point3 + zOff,
+                Point12 + xOff,
+                renderTop + yOff,
+                Point12 + zOff);
         this.renderInvBlock(EnumSet.allOf(ForgeDirection.class), blk, is, tess, 0xffffff, renderer);
 
         final float singlePixel = 1.0f / 16.0f;
@@ -88,19 +83,39 @@ public class RenderQuartzTorch extends BaseBlockRender<AEBaseBlock, AEBaseTile> 
         final float Point13 = 10.0f / 16.0f;
         final float Point2 = 6.0f / 16.0f;
         renderer.setRenderBounds(
-                Point2 + xOff, bottom + yOff, Point2 + zOff, Point13 + xOff, top + yOff, Point3 + zOff);
+                Point2 + xOff,
+                bottom + yOff,
+                Point2 + zOff,
+                Point13 + xOff,
+                top + yOff,
+                Point3 + zOff);
 
         this.renderInvBlock(EnumSet.allOf(ForgeDirection.class), blk, is, tess, 0xffffff, renderer);
         renderer.setRenderBounds(
-                Point2 + xOff, bottom + yOff, Point12 + zOff, Point13 + xOff, top + yOff, Point13 + zOff);
+                Point2 + xOff,
+                bottom + yOff,
+                Point12 + zOff,
+                Point13 + xOff,
+                top + yOff,
+                Point13 + zOff);
 
         this.renderInvBlock(EnumSet.allOf(ForgeDirection.class), blk, is, tess, 0xffffff, renderer);
         renderer.setRenderBounds(
-                Point2 + xOff, bottom + yOff, Point3 + zOff, Point3 + xOff, top + yOff, Point12 + zOff);
+                Point2 + xOff,
+                bottom + yOff,
+                Point3 + zOff,
+                Point3 + xOff,
+                top + yOff,
+                Point12 + zOff);
 
         this.renderInvBlock(EnumSet.allOf(ForgeDirection.class), blk, is, tess, 0xffffff, renderer);
         renderer.setRenderBounds(
-                Point12 + xOff, bottom + yOff, Point3 + zOff, Point13 + xOff, top + yOff, Point12 + zOff);
+                Point12 + xOff,
+                bottom + yOff,
+                Point3 + zOff,
+                Point13 + xOff,
+                top + yOff,
+                Point12 + zOff);
 
         this.renderInvBlock(EnumSet.allOf(ForgeDirection.class), blk, is, tess, 0xffffff, renderer);
 
@@ -109,13 +124,8 @@ public class RenderQuartzTorch extends BaseBlockRender<AEBaseBlock, AEBaseTile> 
     }
 
     @Override
-    public boolean renderInWorld(
-            final AEBaseBlock block,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer) {
+    public boolean renderInWorld(final AEBaseBlock block, final IBlockAccess world, final int x, final int y,
+            final int z, final RenderBlocks renderer) {
         final IOrientable te = block.getOrientable(world, x, y, z);
 
         float xOff = 0.0f;
@@ -136,7 +146,12 @@ public class RenderQuartzTorch extends BaseBlockRender<AEBaseBlock, AEBaseTile> 
         final float Point12 = 9.0f / 16.0f;
         final float Point3 = 7.0f / 16.0f;
         renderer.setRenderBounds(
-                Point3 + xOff, renderBottom + yOff, Point3 + zOff, Point12 + xOff, renderTop + yOff, Point12 + zOff);
+                Point3 + xOff,
+                renderBottom + yOff,
+                Point3 + zOff,
+                Point12 + xOff,
+                renderTop + yOff,
+                Point12 + zOff);
         super.renderInWorld(block, world, x, y, z, renderer);
 
         final int r = (x + y + z) % 2;
@@ -186,19 +201,39 @@ public class RenderQuartzTorch extends BaseBlockRender<AEBaseBlock, AEBaseTile> 
         final float Point13 = 10.0f / 16.0f;
         final float Point2 = 6.0f / 16.0f;
         renderer.setRenderBounds(
-                Point2 + xOff, bottom + yOff, Point2 + zOff, Point13 + xOff, top + yOff, Point3 + zOff);
+                Point2 + xOff,
+                bottom + yOff,
+                Point2 + zOff,
+                Point13 + xOff,
+                top + yOff,
+                Point3 + zOff);
         final boolean out = renderer.renderStandardBlock(block, x, y, z);
 
         renderer.setRenderBounds(
-                Point2 + xOff, bottom + yOff, Point12 + zOff, Point13 + xOff, top + yOff, Point13 + zOff);
+                Point2 + xOff,
+                bottom + yOff,
+                Point12 + zOff,
+                Point13 + xOff,
+                top + yOff,
+                Point13 + zOff);
         renderer.renderStandardBlock(block, x, y, z);
 
         renderer.setRenderBounds(
-                Point2 + xOff, bottom + yOff, Point3 + zOff, Point3 + xOff, top + yOff, Point12 + zOff);
+                Point2 + xOff,
+                bottom + yOff,
+                Point3 + zOff,
+                Point3 + xOff,
+                top + yOff,
+                Point12 + zOff);
         renderer.renderStandardBlock(block, x, y, z);
 
         renderer.setRenderBounds(
-                Point12 + xOff, bottom + yOff, Point3 + zOff, Point13 + xOff, top + yOff, Point12 + zOff);
+                Point12 + xOff,
+                bottom + yOff,
+                Point3 + zOff,
+                Point13 + xOff,
+                top + yOff,
+                Point12 + zOff);
         renderer.renderStandardBlock(block, x, y, z);
 
         if (te != null) {

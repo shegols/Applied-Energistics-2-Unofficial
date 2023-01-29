@@ -1,22 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.sync;
+
+import java.lang.reflect.Constructor;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.SecurityPermissions;
@@ -64,20 +67,14 @@ import appeng.tile.storage.TileDrive;
 import appeng.tile.storage.TileIOPort;
 import appeng.tile.storage.TileSkyChest;
 import appeng.util.Platform;
+
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import java.lang.reflect.Constructor;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public enum GuiBridge implements IGuiHandler {
+
     GUI_Handler(),
 
     GUI_GRINDER(ContainerGrinder.class, TileGrinder.class, GuiHostType.WORLD, null),
@@ -118,28 +115,28 @@ public enum GuiBridge implements IGuiHandler {
 
     GUI_STORAGEBUS(ContainerStorageBus.class, PartStorageBus.class, GuiHostType.WORLD, SecurityPermissions.BUILD),
 
-    GUI_FORMATION_PLANE(
-            ContainerFormationPlane.class, PartFormationPlane.class, GuiHostType.WORLD, SecurityPermissions.BUILD),
+    GUI_FORMATION_PLANE(ContainerFormationPlane.class, PartFormationPlane.class, GuiHostType.WORLD,
+            SecurityPermissions.BUILD),
 
     GUI_PRIORITY(ContainerPriority.class, IPriorityHost.class, GuiHostType.WORLD, SecurityPermissions.BUILD),
 
     GUI_SECURITY(ContainerSecurity.class, TileSecurity.class, GuiHostType.WORLD, SecurityPermissions.SECURITY),
 
-    GUI_CRAFTING_TERMINAL(
-            ContainerCraftingTerm.class, PartCraftingTerminal.class, GuiHostType.WORLD, SecurityPermissions.CRAFT),
+    GUI_CRAFTING_TERMINAL(ContainerCraftingTerm.class, PartCraftingTerminal.class, GuiHostType.WORLD,
+            SecurityPermissions.CRAFT),
 
-    GUI_PATTERN_TERMINAL(
-            ContainerPatternTerm.class, PartPatternTerminal.class, GuiHostType.WORLD, SecurityPermissions.CRAFT),
+    GUI_PATTERN_TERMINAL(ContainerPatternTerm.class, PartPatternTerminal.class, GuiHostType.WORLD,
+            SecurityPermissions.CRAFT),
 
-    GUI_PATTERN_TERMINAL_EX(
-            ContainerPatternTermEx.class, PartPatternTerminalEx.class, GuiHostType.WORLD, SecurityPermissions.CRAFT),
+    GUI_PATTERN_TERMINAL_EX(ContainerPatternTermEx.class, PartPatternTerminalEx.class, GuiHostType.WORLD,
+            SecurityPermissions.CRAFT),
 
     // extends (Container/Gui) + Bus
-    GUI_LEVEL_EMITTER(
-            ContainerLevelEmitter.class, PartLevelEmitter.class, GuiHostType.WORLD, SecurityPermissions.BUILD),
+    GUI_LEVEL_EMITTER(ContainerLevelEmitter.class, PartLevelEmitter.class, GuiHostType.WORLD,
+            SecurityPermissions.BUILD),
 
-    GUI_SPATIAL_IO_PORT(
-            ContainerSpatialIOPort.class, TileSpatialIOPort.class, GuiHostType.WORLD, SecurityPermissions.BUILD),
+    GUI_SPATIAL_IO_PORT(ContainerSpatialIOPort.class, TileSpatialIOPort.class, GuiHostType.WORLD,
+            SecurityPermissions.BUILD),
 
     GUI_INSCRIBER(ContainerInscriber.class, TileInscriber.class, GuiHostType.WORLD, null),
 
@@ -147,23 +144,20 @@ public enum GuiBridge implements IGuiHandler {
 
     GUI_MAC(ContainerMAC.class, TileMolecularAssembler.class, GuiHostType.WORLD, null),
 
-    GUI_CRAFTING_AMOUNT(
-            ContainerCraftAmount.class, ITerminalHost.class, GuiHostType.ITEM_OR_WORLD, SecurityPermissions.CRAFT),
+    GUI_CRAFTING_AMOUNT(ContainerCraftAmount.class, ITerminalHost.class, GuiHostType.ITEM_OR_WORLD,
+            SecurityPermissions.CRAFT),
 
-    GUI_PATTERN_VALUE_AMOUNT(
-            ContainerPatternValueAmount.class, ITerminalHost.class, GuiHostType.WORLD, SecurityPermissions.CRAFT),
+    GUI_PATTERN_VALUE_AMOUNT(ContainerPatternValueAmount.class, ITerminalHost.class, GuiHostType.WORLD,
+            SecurityPermissions.CRAFT),
 
-    GUI_CRAFTING_CONFIRM(
-            ContainerCraftConfirm.class, ITerminalHost.class, GuiHostType.ITEM_OR_WORLD, SecurityPermissions.CRAFT),
+    GUI_CRAFTING_CONFIRM(ContainerCraftConfirm.class, ITerminalHost.class, GuiHostType.ITEM_OR_WORLD,
+            SecurityPermissions.CRAFT),
 
-    GUI_INTERFACE_TERMINAL(
-            ContainerInterfaceTerminal.class,
-            PartInterfaceTerminal.class,
-            GuiHostType.WORLD,
+    GUI_INTERFACE_TERMINAL(ContainerInterfaceTerminal.class, PartInterfaceTerminal.class, GuiHostType.WORLD,
             SecurityPermissions.BUILD),
 
-    GUI_CRAFTING_STATUS(
-            ContainerCraftingStatus.class, ITerminalHost.class, GuiHostType.ITEM_OR_WORLD, SecurityPermissions.CRAFT),
+    GUI_CRAFTING_STATUS(ContainerCraftingStatus.class, ITerminalHost.class, GuiHostType.ITEM_OR_WORLD,
+            SecurityPermissions.CRAFT),
 
     GUI_RENAMER(ContainerRenamer.class, ICustomNameObject.class, GuiHostType.WORLD, SecurityPermissions.BUILD),
 
@@ -195,8 +189,7 @@ public enum GuiBridge implements IGuiHandler {
     private void getGui() {
         if (Platform.isClient()) {
             final String start = this.containerClass.getName();
-            final String guiClass =
-                    start.replaceFirst("container.", "client.gui.").replace(".Container", ".Gui");
+            final String guiClass = start.replaceFirst("container.", "client.gui.").replace(".Container", ".Gui");
 
             if (start.equals(guiClass)) {
                 throw new IllegalStateException("Unable to find gui class");
@@ -208,10 +201,7 @@ public enum GuiBridge implements IGuiHandler {
         }
     }
 
-    GuiBridge(
-            final Class containerClass,
-            final Class tileClass,
-            final GuiHostType type,
+    GuiBridge(final Class containerClass, final Class tileClass, final GuiHostType type,
             final SecurityPermissions requiredPermission) {
         this.requiredPermission = requiredPermission;
         this.containerClass = containerClass;
@@ -221,8 +211,8 @@ public enum GuiBridge implements IGuiHandler {
     }
 
     @Override
-    public Object getServerGuiElement(
-            final int ordinal, final EntityPlayer player, final World w, final int x, final int y, final int z) {
+    public Object getServerGuiElement(final int ordinal, final EntityPlayer player, final World w, final int x,
+            final int y, final int z) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinal & 0x07);
         final GuiBridge ID = values()[ordinal >> 5];
         final boolean stem = ((ordinal >> 3) & 1) == 1;
@@ -256,15 +246,14 @@ public enum GuiBridge implements IGuiHandler {
         return new ContainerNull();
     }
 
-    private Object getGuiObject(
-            final ItemStack it, final EntityPlayer player, final World w, final int x, final int y, final int z) {
+    private Object getGuiObject(final ItemStack it, final EntityPlayer player, final World w, final int x, final int y,
+            final int z) {
         if (it != null) {
             if (it.getItem() instanceof IGuiItem) {
                 return ((IGuiItem) it.getItem()).getGuiObject(it, w, x, y, z);
             }
 
-            final IWirelessTermHandler wh =
-                    AEApi.instance().registries().wireless().getWirelessTerminalHandler(it);
+            final IWirelessTermHandler wh = AEApi.instance().registries().wireless().getWirelessTerminalHandler(it);
             if (wh != null) {
                 return new WirelessTerminalGuiObject(wh, it, player, w, x, y, z);
             }
@@ -281,14 +270,8 @@ public enum GuiBridge implements IGuiHandler {
         return this.tileClass.isInstance(tE);
     }
 
-    private Object updateGui(
-            final Object newContainer,
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final ForgeDirection side,
-            final Object myItem) {
+    private Object updateGui(final Object newContainer, final World w, final int x, final int y, final int z,
+            final ForgeDirection side, final Object myItem) {
         if (newContainer instanceof AEBaseContainer) {
             final AEBaseContainer bc = (AEBaseContainer) newContainer;
             bc.setOpenContext(new ContainerOpenContext(myItem));
@@ -312,8 +295,9 @@ public enum GuiBridge implements IGuiHandler {
             final Constructor target = this.findConstructor(c, inventory, tE);
 
             if (target == null) {
-                throw new IllegalStateException("Cannot find " + this.containerClass.getName() + "( "
-                        + this.typeName(inventory) + ", " + this.typeName(tE) + " )");
+                throw new IllegalStateException(
+                        "Cannot find " + this.containerClass
+                                .getName() + "( " + this.typeName(inventory) + ", " + this.typeName(tE) + " )");
             }
 
             final Object o = target.newInstance(inventory, tE);
@@ -327,8 +311,7 @@ public enum GuiBridge implements IGuiHandler {
                     if (so instanceof Slot) {
                         final ItemStack is = ((Slot) so).getStack();
 
-                        final IMaterials materials =
-                                AEApi.instance().definitions().materials();
+                        final IMaterials materials = AEApi.instance().definitions().materials();
                         this.addPressAchievementToPlayer(is, materials, inventory.player);
                     }
                 }
@@ -360,8 +343,8 @@ public enum GuiBridge implements IGuiHandler {
         return inventory.getClass().getName();
     }
 
-    private void addPressAchievementToPlayer(
-            final ItemStack newItem, final IMaterials possibleMaterials, final EntityPlayer player) {
+    private void addPressAchievementToPlayer(final ItemStack newItem, final IMaterials possibleMaterials,
+            final EntityPlayer player) {
         final IComparableDefinition logic = possibleMaterials.logicProcessorPress();
         final IComparableDefinition eng = possibleMaterials.engProcessorPress();
         final IComparableDefinition calc = possibleMaterials.calcProcessorPress();
@@ -379,8 +362,8 @@ public enum GuiBridge implements IGuiHandler {
     }
 
     @Override
-    public Object getClientGuiElement(
-            final int ordinal, final EntityPlayer player, final World w, final int x, final int y, final int z) {
+    public Object getClientGuiElement(final int ordinal, final EntityPlayer player, final World w, final int x,
+            final int y, final int z) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinal & 0x07);
         final GuiBridge ID = values()[ordinal >> 5];
         final boolean stem = ((ordinal >> 3) & 1) == 1;
@@ -424,8 +407,9 @@ public enum GuiBridge implements IGuiHandler {
             final Constructor target = this.findConstructor(c, inventory, tE);
 
             if (target == null) {
-                throw new IllegalStateException("Cannot find " + this.containerClass.getName() + "( "
-                        + this.typeName(inventory) + ", " + this.typeName(tE) + " )");
+                throw new IllegalStateException(
+                        "Cannot find " + this.containerClass
+                                .getName() + "( " + this.typeName(inventory) + ", " + this.typeName(tE) + " )");
             }
 
             return target.newInstance(inventory, tE);
@@ -434,17 +418,13 @@ public enum GuiBridge implements IGuiHandler {
         }
     }
 
-    public boolean hasPermissions(
-            final TileEntity te,
-            final int x,
-            final int y,
-            final int z,
-            final ForgeDirection side,
+    public boolean hasPermissions(final TileEntity te, final int x, final int y, final int z, final ForgeDirection side,
             final EntityPlayer player) {
         final World w = player.getEntityWorld();
 
         if (Platform.hasPermissions(
-                te != null ? new DimensionalCoord(te) : new DimensionalCoord(player.worldObj, x, y, z), player)) {
+                te != null ? new DimensionalCoord(te) : new DimensionalCoord(player.worldObj, x, y, z),
+                player)) {
             if (this.type.isItem()) {
                 final ItemStack it = player.inventory.getCurrentItem();
                 if (it != null && it.getItem() instanceof IGuiItem) {

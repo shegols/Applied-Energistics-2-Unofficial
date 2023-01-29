@@ -1,29 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
 
-import appeng.block.misc.BlockPaint;
-import appeng.client.render.BaseBlockRender;
-import appeng.client.texture.ExtraBlockTextures;
-import appeng.helpers.Splotch;
-import appeng.tile.misc.TilePaint;
 import java.util.EnumSet;
+
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
@@ -32,6 +20,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.block.misc.BlockPaint;
+import appeng.client.render.BaseBlockRender;
+import appeng.client.texture.ExtraBlockTextures;
+import appeng.helpers.Splotch;
+import appeng.tile.misc.TilePaint;
+
 public class RenderBlockPaint extends BaseBlockRender<BlockPaint, TilePaint> {
 
     public RenderBlockPaint() {
@@ -39,20 +33,11 @@ public class RenderBlockPaint extends BaseBlockRender<BlockPaint, TilePaint> {
     }
 
     @Override
-    public void renderInventory(
-            final BlockPaint block,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {}
+    public void renderInventory(final BlockPaint block, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {}
 
     @Override
-    public boolean renderInWorld(
-            final BlockPaint imb,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
+    public boolean renderInWorld(final BlockPaint imb, final IBlockAccess world, final int x, final int y, final int z,
             final RenderBlocks renderer) {
         final TilePaint tp = imb.getTileEntity(world, x, y, z);
         boolean out = false;
@@ -60,9 +45,8 @@ public class RenderBlockPaint extends BaseBlockRender<BlockPaint, TilePaint> {
         if (tp != null) {
             // super.renderInWorld( imb, world, x, y, z, renderer );
 
-            final IIcon[] icoSet = {
-                imb.getIcon(0, 0), ExtraBlockTextures.BlockPaint2.getIcon(), ExtraBlockTextures.BlockPaint3.getIcon()
-            };
+            final IIcon[] icoSet = { imb.getIcon(0, 0), ExtraBlockTextures.BlockPaint2.getIcon(),
+                    ExtraBlockTextures.BlockPaint3.getIcon() };
 
             final Tessellator tess = Tessellator.instance;
 

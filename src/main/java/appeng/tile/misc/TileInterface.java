@@ -1,22 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.misc;
+
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.Upgrades;
@@ -50,26 +53,12 @@ import appeng.tile.grid.AENetworkInvTile;
 import appeng.tile.inventory.InvOperation;
 import appeng.util.Platform;
 import appeng.util.inv.IInventoryDestination;
+
 import com.google.common.collect.ImmutableSet;
 import io.netty.buffer.ByteBuf;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileInterface extends AENetworkInvTile
-        implements IGridTickable,
-                ITileStorageMonitorable,
-                IStorageMonitorable,
-                IInventoryDestination,
-                IInterfaceHost,
-                IPriorityHost,
-                IPowerChannelState {
+public class TileInterface extends AENetworkInvTile implements IGridTickable, ITileStorageMonitorable,
+        IStorageMonitorable, IInventoryDestination, IInterfaceHost, IPriorityHost, IPowerChannelState {
 
     private final DualityInterface duality = new DualityInterface(this.getProxy(), this);
     private ForgeDirection pointAt = ForgeDirection.UNKNOWN;
@@ -110,7 +99,8 @@ public class TileInterface extends AENetworkInvTile
             this.setOrientation(this.pointAt, this.pointAt);
         } else {
             this.setOrientation(
-                    this.pointAt.offsetY != 0 ? ForgeDirection.SOUTH : ForgeDirection.UP, this.pointAt.getOpposite());
+                    this.pointAt.offsetY != 0 ? ForgeDirection.SOUTH : ForgeDirection.UP,
+                    this.pointAt.getOpposite());
         }
 
         this.getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(this.pointAt)));
@@ -205,11 +195,7 @@ public class TileInterface extends AENetworkInvTile
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {
         this.duality.onChangeInventory(inv, slot, mc, removed, added);
     }

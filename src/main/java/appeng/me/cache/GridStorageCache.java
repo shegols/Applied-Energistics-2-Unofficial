@@ -1,22 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.cache;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import appeng.api.AEApi;
 import appeng.api.networking.IGrid;
@@ -40,12 +37,9 @@ import appeng.api.storage.data.IItemList;
 import appeng.me.helpers.GenericInterestManager;
 import appeng.me.storage.ItemWatcher;
 import appeng.me.storage.NetworkInventoryHandler;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 
 public class GridStorageCache implements IStorageGrid {
 
@@ -53,12 +47,14 @@ public class GridStorageCache implements IStorageGrid {
     private final HashSet<ICellProvider> activeCellProviders = new HashSet<ICellProvider>();
     private final HashSet<ICellProvider> inactiveCellProviders = new HashSet<ICellProvider>();
     private final SetMultimap<IAEStack, ItemWatcher> interests = HashMultimap.create();
-    private final GenericInterestManager<ItemWatcher> interestManager =
-            new GenericInterestManager<ItemWatcher>(this.interests);
-    private final NetworkMonitor<IAEItemStack> itemMonitor =
-            new NetworkMonitor<IAEItemStack>(this, StorageChannel.ITEMS);
-    private final NetworkMonitor<IAEFluidStack> fluidMonitor =
-            new NetworkMonitor<IAEFluidStack>(this, StorageChannel.FLUIDS);
+    private final GenericInterestManager<ItemWatcher> interestManager = new GenericInterestManager<ItemWatcher>(
+            this.interests);
+    private final NetworkMonitor<IAEItemStack> itemMonitor = new NetworkMonitor<IAEItemStack>(
+            this,
+            StorageChannel.ITEMS);
+    private final NetworkMonitor<IAEFluidStack> fluidMonitor = new NetworkMonitor<IAEFluidStack>(
+            this,
+            StorageChannel.FLUIDS);
     private final HashMap<IGridNode, IStackWatcher> watchers = new HashMap<IGridNode, IStackWatcher>();
     private NetworkInventoryHandler<IAEItemStack> myItemNetwork;
     private NetworkInventoryHandler<IAEFluidStack> myFluidNetwork;
@@ -206,8 +202,8 @@ public class GridStorageCache implements IStorageGrid {
         tracker.applyChanges();
     }
 
-    private void postChangesToNetwork(
-            final StorageChannel chan, final int upOrDown, final IItemList availableItems, final BaseActionSource src) {
+    private void postChangesToNetwork(final StorageChannel chan, final int upOrDown, final IItemList availableItems,
+            final BaseActionSource src) {
         switch (chan) {
             case FLUIDS:
                 this.fluidMonitor.postChange(upOrDown > 0, availableItems, src);
@@ -258,8 +254,8 @@ public class GridStorageCache implements IStorageGrid {
     }
 
     @Override
-    public void postAlterationOfStoredItems(
-            final StorageChannel chan, final Iterable<? extends IAEStack> input, final BaseActionSource src) {
+    public void postAlterationOfStoredItems(final StorageChannel chan, final Iterable<? extends IAEStack> input,
+            final BaseActionSource src) {
         if (chan == StorageChannel.ITEMS) {
             this.itemMonitor.postChange(true, (Iterable<IAEItemStack>) input, src);
         } else if (chan == StorageChannel.FLUIDS) {
@@ -304,11 +300,8 @@ public class GridStorageCache implements IStorageGrid {
         final IItemList list;
         final BaseActionSource src;
 
-        public CellChangeTrackerRecord(
-                final StorageChannel channel,
-                final int i,
-                final IMEInventoryHandler<? extends IAEStack> h,
-                final BaseActionSource actionSrc) {
+        public CellChangeTrackerRecord(final StorageChannel channel, final int i,
+                final IMEInventoryHandler<? extends IAEStack> h, final BaseActionSource actionSrc) {
             this.channel = channel;
             this.up_or_down = i;
             this.src = actionSrc;
@@ -333,11 +326,8 @@ public class GridStorageCache implements IStorageGrid {
 
         final List<CellChangeTrackerRecord> data = new LinkedList<CellChangeTrackerRecord>();
 
-        public void postChanges(
-                final StorageChannel channel,
-                final int i,
-                final IMEInventoryHandler<? extends IAEStack> h,
-                final BaseActionSource actionSrc) {
+        public void postChanges(final StorageChannel channel, final int i,
+                final IMEInventoryHandler<? extends IAEStack> h, final BaseActionSource actionSrc) {
             this.data.add(new CellChangeTrackerRecord(channel, i, h, actionSrc));
         }
 

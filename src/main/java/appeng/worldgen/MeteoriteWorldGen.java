@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.worldgen;
+
+import java.util.Random;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
 
 import appeng.api.features.IWorldGen.WorldGenType;
 import appeng.core.AEConfig;
@@ -27,20 +25,12 @@ import appeng.util.IWorldCallable;
 import appeng.util.Platform;
 import appeng.worldgen.meteorite.ChunkOnly;
 import cpw.mods.fml.common.IWorldGenerator;
-import java.util.Random;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkProvider;
 
 public final class MeteoriteWorldGen implements IWorldGenerator {
+
     @Override
-    public void generate(
-            final Random rng,
-            final int chunkX,
-            final int chunkZ,
-            final World world,
-            final IChunkProvider chunkGenerator,
-            final IChunkProvider chunkProvider) {
+    public void generate(final Random rng, final int chunkX, final int chunkZ, final World world,
+            final IChunkProvider chunkGenerator, final IChunkProvider chunkProvider) {
         if (WorldGenRegistry.INSTANCE.isWorldGenEnabled(WorldGenType.Meteorites, world)) {
             // Find the meteorite grid cell corresponding to this chunk
             final int gridCellSize = Math.max(8, AEConfig.instance.minMeteoriteDistance);
@@ -51,10 +41,10 @@ public final class MeteoriteWorldGen implements IWorldGenerator {
             Platform.seedFromGrid(rng, world.getSeed(), gridX, gridZ);
             // Calculate a deterministic position of the meteorite in the grid cell
             final boolean spawnSurfaceMeteor = rng.nextDouble() < AEConfig.instance.meteoriteSpawnChance;
-            final int meteorX =
-                    (gridX * gridCellSize) + rng.nextInt(gridCellSize - 2 * gridCellMargin) + gridCellMargin;
-            final int meteorZ =
-                    (gridZ * gridCellSize) + rng.nextInt(gridCellSize - 2 * gridCellMargin) + gridCellMargin;
+            final int meteorX = (gridX * gridCellSize) + rng.nextInt(gridCellSize - 2 * gridCellMargin)
+                    + gridCellMargin;
+            final int meteorZ = (gridZ * gridCellSize) + rng.nextInt(gridCellSize - 2 * gridCellMargin)
+                    + gridCellMargin;
             final int meteorDepth = 180 + rng.nextInt(20);
             final int meteorChunkX = meteorX >> 4;
             final int meteorChunkZ = meteorZ >> 4;
@@ -80,6 +70,7 @@ public final class MeteoriteWorldGen implements IWorldGenerator {
      * Spawns blocks for meteorites that were previously generated in neighboring chunks
      */
     private static final class ExistingMeteoriteSpawn implements IWorldCallable<Object> {
+
         private final int chunkX;
         private final int chunkZ;
 
@@ -123,8 +114,12 @@ public final class MeteoriteWorldGen implements IWorldGenerator {
         private boolean tryMeteorite(final World w) {
             int depth = this.depth;
             for (int tries = 0; tries < 20; tries++) {
-                final MeteoritePlacer mp =
-                        new MeteoritePlacer(new ChunkOnly(w, x >> 4, z >> 4), this.seed, x, depth, z);
+                final MeteoritePlacer mp = new MeteoritePlacer(
+                        new ChunkOnly(w, x >> 4, z >> 4),
+                        this.seed,
+                        x,
+                        depth,
+                        z);
 
                 if (mp.spawnMeteoriteCenter()) {
                     final int px = x >> 4;
@@ -138,8 +133,9 @@ public final class MeteoriteWorldGen implements IWorldGenerator {
                                 }
 
                                 if (WorldData.instance().spawnData().hasGenerated(w.provider.dimensionId, cx, cz)) {
-                                    final MeteoritePlacer mp2 =
-                                            new MeteoritePlacer(new ChunkOnly(w, cx, cz), mp.getSettings());
+                                    final MeteoritePlacer mp2 = new MeteoritePlacer(
+                                            new ChunkOnly(w, cx, cz),
+                                            mp.getSettings());
                                     mp2.spawnMeteorite();
                                 }
                             }

@@ -1,5 +1,10 @@
 package appeng.core.sync.packets;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+
 import appeng.api.networking.IGridHost;
 import appeng.container.ContainerOpenContext;
 import appeng.container.implementations.ContainerPatternTerm;
@@ -11,10 +16,6 @@ import appeng.core.sync.network.INetworkInfo;
 import appeng.util.Platform;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 public class PacketPatternValueSet extends AppEngPacket {
 

@@ -1,42 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.block;
 
-import appeng.api.util.IOrientable;
-import appeng.api.util.IOrientableBlock;
-import appeng.client.render.BaseBlockRender;
-import appeng.client.render.BlockRenderInfo;
-import appeng.client.render.WorldRender;
-import appeng.client.texture.FlippableIcon;
-import appeng.client.texture.MissingIcon;
-import appeng.core.features.*;
-import appeng.helpers.AEGlassMaterial;
-import appeng.helpers.ICustomCollision;
-import appeng.tile.AEBaseTile;
-import appeng.util.LookDirection;
-import appeng.util.Platform;
-import com.google.common.base.Optional;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -52,7 +29,27 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.api.util.IOrientable;
+import appeng.api.util.IOrientableBlock;
+import appeng.client.render.BaseBlockRender;
+import appeng.client.render.BlockRenderInfo;
+import appeng.client.render.WorldRender;
+import appeng.client.texture.FlippableIcon;
+import appeng.client.texture.MissingIcon;
+import appeng.core.features.*;
+import appeng.helpers.AEGlassMaterial;
+import appeng.helpers.ICustomCollision;
+import appeng.tile.AEBaseTile;
+import appeng.util.LookDirection;
+import appeng.util.Platform;
+
+import com.google.common.base.Optional;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public abstract class AEBaseBlock extends Block implements IAEFeature {
+
     private final String featureFullName;
     protected final Optional<String> featureSubName;
     protected boolean isOpaque = true;
@@ -181,14 +178,8 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
     @Override
     @SuppressWarnings("unchecked")
     // NOTE: WAS FINAL, changed for Immibis
-    public void addCollisionBoxesToList(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final AxisAlignedBB bb,
-            final List out,
-            final Entity e) {
+    public void addCollisionBoxesToList(final World w, final int x, final int y, final int z, final AxisAlignedBB bb,
+            final List out, final Entity e) {
         final ICustomCollision collisionHandler = this.getCustomCollision(w, x, y, z);
 
         if (collisionHandler != null && bb != null) {
@@ -220,16 +211,20 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
                 final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
                 final LookDirection ld = Platform.getPlayerRay(player, Platform.getEyeOffset(player));
 
-                final Iterable<AxisAlignedBB> bbs = collisionHandler.getSelectedBoundingBoxesFromPool(
-                        w, x, y, z, Minecraft.getMinecraft().thePlayer, true);
+                final Iterable<AxisAlignedBB> bbs = collisionHandler
+                        .getSelectedBoundingBoxesFromPool(w, x, y, z, Minecraft.getMinecraft().thePlayer, true);
                 AxisAlignedBB br = null;
 
                 double lastDist = 0;
 
                 for (final AxisAlignedBB bb : bbs) {
                     this.setBlockBounds(
-                            (float) bb.minX, (float) bb.minY, (float) bb.minZ, (float) bb.maxX, (float) bb.maxY, (float)
-                                    bb.maxZ);
+                            (float) bb.minX,
+                            (float) bb.minY,
+                            (float) bb.minZ,
+                            (float) bb.maxX,
+                            (float) bb.maxY,
+                            (float) bb.maxZ);
 
                     final MovingObjectPosition r = super.collisionRayTrace(w, x, y, z, ld.getA(), ld.getB());
 
@@ -282,21 +277,25 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
     }
 
     @Override
-    public MovingObjectPosition collisionRayTrace(
-            final World w, final int x, final int y, final int z, final Vec3 a, final Vec3 b) {
+    public MovingObjectPosition collisionRayTrace(final World w, final int x, final int y, final int z, final Vec3 a,
+            final Vec3 b) {
         final ICustomCollision collisionHandler = this.getCustomCollision(w, x, y, z);
 
         if (collisionHandler != null) {
-            final Iterable<AxisAlignedBB> bbs =
-                    collisionHandler.getSelectedBoundingBoxesFromPool(w, x, y, z, null, true);
+            final Iterable<AxisAlignedBB> bbs = collisionHandler
+                    .getSelectedBoundingBoxesFromPool(w, x, y, z, null, true);
             MovingObjectPosition br = null;
 
             double lastDist = 0;
 
             for (final AxisAlignedBB bb : bbs) {
                 this.setBlockBounds(
-                        (float) bb.minX, (float) bb.minY, (float) bb.minZ, (float) bb.maxX, (float) bb.maxY, (float)
-                                bb.maxZ);
+                        (float) bb.minX,
+                        (float) bb.minY,
+                        (float) bb.minZ,
+                        (float) bb.maxX,
+                        (float) bb.maxY,
+                        (float) bb.maxZ);
 
                 final MovingObjectPosition r = super.collisionRayTrace(w, x, y, z, a, b);
 
@@ -326,16 +325,8 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
         return super.collisionRayTrace(w, x, y, z, a, b);
     }
 
-    public boolean onActivated(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onActivated(final World w, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float hitX, final float hitY, final float hitZ) {
         return false;
     }
 
@@ -418,13 +409,8 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
 
     protected void customRotateBlock(final IOrientable rotatable, final ForgeDirection axis) {}
 
-    public boolean isValidOrientation(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final ForgeDirection forward,
-            final ForgeDirection up) {
+    public boolean isValidOrientation(final World w, final int x, final int y, final int z,
+            final ForgeDirection forward, final ForgeDirection up) {
         return true;
     }
 
@@ -447,8 +433,7 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
                         resLoc.getResourceDomain(),
                         String.format("%s/%s%s", "textures/blocks", resLoc.getResourcePath(), ".png"));
 
-                final IResource res =
-                        Minecraft.getMinecraft().getResourceManager().getResource(resLoc);
+                final IResource res = Minecraft.getMinecraft().getResourceManager().getResource(resLoc);
                 if (res != null) {
                     return new FlippableIcon(ir.registerIcon(name));
                 }
@@ -532,10 +517,7 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
         return this.getUnlocalizedName();
     }
 
-    void addInformation(
-            final ItemStack is,
-            final EntityPlayer player,
-            final List<String> lines,
+    void addInformation(final ItemStack is, final EntityPlayer player, final List<String> lines,
             final boolean advancedItemTooltips) {}
 
     public Class<? extends AEBaseItemBlock> getItemBlockClass() {

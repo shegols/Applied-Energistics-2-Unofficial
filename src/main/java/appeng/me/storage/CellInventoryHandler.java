@@ -1,22 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.storage;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
@@ -33,8 +28,6 @@ import appeng.util.item.AEItemStack;
 import appeng.util.prioitylist.FuzzyPriorityList;
 import appeng.util.prioitylist.OreFilteredList;
 import appeng.util.prioitylist.PrecisePriorityList;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 
 public class CellInventoryHandler extends MEInventoryHandler<IAEItemStack> implements ICellInventoryHandler {
 
@@ -77,8 +70,7 @@ public class CellInventoryHandler extends MEInventoryHandler<IAEItemStack> imple
             if (hasOreFilter && !filter.isEmpty()) {
                 this.setPartitionList(new OreFilteredList(filter));
             } else {
-                final IItemList<IAEItemStack> priorityList =
-                        AEApi.instance().storage().createItemList();
+                final IItemList<IAEItemStack> priorityList = AEApi.instance().storage().createItemList();
                 for (int x = 0; x < config.getSizeInventory(); x++) {
                     final ItemStack is = config.getStackInSlot(x);
                     if (is != null) {

@@ -1,22 +1,36 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.automation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.world.BlockEvent;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -47,29 +61,10 @@ import appeng.util.prioitylist.FuzzyPriorityList;
 import appeng.util.prioitylist.PrecisePriorityList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.*;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.BlockSnapshot;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.world.BlockEvent;
 
 public class PartFormationPlane extends PartUpgradeable
         implements ICellContainer, IPriorityHost, IMEInventory<IAEItemStack> {
+
     private final MEInventoryHandler myHandler = new MEInventoryHandler(this, StorageChannel.ITEMS);
     private final AppEngInternalAEInventory Config = new AppEngInternalAEInventory(this, 63);
     private EntityPlayer owner = null;
@@ -108,8 +103,10 @@ public class PartFormationPlane extends PartUpgradeable
         }
 
         if (this.getInstalledUpgrades(Upgrades.FUZZY) > 0) {
-            this.myHandler.setPartitionList(new FuzzyPriorityList(
-                    priorityList, (FuzzyMode) this.getConfigManager().getSetting(Settings.FUZZY_MODE)));
+            this.myHandler.setPartitionList(
+                    new FuzzyPriorityList(
+                            priorityList,
+                            (FuzzyMode) this.getConfigManager().getSetting(Settings.FUZZY_MODE)));
         } else {
             this.myHandler.setPartitionList(new PrecisePriorityList(priorityList));
         }
@@ -133,12 +130,8 @@ public class PartFormationPlane extends PartUpgradeable
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removedStack,
-            final ItemStack newStack) {
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         super.onChangeInventory(inv, slot, mc, removedStack, newStack);
 
         if (inv == this.Config) {
@@ -215,22 +208,26 @@ public class PartFormationPlane extends PartUpgradeable
             final ForgeDirection u = bch.getWorldY();
 
             if (this.isTransitionPlane(
-                    te.getWorldObj().getTileEntity(x - e.offsetX, y - e.offsetY, z - e.offsetZ), this.getSide())) {
+                    te.getWorldObj().getTileEntity(x - e.offsetX, y - e.offsetY, z - e.offsetZ),
+                    this.getSide())) {
                 minX = 0;
             }
 
             if (this.isTransitionPlane(
-                    te.getWorldObj().getTileEntity(x + e.offsetX, y + e.offsetY, z + e.offsetZ), this.getSide())) {
+                    te.getWorldObj().getTileEntity(x + e.offsetX, y + e.offsetY, z + e.offsetZ),
+                    this.getSide())) {
                 maxX = 16;
             }
 
             if (this.isTransitionPlane(
-                    te.getWorldObj().getTileEntity(x - u.offsetX, y - u.offsetY, z - u.offsetZ), this.getSide())) {
+                    te.getWorldObj().getTileEntity(x - u.offsetX, y - u.offsetY, z - u.offsetZ),
+                    this.getSide())) {
                 minY = 0;
             }
 
             if (this.isTransitionPlane(
-                    te.getWorldObj().getTileEntity(x + u.offsetX, y + u.offsetY, z + u.offsetZ), this.getSide())) {
+                    te.getWorldObj().getTileEntity(x + u.offsetX, y + u.offsetY, z + u.offsetZ),
+                    this.getSide())) {
                 maxY = 16;
             }
         }
@@ -259,8 +256,8 @@ public class PartFormationPlane extends PartUpgradeable
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x, final int y, final int z, final IPartRenderHelper rh, final RenderBlocks renderer) {
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {
         int minX = 1;
 
         final ForgeDirection e = rh.getWorldX();
@@ -269,25 +266,29 @@ public class PartFormationPlane extends PartUpgradeable
         final TileEntity te = this.getHost().getTile();
 
         if (this.isTransitionPlane(
-                te.getWorldObj().getTileEntity(x - e.offsetX, y - e.offsetY, z - e.offsetZ), this.getSide())) {
+                te.getWorldObj().getTileEntity(x - e.offsetX, y - e.offsetY, z - e.offsetZ),
+                this.getSide())) {
             minX = 0;
         }
 
         int maxX = 15;
         if (this.isTransitionPlane(
-                te.getWorldObj().getTileEntity(x + e.offsetX, y + e.offsetY, z + e.offsetZ), this.getSide())) {
+                te.getWorldObj().getTileEntity(x + e.offsetX, y + e.offsetY, z + e.offsetZ),
+                this.getSide())) {
             maxX = 16;
         }
 
         int minY = 1;
         if (this.isTransitionPlane(
-                te.getWorldObj().getTileEntity(x - u.offsetX, y - u.offsetY, z - u.offsetZ), this.getSide())) {
+                te.getWorldObj().getTileEntity(x - u.offsetX, y - u.offsetY, z - u.offsetZ),
+                this.getSide())) {
             minY = 0;
         }
 
         int maxY = 15;
         if (this.isTransitionPlane(
-                te.getWorldObj().getTileEntity(x + u.offsetX, y + u.offsetY, z + u.offsetZ), this.getSide())) {
+                te.getWorldObj().getTileEntity(x + u.offsetX, y + u.offsetY, z + u.offsetZ),
+                this.getSide())) {
             maxY = 16;
         }
 
@@ -299,9 +300,7 @@ public class PartFormationPlane extends PartUpgradeable
                 CableBusTextures.PartPlaneSides.getIcon(),
                 CableBusTextures.PartPlaneSides.getIcon(),
                 CableBusTextures.PartTransitionPlaneBack.getIcon(),
-                isActive
-                        ? CableBusTextures.BlockFormPlaneOn.getIcon()
-                        : this.getItemStack().getIconIndex(),
+                isActive ? CableBusTextures.BlockFormPlaneOn.getIcon() : this.getItemStack().getIconIndex(),
                 CableBusTextures.PartPlaneSides.getIcon(),
                 CableBusTextures.PartPlaneSides.getIcon());
 
@@ -312,9 +311,7 @@ public class PartFormationPlane extends PartUpgradeable
                 CableBusTextures.PartMonitorSidesStatus.getIcon(),
                 CableBusTextures.PartMonitorSidesStatus.getIcon(),
                 CableBusTextures.PartTransitionPlaneBack.getIcon(),
-                isActive
-                        ? CableBusTextures.BlockFormPlaneOn.getIcon()
-                        : this.getItemStack().getIconIndex(),
+                isActive ? CableBusTextures.BlockFormPlaneOn.getIcon() : this.getItemStack().getIconIndex(),
                 CableBusTextures.PartMonitorSidesStatus.getIcon(),
                 CableBusTextures.PartMonitorSidesStatus.getIcon());
 
@@ -414,12 +411,10 @@ public class PartFormationPlane extends PartUpgradeable
         final int z = te.zCoord + side.offsetZ;
 
         if (w.getBlock(x, y, z).isReplaceable(w, x, y, z)) {
-            if (placeBlock == YesNo.YES
-                    && (i instanceof ItemBlock
-                            || i instanceof IPlantable
-                            || i instanceof ItemSkull
-                            || i instanceof ItemFirework
-                            || i instanceof ItemReed)) {
+            if (placeBlock == YesNo.YES && (i instanceof ItemBlock || i instanceof IPlantable
+                    || i instanceof ItemSkull
+                    || i instanceof ItemFirework
+                    || i instanceof ItemReed)) {
                 final EntityPlayer player = Platform.getPlayer((WorldServer) w);
                 Platform.configurePlayer(player, side, this.getTile());
 
@@ -512,9 +507,16 @@ public class PartFormationPlane extends PartUpgradeable
                     } else {
                         player.setCurrentItemOrArmor(0, is.copy());
                         BlockSnapshot blockSnapshot = new BlockSnapshot(
-                                w, x, y, z, ((ItemBlock) i).field_150939_a, i.getMetadata(is.getItemDamage()));
+                                w,
+                                x,
+                                y,
+                                z,
+                                ((ItemBlock) i).field_150939_a,
+                                i.getMetadata(is.getItemDamage()));
                         BlockEvent.PlaceEvent event = new BlockEvent.PlaceEvent(
-                                blockSnapshot, w.getBlock(x, y, z), owner == null ? player : owner);
+                                blockSnapshot,
+                                w.getBlock(x, y, z),
+                                owner == null ? player : owner);
                         MinecraftForge.EVENT_BUS.post(event);
                         if (!event.isCanceled()) {
                             i.onItemUse(
@@ -548,16 +550,13 @@ public class PartFormationPlane extends PartUpgradeable
                         is.stackSize = (int) maxStorage;
                         final EntityItem ei = new EntityItem(
                                 w,
-                                ((side.offsetX != 0 ? 0.0 : 0.7) * (Platform.getRandomFloat() - 0.5f))
-                                        + 0.5
+                                ((side.offsetX != 0 ? 0.0 : 0.7) * (Platform.getRandomFloat() - 0.5f)) + 0.5
                                         + side.offsetX * -0.3
                                         + x,
-                                ((side.offsetY != 0 ? 0.0 : 0.7) * (Platform.getRandomFloat() - 0.5f))
-                                        + 0.5
+                                ((side.offsetY != 0 ? 0.0 : 0.7) * (Platform.getRandomFloat() - 0.5f)) + 0.5
                                         + side.offsetY * -0.3
                                         + y,
-                                ((side.offsetZ != 0 ? 0.0 : 0.7) * (Platform.getRandomFloat() - 0.5f))
-                                        + 0.5
+                                ((side.offsetZ != 0 ? 0.0 : 0.7) * (Platform.getRandomFloat() - 0.5f)) + 0.5
                                         + side.offsetZ * -0.3
                                         + z,
                                 is.copy());
@@ -579,8 +578,8 @@ public class PartFormationPlane extends PartUpgradeable
 
                         if (!w.spawnEntityInWorld(result)) {
                             if (((EntityItem) result).getEntityItem().getItem()
-                                    == Item.getItemFromBlock(
-                                            Blocks.dragon_egg)) { // Ducttape fix for HEE replacing the Dragon Egg
+                                    == Item.getItemFromBlock(Blocks.dragon_egg)) { // Ducttape fix for HEE replacing the
+                                                                                   // Dragon Egg
                                 // HEE does cancel the event but does not mark passed entity as dead
                                 worked = true;
                             } else {

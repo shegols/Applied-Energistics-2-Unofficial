@@ -1,32 +1,15 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.entity;
 
-import appeng.api.AEApi;
-import appeng.core.AEConfig;
-import appeng.core.CommonHelper;
-import appeng.core.features.AEFeature;
-import appeng.core.sync.packets.PacketMockExplosion;
-import appeng.helpers.Reflected;
-import appeng.util.Platform;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -39,15 +22,26 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
+import appeng.api.AEApi;
+import appeng.core.AEConfig;
+import appeng.core.CommonHelper;
+import appeng.core.features.AEFeature;
+import appeng.core.sync.packets.PacketMockExplosion;
+import appeng.helpers.Reflected;
+import appeng.util.Platform;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
+
 public final class EntityTinyTNTPrimed extends EntityTNTPrimed implements IEntityAdditionalSpawnData {
+
     @Reflected
     public EntityTinyTNTPrimed(final World w) {
         super(w);
         this.setSize(0.35F, 0.35F);
     }
 
-    public EntityTinyTNTPrimed(
-            final World w, final double x, final double y, final double z, final EntityLivingBase igniter) {
+    public EntityTinyTNTPrimed(final World w, final double x, final double y, final double z,
+            final EntityLivingBase igniter) {
         super(w, x, y, z, igniter);
         this.setSize(0.55F, 0.55F);
         this.yOffset = this.height / 2.0F;
@@ -77,12 +71,7 @@ public final class EntityTinyTNTPrimed extends EntityTNTPrimed implements IEntit
 
         if (this.isInWater() && Platform.isServer()) // put out the fuse.
         {
-            for (final ItemStack tntStack : AEApi.instance()
-                    .definitions()
-                    .blocks()
-                    .tinyTNT()
-                    .maybeStack(1)
-                    .asSet()) {
+            for (final ItemStack tntStack : AEApi.instance().definitions().blocks().tinyTNT().maybeStack(1).asSet()) {
                 final EntityItem item = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, tntStack);
 
                 item.motionX = this.motionX;
@@ -146,13 +135,19 @@ public final class EntityTinyTNTPrimed extends EntityTNTPrimed implements IEntit
                     for (int z = (int) (this.posZ - 2); z <= this.posZ + 2; z++) {
                         final Block block = this.worldObj.getBlock(x, y, z);
                         if (block != null && !block.isAir(this.worldObj, x, y, z)) {
-                            float strength = (float) (2.3f
-                                    - (((x + 0.5f) - this.posX) * ((x + 0.5f) - this.posX)
-                                            + ((y + 0.5f) - this.posY) * ((y + 0.5f) - this.posY)
-                                            + ((z + 0.5f) - this.posZ) * ((z + 0.5f) - this.posZ)));
+                            float strength = (float) (2.3f - (((x + 0.5f) - this.posX) * ((x + 0.5f) - this.posX)
+                                    + ((y + 0.5f) - this.posY) * ((y + 0.5f) - this.posY)
+                                    + ((z + 0.5f) - this.posZ) * ((z + 0.5f) - this.posZ)));
 
                             final float resistance = block.getExplosionResistance(
-                                    this, this.worldObj, x, y, z, this.posX, this.posY, this.posZ);
+                                    this,
+                                    this.worldObj,
+                                    x,
+                                    y,
+                                    z,
+                                    this.posX,
+                                    this.posY,
+                                    this.posZ);
                             strength -= (resistance + 0.3F) * 0.11f;
 
                             if (strength > 0.01) {

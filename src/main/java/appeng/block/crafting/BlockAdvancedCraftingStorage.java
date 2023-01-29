@@ -1,9 +1,10 @@
 package appeng.block.crafting;
 
-import appeng.client.texture.ExtraBlockTextures;
-import appeng.tile.crafting.TileCraftingStorageTile;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import appeng.client.texture.ExtraBlockTextures;
+import appeng.tile.crafting.TileCraftingStorageTile;
 
 public class BlockAdvancedCraftingStorage extends BlockCraftingStorage {
 

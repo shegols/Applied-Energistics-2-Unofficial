@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.tools.powered;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
@@ -39,19 +41,14 @@ import appeng.items.contents.PortableCellViewer;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.storage.CellInventoryHandler;
 import appeng.util.Platform;
+
 import com.google.common.base.Optional;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ToolPortableCell extends AEBasePoweredItem implements IStorageCell, IGuiItem, IItemGroup {
+
     public ToolPortableCell() {
         super(AEConfig.instance.portableCellBattery, Optional.<String>absent());
         this.setFeature(EnumSet.of(AEFeature.PortableCell, AEFeature.StorageCells, AEFeature.PoweredTools));
@@ -71,20 +68,30 @@ public class ToolPortableCell extends AEBasePoweredItem implements IStorageCell,
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addCheckedInformation(
-            final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
+    public void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+            final boolean displayMoreInfo) {
         super.addCheckedInformation(stack, player, lines, displayMoreInfo);
 
-        final IMEInventory<IAEItemStack> cdi =
-                AEApi.instance().registries().cell().getCellInventory(stack, null, StorageChannel.ITEMS);
+        final IMEInventory<IAEItemStack> cdi = AEApi.instance().registries().cell()
+                .getCellInventory(stack, null, StorageChannel.ITEMS);
 
         if (cdi instanceof CellInventoryHandler) {
             final ICellInventory cd = ((ICellInventoryHandler) cdi).getCellInv();
             if (cd != null) {
-                lines.add(cd.getUsedBytes() + " " + GuiText.Of.getLocal() + ' ' + cd.getTotalBytes() + ' '
-                        + GuiText.BytesUsed.getLocal());
-                lines.add(cd.getStoredItemTypes() + " " + GuiText.Of.getLocal() + ' ' + cd.getTotalItemTypes() + ' '
-                        + GuiText.Types.getLocal());
+                lines.add(
+                        cd.getUsedBytes() + " "
+                                + GuiText.Of.getLocal()
+                                + ' '
+                                + cd.getTotalBytes()
+                                + ' '
+                                + GuiText.BytesUsed.getLocal());
+                lines.add(
+                        cd.getStoredItemTypes() + " "
+                                + GuiText.Of.getLocal()
+                                + ' '
+                                + cd.getTotalItemTypes()
+                                + ' '
+                                + GuiText.Types.getLocal());
             }
         }
     }

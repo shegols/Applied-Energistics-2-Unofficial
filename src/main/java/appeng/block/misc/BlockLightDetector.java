@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.block.misc;
+
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.util.IOrientable;
 import appeng.api.util.IOrientableBlock;
@@ -28,17 +33,6 @@ import appeng.helpers.MetaRotation;
 import appeng.tile.misc.TileLightDetector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockLightDetector extends AEBaseTileBlock implements IOrientableBlock, ICustomCollision {
 
@@ -63,14 +57,8 @@ public class BlockLightDetector extends AEBaseTileBlock implements IOrientableBl
     }
 
     @Override
-    public void onNeighborChange(
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final int tileX,
-            final int tileY,
-            final int tileZ) {
+    public void onNeighborChange(final IBlockAccess world, final int x, final int y, final int z, final int tileX,
+            final int tileY, final int tileZ) {
         super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
 
         final TileLightDetector tld = this.getTileEntity(world, x, y, z);
@@ -92,13 +80,8 @@ public class BlockLightDetector extends AEBaseTileBlock implements IOrientableBl
     }
 
     @Override
-    public boolean isValidOrientation(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final ForgeDirection forward,
-            final ForgeDirection up) {
+    public boolean isValidOrientation(final World w, final int x, final int y, final int z,
+            final ForgeDirection forward, final ForgeDirection up) {
         return this.canPlaceAt(w, x, y, z, up.getOpposite());
     }
 
@@ -107,8 +90,8 @@ public class BlockLightDetector extends AEBaseTileBlock implements IOrientableBl
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(
-            final World w, final int x, final int y, final int z, final Entity e, final boolean isVisual) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final int x, final int y,
+            final int z, final Entity e, final boolean isVisual) {
         final ForgeDirection up = this.getOrientable(w, x, y, z).getUp();
         final double xOff = -0.3 * up.offsetX;
         final double yOff = -0.3 * up.offsetY;
@@ -118,18 +101,13 @@ public class BlockLightDetector extends AEBaseTileBlock implements IOrientableBl
     }
 
     @Override
-    public void addCollidingBlockToList(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final AxisAlignedBB bb,
-            final List out,
-            final Entity e) {
+    public void addCollidingBlockToList(final World w, final int x, final int y, final int z, final AxisAlignedBB bb,
+            final List out, final Entity e) {
         /*
          * double xOff = -0.15 * getUp().offsetX; double yOff = -0.15 * getUp().offsetY; double zOff = -0.15 *
-         * getUp().offsetZ; out.add( AxisAlignedBB.getBoundingBox( xOff + (double) x + 0.15, yOff + (double) y + 0.15, zOff
-         * + (double) z + 0.15,// ahh xOff + (double) x + 0.85, yOff + (double) y + 0.85, zOff + (double) z + 0.85 ) );
+         * getUp().offsetZ; out.add( AxisAlignedBB.getBoundingBox( xOff + (double) x + 0.15, yOff + (double) y + 0.15,
+         * zOff + (double) z + 0.15,// ahh xOff + (double) x + 0.85, yOff + (double) y + 0.85, zOff + (double) z + 0.85
+         * ) );
          */
     }
 

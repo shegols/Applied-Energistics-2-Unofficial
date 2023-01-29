@@ -1,6 +1,7 @@
 package appeng.helpers;
 
 public interface IOreFilterable {
+
     /**
      * Get oredictionary filter
      */

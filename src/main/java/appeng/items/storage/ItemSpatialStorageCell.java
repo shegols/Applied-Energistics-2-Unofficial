@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.storage;
+
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 import appeng.api.implementations.TransitionResult;
 import appeng.api.implementations.items.ISpatialStorageCell;
@@ -28,16 +29,11 @@ import appeng.items.AEBaseItem;
 import appeng.spatial.StorageHelper;
 import appeng.spatial.StorageWorldProvider;
 import appeng.util.Platform;
+
 import com.google.common.base.Optional;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 
 public class ItemSpatialStorageCell extends AEBaseItem implements ISpatialStorageCell {
+
     private final int maxRegion;
 
     public ItemSpatialStorageCell(final int spatialScale) {
@@ -48,8 +44,8 @@ public class ItemSpatialStorageCell extends AEBaseItem implements ISpatialStorag
     }
 
     @Override
-    public void addCheckedInformation(
-            final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
+    public void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+            final boolean displayMoreInfo) {
         final WorldCoord wc = this.getStoredSize(stack);
         if (wc.x > 0) {
             lines.add(GuiText.StoredSize.getLocal() + ": " + wc.x + " x " + wc.y + " x " + wc.z);
@@ -125,8 +121,8 @@ public class ItemSpatialStorageCell extends AEBaseItem implements ISpatialStorag
     }
 
     @Override
-    public TransitionResult doSpatialTransition(
-            final ItemStack is, final World w, final WorldCoord min, final WorldCoord max, final boolean doTransition) {
+    public TransitionResult doSpatialTransition(final ItemStack is, final World w, final WorldCoord min,
+            final WorldCoord max, final boolean doTransition) {
         final WorldCoord scale = this.getStoredSize(is);
 
         final int targetX = max.x - min.x - 1;
@@ -144,19 +140,18 @@ public class ItemSpatialStorageCell extends AEBaseItem implements ISpatialStorag
                 }
 
                 final int floorBuffer = 64;
-                StorageHelper.getInstance()
-                        .swapRegions(
-                                w,
-                                destination,
-                                min.x + 1,
-                                min.y + 1,
-                                min.z + 1,
-                                1,
-                                floorBuffer + 1,
-                                1,
-                                targetX - 1,
-                                targetY - 1,
-                                targetZ - 1);
+                StorageHelper.getInstance().swapRegions(
+                        w,
+                        destination,
+                        min.x + 1,
+                        min.y + 1,
+                        min.z + 1,
+                        1,
+                        floorBuffer + 1,
+                        1,
+                        targetX - 1,
+                        targetY - 1,
+                        targetZ - 1);
                 this.setStoredSize(is, targetX, targetY, targetZ);
 
                 return new TransitionResult(true, 0);

@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.tools;
+
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import appeng.api.implementations.items.IMemoryCard;
 import appeng.api.implementations.items.MemoryCardMessages;
@@ -26,14 +28,6 @@ import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
 import appeng.items.AEBaseItem;
 import appeng.util.Platform;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class ToolMemoryCard extends AEBaseItem implements IMemoryCard {
 
@@ -43,20 +37,20 @@ public class ToolMemoryCard extends AEBaseItem implements IMemoryCard {
     }
 
     @Override
-    public void addCheckedInformation(
-            final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
+    public void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+            final boolean displayMoreInfo) {
         lines.add(this.getLocalizedName(this.getSettingsName(stack) + ".name", this.getSettingsName(stack)));
 
         final NBTTagCompound data = this.getData(stack);
         if (data.hasKey("tooltip")) {
-            lines.add(StatCollector.translateToLocal(
-                    this.getLocalizedName(data.getString("tooltip") + ".name", data.getString("tooltip"))));
+            lines.add(
+                    StatCollector.translateToLocal(
+                            this.getLocalizedName(data.getString("tooltip") + ".name", data.getString("tooltip"))));
         }
 
         if (data.hasKey("freq")) {
             final long freq = data.getLong("freq");
-            final String freqTooltip =
-                    String.format("%X", freq).replaceAll("(.{4})", "$0 ").trim();
+            final String freqTooltip = String.format("%X", freq).replaceAll("(.{4})", "$0 ").trim();
 
             final String local = ButtonToolTips.P2PFrequency.getLocal();
 
@@ -134,17 +128,8 @@ public class ToolMemoryCard extends AEBaseItem implements IMemoryCard {
     }
 
     @Override
-    public boolean onItemUse(
-            final ItemStack is,
-            final EntityPlayer player,
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hx,
-            final float hy,
-            final float hz) {
+    public boolean onItemUse(final ItemStack is, final EntityPlayer player, final World w, final int x, final int y,
+            final int z, final int side, final float hx, final float hy, final float hz) {
         if (player.isSneaking() && !w.isRemote) {
             if (ForgeEventFactory.onItemUseStart(player, is, 1) <= 0) return false;
             final IMemoryCard mem = (IMemoryCard) is.getItem();
@@ -157,8 +142,8 @@ public class ToolMemoryCard extends AEBaseItem implements IMemoryCard {
     }
 
     @Override
-    public boolean doesSneakBypassUse(
-            final World world, final int x, final int y, final int z, final EntityPlayer player) {
+    public boolean doesSneakBypassUse(final World world, final int x, final int y, final int z,
+            final EntityPlayer player) {
         return true;
     }
 }

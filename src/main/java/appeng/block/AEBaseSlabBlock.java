@@ -1,29 +1,18 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.block;
 
-import appeng.core.features.AEFeature;
-import appeng.core.features.IAEFeature;
-import appeng.core.features.IFeatureHandler;
-import appeng.core.features.SlabBlockFeatureHandler;
 import java.util.EnumSet;
 import java.util.Random;
+
 import net.minecraft.block.BlockSlab;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
@@ -32,7 +21,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+import appeng.core.features.AEFeature;
+import appeng.core.features.IAEFeature;
+import appeng.core.features.IFeatureHandler;
+import appeng.core.features.SlabBlockFeatureHandler;
+
 public class AEBaseSlabBlock extends BlockSlab implements IAEFeature {
+
     private final IFeatureHandler features;
     private final AEBaseBlock block;
     private final int meta;
@@ -40,12 +35,8 @@ public class AEBaseSlabBlock extends BlockSlab implements IAEFeature {
     private AEBaseSlabBlock doubleSlabs;
     private final String name;
 
-    public AEBaseSlabBlock(
-            final AEBaseBlock block,
-            final int meta,
-            final EnumSet<AEFeature> features,
-            final boolean isDoubleSlab,
-            final String name) {
+    public AEBaseSlabBlock(final AEBaseBlock block, final int meta, final EnumSet<AEFeature> features,
+            final boolean isDoubleSlab, final String name) {
         super(isDoubleSlab, block.getMaterial());
         this.block = block;
         this.meta = meta;
@@ -103,8 +94,8 @@ public class AEBaseSlabBlock extends BlockSlab implements IAEFeature {
     }
 
     @Override
-    public ItemStack getPickBlock(
-            final MovingObjectPosition target, final World world, final int x, final int y, final int z) {
+    public ItemStack getPickBlock(final MovingObjectPosition target, final World world, final int x, final int y,
+            final int z) {
         AEBaseSlabBlock block = (AEBaseSlabBlock) world.getBlock(x, y, z);
 
         if (block == null) {

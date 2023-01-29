@@ -1,22 +1,21 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me;
+
+import java.util.*;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.exceptions.FailedConnection;
 import appeng.api.networking.*;
@@ -34,15 +33,11 @@ import appeng.me.cache.CraftingGridCache;
 import appeng.me.pathfinding.IPathItem;
 import appeng.util.IWorldCallable;
 import appeng.util.ReadOnlyCollection;
-import java.util.*;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GridNode implements IGridNode, IPathItem {
+
     private static final MENetworkChannelsChanged EVENT = new MENetworkChannelsChanged();
-    private static final int[] CHANNEL_COUNT = {0, 8, 32, 128};
+    private static final int[] CHANNEL_COUNT = { 0, 8, 32, 128 };
 
     private final List<IGridConnection> connections = new LinkedList<>();
     private final IGridBlock gridProxy;
@@ -106,8 +101,7 @@ public class GridNode implements IGridNode, IPathItem {
     }
 
     void validateGrid() {
-        final GridSplitDetector gsd =
-                new GridSplitDetector(this.getInternalGrid().getPivot());
+        final GridSplitDetector gsd = new GridSplitDetector(this.getInternalGrid().getPivot());
         this.beginVisit(gsd);
         if (!gsd.isPivotFound()) {
             final IGridVisitor gp = new GridPropagator(new Grid(this));
@@ -422,8 +416,7 @@ public class GridNode implements IGridNode, IPathItem {
         }
 
         // only connect ultra dense cable to dense cables
-        if (hasFlag(GridFlags.ULTRA_DENSE_CAPACITY)
-                && !hasFlag(GridFlags.DENSE_CAPACITY)
+        if (hasFlag(GridFlags.ULTRA_DENSE_CAPACITY) && !hasFlag(GridFlags.DENSE_CAPACITY)
                 && !(from.hasFlag(GridFlags.ULTRA_DENSE_CAPACITY)
                         || (from.hasFlag(GridFlags.DENSE_CAPACITY) && !from.hasFlag(GridFlags.CANNOT_CARRY))))
             return false;
@@ -439,10 +432,7 @@ public class GridNode implements IGridNode, IPathItem {
         return AEColor.values()[(this.compressedData >> 3) & 0x1F];
     }
 
-    private void visitorConnection(
-            final Object tracker,
-            final IGridVisitor g,
-            final Deque<GridNode> nextRun,
+    private void visitorConnection(final Object tracker, final IGridVisitor g, final Deque<GridNode> nextRun,
             final Deque<IGridConnection> nextConnections) {
         if (g.visitNode(this)) {
             for (final IGridConnection gc : this.getConnections()) {
@@ -573,6 +563,7 @@ public class GridNode implements IGridNode, IPathItem {
     }
 
     private static class MachineSecurityBreak implements IWorldCallable<Void> {
+
         private final GridNode node;
 
         public MachineSecurityBreak(final GridNode node) {
@@ -588,6 +579,7 @@ public class GridNode implements IGridNode, IPathItem {
     }
 
     private static class ConnectionComparator implements Comparator<IGridConnection> {
+
         private final IGridNode gn;
 
         public ConnectionComparator(final IGridNode gn) {

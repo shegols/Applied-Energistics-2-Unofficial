@@ -1,30 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.util.inv;
+
+import java.util.Iterator;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.config.InsertionMode;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
-import java.util.Iterator;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 
 public class AdaptorIInventory extends InventoryAdaptor {
 
@@ -34,8 +28,7 @@ public class AdaptorIInventory extends InventoryAdaptor {
 
     public AdaptorIInventory(final IInventory s) {
         this.i = s;
-        skipStackSizeCheck = i.getClass()
-                .toString()
+        skipStackSizeCheck = i.getClass().toString()
                 .equals("class wanion.avaritiaddons.block.chest.infinity.TileEntityInfinityChest");
         this.wrapperEnabled = s instanceof IInventoryWrapper;
     }
@@ -47,8 +40,7 @@ public class AdaptorIInventory extends InventoryAdaptor {
 
         for (int x = 0; x < s && amount > 0; x++) {
             final ItemStack is = this.i.getStackInSlot(x);
-            if (is != null
-                    && this.canRemoveStackFromSlot(x, is)
+            if (is != null && this.canRemoveStackFromSlot(x, is)
                     && (filter == null || Platform.isSameItemPrecise(is, filter))) {
                 int boundAmounts = amount;
                 if (boundAmounts > is.stackSize) {
@@ -95,8 +87,7 @@ public class AdaptorIInventory extends InventoryAdaptor {
 
         for (int x = 0; x < s && amount > 0; x++) {
             final ItemStack is = this.i.getStackInSlot(x);
-            if (is != null
-                    && this.canRemoveStackFromSlot(x, is)
+            if (is != null && this.canRemoveStackFromSlot(x, is)
                     && (filter == null || Platform.isSameItemPrecise(is, filter))) {
                 int boundAmount = amount;
                 if (boundAmount > is.stackSize) {
@@ -123,16 +114,12 @@ public class AdaptorIInventory extends InventoryAdaptor {
     }
 
     @Override
-    public ItemStack removeSimilarItems(
-            final int amount,
-            final ItemStack filter,
-            final FuzzyMode fuzzyMode,
+    public ItemStack removeSimilarItems(final int amount, final ItemStack filter, final FuzzyMode fuzzyMode,
             final IInventoryDestination destination) {
         final int s = this.i.getSizeInventory();
         for (int x = 0; x < s; x++) {
             final ItemStack is = this.i.getStackInSlot(x);
-            if (is != null
-                    && this.canRemoveStackFromSlot(x, is)
+            if (is != null && this.canRemoveStackFromSlot(x, is)
                     && (filter == null || Platform.isSameItemFuzzy(is, filter, fuzzyMode))) {
                 int newAmount = amount;
                 if (newAmount > is.stackSize) {
@@ -168,17 +155,13 @@ public class AdaptorIInventory extends InventoryAdaptor {
     }
 
     @Override
-    public ItemStack simulateSimilarRemove(
-            final int amount,
-            final ItemStack filter,
-            final FuzzyMode fuzzyMode,
+    public ItemStack simulateSimilarRemove(final int amount, final ItemStack filter, final FuzzyMode fuzzyMode,
             final IInventoryDestination destination) {
         final int s = this.i.getSizeInventory();
         for (int x = 0; x < s; x++) {
             final ItemStack is = this.i.getStackInSlot(x);
 
-            if (is != null
-                    && this.canRemoveStackFromSlot(x, is)
+            if (is != null && this.canRemoveStackFromSlot(x, is)
                     && (filter == null || Platform.isSameItemFuzzy(is, filter, fuzzyMode))) {
                 int boundAmount = amount;
                 if (boundAmount > is.stackSize) {
@@ -236,8 +219,8 @@ public class AdaptorIInventory extends InventoryAdaptor {
      * The ItemStack next is required for inventories, which will fail on isItemValidForSlot() for stacksizes larger
      * than the limit.
      *
-     * @param itemsToAdd itemStack to add to the inventory
-     * @param modulate   true to modulate, false for simulate
+     * @param itemsToAdd    itemStack to add to the inventory
+     * @param modulate      true to modulate, false for simulate
      * @param insertionMode
      * @return the left itemstack, which could not be added
      */
@@ -247,8 +230,7 @@ public class AdaptorIInventory extends InventoryAdaptor {
         }
 
         final ItemStack left = itemsToAdd.copy();
-        final int perOperationLimit = this.skipStackSizeCheck
-                ? this.i.getInventoryStackLimit()
+        final int perOperationLimit = this.skipStackSizeCheck ? this.i.getInventoryStackLimit()
                 : Math.min(this.i.getInventoryStackLimit(), itemsToAdd.getMaxStackSize());
         final int inventorySize = this.i.getSizeInventory();
 

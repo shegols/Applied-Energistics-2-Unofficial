@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.reporting;
+
+import java.io.IOException;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.implementations.parts.IPartMonitor;
@@ -30,14 +32,6 @@ import appeng.me.GridAccessException;
 import appeng.parts.AEBasePart;
 import appeng.util.Platform;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * The most basic class for any part reporting information, like terminals or monitors. This can also include basic
@@ -45,8 +39,8 @@ import net.minecraftforge.common.util.ForgeDirection;
  * <p>
  * It deals with the most basic functionalities like network data, grid registration or the rotation of the actual part.
  * <p>
- * The direct abstract subclasses are usually a better entry point for adding new concrete ones.
- * But this might be an ideal starting point to completely new type, which does not resemble any existing one.
+ * The direct abstract subclasses are usually a better entry point for adding new concrete ones. But this might be an
+ * ideal starting point to completely new type, which does not resemble any existing one.
  *
  * @author AlgorithmX2
  * @author yueh
@@ -206,12 +200,10 @@ public abstract class AbstractPartReporting extends AEBasePart implements IPartM
     private final int blockLight(final int emit) {
         if (this.opacity < 0) {
             final TileEntity te = this.getTile();
-            this.opacity = 255
-                    - te.getWorldObj()
-                            .getBlockLightOpacity(
-                                    te.xCoord + this.getSide().offsetX,
-                                    te.yCoord + this.getSide().offsetY,
-                                    te.zCoord + this.getSide().offsetZ);
+            this.opacity = 255 - te.getWorldObj().getBlockLightOpacity(
+                    te.xCoord + this.getSide().offsetX,
+                    te.yCoord + this.getSide().offsetY,
+                    te.zCoord + this.getSide().offsetZ);
         }
 
         return (int) (emit * (this.opacity / 255.0f));

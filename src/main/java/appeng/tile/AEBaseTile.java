@@ -1,22 +1,32 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile;
+
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
+import java.util.*;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.implementations.tiles.ISegmentedInventory;
 import appeng.api.util.ICommonTile;
@@ -34,30 +44,12 @@ import appeng.util.Platform;
 import appeng.util.SettingsFrom;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
-import java.util.*;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, ICustomNameObject {
 
-    private static final ThreadLocal<WeakReference<AEBaseTile>> DROP_NO_ITEMS =
-            new ThreadLocal<WeakReference<AEBaseTile>>();
-    private static final Map<Class<? extends AEBaseTile>, Map<TileEventType, List<AETileEventHandler>>> HANDLERS =
-            new HashMap<Class<? extends AEBaseTile>, Map<TileEventType, List<AETileEventHandler>>>();
-    private static final Map<Class<? extends TileEntity>, IStackSrc> ITEM_STACKS =
-            new HashMap<Class<? extends TileEntity>, IStackSrc>();
+    private static final ThreadLocal<WeakReference<AEBaseTile>> DROP_NO_ITEMS = new ThreadLocal<WeakReference<AEBaseTile>>();
+    private static final Map<Class<? extends AEBaseTile>, Map<TileEventType, List<AETileEventHandler>>> HANDLERS = new HashMap<Class<? extends AEBaseTile>, Map<TileEventType, List<AETileEventHandler>>>();
+    private static final Map<Class<? extends TileEntity>, IStackSrc> ITEM_STACKS = new HashMap<Class<? extends TileEntity>, IStackSrc>();
     private int renderFragment = 0;
 
     @Nullable
@@ -118,8 +110,7 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
                 this.forward = ForgeDirection.valueOf(data.getString("orientation_forward"));
                 this.up = ForgeDirection.valueOf(data.getString("orientation_up"));
             }
-        } catch (final IllegalArgumentException ignored) {
-        }
+        } catch (final IllegalArgumentException ignored) {}
 
         for (final AETileEventHandler h : this.getHandlerListFor(TileEventType.WORLD_NBT_READ)) {
             h.readFromNBT(this, data);
@@ -287,8 +278,8 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
         final Map<TileEventType, List<AETileEventHandler>> storedHandlers = HANDLERS.get(clazz);
 
         if (storedHandlers == null) {
-            final Map<TileEventType, List<AETileEventHandler>> newStoredHandlers =
-                    new EnumMap<TileEventType, List<AETileEventHandler>>(TileEventType.class);
+            final Map<TileEventType, List<AETileEventHandler>> newStoredHandlers = new EnumMap<TileEventType, List<AETileEventHandler>>(
+                    TileEventType.class);
 
             HANDLERS.put(clazz, newStoredHandlers);
 
@@ -306,8 +297,8 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
     }
 
     @Nonnull
-    private List<AETileEventHandler> getHandlers(
-            final Map<TileEventType, List<AETileEventHandler>> eventToHandlers, final TileEventType event) {
+    private List<AETileEventHandler> getHandlers(final Map<TileEventType, List<AETileEventHandler>> eventToHandlers,
+            final TileEventType event) {
         final List<AETileEventHandler> oldHandlers = eventToHandlers.get(event);
 
         if (oldHandlers == null) {
@@ -320,8 +311,8 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
         }
     }
 
-    private void addHandler(
-            final Map<TileEventType, List<AETileEventHandler>> handlerSet, final TileEventType value, final Method m) {
+    private void addHandler(final Map<TileEventType, List<AETileEventHandler>> handlerSet, final TileEventType value,
+            final Method m) {
         List<AETileEventHandler> list = handlerSet.get(value);
 
         if (list == null) {

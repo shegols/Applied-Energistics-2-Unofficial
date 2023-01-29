@@ -4,9 +4,10 @@ import java.util.Collections;
 import java.util.Stack;
 
 public class Calculator {
+
     private final Stack<String> postfixStack = new Stack<>();
     private final Stack<Character> opStack = new Stack<>();
-    private final int[] operatPriority = new int[] {0, 3, 2, 1, -1, 1, 0, 2};
+    private final int[] operatPriority = new int[] { 0, 3, 2, 1, -1, 1, 0, 2 };
 
     public static double conversion(String expression) {
         double result = 0;
@@ -32,8 +33,7 @@ public class Calculator {
     /**
      * replace '-' with '~'
      *
-     * @param expression
-     *            e.g.-2+-1*(-3E-2)-(-1) -> ~2+~1*(~3E~2)-(~1)
+     * @param expression e.g.-2+-1*(-3E-2)-(-1) -> ~2+~1*(~3E~2)-(~1)
      * @return
      */
     private static String transform(String expression) {
@@ -61,8 +61,7 @@ public class Calculator {
     /**
      * Do calculation
      *
-     * @param expression
-     *            e.g.5+12*(3+5)/7
+     * @param expression e.g.5+12*(3+5)/7
      * @return
      */
     public double calculate(String expression) {

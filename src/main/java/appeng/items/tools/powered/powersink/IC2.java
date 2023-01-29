@@ -1,51 +1,41 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.tools.powered.powersink;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.config.PowerUnits;
 import appeng.integration.IntegrationType;
 import appeng.transformer.annotations.Integration.Interface;
 import appeng.transformer.annotations.Integration.InterfaceList;
 import appeng.transformer.annotations.Integration.Method;
+
 import com.google.common.base.Optional;
+
 import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 @InterfaceList(
-        value = {
-            @Interface(iface = "ic2.api.item.ISpecialElectricItem", iname = IntegrationType.IC2),
-            @Interface(iface = "ic2.api.item.IElectricItemManager", iname = IntegrationType.IC2)
-        })
+        value = { @Interface(iface = "ic2.api.item.ISpecialElectricItem", iname = IntegrationType.IC2),
+                @Interface(iface = "ic2.api.item.IElectricItemManager", iname = IntegrationType.IC2) })
 public abstract class IC2 extends AERootPoweredItem implements IElectricItemManager, ISpecialElectricItem {
+
     public IC2(final double powerCapacity, final Optional<String> subName) {
         super(powerCapacity, subName);
     }
 
     @Override
-    public double charge(
-            final ItemStack is,
-            final double amount,
-            final int tier,
-            final boolean ignoreTransferLimit,
+    public double charge(final ItemStack is, final double amount, final int tier, final boolean ignoreTransferLimit,
             final boolean simulate) {
         double addedAmt = amount;
         final double limit = this.getTransferLimit(is);
@@ -58,13 +48,8 @@ public abstract class IC2 extends AERootPoweredItem implements IElectricItemMana
     }
 
     @Override
-    public double discharge(
-            final ItemStack itemStack,
-            final double amount,
-            final int tier,
-            final boolean ignoreTransferLimit,
-            final boolean externally,
-            final boolean simulate) {
+    public double discharge(final ItemStack itemStack, final double amount, final int tier,
+            final boolean ignoreTransferLimit, final boolean externally, final boolean simulate) {
         return 0;
     }
 

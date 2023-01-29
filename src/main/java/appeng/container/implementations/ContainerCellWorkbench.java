@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import java.util.Iterator;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.config.CopyMode;
@@ -35,15 +36,9 @@ import appeng.tile.inventory.AppEngNullInventory;
 import appeng.tile.misc.TileCellWorkbench;
 import appeng.util.Platform;
 import appeng.util.iterators.NullIterator;
-import java.util.Iterator;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 
 public class ContainerCellWorkbench extends ContainerUpgradeable {
+
     private final TileCellWorkbench workBench;
     private final AppEngNullInventory nullInventory = new AppEngNullInventory();
 
@@ -66,8 +61,7 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
     }
 
     public void nextWorkBenchCopyMode() {
-        this.workBench
-                .getConfigManager()
+        this.workBench.getConfigManager()
                 .putSetting(Settings.COPY_MODE, Platform.nextEnum(this.getWorkBenchCopyMode()));
     }
 
@@ -83,8 +77,14 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
     @Override
     protected void setupConfig() {
         final IInventory cell = this.getUpgradeable().getInventoryByName("cell");
-        this.addSlotToContainer(new SlotRestrictedInput(
-                SlotRestrictedInput.PlacableItemType.WORKBENCH_CELL, cell, 0, 152, 8, this.getInventoryPlayer()));
+        this.addSlotToContainer(
+                new SlotRestrictedInput(
+                        SlotRestrictedInput.PlacableItemType.WORKBENCH_CELL,
+                        cell,
+                        0,
+                        152,
+                        8,
+                        this.getInventoryPlayer()));
 
         final IInventory inv = this.getUpgradeable().getInventoryByName("config");
         final IInventory upgradeInventory = new Upgrades();
@@ -103,24 +103,24 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
         for (int zz = 0; zz < 3; zz++) {
             for (int z = 0; z < 8; z++) {
                 final int iSLot = zz * 8 + z;
-                this.addSlotToContainer(new OptionalSlotRestrictedInput(
-                        SlotRestrictedInput.PlacableItemType.UPGRADES,
-                        upgradeInventory,
-                        this,
-                        iSLot,
-                        187 + zz * 18,
-                        8 + 18 * z,
-                        iSLot,
-                        this.getInventoryPlayer()));
+                this.addSlotToContainer(
+                        new OptionalSlotRestrictedInput(
+                                SlotRestrictedInput.PlacableItemType.UPGRADES,
+                                upgradeInventory,
+                                this,
+                                iSLot,
+                                187 + zz * 18,
+                                8 + 18 * z,
+                                iSLot,
+                                this.getInventoryPlayer()));
             }
         }
         /*
          * if ( supportCapacity() ) { for (int w = 0; w < 2; w++) for (int z = 0; z < 9; z++) addSlotToContainer( new
-         * OptionalSlotFakeTypeOnly( inv, this, offset++, x, y, z, w, 1 ) );
-         * for (int w = 0; w < 2; w++) for (int z = 0; z < 9; z++) addSlotToContainer( new OptionalSlotFakeTypeOnly(
-         * inv, this, offset++, x, y, z, w + 2, 2 ) );
-         * for (int w = 0; w < 2; w++) for (int z = 0; z < 9; z++) addSlotToContainer( new OptionalSlotFakeTypeOnly(
-         * inv, this, offset++, x, y, z, w + 4, 3 ) ); }
+         * OptionalSlotFakeTypeOnly( inv, this, offset++, x, y, z, w, 1 ) ); for (int w = 0; w < 2; w++) for (int z = 0;
+         * z < 9; z++) addSlotToContainer( new OptionalSlotFakeTypeOnly( inv, this, offset++, x, y, z, w + 2, 2 ) ); for
+         * (int w = 0; w < 2; w++) for (int z = 0; z < 9; z++) addSlotToContainer( new OptionalSlotFakeTypeOnly( inv,
+         * this, offset++, x, y, z, w + 4, 3 ) ); }
          */
     }
 
@@ -138,9 +138,8 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
     public void detectAndSendChanges() {
         final ItemStack is = this.workBench.getInventoryByName("cell").getStackInSlot(0);
         if (Platform.isServer()) {
-            if (this.workBench
-                            .getWorldObj()
-                            .getTileEntity(this.workBench.xCoord, this.workBench.yCoord, this.workBench.zCoord)
+            if (this.workBench.getWorldObj()
+                    .getTileEntity(this.workBench.xCoord, this.workBench.yCoord, this.workBench.zCoord)
                     != this.workBench) {
                 this.setValidContainer(false);
             }
@@ -207,16 +206,14 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
     public void partition() {
         final IInventory inv = this.getUpgradeable().getInventoryByName("config");
 
-        final IMEInventory<IAEItemStack> cellInv = AEApi.instance()
-                .registries()
-                .cell()
-                .getCellInventory(
-                        this.getUpgradeable().getInventoryByName("cell").getStackInSlot(0), null, StorageChannel.ITEMS);
+        final IMEInventory<IAEItemStack> cellInv = AEApi.instance().registries().cell().getCellInventory(
+                this.getUpgradeable().getInventoryByName("cell").getStackInSlot(0),
+                null,
+                StorageChannel.ITEMS);
 
         Iterator<IAEItemStack> i = new NullIterator<IAEItemStack>();
         if (cellInv != null) {
-            final IItemList<IAEItemStack> list =
-                    cellInv.getAvailableItems(AEApi.instance().storage().createItemList());
+            final IItemList<IAEItemStack> list = cellInv.getAvailableItems(AEApi.instance().storage().createItemList());
             i = list.iterator();
         }
 

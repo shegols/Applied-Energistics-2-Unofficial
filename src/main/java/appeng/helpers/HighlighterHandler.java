@@ -1,11 +1,13 @@
 package appeng.helpers;
 
-import appeng.api.util.DimensionalCoord;
-import appeng.client.render.BlockPosHighlighter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+
 import org.lwjgl.opengl.GL11;
+
+import appeng.api.util.DimensionalCoord;
+import appeng.client.render.BlockPosHighlighter;
 
 // inspired by McJtyLib
 

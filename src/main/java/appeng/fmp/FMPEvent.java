@@ -1,22 +1,26 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.fmp;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFence;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 import appeng.block.AEBaseItemBlock;
 import appeng.core.sync.network.NetworkHandler;
@@ -29,17 +33,6 @@ import codechicken.lib.vec.Vector3;
 import codechicken.multipart.TMultiPart;
 import codechicken.multipart.TileMultipart;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFence;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 /**
  * Basically a total rip of of the FMP version for vanilla, seemed to work well enough...
@@ -83,8 +76,7 @@ public class FMPEvent {
         {
             final Vector3 f = new Vector3(hit.hitVec).add(-hit.blockX, -hit.blockY, -hit.blockZ);
             final Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-            if (block != null
-                    && !ignoreActivate(block)
+            if (block != null && !ignoreActivate(block)
                     && block.onBlockActivated(
                             world,
                             hit.blockX,
@@ -96,15 +88,16 @@ public class FMPEvent {
                             (float) f.y,
                             (float) f.z)) {
                 player.swingItem();
-                PacketCustom.sendToServer(new C08PacketPlayerBlockPlacement(
-                        hit.blockX,
-                        hit.blockY,
-                        hit.blockZ,
-                        hit.sideHit,
-                        player.inventory.getCurrentItem(),
-                        (float) f.x,
-                        (float) f.y,
-                        (float) f.z));
+                PacketCustom.sendToServer(
+                        new C08PacketPlayerBlockPlacement(
+                                hit.blockX,
+                                hit.blockY,
+                                hit.blockZ,
+                                hit.sideHit,
+                                player.inventory.getCurrentItem(),
+                                (float) f.x,
+                                (float) f.y,
+                                (float) f.z));
                 return true;
             }
         }

@@ -1,22 +1,26 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.List;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import appeng.api.config.*;
 import appeng.api.implementations.guiobjects.IPortableCell;
@@ -55,15 +59,6 @@ import appeng.util.Platform;
 import codechicken.nei.TextField;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.List;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfigManagerHost, IDropToFillTextField {
 
@@ -103,8 +98,8 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         this(inventoryPlayer, te, new ContainerMEMonitorable(inventoryPlayer, te));
     }
 
-    public GuiMEMonitorable(
-            final InventoryPlayer inventoryPlayer, final ITerminalHost te, final ContainerMEMonitorable c) {
+    public GuiMEMonitorable(final InventoryPlayer inventoryPlayer, final ITerminalHost te,
+            final ContainerMEMonitorable c) {
 
         super(c);
 
@@ -135,6 +130,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         }
 
         this.searchField = new MEGuiTextField(90, 12, ButtonToolTips.SearchStringTooltip.getLocal()) {
+
             @Override
             public void onTextChange(final String oldText) {
                 final String text = getText();
@@ -147,8 +143,8 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         if (Loader.isModLoaded("NotEnoughItems")) {
 
             try {
-                final Class<? super Object> clazz =
-                        ReflectionHelper.getClass(this.getClass().getClassLoader(), "codechicken.nei.LayoutManager");
+                final Class<? super Object> clazz = ReflectionHelper
+                        .getClass(this.getClass().getClassLoader(), "codechicken.nei.LayoutManager");
                 final Field fldSearchField = clazz.getField("searchField");
                 this.NEISearchField = (TextField) fldSearchField.get(clazz);
             } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -168,9 +164,10 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
 
     private void setScrollBar() {
         this.getScrollBar().setTop(18).setLeft(175).setHeight(this.rows * 18 - 2);
-        this.getScrollBar()
-                .setRange(
-                        0, (this.repo.size() + this.perRow - 1) / this.perRow - this.rows, Math.max(1, this.rows / 6));
+        this.getScrollBar().setRange(
+                0,
+                (this.repo.size() + this.perRow - 1) / this.perRow - this.rows,
+                Math.max(1, this.rows / 6));
     }
 
     @Override
@@ -185,8 +182,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
             if (iBtn.getSetting() != Settings.ACTIONS) {
                 final Enum cv = iBtn.getCurrentValue();
                 final boolean backwards = Mouse.isButtonDown(1);
-                final Enum next =
-                        Platform.rotateEnum(cv, backwards, iBtn.getSetting().getPossibleValues());
+                final Enum next = Platform.rotateEnum(cv, backwards, iBtn.getSetting().getPossibleValues());
 
                 if (btn == this.terminalStyleBox) {
                     AEConfig.instance.settings.putSetting(iBtn.getSetting(), next);
@@ -196,8 +192,8 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
                     AEConfig.instance.preserveSearchBar = next == YesNo.YES;
                 } else {
                     try {
-                        NetworkHandler.instance.sendToServer(
-                                new PacketValueConfig(iBtn.getSetting().name(), next.name()));
+                        NetworkHandler.instance
+                                .sendToServer(new PacketValueConfig(iBtn.getSetting().name(), next.name()));
                     } catch (final IOException e) {
                         AELog.debug(e);
                     }
@@ -221,8 +217,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     public void initGui() {
         Keyboard.enableRepeatEvents(true);
 
-        this.perRow = AEConfig.instance.getConfigManager().getSetting(Settings.TERMINAL_STYLE) != TerminalStyle.FULL
-                ? 9
+        this.perRow = AEConfig.instance.getConfigManager().getSetting(Settings.TERMINAL_STYLE) != TerminalStyle.FULL ? 9
                 : 9 + ((this.width - this.standardSize) / 18);
         this.rows = calculateRowsCount();
 
@@ -254,7 +249,10 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         if (this.customSortOrder) {
             this.buttonList.add(
                     this.SortByBox = new GuiImgButton(
-                            this.guiLeft - 18, offset, Settings.SORT_BY, this.configSrc.getSetting(Settings.SORT_BY)));
+                            this.guiLeft - 18,
+                            offset,
+                            Settings.SORT_BY,
+                            this.configSrc.getSetting(Settings.SORT_BY)));
             offset += 20;
         }
 
@@ -303,9 +301,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         }
 
         if (this.viewCell || this instanceof GuiWirelessTerm) {
-            if (AEConfig.instance
-                    .getConfigManager()
-                    .getSetting(Settings.CRAFTING_STATUS)
+            if (AEConfig.instance.getConfigManager().getSetting(Settings.CRAFTING_STATUS)
                     .equals(CraftingStatus.BUTTON)) {
                 this.buttonList.add(
                         this.craftingStatusImgBtn = new GuiImgButton(
@@ -367,10 +363,9 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
 
     protected int calculateRowsCount() {
         final boolean hasNEI = IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.NEI);
-        final int NEIPadding = hasNEI
-                ? 22
-                        /** input */
-                        + 20
+        final int NEIPadding = hasNEI ? 22
+                /** input */
+                + 20
                 /** top panel */
                 : 0;
         final int extraSpace = this.height - MAGIC_HEIGHT_NUMBER - NEIPadding - this.reservedSpace;
@@ -381,9 +376,15 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     @Override
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         this.fontRendererObj.drawString(
-                this.getGuiDisplayName(this.myName.getLocal()), 8, 6, GuiColors.MEMonitorableTitle.getColor());
+                this.getGuiDisplayName(this.myName.getLocal()),
+                8,
+                6,
+                GuiColors.MEMonitorableTitle.getColor());
         this.fontRendererObj.drawString(
-                GuiText.inventory.getLocal(), 8, this.ySize - 96 + 3, GuiColors.MEMonitorableInventory.getColor());
+                GuiText.inventory.getLocal(),
+                8,
+                this.ySize - 96 + 3,
+                GuiColors.MEMonitorableInventory.getColor());
 
         this.currentMouseX = mouseX;
         this.currentMouseY = mouseY;
@@ -429,11 +430,9 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
             boolean update = false;
 
             for (int i = 0; i < 5; i++) {
-                if (this.myCurrentViewCells[i]
-                        != this.monitorableContainer.getCellViewSlot(i).getStack()) {
+                if (this.myCurrentViewCells[i] != this.monitorableContainer.getCellViewSlot(i).getStack()) {
                     update = true;
-                    this.myCurrentViewCells[i] =
-                            this.monitorableContainer.getCellViewSlot(i).getStack();
+                    this.myCurrentViewCells[i] = this.monitorableContainer.getCellViewSlot(i).getStack();
                 }
             }
 
@@ -468,8 +467,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     protected void keyTyped(final char character, final int key) {
         if (!this.checkHotbarKeys(key)) {
 
-            if (NEISearchField != null
-                    && (NEISearchField.focused() || searchField.isFocused())
+            if (NEISearchField != null && (NEISearchField.focused() || searchField.isFocused())
                     && CommonHelper.proxy.isActionKey(ActionKey.TOGGLE_FOCUS, key)) {
                 final boolean focused = searchField.isFocused();
                 searchField.setFocused(!focused);
@@ -490,8 +488,8 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
                 return;
             }
 
-            final boolean mouseInGui =
-                    this.isPointInRegion(0, 0, this.xSize, this.ySize, this.currentMouseX, this.currentMouseY);
+            final boolean mouseInGui = this
+                    .isPointInRegion(0, 0, this.xSize, this.ySize, this.currentMouseX, this.currentMouseY);
 
             if (this.isAutoFocus && !searchField.isFocused() && mouseInGui) {
                 searchField.setFocused(true);
@@ -545,8 +543,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     protected boolean isPointInRegion(int rectX, int rectY, int rectWidth, int rectHeight, int pointX, int pointY) {
         pointX -= this.guiLeft;
         pointY -= this.guiTop;
-        return pointX >= rectX - 1
-                && pointX < rectX + rectWidth + 1
+        return pointX >= rectX - 1 && pointX < rectX + rectWidth + 1
                 && pointY >= rectY - 1
                 && pointY < rectY + rectHeight + 1;
     }
@@ -619,7 +616,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
             tw += tx;
             th += ty;
 
-            //      overflow || intersect
+            // overflow || intersect
             return (rw < rx || rw > tx) && (rh < ry || rh > ty) && (tw < tx || tw > rx) && (th < ty || th > ry);
         }
 

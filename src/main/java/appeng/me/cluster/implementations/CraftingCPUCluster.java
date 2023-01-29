@@ -1,22 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.cluster.implementations;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.IntStream;
+
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -49,18 +52,10 @@ import appeng.tile.crafting.TileCraftingMonitorTile;
 import appeng.tile.crafting.TileCraftingTile;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import cpw.mods.fml.common.FMLCommonHandler;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.stream.IntStream;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
 
@@ -69,14 +64,12 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
     private final WorldCoord min;
     private final WorldCoord max;
     private final int[] usedOps = new int[3];
-    private final Map<ICraftingPatternDetails, TaskProgress> tasks =
-            new HashMap<ICraftingPatternDetails, TaskProgress>();
+    private final Map<ICraftingPatternDetails, TaskProgress> tasks = new HashMap<ICraftingPatternDetails, TaskProgress>();
     // INSTANCE sate
     private final LinkedList<TileCraftingTile> tiles = new LinkedList<TileCraftingTile>();
     private final LinkedList<TileCraftingTile> storage = new LinkedList<TileCraftingTile>();
     private final LinkedList<TileCraftingMonitorTile> status = new LinkedList<TileCraftingMonitorTile>();
-    private final HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners =
-            new HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object>();
+    private final HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = new HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object>();
     private ICraftingLink myLastLink;
     private String myName = "";
     private boolean isDestroyed = false;
@@ -415,12 +408,11 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                 if (!patternDetails.isCraftable() && fuzz.getStackSize() <= 0) continue;
                 if (patternDetails.isCraftable()) {
                     final IAEItemStack[] inputSlots = patternDetails.getInputs();
-                    final IAEItemStack finalIngredient =
-                            ingredient; // have to copy because of Java lambda capture rules here
+                    final IAEItemStack finalIngredient = ingredient; // have to copy because of Java lambda capture
+                                                                     // rules here
                     final int matchingSlot = IntStream.range(0, inputSlots.length)
                             .filter(idx -> inputSlots[idx] != null && inputSlots[idx].equals(finalIngredient))
-                            .findFirst()
-                            .orElse(-1);
+                            .findFirst().orElse(-1);
                     if (matchingSlot < 0) {
                         continue;
                     }
@@ -444,8 +436,8 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                 }
             }
         } else {
-            final IAEItemStack extractItems =
-                    this.inventory.extractItems(ingredient, Actionable.SIMULATE, this.machineSrc);
+            final IAEItemStack extractItems = this.inventory
+                    .extractItems(ingredient, Actionable.SIMULATE, this.machineSrc);
             final ItemStack is = extractItems == null ? null : extractItems.getItemStack();
             if (is != null && is.stackSize == ingredient.getStackSize()) {
                 list.add(extractItems);
@@ -539,8 +531,7 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
     }
 
     private void executeCrafting(final IEnergyGrid eg, final CraftingGridCache cc) {
-        final Iterator<Entry<ICraftingPatternDetails, TaskProgress>> i =
-                this.tasks.entrySet().iterator();
+        final Iterator<Entry<ICraftingPatternDetails, TaskProgress>> i = this.tasks.entrySet().iterator();
 
         while (i.hasNext()) {
             final Entry<ICraftingPatternDetails, TaskProgress> e = i.next();
@@ -571,16 +562,14 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                                 }
                             }
                             // upgraded interface uses more power
-                            if (m instanceof DualityInterface)
-                                sum *= Math.pow(
-                                        4.0, ((DualityInterface) m).getInstalledUpgrades(Upgrades.PATTERN_CAPACITY));
+                            if (m instanceof DualityInterface) sum *= Math
+                                    .pow(4.0, ((DualityInterface) m).getInstalledUpgrades(Upgrades.PATTERN_CAPACITY));
 
                             // check if there is enough power
                             if (eg.extractAEPower(sum, Actionable.SIMULATE, PowerMultiplier.CONFIG) < sum - 0.01)
                                 continue;
 
-                            ic = details.isCraftable()
-                                    ? new InventoryCrafting(new ContainerNull(), 3, 3)
+                            ic = details.isCraftable() ? new InventoryCrafting(new ContainerNull(), 3, 3)
                                     : new InventoryCrafting(new ContainerNull(), details.getInputs().length, 1);
 
                             boolean found = false;
@@ -588,13 +577,12 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                                 if (input[x] != null) {
                                     found = false;
                                     for (IAEItemStack ias : getExtractItems(input[x], details)) {
-                                        if (details.isCraftable()
-                                                && !details.isValidItemForSlot(
-                                                        x, ias.getItemStack(), this.getWorld())) {
+                                        if (details.isCraftable() && !details
+                                                .isValidItemForSlot(x, ias.getItemStack(), this.getWorld())) {
                                             continue;
                                         }
-                                        final IAEItemStack ais =
-                                                this.inventory.extractItems(ias, Actionable.MODULATE, this.machineSrc);
+                                        final IAEItemStack ais = this.inventory
+                                                .extractItems(ias, Actionable.MODULATE, this.machineSrc);
                                         final ItemStack is = ais == null ? null : ais.getItemStack();
                                         if (is == null) continue;
                                         found = true;
@@ -618,7 +606,9 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                                     final ItemStack is = ic.getStackInSlot(x);
                                     if (is != null) {
                                         this.inventory.injectItems(
-                                                AEItemStack.create(is), Actionable.MODULATE, this.machineSrc);
+                                                AEItemStack.create(is),
+                                                Actionable.MODULATE,
+                                                this.machineSrc);
                                     }
                                 }
                                 ic = null;
@@ -638,11 +628,10 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                             }
 
                             if (details.isCraftable()) {
-                                FMLCommonHandler.instance()
-                                        .firePlayerCraftingEvent(
-                                                Platform.getPlayer((WorldServer) this.getWorld()),
-                                                details.getOutput(ic, this.getWorld()),
-                                                ic);
+                                FMLCommonHandler.instance().firePlayerCraftingEvent(
+                                        Platform.getPlayer((WorldServer) this.getWorld()),
+                                        details.getOutput(ic, this.getWorld()),
+                                        ic);
 
                                 for (int x = 0; x < ic.getSizeInventory(); x++) {
                                     final ItemStack output = Platform.getContainerItem(ic.getStackInSlot(x));
@@ -713,10 +702,7 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
         this.markDirty();
     }
 
-    public ICraftingLink submitJob(
-            final IGrid g,
-            final ICraftingJob job,
-            final BaseActionSource src,
+    public ICraftingLink submitJob(final IGrid g, final ICraftingJob job, final BaseActionSource src,
             final ICraftingRequester requestingMachine) {
         if (!this.tasks.isEmpty() || !this.waitingFor.isEmpty()) {
             return null;
@@ -746,8 +732,9 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                 this.updateCPU();
                 final String craftID = this.generateCraftingID();
 
-                this.myLastLink =
-                        new CraftingLink(this.generateLinkData(craftID, requestingMachine == null, false), this);
+                this.myLastLink = new CraftingLink(
+                        this.generateLinkData(craftID, requestingMachine == null, false),
+                        this);
 
                 this.prepareElapsedTime();
 
@@ -755,8 +742,9 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                     return this.myLastLink;
                 }
 
-                final ICraftingLink whatLink =
-                        new CraftingLink(this.generateLinkData(craftID, false, true), requestingMachine);
+                final ICraftingLink whatLink = new CraftingLink(
+                        this.generateLinkData(craftID, false, true),
+                        requestingMachine);
 
                 this.submitLink(this.myLastLink);
                 this.submitLink(whatLink);
@@ -783,8 +771,7 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
 
     @Override
     public boolean isBusy() {
-        final Iterator<Entry<ICraftingPatternDetails, TaskProgress>> i =
-                this.tasks.entrySet().iterator();
+        final Iterator<Entry<ICraftingPatternDetails, TaskProgress>> i = this.tasks.entrySet().iterator();
 
         while (i.hasNext()) {
             if (i.next().getValue().value <= 0) {
@@ -835,8 +822,7 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
         final int hash = System.identityHashCode(this);
         final int hmm = this.finalOutput == null ? 0 : this.finalOutput.hashCode();
 
-        return Long.toString(now, Character.MAX_RADIX)
-                + '-'
+        return Long.toString(now, Character.MAX_RADIX) + '-'
                 + Integer.toString(hash, Character.MAX_RADIX)
                 + '-'
                 + Integer.toString(hmm, Character.MAX_RADIX);
@@ -969,8 +955,7 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
 
         final NBTTagList list = new NBTTagList();
         for (final Entry<ICraftingPatternDetails, TaskProgress> e : this.tasks.entrySet()) {
-            final NBTTagCompound item =
-                    this.writeItem(AEItemStack.create(e.getKey().getPattern()));
+            final NBTTagCompound item = this.writeItem(AEItemStack.create(e.getKey().getPattern()));
             item.setLong("craftingProgress", e.getValue().value);
             list.appendTag(item);
         }
@@ -1146,6 +1131,7 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
     }
 
     private static class TaskProgress {
+
         private long value;
     }
 }

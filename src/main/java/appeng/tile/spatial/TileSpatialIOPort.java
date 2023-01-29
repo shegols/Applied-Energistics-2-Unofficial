@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.spatial;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -40,15 +38,10 @@ import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.tile.inventory.InvOperation;
 import appeng.util.IWorldCallable;
 import appeng.util.Platform;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileSpatialIOPort extends AENetworkInvTile implements IWorldCallable<Void> {
 
-    private final int[] sides = {0, 1};
+    private final int[] sides = { 0, 1 };
     private final AppEngInternalInventory inv = new AppEngInternalInventory(this, 2);
     private YesNo lastRedstoneState = YesNo.UNDECIDED;
 
@@ -121,8 +114,8 @@ public class TileSpatialIOPort extends AENetworkInvTile implements IWorldCallabl
                 if (Math.abs(pr - req) < req * 0.001) {
                     final MENetworkEvent res = gi.postEvent(new MENetworkSpatialEvent(this, req));
                     if (!res.isCanceled()) {
-                        final TransitionResult tr =
-                                sc.doSpatialTransition(cell, this.worldObj, spc.getMin(), spc.getMax(), true);
+                        final TransitionResult tr = sc
+                                .doSpatialTransition(cell, this.worldObj, spc.getMin(), spc.getMax(), true);
                         if (tr.success) {
                             energy.extractAEPower(req, Actionable.MODULATE, PowerMultiplier.CONFIG);
                             this.setInventorySlotContents(0, null);
@@ -157,11 +150,7 @@ public class TileSpatialIOPort extends AENetworkInvTile implements IWorldCallabl
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {}
 
     @Override

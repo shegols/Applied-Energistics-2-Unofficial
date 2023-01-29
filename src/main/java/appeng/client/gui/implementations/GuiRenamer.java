@@ -1,5 +1,10 @@
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
 import appeng.client.gui.AEBaseGui;
 import appeng.client.gui.widgets.IDropToFillTextField;
 import appeng.client.gui.widgets.MEGuiTextField;
@@ -10,11 +15,9 @@ import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.helpers.ICustomNameObject;
-import java.io.IOException;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 
 public class GuiRenamer extends AEBaseGui implements IDropToFillTextField {
+
     private MEGuiTextField textField;
 
     public GuiRenamer(InventoryPlayer ip, ICustomNameObject obj) {
@@ -68,8 +71,8 @@ public class GuiRenamer extends AEBaseGui implements IDropToFillTextField {
     protected void keyTyped(final char character, final int key) {
         if (key == 28) { // Enter
             try {
-                NetworkHandler.instance.sendToServer(
-                        new PacketValueConfig("QuartzKnife.ReName", this.textField.getText()));
+                NetworkHandler.instance
+                        .sendToServer(new PacketValueConfig("QuartzKnife.ReName", this.textField.getText()));
             } catch (IOException e) {
                 AELog.debug(e);
             }

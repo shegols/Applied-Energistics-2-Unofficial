@@ -1,22 +1,35 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.*;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -49,24 +62,6 @@ import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.inv.AdaptorPlayerHand;
 import appeng.util.item.AEItemStack;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.*;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.apache.commons.lang3.ArrayUtils;
 
 public abstract class AEBaseContainer extends Container {
 
@@ -91,8 +86,8 @@ public abstract class AEBaseContainer extends Container {
         this(ip, myTile, myPart, null);
     }
 
-    public AEBaseContainer(
-            final InventoryPlayer ip, final TileEntity myTile, final IPart myPart, final IGuiItemObject gio) {
+    public AEBaseContainer(final InventoryPlayer ip, final TileEntity myTile, final IPart myPart,
+            final IGuiItemObject gio) {
         this.invPlayer = ip;
         this.tileEntity = myTile;
         this.part = myPart;
@@ -126,7 +121,9 @@ public abstract class AEBaseContainer extends Container {
             if (f.isAnnotationPresent(GuiSync.Recurse.class)) {
                 final GuiSync.Recurse annotation = f.getAnnotation(GuiSync.Recurse.class);
                 walkSyncFields(
-                        offset + annotation.value(), f.getType().getFields(), ArrayUtils.add(currentIndirections, f));
+                        offset + annotation.value(),
+                        f.getType().getFields(),
+                        ArrayUtils.add(currentIndirections, f));
             }
             if (f.isAnnotationPresent(GuiSync.class)) {
                 final GuiSync annotation = f.getAnnotation(GuiSync.class);
@@ -195,8 +192,8 @@ public abstract class AEBaseContainer extends Container {
         // client doesn't need to re-send, makes for lower overhead rapid packets.
         if (Platform.isClient()) {
             final ItemStack a = stack == null ? null : stack.getItemStack();
-            final ItemStack b =
-                    this.clientRequestedTargetItem == null ? null : this.clientRequestedTargetItem.getItemStack();
+            final ItemStack b = this.clientRequestedTargetItem == null ? null
+                    : this.clientRequestedTargetItem.getItemStack();
 
             if (Platform.isSameItemPrecise(a, b)) {
                 return;
@@ -719,7 +716,10 @@ public abstract class AEBaseContainer extends Container {
                     }
 
                     ais = Platform.poweredExtraction(
-                            this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                            this.getPowerSource(),
+                            this.getCellInventory(),
+                            ais,
+                            this.getActionSource());
                     if (ais != null) {
                         adp.addItems(ais.getItemStack());
                     }
@@ -738,8 +738,8 @@ public abstract class AEBaseContainer extends Container {
                     ais.setStackSize(1);
                     final IAEItemStack extracted = ais.copy();
 
-                    ais = Platform.poweredInsert(
-                            this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                    ais = Platform
+                            .poweredInsert(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
                     if (ais == null) {
                         final InventoryAdaptor ia = new AdaptorPlayerHand(player);
 
@@ -777,7 +777,10 @@ public abstract class AEBaseContainer extends Container {
                         IAEItemStack ais = slotItem.copy();
                         ais.setStackSize(1);
                         ais = Platform.poweredExtraction(
-                                this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                                this.getPowerSource(),
+                                this.getCellInventory(),
+                                ais,
+                                this.getActionSource());
                         if (ais != null) {
                             final InventoryAdaptor ia = new AdaptorPlayerHand(player);
 
@@ -801,7 +804,10 @@ public abstract class AEBaseContainer extends Container {
                         IAEItemStack ais = slotItem.copy();
                         ais.setStackSize(ais.getItemStack().getMaxStackSize());
                         ais = Platform.poweredExtraction(
-                                this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                                this.getPowerSource(),
+                                this.getCellInventory(),
+                                ais,
+                                this.getActionSource());
                         if (ais != null) {
                             player.inventory.setItemStack(ais.getItemStack());
                         } else {
@@ -811,8 +817,8 @@ public abstract class AEBaseContainer extends Container {
                     }
                 } else {
                     IAEItemStack ais = AEApi.instance().storage().createItemStack(player.inventory.getItemStack());
-                    ais = Platform.poweredInsert(
-                            this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                    ais = Platform
+                            .poweredInsert(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
                     if (ais != null) {
                         player.inventory.setItemStack(ais.getItemStack());
                     } else {
@@ -838,7 +844,10 @@ public abstract class AEBaseContainer extends Container {
                             final long stackSize = Math.min(maxSize, ais.getStackSize());
                             ais.setStackSize((stackSize + 1) >> 1);
                             ais = Platform.poweredExtraction(
-                                    this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                                    this.getPowerSource(),
+                                    this.getCellInventory(),
+                                    ais,
+                                    this.getActionSource());
                         }
 
                         if (ais != null) {
@@ -851,8 +860,8 @@ public abstract class AEBaseContainer extends Container {
                 } else {
                     IAEItemStack ais = AEApi.instance().storage().createItemStack(player.inventory.getItemStack());
                     ais.setStackSize(1);
-                    ais = Platform.poweredInsert(
-                            this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                    ais = Platform
+                            .poweredInsert(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
                     if (ais == null) {
                         final ItemStack is = player.inventory.getItemStack();
                         is.stackSize--;
@@ -894,7 +903,10 @@ public abstract class AEBaseContainer extends Container {
                         }
 
                         ais = Platform.poweredExtraction(
-                                this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                                this.getPowerSource(),
+                                this.getCellInventory(),
+                                ais,
+                                this.getActionSource());
                         if (ais != null) {
                             adp.addItems(ais.getItemStack());
                         } else {
@@ -914,7 +926,9 @@ public abstract class AEBaseContainer extends Container {
             try {
                 NetworkHandler.instance.sendTo(
                         new PacketInventoryAction(
-                                InventoryAction.UPDATE_HAND, 0, AEItemStack.create(p.inventory.getItemStack())),
+                                InventoryAction.UPDATE_HAND,
+                                0,
+                                AEItemStack.create(p.inventory.getItemStack())),
                         p);
             } catch (final IOException e) {
                 AELog.debug(e);

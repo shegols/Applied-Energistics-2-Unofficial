@@ -1,22 +1,21 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import java.io.IOException;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.input.Mouse;
 
 import appeng.api.config.*;
 import appeng.client.gui.widgets.GuiImgButton;
@@ -30,10 +29,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketConfigButton;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.parts.automation.PartLevelEmitter;
-import java.io.IOException;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.input.Mouse;
 
 public class GuiLevelEmitter extends GuiUpgradeable {
 
@@ -76,14 +71,26 @@ public class GuiLevelEmitter extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.levelMode =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.LEVEL_TYPE, LevelType.ITEM_LEVEL);
+        this.levelMode = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 8,
+                Settings.LEVEL_TYPE,
+                LevelType.ITEM_LEVEL);
         this.redstoneMode = new GuiImgButton(
-                this.guiLeft - 18, this.guiTop + 28, Settings.REDSTONE_EMITTER, RedstoneMode.LOW_SIGNAL);
-        this.fuzzyMode =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
-        this.craftingMode =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.CRAFT_VIA_REDSTONE, YesNo.NO);
+                this.guiLeft - 18,
+                this.guiTop + 28,
+                Settings.REDSTONE_EMITTER,
+                RedstoneMode.LOW_SIGNAL);
+        this.fuzzyMode = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 48,
+                Settings.FUZZY_MODE,
+                FuzzyMode.IGNORE_ALL);
+        this.craftingMode = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 48,
+                Settings.CRAFT_VIA_REDSTONE,
+                YesNo.NO);
 
         final int a = AEConfig.instance.levelByStackAmounts(0);
         final int b = AEConfig.instance.levelByStackAmounts(1);
@@ -171,8 +178,9 @@ public class GuiLevelEmitter extends GuiUpgradeable {
         }
 
         final boolean isPlus = btn == this.plus1 || btn == this.plus10 || btn == this.plus100 || btn == this.plus1000;
-        final boolean isMinus =
-                btn == this.minus1 || btn == this.minus10 || btn == this.minus100 || btn == this.minus1000;
+        final boolean isMinus = btn == this.minus1 || btn == this.minus10
+                || btn == this.minus100
+                || btn == this.minus1000;
 
         if (isPlus || isMinus) {
             this.addQty(this.getQty(btn));

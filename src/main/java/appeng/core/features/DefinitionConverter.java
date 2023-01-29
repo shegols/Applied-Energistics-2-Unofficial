@@ -1,22 +1,25 @@
 package appeng.core.features;
 
-import appeng.api.definitions.IBlockDefinition;
-import appeng.api.definitions.IComparableDefinition;
-import appeng.api.definitions.IItemDefinition;
-import appeng.api.definitions.ITileDefinition;
-import appeng.api.util.AEItemDefinition;
 import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
+import appeng.api.definitions.IBlockDefinition;
+import appeng.api.definitions.IComparableDefinition;
+import appeng.api.definitions.IItemDefinition;
+import appeng.api.definitions.ITileDefinition;
+import appeng.api.util.AEItemDefinition;
+
 /**
  * @deprecated
  */
 @Deprecated
 public final class DefinitionConverter {
+
     public AEItemDefinition of(final ITileDefinition definition) {
         return new AETile(definition);
     }
@@ -34,6 +37,7 @@ public final class DefinitionConverter {
     }
 
     private static class AEComparable implements AEItemDefinition {
+
         private final IComparableDefinition definition;
 
         public AEComparable(final IComparableDefinition definition) {
@@ -76,6 +80,7 @@ public final class DefinitionConverter {
     }
 
     private static class AEItem extends AEComparable {
+
         private final IItemDefinition definition;
 
         public AEItem(final IItemDefinition definition) {
@@ -98,6 +103,7 @@ public final class DefinitionConverter {
     }
 
     private static class AEBlock extends AEItem {
+
         private final IBlockDefinition definition;
 
         public AEBlock(final IBlockDefinition definition) {
@@ -119,6 +125,7 @@ public final class DefinitionConverter {
     }
 
     private static class AETile extends AEBlock {
+
         private final ITileDefinition definition;
 
         public AETile(final ITileDefinition definition) {

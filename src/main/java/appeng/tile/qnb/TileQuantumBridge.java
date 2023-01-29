@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.qnb;
+
+import java.util.EnumSet;
+
+import net.minecraft.block.Block;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IBlockDefinition;
@@ -38,20 +39,15 @@ import appeng.tile.grid.AENetworkInvTile;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.tile.inventory.InvOperation;
 import appeng.util.Platform;
+
 import com.google.common.base.Optional;
 import io.netty.buffer.ByteBuf;
-import java.util.EnumSet;
-import net.minecraft.block.Block;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock {
+
     private final byte corner = 16;
     private final int[] sidesRing = {};
-    private final int[] sidesLink = {0};
+    private final int[] sidesLink = { 0 };
     private final AppEngInternalInventory internalInventory = new AppEngInternalInventory(this, 1);
     private final byte hasSingularity = 32;
     private final byte powered = 64;
@@ -112,11 +108,7 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {
         if (this.cluster != null) {
             this.cluster.updateStatus(true);
@@ -132,12 +124,7 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
     }
 
     private boolean isCenter() {
-        for (final Block link : AEApi.instance()
-                .definitions()
-                .blocks()
-                .quantumLink()
-                .maybeBlock()
-                .asSet()) {
+        for (final Block link : AEApi.instance().definitions().blocks().quantumLink().maybeBlock().asSet()) {
             return this.getBlockType() == link;
         }
 
@@ -159,8 +146,7 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
     public void onReady() {
         super.onReady();
 
-        final IBlockDefinition quantumRing =
-                AEApi.instance().definitions().blocks().quantumRing();
+        final IBlockDefinition quantumRing = AEApi.instance().definitions().blocks().quantumRing();
         final Optional<Block> maybeLinkBlock = quantumRing.maybeBlock();
         final Optional<ItemStack> maybeLinkStack = quantumRing.maybeStack(1);
 
@@ -185,7 +171,10 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
             if (AEConfig.instance.debugPathFinding) {
                 AELog.debug(
                         "Pathfinding: QNB at (%d %d %d) is disconnecting, affectWorld = %b",
-                        xCoord, yCoord, zCoord, affectWorld);
+                        xCoord,
+                        yCoord,
+                        zCoord,
+                        affectWorld);
             }
             if (!affectWorld) {
                 this.cluster.setUpdateStatus(false);
@@ -215,7 +204,11 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
         if (AEConfig.instance.debugPathFinding) {
             AELog.debug(
                     "Pathfinding: QNB at (%d %d %d) is updating, affectWorld = %b, flags = %d",
-                    xCoord, yCoord, zCoord, affectWorld, (int) flags);
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    affectWorld,
+                    (int) flags);
         }
         this.cluster = c;
 
@@ -241,8 +234,8 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
         final EnumSet<ForgeDirection> set = EnumSet.noneOf(ForgeDirection.class);
 
         for (final ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-            final TileEntity te = this.worldObj.getTileEntity(
-                    this.xCoord + d.offsetX, this.yCoord + d.offsetY, this.zCoord + d.offsetZ);
+            final TileEntity te = this.worldObj
+                    .getTileEntity(this.xCoord + d.offsetX, this.yCoord + d.offsetY, this.zCoord + d.offsetZ);
             if (te instanceof TileQuantumBridge) {
                 set.add(d);
             }

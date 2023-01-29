@@ -1,27 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.hooks;
 
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.PacketCompassRequest;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import appeng.core.sync.network.NetworkHandler;
+import appeng.core.sync.packets.PacketCompassRequest;
 
 public class CompassManager {
 
@@ -79,8 +72,7 @@ public class CompassManager {
             this.cx = x >> 4;
             this.cdy = y >> 5;
             this.cz = z >> 4;
-            this.hash = ((Integer) this.cx).hashCode()
-                    ^ ((Integer) this.cdy).hashCode()
+            this.hash = ((Integer) this.cx).hashCode() ^ ((Integer) this.cdy).hashCode()
                     ^ ((Integer) this.cz).hashCode()
                     ^ ((Long) attunement).hashCode();
         }
@@ -99,8 +91,7 @@ public class CompassManager {
                 return false;
             }
             final CompassRequest other = (CompassRequest) obj;
-            return this.attunement == other.attunement
-                    && this.cx == other.cx
+            return this.attunement == other.attunement && this.cx == other.cx
                     && this.cdy == other.cdy
                     && this.cz == other.cz;
         }

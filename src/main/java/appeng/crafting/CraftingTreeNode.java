@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.crafting;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import net.minecraft.world.World;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -27,11 +25,8 @@ import appeng.api.networking.security.BaseActionSource;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
+
 import com.google.common.collect.Lists;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import net.minecraft.world.World;
 
 public class CraftingTreeNode {
 
@@ -54,13 +49,8 @@ public class CraftingTreeNode {
 
     private boolean sim;
 
-    public CraftingTreeNode(
-            final ICraftingGrid cc,
-            final CraftingJob job,
-            final IAEItemStack wat,
-            final CraftingTreeProcess par,
-            final int slot,
-            final int depth) {
+    public CraftingTreeNode(final ICraftingGrid cc, final CraftingJob job, final IAEItemStack wat,
+            final CraftingTreeProcess par, final int slot, final int depth) {
         this.what = wat;
         this.parent = par;
         this.slot = slot;
@@ -74,8 +64,8 @@ public class CraftingTreeNode {
             return; // if you can emit for something, you can't make it with patterns.
         }
 
-        for (final ICraftingPatternDetails details :
-                cc.getCraftingFor(this.what, this.parent == null ? null : this.parent.details, slot, this.world)) // in
+        for (final ICraftingPatternDetails details : cc
+                .getCraftingFor(this.what, this.parent == null ? null : this.parent.details, slot, this.world)) // in
         // order.
         {
             if (this.parent == null || this.parent.notRecursive(details)) {
@@ -237,7 +227,9 @@ public class CraftingTreeNode {
                         pro.request(subInv, 1, src);
 
                         final IAEItemStack available = subInv.extractItems(
-                                pro.getAmountCrafted(this.what).setStackSize(l), Actionable.MODULATE, src);
+                                pro.getAmountCrafted(this.what).setStackSize(l),
+                                Actionable.MODULATE,
+                                src);
 
                         if (available != null) {
                             if (!subInv.commit(src)) {
@@ -308,9 +300,7 @@ public class CraftingTreeNode {
         }
     }
 
-    public void setJob(
-            final MECraftingInventory storage,
-            final CraftingCPUCluster craftingCPUCluster,
+    public void setJob(final MECraftingInventory storage, final CraftingCPUCluster craftingCPUCluster,
             final BaseActionSource src) {
         for (final IAEItemStack i : this.used) {
             final IAEItemStack ex = storage.extractItems(i, Actionable.MODULATE, src);

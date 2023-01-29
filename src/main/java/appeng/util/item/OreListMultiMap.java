@@ -1,14 +1,17 @@
 package appeng.util.item;
 
-import appeng.api.networking.crafting.ICraftingPatternDetails;
-import appeng.api.storage.data.IAEItemStack;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.ImmutableListMultimap.Builder;
 import java.util.*;
 import java.util.Map.Entry;
 
+import appeng.api.networking.crafting.ICraftingPatternDetails;
+import appeng.api.storage.data.IAEItemStack;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableListMultimap.Builder;
+
 public class OreListMultiMap<T> {
+
     private ImmutableListMultimap<Integer, T> map;
     private final Map<Integer, Collection<ICraftingPatternDetails>> patternHashMap = new HashMap<>();
     private ImmutableListMultimap<Integer, T> patternMap;
@@ -34,8 +37,8 @@ public class OreListMultiMap<T> {
 
     public void put(IAEItemStack key, ICraftingPatternDetails val) {
         if (((AEItemStack) key).getDefinition() != null) {
-            Collection<ICraftingPatternDetails> tmp = patternHashMap.getOrDefault(
-                    ((AEItemStack) key).getDefinition().getMyHash(), null);
+            Collection<ICraftingPatternDetails> tmp = patternHashMap
+                    .getOrDefault(((AEItemStack) key).getDefinition().getMyHash(), null);
             if (tmp == null) {
                 ArrayList<ICraftingPatternDetails> list = new ArrayList<>();
                 list.add(val);
@@ -77,8 +80,8 @@ public class OreListMultiMap<T> {
 
     public ImmutableList<ICraftingPatternDetails> getBeSubstitutePattern(IAEItemStack ias) {
         if (((AEItemStack) ias).getDefinition() == null) return ImmutableList.of();
-        return (ImmutableList<ICraftingPatternDetails>)
-                this.patternMap.get(((AEItemStack) ias).getDefinition().getMyHash());
+        return (ImmutableList<ICraftingPatternDetails>) this.patternMap
+                .get(((AEItemStack) ias).getDefinition().getMyHash());
     }
 
     public void clear() {

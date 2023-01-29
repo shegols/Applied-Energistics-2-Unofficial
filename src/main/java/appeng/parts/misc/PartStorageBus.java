@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.misc;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Vec3;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -64,26 +69,11 @@ import buildcraft.api.transport.IPipeConnection;
 import buildcraft.api.transport.IPipeTile.PipeType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
 
 @Interface(iname = IntegrationType.BuildCraftTransport, iface = "buildcraft.api.transport.IPipeConnection")
-public class PartStorageBus extends PartUpgradeable
-        implements IGridTickable,
-                ICellContainer,
-                IMEMonitorHandlerReceiver<IAEItemStack>,
-                IPipeConnection,
-                IPriorityHost,
-                IOreFilterable {
+public class PartStorageBus extends PartUpgradeable implements IGridTickable, ICellContainer,
+        IMEMonitorHandlerReceiver<IAEItemStack>, IPipeConnection, IPriorityHost, IOreFilterable {
+
     private final BaseActionSource mySrc;
     private final AppEngInternalAEInventory Config = new AppEngInternalAEInventory(this, 63);
     private int priority = 0;
@@ -140,12 +130,8 @@ public class PartStorageBus extends PartUpgradeable
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removedStack,
-            final ItemStack newStack) {
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         super.onChangeInventory(inv, slot, mc, removedStack, newStack);
 
         if (inv == this.Config) {
@@ -186,8 +172,7 @@ public class PartStorageBus extends PartUpgradeable
     }
 
     private void resetCache(final boolean fullReset) {
-        if (this.getHost() == null
-                || this.getHost().getTile() == null
+        if (this.getHost() == null || this.getHost().getTile() == null
                 || this.getHost().getTile().getWorldObj() == null
                 || this.getHost().getTile().getWorldObj().isRemote) {
             return;
@@ -212,9 +197,7 @@ public class PartStorageBus extends PartUpgradeable
     }
 
     @Override
-    public void postChange(
-            final IBaseMonitor<IAEItemStack> monitor,
-            final Iterable<IAEItemStack> change,
+    public void postChange(final IBaseMonitor<IAEItemStack> monitor, final Iterable<IAEItemStack> change,
             final BaseActionSource source) {
         try {
             if (this.getProxy().isActive()) {
@@ -260,8 +243,8 @@ public class PartStorageBus extends PartUpgradeable
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x, final int y, final int z, final IPartRenderHelper rh, final RenderBlocks renderer) {
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {
         this.setRenderCache(rh.useSimplifiedRendering(x, y, z, this, this.getRenderCache()));
         rh.setTexture(
                 CableBusTextures.PartStorageSides.getIcon(),
@@ -329,7 +312,10 @@ public class PartStorageBus extends PartUpgradeable
     @Override
     public TickingRequest getTickingRequest(final IGridNode node) {
         return new TickingRequest(
-                TickRates.StorageBus.getMin(), TickRates.StorageBus.getMax(), this.monitor == null, true);
+                TickRates.StorageBus.getMin(),
+                TickRates.StorageBus.getMax(),
+                this.monitor == null,
+                true);
     }
 
     @Override
@@ -383,11 +369,10 @@ public class PartStorageBus extends PartUpgradeable
 
         this.cached = true;
         final TileEntity self = this.getHost().getTile();
-        final TileEntity target = self.getWorldObj()
-                .getTileEntity(
-                        self.xCoord + this.getSide().offsetX,
-                        self.yCoord + this.getSide().offsetY,
-                        self.zCoord + this.getSide().offsetZ);
+        final TileEntity target = self.getWorldObj().getTileEntity(
+                self.xCoord + this.getSide().offsetX,
+                self.yCoord + this.getSide().offsetY,
+                self.zCoord + this.getSide().offsetZ);
 
         final int newHandlerHash = Platform.generateTileHash(target);
 
@@ -399,13 +384,11 @@ public class PartStorageBus extends PartUpgradeable
         this.handler = null;
         this.monitor = null;
         if (target != null) {
-            final IExternalStorageHandler esh = AEApi.instance()
-                    .registries()
-                    .externalStorage()
+            final IExternalStorageHandler esh = AEApi.instance().registries().externalStorage()
                     .getHandler(target, this.getSide().getOpposite(), StorageChannel.ITEMS, this.mySrc);
             if (esh != null) {
-                final IMEInventory inv =
-                        esh.getInventory(target, this.getSide().getOpposite(), StorageChannel.ITEMS, this.mySrc);
+                final IMEInventory inv = esh
+                        .getInventory(target, this.getSide().getOpposite(), StorageChannel.ITEMS, this.mySrc);
 
                 if (inv instanceof MEMonitorIInventory) {
                     final MEMonitorIInventory h = (MEMonitorIInventory) inv;
@@ -422,17 +405,14 @@ public class PartStorageBus extends PartUpgradeable
 
                     this.handler = new MEInventoryHandler(inv, StorageChannel.ITEMS);
 
-                    this.handler.setBaseAccess(
-                            (AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS));
+                    this.handler.setBaseAccess((AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS));
                     this.handler.setWhitelist(
-                            this.getInstalledUpgrades(Upgrades.INVERTER) > 0
-                                    ? IncludeExclude.BLACKLIST
+                            this.getInstalledUpgrades(Upgrades.INVERTER) > 0 ? IncludeExclude.BLACKLIST
                                     : IncludeExclude.WHITELIST);
                     this.handler.setPriority(this.priority);
 
                     if (this.oreFilterString.isEmpty()) {
-                        final IItemList<IAEItemStack> priorityList =
-                                AEApi.instance().storage().createItemList();
+                        final IItemList<IAEItemStack> priorityList = AEApi.instance().storage().createItemList();
 
                         final int slotsToUse = 18 + this.getInstalledUpgrades(Upgrades.CAPACITY) * 9;
                         for (int x = 0; x < this.Config.getSizeInventory() && x < slotsToUse; x++) {
@@ -441,8 +421,10 @@ public class PartStorageBus extends PartUpgradeable
                         }
 
                         if (this.getInstalledUpgrades(Upgrades.FUZZY) > 0) {
-                            this.handler.setPartitionList(new FuzzyPriorityList(priorityList, (FuzzyMode)
-                                    this.getConfigManager().getSetting(Settings.FUZZY_MODE)));
+                            this.handler.setPartitionList(
+                                    new FuzzyPriorityList(
+                                            priorityList,
+                                            (FuzzyMode) this.getConfigManager().getSetting(Settings.FUZZY_MODE)));
                         } else {
                             this.handler.setPartitionList(new PrecisePriorityList(priorityList));
                         }

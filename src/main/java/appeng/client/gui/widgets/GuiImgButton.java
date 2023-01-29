@@ -1,35 +1,31 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.widgets;
 
-import appeng.api.config.*;
-import appeng.client.texture.ExtraBlockTextures;
-import appeng.core.localization.ButtonToolTips;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
 
+import appeng.api.config.*;
+import appeng.client.texture.ExtraBlockTextures;
+import appeng.core.localization.ButtonToolTips;
+
 public class GuiImgButton extends GuiButton implements ITooltip {
+
     private static final Pattern COMPILE = Pattern.compile("%s");
     private static final Pattern PATTERN_NEW_LINE = Pattern.compile("\\n", Pattern.LITERAL);
     private static Map<EnumPair, ButtonAppearance> appearances;
@@ -70,9 +66,17 @@ public class GuiImgButton extends GuiButton implements ITooltip {
                     ButtonToolTips.Singularity);
 
             this.registerApp(
-                    16 * 9 + 1, Settings.ACCESS, AccessRestriction.READ, ButtonToolTips.IOMode, ButtonToolTips.Read);
+                    16 * 9 + 1,
+                    Settings.ACCESS,
+                    AccessRestriction.READ,
+                    ButtonToolTips.IOMode,
+                    ButtonToolTips.Read);
             this.registerApp(
-                    16 * 9, Settings.ACCESS, AccessRestriction.WRITE, ButtonToolTips.IOMode, ButtonToolTips.Write);
+                    16 * 9,
+                    Settings.ACCESS,
+                    AccessRestriction.WRITE,
+                    ButtonToolTips.IOMode,
+                    ButtonToolTips.Write);
             this.registerApp(
                     16 * 9 + 2,
                     Settings.ACCESS,
@@ -260,9 +264,17 @@ public class GuiImgButton extends GuiButton implements ITooltip {
 
             this.registerApp(64, Settings.SORT_BY, SortOrder.NAME, ButtonToolTips.SortBy, ButtonToolTips.ItemName);
             this.registerApp(
-                    65, Settings.SORT_BY, SortOrder.AMOUNT, ButtonToolTips.SortBy, ButtonToolTips.NumberOfItems);
+                    65,
+                    Settings.SORT_BY,
+                    SortOrder.AMOUNT,
+                    ButtonToolTips.SortBy,
+                    ButtonToolTips.NumberOfItems);
             this.registerApp(
-                    68, Settings.SORT_BY, SortOrder.INVTWEAKS, ButtonToolTips.SortBy, ButtonToolTips.InventoryTweaks);
+                    68,
+                    Settings.SORT_BY,
+                    SortOrder.INVTWEAKS,
+                    ButtonToolTips.SortBy,
+                    ButtonToolTips.InventoryTweaks);
             this.registerApp(69, Settings.SORT_BY, SortOrder.MOD, ButtonToolTips.SortBy, ButtonToolTips.Mod);
 
             this.registerApp(
@@ -272,11 +284,19 @@ public class GuiImgButton extends GuiButton implements ITooltip {
                     ButtonToolTips.PartitionStorage,
                     ButtonToolTips.PartitionStorageHint);
             this.registerApp(
-                    6, Settings.ACTIONS, ActionItems.CLOSE, ButtonToolTips.Clear, ButtonToolTips.ClearSettings);
+                    6,
+                    Settings.ACTIONS,
+                    ActionItems.CLOSE,
+                    ButtonToolTips.Clear,
+                    ButtonToolTips.ClearSettings);
             this.registerApp(6, Settings.ACTIONS, ActionItems.STASH, ButtonToolTips.Stash, ButtonToolTips.StashDesc);
 
             this.registerApp(
-                    8, Settings.ACTIONS, ActionItems.ENCODE, ButtonToolTips.Encode, ButtonToolTips.EncodeDescription);
+                    8,
+                    Settings.ACTIONS,
+                    ActionItems.ENCODE,
+                    ButtonToolTips.Encode,
+                    ButtonToolTips.EncodeDescription);
             this.registerApp(
                     4 + 3 * 16,
                     Settings.ACTIONS,
@@ -317,9 +337,17 @@ public class GuiImgButton extends GuiButton implements ITooltip {
 
             this.registerApp(16, Settings.VIEW_MODE, ViewItems.STORED, ButtonToolTips.View, ButtonToolTips.StoredItems);
             this.registerApp(
-                    18, Settings.VIEW_MODE, ViewItems.ALL, ButtonToolTips.View, ButtonToolTips.StoredCraftable);
+                    18,
+                    Settings.VIEW_MODE,
+                    ViewItems.ALL,
+                    ButtonToolTips.View,
+                    ButtonToolTips.StoredCraftable);
             this.registerApp(
-                    19, Settings.VIEW_MODE, ViewItems.CRAFTABLE, ButtonToolTips.View, ButtonToolTips.Craftable);
+                    19,
+                    Settings.VIEW_MODE,
+                    ViewItems.CRAFTABLE,
+                    ButtonToolTips.View,
+                    ButtonToolTips.Craftable);
 
             this.registerApp(
                     16 * 6,
@@ -372,9 +400,17 @@ public class GuiImgButton extends GuiButton implements ITooltip {
                     ButtonToolTips.MoveWhenFull);
 
             this.registerApp(
-                    16 + 5, Settings.BLOCK, YesNo.YES, ButtonToolTips.InterfaceBlockingMode, ButtonToolTips.Blocking);
+                    16 + 5,
+                    Settings.BLOCK,
+                    YesNo.YES,
+                    ButtonToolTips.InterfaceBlockingMode,
+                    ButtonToolTips.Blocking);
             this.registerApp(
-                    16 + 4, Settings.BLOCK, YesNo.NO, ButtonToolTips.InterfaceBlockingMode, ButtonToolTips.NonBlocking);
+                    16 + 4,
+                    Settings.BLOCK,
+                    YesNo.NO,
+                    ButtonToolTips.InterfaceBlockingMode,
+                    ButtonToolTips.NonBlocking);
 
             this.registerApp(16 + 3, Settings.CRAFT_ONLY, YesNo.YES, ButtonToolTips.Craft, ButtonToolTips.CraftOnly);
             this.registerApp(16 + 2, Settings.CRAFT_ONLY, YesNo.NO, ButtonToolTips.Craft, ButtonToolTips.CraftEither);
@@ -534,11 +570,7 @@ public class GuiImgButton extends GuiButton implements ITooltip {
         }
     }
 
-    private void registerApp(
-            final int iconIndex,
-            final Settings setting,
-            final Enum val,
-            final ButtonToolTips title,
+    private void registerApp(final int iconIndex, final Settings setting, final Enum val, final ButtonToolTips title,
             final Object hint) {
         final ButtonAppearance a = new ButtonAppearance();
         a.displayName = title.getUnlocalized();
@@ -572,8 +604,7 @@ public class GuiImgButton extends GuiButton implements ITooltip {
                 }
 
                 par1Minecraft.renderEngine.bindTexture(ExtraBlockTextures.GuiTexture("guis/states.png"));
-                this.field_146123_n = par2 >= this.xPosition
-                        && par3 >= this.yPosition
+                this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition
                         && par2 < this.xPosition + this.width
                         && par3 < this.yPosition + this.height;
 
@@ -593,8 +624,7 @@ public class GuiImgButton extends GuiButton implements ITooltip {
                 }
 
                 par1Minecraft.renderEngine.bindTexture(ExtraBlockTextures.GuiTexture("guis/states.png"));
-                this.field_146123_n = par2 >= this.xPosition
-                        && par3 >= this.yPosition
+                this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition
                         && par2 < this.xPosition + this.width
                         && par3 < this.yPosition + this.height;
 
@@ -634,8 +664,8 @@ public class GuiImgButton extends GuiButton implements ITooltip {
         String displayValue = null;
 
         if (this.buttonSetting != null && this.currentValue != null) {
-            final ButtonAppearance buttonAppearance =
-                    appearances.get(new EnumPair(this.buttonSetting, this.currentValue));
+            final ButtonAppearance buttonAppearance = appearances
+                    .get(new EnumPair(this.buttonSetting, this.currentValue));
             if (buttonAppearance == null) {
                 return "No Such Message";
             }
@@ -751,6 +781,7 @@ public class GuiImgButton extends GuiButton implements ITooltip {
     }
 
     private static class ButtonAppearance {
+
         public int index;
         public String displayName;
         public String displayValue;

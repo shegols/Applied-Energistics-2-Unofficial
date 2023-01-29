@@ -1,22 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.entity;
+
+import java.util.List;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IMaterials;
@@ -26,15 +29,6 @@ import appeng.core.CommonHelper;
 import appeng.core.features.AEFeature;
 import appeng.helpers.Reflected;
 import appeng.util.Platform;
-import java.util.List;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 
 public final class EntityChargedQuartz extends AEBaseEntityItem {
 
@@ -87,7 +81,12 @@ public final class EntityChargedQuartz extends AEBaseEntityItem {
 
         if (materials.certusQuartzCrystalCharged().isSameAs(item)) {
             final AxisAlignedBB region = AxisAlignedBB.getBoundingBox(
-                    this.posX - 1, this.posY - 1, this.posZ - 1, this.posX + 1, this.posY + 1, this.posZ + 1);
+                    this.posX - 1,
+                    this.posY - 1,
+                    this.posZ - 1,
+                    this.posX + 1,
+                    this.posY + 1,
+                    this.posZ + 1);
             final List<Entity> l = this.getCheckedEntitiesWithinAABBExcludingEntity(region);
 
             EntityItem redstone = null;
@@ -125,10 +124,13 @@ public final class EntityChargedQuartz extends AEBaseEntityItem {
                     netherQuartz.setDead();
                 }
 
-                for (final ItemStack fluixCrystalStack :
-                        materials.fluixCrystal().maybeStack(2).asSet()) {
-                    final EntityItem entity =
-                            new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, fluixCrystalStack);
+                for (final ItemStack fluixCrystalStack : materials.fluixCrystal().maybeStack(2).asSet()) {
+                    final EntityItem entity = new EntityItem(
+                            this.worldObj,
+                            this.posX,
+                            this.posY,
+                            this.posZ,
+                            fluixCrystalStack);
 
                     this.worldObj.spawnEntityInWorld(entity);
                 }

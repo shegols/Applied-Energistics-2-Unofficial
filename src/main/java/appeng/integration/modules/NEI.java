@@ -1,22 +1,26 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.integration.modules;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 import appeng.client.gui.AEBaseMEGui;
 import appeng.client.gui.implementations.GuiCraftConfirm;
@@ -37,18 +41,9 @@ import codechicken.nei.api.IStackPositioner;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerObjectHandler;
 import codechicken.nei.guihook.IContainerTooltipHandler;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class NEI implements INEI, IContainerTooltipHandler, IIntegrationModule, IContainerObjectHandler {
+
     @Reflected
     public static NEI instance;
 
@@ -73,10 +68,10 @@ public class NEI implements INEI, IContainerTooltipHandler, IIntegrationModule, 
 
     @Override
     public void init() throws Throwable {
-        this.registerRecipeHandler =
-                this.apiClass.getDeclaredMethod("registerRecipeHandler", codechicken.nei.recipe.ICraftingHandler.class);
-        this.registerUsageHandler =
-                this.apiClass.getDeclaredMethod("registerUsageHandler", codechicken.nei.recipe.IUsageHandler.class);
+        this.registerRecipeHandler = this.apiClass
+                .getDeclaredMethod("registerRecipeHandler", codechicken.nei.recipe.ICraftingHandler.class);
+        this.registerUsageHandler = this.apiClass
+                .getDeclaredMethod("registerUsageHandler", codechicken.nei.recipe.IUsageHandler.class);
         this.registerNEIGuiHandler = this.apiClass.getDeclaredMethod("registerNEIGuiHandler", INEIGuiHandler.class);
         registerNEIGuiHandler.invoke(apiClass, new NEIGuiHandler());
 
@@ -97,12 +92,12 @@ public class NEI implements INEI, IContainerTooltipHandler, IIntegrationModule, 
         GuiContainerManager.addObjectHandler(this);
 
         // crafting terminal...
-        final Method registerGuiOverlay = this.apiClass.getDeclaredMethod(
-                "registerGuiOverlay", Class.class, String.class, IStackPositioner.class);
+        final Method registerGuiOverlay = this.apiClass
+                .getDeclaredMethod("registerGuiOverlay", Class.class, String.class, IStackPositioner.class);
         final Class overlayHandler = Class.forName("codechicken.nei.api.IOverlayHandler");
 
-        final Method registrar =
-                this.apiClass.getDeclaredMethod("registerGuiOverlayHandler", Class.class, overlayHandler, String.class);
+        final Method registrar = this.apiClass
+                .getDeclaredMethod("registerGuiOverlayHandler", Class.class, overlayHandler, String.class);
         registerGuiOverlay.invoke(this.apiClass, GuiCraftingTerm.class, "crafting", new TerminalCraftingSlotFinder());
         registerGuiOverlay.invoke(this.apiClass, GuiPatternTerm.class, "crafting", new TerminalCraftingSlotFinder());
 
@@ -140,7 +135,12 @@ public class NEI implements INEI, IContainerTooltipHandler, IIntegrationModule, 
 
         GuiContainerManager.drawItems.renderItemAndEffectIntoGUI(fontRenderer, mc.getTextureManager(), stack, x, y);
         GuiContainerManager.drawItems.renderItemOverlayIntoGUI(
-                fontRenderer, mc.getTextureManager(), stack, x, y, String.valueOf(stack.stackSize));
+                fontRenderer,
+                mc.getTextureManager(),
+                stack,
+                x,
+                y,
+                String.valueOf(stack.stackSize));
     }
 
     @Override
@@ -155,24 +155,20 @@ public class NEI implements INEI, IContainerTooltipHandler, IIntegrationModule, 
     }
 
     @Override
-    public List<String> handleTooltip(
-            final GuiContainer arg0, final int arg1, final int arg2, final List<String> current) {
+    public List<String> handleTooltip(final GuiContainer arg0, final int arg1, final int arg2,
+            final List<String> current) {
         return current;
     }
 
     @Override
-    public List<String> handleItemDisplayName(
-            final GuiContainer arg0, final ItemStack arg1, final List<String> current) {
+    public List<String> handleItemDisplayName(final GuiContainer arg0, final ItemStack arg1,
+            final List<String> current) {
         return current;
     }
 
     @Override
-    public List<String> handleItemTooltip(
-            final GuiContainer guiScreen,
-            final ItemStack stack,
-            final int mouseX,
-            final int mouseY,
-            final List<String> currentToolTip) {
+    public List<String> handleItemTooltip(final GuiContainer guiScreen, final ItemStack stack, final int mouseX,
+            final int mouseY, final List<String> currentToolTip) {
         if (guiScreen instanceof AEBaseMEGui) {
             return ((AEBaseMEGui) guiScreen).handleItemTooltip(stack, mouseX, mouseY, currentToolTip);
         }

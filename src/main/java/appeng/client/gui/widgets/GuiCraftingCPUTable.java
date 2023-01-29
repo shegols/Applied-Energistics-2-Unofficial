@@ -1,5 +1,15 @@
 package appeng.client.gui.widgets;
 
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+
 import appeng.api.storage.data.IAEItemStack;
 import appeng.client.gui.AEBaseGui;
 import appeng.container.implementations.ContainerCPUTable;
@@ -10,15 +20,9 @@ import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.util.ReadableNumberConverter;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 public class GuiCraftingCPUTable {
+
     private final AEBaseGui parent;
     private final ContainerCPUTable container;
 
@@ -100,13 +104,17 @@ public class GuiCraftingCPUTable {
                 }
                 parent.bindTexture("guis/cpu_selector.png");
                 parent.drawTexturedModalRect(
-                        x, y, CPU_TABLE_SLOT_XOFF, CPU_TABLE_SLOT_YOFF, CPU_TABLE_SLOT_WIDTH, CPU_TABLE_SLOT_HEIGHT);
+                        x,
+                        y,
+                        CPU_TABLE_SLOT_XOFF,
+                        CPU_TABLE_SLOT_YOFF,
+                        CPU_TABLE_SLOT_WIDTH,
+                        CPU_TABLE_SLOT_HEIGHT);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
                 String name = cpu.getName();
                 if (name == null || name.isEmpty()) {
-                    name = GuiText.CPUs.getLocal() + " #"
-                            + NumberFormat.getInstance().format((cpu.getSerial()));
+                    name = GuiText.CPUs.getLocal() + " #" + NumberFormat.getInstance().format((cpu.getSerial()));
                 }
                 if (name.length() > 12) {
                     name = name.substring(0, 11) + "..";
@@ -269,8 +277,7 @@ public class GuiCraftingCPUTable {
 
     public boolean hideItemPanelSlot(int x, int y, int w, int h) {
         x += CPU_TABLE_WIDTH;
-        boolean xInside = (x >= 0 && x < CPU_TABLE_SLOT_WIDTH + 9)
-                || (x + w >= 0 && x + w < CPU_TABLE_SLOT_WIDTH + 9)
+        boolean xInside = (x >= 0 && x < CPU_TABLE_SLOT_WIDTH + 9) || (x + w >= 0 && x + w < CPU_TABLE_SLOT_WIDTH + 9)
                 || (x <= 0 && x + w >= CPU_TABLE_SLOT_WIDTH + 9);
         boolean yInside = (y >= 0 && y < 19 + CPU_TABLE_SLOTS * CPU_TABLE_SLOT_HEIGHT)
                 || (y + h >= 0 && y + h < 19 + CPU_TABLE_SLOTS * CPU_TABLE_SLOT_HEIGHT)

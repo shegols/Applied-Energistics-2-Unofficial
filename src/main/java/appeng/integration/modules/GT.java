@@ -24,11 +24,9 @@ public class GT implements IIntegrationModule {
     @Override
     public void init() throws Throwable {
         if (IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.GT)) {
-            AEApi.instance()
-                    .partHelper()
-                    .registerNewLayer(
-                            "appeng.parts.layers.LayerIEnergyConnected",
-                            "gregtech.api.interfaces.tileentity.IEnergyConnected");
+            AEApi.instance().partHelper().registerNewLayer(
+                    "appeng.parts.layers.LayerIEnergyConnected",
+                    "gregtech.api.interfaces.tileentity.IEnergyConnected");
         }
     }
 

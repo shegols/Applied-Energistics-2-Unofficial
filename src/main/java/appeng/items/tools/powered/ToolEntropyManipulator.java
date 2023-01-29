@@ -1,34 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.tools.powered;
 
-import appeng.api.util.DimensionalCoord;
-import appeng.block.misc.BlockTinyTNT;
-import appeng.core.AEConfig;
-import appeng.core.features.AEFeature;
-import appeng.hooks.DispenserBlockTool;
-import appeng.hooks.IBlockTool;
-import appeng.items.tools.powered.powersink.AEBasePoweredItem;
-import appeng.util.InWorldToolOperationResult;
-import appeng.util.Platform;
-import com.google.common.base.Optional;
 import java.util.*;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockTNT;
@@ -50,7 +33,20 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
+import appeng.api.util.DimensionalCoord;
+import appeng.block.misc.BlockTinyTNT;
+import appeng.core.AEConfig;
+import appeng.core.features.AEFeature;
+import appeng.hooks.DispenserBlockTool;
+import appeng.hooks.IBlockTool;
+import appeng.items.tools.powered.powersink.AEBasePoweredItem;
+import appeng.util.InWorldToolOperationResult;
+import appeng.util.Platform;
+
+import com.google.common.base.Optional;
+
 public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockTool {
+
     private final Map<InWorldToolOperationIngredient, InWorldToolOperationResult> heatUp;
     private final Map<InWorldToolOperationIngredient, InWorldToolOperationResult> coolDown;
 
@@ -101,10 +97,16 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
                 new InWorldToolOperationResult(new ItemStack(Blocks.flowing_water)));
     }
 
-    private static final boolean breakBlockWithCheck(
-            final World w, final EntityPlayer p, final int x, final int y, final int z) {
-        BlockEvent.BreakEvent event =
-                new BlockEvent.BreakEvent(x, y, z, w, w.getBlock(x, y, z), w.getBlockMetadata(x, y, z), p);
+    private static final boolean breakBlockWithCheck(final World w, final EntityPlayer p, final int x, final int y,
+            final int z) {
+        BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(
+                x,
+                y,
+                z,
+                w,
+                w.getBlock(x, y, z),
+                w.getBlockMetadata(x, y, z),
+                p);
         MinecraftForge.EVENT_BUS.post(event);
         return !event.isCanceled() && w.setBlockToAir(x, y, z);
     }
@@ -115,14 +117,8 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new DispenserBlockTool());
     }
 
-    private boolean heat(
-            final Block blockID,
-            final EntityPlayer p,
-            final int metadata,
-            final World w,
-            final int x,
-            final int y,
-            final int z) {
+    private boolean heat(final Block blockID, final EntityPlayer p, final int metadata, final World w, final int x,
+            final int y, final int z) {
         if (!breakBlockWithCheck(w, p, x, y, z)) return false;
 
         InWorldToolOperationResult r = this.heatUp.get(new InWorldToolOperationIngredient(blockID, metadata));
@@ -158,14 +154,8 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
         return r != null;
     }
 
-    private boolean cool(
-            final Block blockID,
-            final EntityPlayer p,
-            final int metadata,
-            final World w,
-            final int x,
-            final int y,
-            final int z) {
+    private boolean cool(final Block blockID, final EntityPlayer p, final int metadata, final World w, final int x,
+            final int y, final int z) {
         if (!breakBlockWithCheck(w, p, x, y, z)) return false;
 
         InWorldToolOperationResult r = this.coolDown.get(new InWorldToolOperationIngredient(blockID, metadata));
@@ -236,17 +226,8 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
     }
 
     @Override
-    public boolean onItemUse(
-            final ItemStack item,
-            final EntityPlayer p,
-            final World w,
-            int x,
-            int y,
-            int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onItemUse(final ItemStack item, final EntityPlayer p, final World w, int x, int y, int z,
+            final int side, final float hitX, final float hitY, final float hitZ) {
         if (this.getAECurrentPower(item) > 1600) {
             if (!p.canPlayerEdit(x, y, z, side, item)) {
                 return false;
@@ -255,18 +236,16 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
             final Block blockID = w.getBlock(x, y, z);
             final int metadata = w.getBlockMetadata(x, y, z);
 
-            if (blockID == null
-                    || ForgeEventFactory.onPlayerInteract(
-                                    p,
-                                    blockID.isAir(w, x, y, z)
-                                            ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR
-                                            : PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK,
-                                    x,
-                                    y,
-                                    z,
-                                    side,
-                                    w)
-                            .isCanceled()) return false;
+            if (blockID == null || ForgeEventFactory.onPlayerInteract(
+                    p,
+                    blockID.isAir(w, x, y, z) ? PlayerInteractEvent.Action.RIGHT_CLICK_AIR
+                            : PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK,
+                    x,
+                    y,
+                    z,
+                    side,
+                    w).isCanceled())
+                return false;
 
             if (p.isSneaking()) {
                 if (this.canCool(blockID, metadata)) {
@@ -324,10 +303,15 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
                     if (!breakBlockWithCheck(w, p, x, y, z)) return false;
 
                     this.extractAEPower(item, 1600);
-                    final InWorldToolOperationResult or =
-                            InWorldToolOperationResult.getBlockOperationResult(out.toArray(new ItemStack[out.size()]));
+                    final InWorldToolOperationResult or = InWorldToolOperationResult
+                            .getBlockOperationResult(out.toArray(new ItemStack[out.size()]));
                     w.playSoundEffect(
-                            x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+                            x + 0.5D,
+                            y + 0.5D,
+                            z + 0.5D,
+                            "fire.ignite",
+                            1.0F,
+                            itemRand.nextFloat() * 0.4F + 0.8F);
 
                     if (or.getBlockItem() != null) {
                         w.setBlock(
@@ -357,7 +341,12 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
                     if (w.isAirBlock(x, y, z)) {
                         this.extractAEPower(item, 1600);
                         w.playSoundEffect(
-                                x + 0.5D, y + 0.5D, z + 0.5D, "fire.ignite", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+                                x + 0.5D,
+                                y + 0.5D,
+                                z + 0.5D,
+                                "fire.ignite",
+                                1.0F,
+                                itemRand.nextFloat() * 0.4F + 0.8F);
                         w.setBlock(x, y, z, Blocks.fire);
                     }
 
@@ -370,6 +359,7 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
     }
 
     private static class InWorldToolOperationIngredient {
+
         private final Block blockID;
         private final int metadata;
 

@@ -1,34 +1,25 @@
 /*
- * The MIT License (MIT)
- *
- * Copyright (c) 2013 AlgorithmX2
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * The MIT License (MIT) Copyright (c) 2013 AlgorithmX2 Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions: The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package appeng.api.storage;
 
-import appeng.api.implementations.tiles.IChestOrDrive;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import appeng.api.implementations.tiles.IChestOrDrive;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Registration record for {@link ICellRegistry}
@@ -57,24 +48,24 @@ public interface ICellHandler {
 
     /**
      * @return the ME Chest texture for light pixels this storage cell type, should be 10x10 with 3px of transparent
-     * padding on a 16x16 texture, null is valid if your cell cannot be used in the ME Chest. refer to the
-     * assets for examples.
+     *         padding on a 16x16 texture, null is valid if your cell cannot be used in the ME Chest. refer to the
+     *         assets for examples.
      */
     @SideOnly(Side.CLIENT)
     IIcon getTopTexture_Light();
 
     /**
      * @return the ME Chest texture for medium pixels this storage cell type, should be 10x10 with 3px of transparent
-     * padding on a 16x16 texture, null is valid if your cell cannot be used in the ME Chest. refer to the
-     * assets for examples.
+     *         padding on a 16x16 texture, null is valid if your cell cannot be used in the ME Chest. refer to the
+     *         assets for examples.
      */
     @SideOnly(Side.CLIENT)
     IIcon getTopTexture_Medium();
 
     /**
      * @return the ME Chest texture for dark pixels this storage cell type, should be 10x10 with 3px of transparent
-     * padding on a 16x16 texture, null is valid if your cell cannot be used in the ME Chest. refer to the
-     * assets for examples.
+     *         padding on a 16x16 texture, null is valid if your cell cannot be used in the ME Chest. refer to the
+     *         assets for examples.
      */
     @SideOnly(Side.CLIENT)
     IIcon getTopTexture_Dark();
@@ -91,13 +82,8 @@ public interface ICellHandler {
      * @param is          item
      * @param chan        storage channel
      */
-    void openChestGui(
-            EntityPlayer player,
-            IChestOrDrive chest,
-            ICellHandler cellHandler,
-            IMEInventoryHandler inv,
-            ItemStack is,
-            StorageChannel chan);
+    void openChestGui(EntityPlayer player, IChestOrDrive chest, ICellHandler cellHandler, IMEInventoryHandler inv,
+            ItemStack is, StorageChannel chan);
 
     /**
      * 0 - cell is missing.

@@ -1,22 +1,26 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.tools;
+
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import appeng.api.config.SecurityPermissions;
 import appeng.api.features.IPlayerRegistry;
@@ -27,19 +31,11 @@ import appeng.core.features.AEFeature;
 import appeng.core.localization.GuiText;
 import appeng.items.AEBaseItem;
 import appeng.util.Platform;
+
 import com.mojang.authlib.GameProfile;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class ToolBiometricCard extends AEBaseItem implements IBiometricCard {
+
     public ToolBiometricCard() {
         this.setFeature(EnumSet.of(AEFeature.Security));
         this.setMaxStackSize(1);
@@ -61,8 +57,8 @@ public class ToolBiometricCard extends AEBaseItem implements IBiometricCard {
     }
 
     @Override
-    public boolean itemInteractionForEntity(
-            ItemStack is, final EntityPlayer par2EntityPlayer, final EntityLivingBase target) {
+    public boolean itemInteractionForEntity(ItemStack is, final EntityPlayer par2EntityPlayer,
+            final EntityLivingBase target) {
         if (target instanceof EntityPlayer && !par2EntityPlayer.isSneaking()) {
             if (par2EntityPlayer.capabilities.isCreativeMode) {
                 is = par2EntityPlayer.getCurrentEquippedItem();
@@ -77,8 +73,7 @@ public class ToolBiometricCard extends AEBaseItem implements IBiometricCard {
     @Override
     public String getItemStackDisplayName(final ItemStack is) {
         final GameProfile username = this.getProfile(is);
-        return username != null
-                ? super.getItemStackDisplayName(is) + " - " + username.getName()
+        return username != null ? super.getItemStackDisplayName(is) + " - " + username.getName()
                 : super.getItemStackDisplayName(is);
     }
 
@@ -154,8 +149,8 @@ public class ToolBiometricCard extends AEBaseItem implements IBiometricCard {
     }
 
     @Override
-    public void addCheckedInformation(
-            final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
+    public void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+            final boolean displayMoreInfo) {
         final EnumSet<SecurityPermissions> perms = this.getPermissions(stack);
         if (perms.isEmpty()) {
             lines.add(GuiText.NoPermissions.getLocal());

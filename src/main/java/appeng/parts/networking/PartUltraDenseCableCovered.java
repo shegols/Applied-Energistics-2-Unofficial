@@ -1,15 +1,17 @@
 package appeng.parts.networking;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
 import appeng.api.AEApi;
 import appeng.api.networking.GridFlags;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
 import appeng.client.texture.CableBusTextures;
 import appeng.helpers.Reflected;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public class PartUltraDenseCableCovered extends PartDenseCableCovered {
+
     @Reflected
     public PartUltraDenseCableCovered(final ItemStack is) {
         super(is);
@@ -24,11 +26,7 @@ public class PartUltraDenseCableCovered extends PartDenseCableCovered {
     @Override
     public IIcon getTexture(final AEColor c) {
         if (c == AEColor.Transparent) {
-            return AEApi.instance()
-                    .definitions()
-                    .parts()
-                    .cableUltraDenseCovered()
-                    .stack(AEColor.Transparent, 1)
+            return AEApi.instance().definitions().parts().cableUltraDenseCovered().stack(AEColor.Transparent, 1)
                     .getIconIndex();
         }
 

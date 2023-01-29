@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import java.util.List;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.config.Settings;
 import appeng.api.config.SortDir;
@@ -35,13 +37,6 @@ import appeng.core.AEConfig;
 import appeng.core.localization.GuiColors;
 import appeng.core.localization.GuiText;
 import appeng.util.Platform;
-import java.util.List;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 public class GuiNetworkStatus extends AEBaseGui implements ISortSource {
 
@@ -78,7 +73,10 @@ public class GuiNetworkStatus extends AEBaseGui implements ISortSource {
         super.initGui();
 
         this.units = new GuiImgButton(
-                this.guiLeft - 18, this.guiTop + 8, Settings.POWER_UNITS, AEConfig.instance.selectedPowerUnit());
+                this.guiLeft - 18,
+                this.guiTop + 8,
+                Settings.POWER_UNITS,
+                AEConfig.instance.selectedPowerUnit());
         this.buttonList.add(this.units);
     }
 
@@ -118,8 +116,8 @@ public class GuiNetworkStatus extends AEBaseGui implements ISortSource {
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         final ContainerNetworkStatus ns = (ContainerNetworkStatus) this.inventorySlots;
 
-        this.fontRendererObj.drawString(
-                GuiText.NetworkDetails.getLocal(), 8, 6, GuiColors.NetworkStatusDetails.getColor());
+        this.fontRendererObj
+                .drawString(GuiText.NetworkDetails.getLocal(), 8, 6, GuiColors.NetworkStatusDetails.getColor());
 
         this.fontRendererObj.drawString(
                 GuiText.StoredPower.getLocal() + ": " + Platform.formatPowerLong(ns.getCurrentPower(), false),
@@ -183,7 +181,8 @@ public class GuiNetworkStatus extends AEBaseGui implements ISortSource {
 
                     toolTip += ('\n' + GuiText.Installed.getLocal() + ": " + (refStack.getStackSize()));
                     if (refStack.getCountRequestable() > 0) {
-                        toolTip += ('\n' + GuiText.EnergyDrain.getLocal() + ": "
+                        toolTip += ('\n' + GuiText.EnergyDrain.getLocal()
+                                + ": "
                                 + Platform.formatPowerLong(refStack.getCountRequestable(), true));
                     }
 
@@ -231,8 +230,8 @@ public class GuiNetworkStatus extends AEBaseGui implements ISortSource {
     }
 
     // @Override - NEI
-    public List<String> handleItemTooltip(
-            final ItemStack stack, final int mouseX, final int mouseY, final List<String> currentToolTip) {
+    public List<String> handleItemTooltip(final ItemStack stack, final int mouseX, final int mouseY,
+            final List<String> currentToolTip) {
         if (stack != null) {
             final Slot s = this.getSlot(mouseX, mouseY);
             if (s instanceof SlotME) {
@@ -241,8 +240,7 @@ public class GuiNetworkStatus extends AEBaseGui implements ISortSource {
                 try {
                     final SlotME theSlotField = (SlotME) s;
                     myStack = theSlotField.getAEStack();
-                } catch (final Throwable ignore) {
-                }
+                } catch (final Throwable ignore) {}
 
                 if (myStack != null) {
                     while (currentToolTip.size() > 1) {
@@ -263,20 +261,20 @@ public class GuiNetworkStatus extends AEBaseGui implements ISortSource {
             try {
                 final SlotME theSlotField = (SlotME) s;
                 myStack = theSlotField.getAEStack();
-            } catch (final Throwable ignore) {
-            }
+            } catch (final Throwable ignore) {}
 
             if (myStack != null) {
-                final List currentToolTip =
-                        stack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+                final List currentToolTip = stack
+                        .getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
 
                 while (currentToolTip.size() > 1) {
                     currentToolTip.remove(1);
                 }
 
                 currentToolTip.add(GuiText.Installed.getLocal() + ": " + (myStack.getStackSize()));
-                currentToolTip.add(GuiText.EnergyDrain.getLocal() + ": "
-                        + Platform.formatPowerLong(myStack.getCountRequestable(), true));
+                currentToolTip.add(
+                        GuiText.EnergyDrain.getLocal() + ": "
+                                + Platform.formatPowerLong(myStack.getCountRequestable(), true));
 
                 this.drawTooltip(x, y, 0, join(currentToolTip, "\n"));
             }

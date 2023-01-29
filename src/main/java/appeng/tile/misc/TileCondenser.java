@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.misc;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.CondenserOutput;
@@ -33,19 +34,11 @@ import appeng.tile.inventory.InvOperation;
 import appeng.util.ConfigManager;
 import appeng.util.IConfigManagerHost;
 import appeng.util.Platform;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileCondenser extends AEBaseInvTile implements IFluidHandler, IConfigManagerHost, IConfigurableObject {
 
-    private static final FluidTankInfo[] EMPTY = {new FluidTankInfo(null, 10)};
-    private final int[] sides = {0, 1};
+    private static final FluidTankInfo[] EMPTY = { new FluidTankInfo(null, 10) };
+    private final int[] sides = { 0, 1 };
     private final AppEngInternalInventory inv = new AppEngInternalInventory(this, 3);
     private final ConfigManager cm = new ConfigManager(this);
 
@@ -122,14 +115,12 @@ public class TileCondenser extends AEBaseInvTile implements IFluidHandler, IConf
 
         switch ((CondenserOutput) this.cm.getSetting(Settings.CONDENSER_OUTPUT)) {
             case MATTER_BALLS:
-                for (final ItemStack matterBallStack :
-                        materials.matterBall().maybeStack(1).asSet()) {
+                for (final ItemStack matterBallStack : materials.matterBall().maybeStack(1).asSet()) {
                     return matterBallStack;
                 }
 
             case SINGULARITY:
-                for (final ItemStack singularityStack :
-                        materials.singularity().maybeStack(1).asSet()) {
+                for (final ItemStack singularityStack : materials.singularity().maybeStack(1).asSet()) {
                     return singularityStack;
                 }
 
@@ -165,11 +156,7 @@ public class TileCondenser extends AEBaseInvTile implements IFluidHandler, IConf
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {
         if (slot == 0) {
             final ItemStack is = inv.getStackInSlot(0);

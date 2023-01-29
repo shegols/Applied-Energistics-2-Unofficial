@@ -1,22 +1,46 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.MouseEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
+
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.parts.CableRenderMode;
 import appeng.api.util.AEColor;
@@ -48,37 +72,9 @@ import appeng.util.Platform;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.event.MouseEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
-import org.lwjgl.opengl.GL11;
 
 public class ClientHelper extends ServerHelper {
+
     private static final String KEY_CATEGORY = "key.appliedenergistics2.category";
 
     private final EnumMap<ActionKey, KeyBinding> bindings = new EnumMap<>(ActionKey.class);
@@ -144,13 +140,8 @@ public class ClientHelper extends ServerHelper {
     }
 
     @Override
-    public void spawnEffect(
-            final EffectType effect,
-            final World worldObj,
-            final double posX,
-            final double posY,
-            final double posZ,
-            final Object o) {
+    public void spawnEffect(final EffectType effect, final World worldObj, final double posX, final double posY,
+            final double posZ, final Object o) {
         if (AEConfig.instance.enableEffects) {
             switch (effect) {
                 case Assembler:
@@ -176,12 +167,20 @@ public class ClientHelper extends ServerHelper {
         }
     }
 
-    private void spawnAssembler(
-            final World worldObj, final double posX, final double posY, final double posZ, final Object o) {
+    private void spawnAssembler(final World worldObj, final double posX, final double posY, final double posZ,
+            final Object o) {
         final PacketAssemblerAnimation paa = (PacketAssemblerAnimation) o;
 
         final AssemblerFX fx = new AssemblerFX(
-                Minecraft.getMinecraft().theWorld, posX, posY, posZ, 0.0D, 0.0D, 0.0D, paa.rate, paa.is);
+                Minecraft.getMinecraft().theWorld,
+                posX,
+                posY,
+                posZ,
+                0.0D,
+                0.0D,
+                0.0D,
+                paa.rate,
+                paa.is);
         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
     }
 
@@ -229,10 +228,19 @@ public class ClientHelper extends ServerHelper {
         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
     }
 
-    private void spawnLightningArc(
-            final World worldObj, final double posX, final double posY, final double posZ, final Vec3 second) {
+    private void spawnLightningArc(final World worldObj, final double posX, final double posY, final double posZ,
+            final Vec3 second) {
         final LightningFX fx = new LightningArcFX(
-                worldObj, posX, posY, posZ, second.xCoord, second.yCoord, second.zCoord, 0.0f, 0.0f, 0.0f);
+                worldObj,
+                posX,
+                posY,
+                posZ,
+                second.xCoord,
+                second.yCoord,
+                second.zCoord,
+                0.0f,
+                0.0f,
+                0.0f);
         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
     }
 
@@ -277,16 +285,15 @@ public class ClientHelper extends ServerHelper {
                 // GL11.glScalef( 1.0f , -1.0f, 1.0f );
 
                 final Block block = Block.getBlockFromItem(itemstack.getItem());
-                if ((itemstack.getItemSpriteNumber() == 0
-                        && block != null
+                if ((itemstack.getItemSpriteNumber() == 0 && block != null
                         && RenderBlocks.renderItemIn3d(block.getRenderType()))) {
                     GL11.glRotatef(25.0f, 1.0f, 0.0f, 0.0f);
                     GL11.glRotatef(15.0f, 0.0f, 1.0f, 0.0f);
                     GL11.glRotatef(30.0f, 0.0f, 1.0f, 0.0f);
                 }
 
-                final IItemRenderer customRenderer =
-                        MinecraftForgeClient.getItemRenderer(itemstack, IItemRenderer.ItemRenderType.ENTITY);
+                final IItemRenderer customRenderer = MinecraftForgeClient
+                        .getItemRenderer(itemstack, IItemRenderer.ItemRenderType.ENTITY);
                 if (customRenderer != null && !(itemstack.getItem() instanceof ItemBlock)) {
                     if (customRenderer.shouldUseRenderHelper(
                             IItemRenderer.ItemRenderType.ENTITY,
@@ -318,7 +325,13 @@ public class ClientHelper extends ServerHelper {
                 RenderItem.renderInFrame = false;
                 final FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
                 if (!ForgeHooksClient.renderInventoryItem(
-                        BLOCK_RENDERER, Minecraft.getMinecraft().renderEngine, itemstack, true, 0, 0, 0)) {
+                        BLOCK_RENDERER,
+                        Minecraft.getMinecraft().renderEngine,
+                        itemstack,
+                        true,
+                        0,
+                        0,
+                        0)) {
                     ITEM_RENDERER.renderItemIntoGUI(fr, Minecraft.getMinecraft().renderEngine, itemstack, 0, 0, false);
                 }
             }
@@ -381,8 +394,8 @@ public class ClientHelper extends ServerHelper {
 
         if (is != null && is.getItem() instanceof IMouseWheelItem && player.isSneaking()) {
             try {
-                NetworkHandler.instance.sendToServer(
-                        new PacketValueConfig("Item", me.dwheel > 0 ? "WheelUp" : "WheelDown"));
+                NetworkHandler.instance
+                        .sendToServer(new PacketValueConfig("Item", me.dwheel > 0 ? "WheelUp" : "WheelDown"));
                 me.setCanceled(true);
             } catch (final IOException e) {
                 AELog.debug(e);
@@ -420,7 +433,7 @@ public class ClientHelper extends ServerHelper {
     }
 
     private boolean isActiveAndMatches(KeyBinding keyBinding, int keyCode) {
-        //		return keyCode != 0 && keyCode == keyBinding.getKeyCode() && keyBinding.getKeyConflictContext().isActive()
+        // return keyCode != 0 && keyCode == keyBinding.getKeyCode() && keyBinding.getKeyConflictContext().isActive()
         // && keyBinding.getKeyModifier().isActive(keyBinding.getKeyConflictContext());
         return keyCode != 0 && keyCode == keyBinding.getKeyCode();
     }

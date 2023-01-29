@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.p2p;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkBootingStatusChange;
@@ -43,17 +48,6 @@ import buildcraft.api.transport.IPipeConnection;
 import buildcraft.api.transport.IPipeTile.PipeType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.LinkedList;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 @Interface(iface = "buildcraft.api.transport.IPipeConnection", iname = IntegrationType.BuildCraftTransport)
 public class PartP2PItems extends PartP2PTunnel<PartP2PItems>
@@ -111,12 +105,10 @@ public class PartP2PItems extends PartP2PTunnel<PartP2PItems>
         IInventory output = null;
 
         if (this.getProxy().isActive()) {
-            final TileEntity te = this.getTile()
-                    .getWorldObj()
-                    .getTileEntity(
-                            this.getTile().xCoord + this.getSide().offsetX,
-                            this.getTile().yCoord + this.getSide().offsetY,
-                            this.getTile().zCoord + this.getSide().offsetZ);
+            final TileEntity te = this.getTile().getWorldObj().getTileEntity(
+                    this.getTile().xCoord + this.getSide().offsetX,
+                    this.getTile().yCoord + this.getSide().offsetY,
+                    this.getTile().zCoord + this.getSide().offsetZ);
 
             if (this.which.contains(this)) {
                 return null;
@@ -125,13 +117,12 @@ public class PartP2PItems extends PartP2PTunnel<PartP2PItems>
             this.which.add(this);
 
             if (IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.BuildCraftTransport)) {
-                final IBuildCraftTransport buildcraft = (IBuildCraftTransport)
-                        IntegrationRegistry.INSTANCE.getInstance(IntegrationType.BuildCraftTransport);
+                final IBuildCraftTransport buildcraft = (IBuildCraftTransport) IntegrationRegistry.INSTANCE
+                        .getInstance(IntegrationType.BuildCraftTransport);
                 if (buildcraft.isPipe(te, this.getSide().getOpposite())) {
                     try {
                         output = new WrapperBCPipe(te, this.getSide().getOpposite());
-                    } catch (final Throwable ignore) {
-                    }
+                    } catch (final Throwable ignore) {}
                 }
             }
 
@@ -145,8 +136,7 @@ public class PartP2PItems extends PartP2PTunnel<PartP2PItems>
                 if (te instanceof TileEntityChest) {
                     output = Platform.GetChestInv(te);
                 } else if (te instanceof ISidedInventory) {
-                    output = new WrapperMCISidedInventory(
-                            (ISidedInventory) te, this.getSide().getOpposite());
+                    output = new WrapperMCISidedInventory((ISidedInventory) te, this.getSide().getOpposite());
                 } else if (te instanceof IInventory) {
                     output = (IInventory) te;
                 }

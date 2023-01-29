@@ -1,5 +1,12 @@
 package appeng.crafting.v2.resolvers;
 
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.world.World;
+
 import appeng.api.config.Actionable;
 import appeng.api.config.FuzzyMode;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -12,14 +19,13 @@ import appeng.crafting.v2.CraftingRequest.SubstitutionMode;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
 import appeng.util.Platform;
 import appeng.util.item.HashBasedItemList;
+
 import com.google.common.collect.ImmutableList;
-import java.util.*;
-import java.util.Map.Entry;
-import javax.annotation.Nonnull;
-import net.minecraft.world.World;
 
 public class CraftableItemResolver implements CraftingRequestResolver<IAEItemStack> {
+
     public static class RequestAndPerCraftAmount {
+
         public final CraftingRequest<IAEItemStack> request;
         public final long perCraftAmount;
 
@@ -30,6 +36,7 @@ public class CraftableItemResolver implements CraftingRequestResolver<IAEItemSta
     }
 
     public static class CraftFromPatternTask extends CraftingTask<IAEItemStack> {
+
         public final ICraftingPatternDetails pattern;
         public final boolean allowSimulation;
         public final boolean isComplex;
@@ -48,16 +55,13 @@ public class CraftableItemResolver implements CraftingRequestResolver<IAEItemSta
         protected boolean requestedInputs = false;
         protected long totalCraftsDone = 0, fulfilledAmount = 0;
         /**
-         * If matchingOutput's stack size is greater than 1, this keeps track of how many remainder items were injected back into the context.
+         * If matchingOutput's stack size is greater than 1, this keeps track of how many remainder items were injected
+         * back into the context.
          */
         protected long matchingOutputRemainderItems = 0;
 
-        public CraftFromPatternTask(
-                CraftingRequest<IAEItemStack> request,
-                ICraftingPatternDetails pattern,
-                int priority,
-                boolean allowSimulation,
-                boolean isComplex) {
+        public CraftFromPatternTask(CraftingRequest<IAEItemStack> request, ICraftingPatternDetails pattern,
+                int priority, boolean allowSimulation, boolean isComplex) {
             super(request, priority);
             this.pattern = pattern;
             this.allowSimulation = allowSimulation;
@@ -137,10 +141,10 @@ public class CraftableItemResolver implements CraftingRequestResolver<IAEItemSta
                 return new StepOutput(Collections.emptyList());
             }
             final boolean canUseSubstitutes = pattern.canSubstitute();
-            final SubstitutionMode childMode =
-                    canUseSubstitutes ? SubstitutionMode.ACCEPT_FUZZY : SubstitutionMode.PRECISE;
-            final long toCraft =
-                    Platform.ceilDiv(isComplex ? 1 : request.remainingToProcess, matchingOutput.getStackSize());
+            final SubstitutionMode childMode = canUseSubstitutes ? SubstitutionMode.ACCEPT_FUZZY
+                    : SubstitutionMode.PRECISE;
+            final long toCraft = Platform
+                    .ceilDiv(isComplex ? 1 : request.remainingToProcess, matchingOutput.getStackSize());
 
             if (requestedInputs) {
                 // Calculate how many full recipes we could fulfill
@@ -199,8 +203,8 @@ public class CraftableItemResolver implements CraftingRequestResolver<IAEItemSta
                 for (IAEItemStack output : patternOutputs) {
                     // add byproducts to the system
                     if (output != matchingOutput) {
-                        final IAEItemStack injected =
-                                output.copy().setStackSize(Math.multiplyExact(maxCraftable, output.getStackSize()));
+                        final IAEItemStack injected = output.copy()
+                                .setStackSize(Math.multiplyExact(maxCraftable, output.getStackSize()));
                         context.byproductsInventory.injectItems(injected, Actionable.MODULATE, context.actionSource);
                         this.byproducts.put(injected.copy(), output.getStackSize());
                     }
@@ -211,8 +215,8 @@ public class CraftableItemResolver implements CraftingRequestResolver<IAEItemSta
                     for (RequestAndPerCraftAmount inputChildPair : childRequests.values()) {
                         final CraftingRequest<IAEItemStack> inputChild = inputChildPair.request;
                         final long actuallyNeeded = Math.multiplyExact(inputChild.stack.getStackSize(), maxCraftable);
-                        final long produced =
-                                inputChild.stack.getStackSize() - Math.max(inputChild.remainingToProcess, 0);
+                        final long produced = inputChild.stack.getStackSize()
+                                - Math.max(inputChild.remainingToProcess, 0);
                         if (produced > actuallyNeeded) {
                             if (maxCraftable == 0) {
                                 inputChild.fullRefund(context);
@@ -378,29 +382,37 @@ public class CraftableItemResolver implements CraftingRequestResolver<IAEItemSta
         }
 
         @Override
-        public void startOnCpu(
-                CraftingContext context, CraftingCPUCluster cpuCluster, MECraftingInventory craftingInv) {
+        public void startOnCpu(CraftingContext context, CraftingCPUCluster cpuCluster,
+                MECraftingInventory craftingInv) {
             cpuCluster.addCrafting(pattern, totalCraftsDone);
         }
 
         @Override
         public String toString() {
             return "CraftFromPatternTask{" + "request="
-                    + request + ", pattern="
-                    + pattern + ", allowSimulation="
-                    + allowSimulation + ", matchingOutput="
-                    + matchingOutput + ", requestedInputs="
-                    + requestedInputs + ", totalCraftsDone="
-                    + totalCraftsDone + ", priority="
-                    + priority + ", state="
-                    + state + '}';
+                    + request
+                    + ", pattern="
+                    + pattern
+                    + ", allowSimulation="
+                    + allowSimulation
+                    + ", matchingOutput="
+                    + matchingOutput
+                    + ", requestedInputs="
+                    + requestedInputs
+                    + ", totalCraftsDone="
+                    + totalCraftsDone
+                    + ", priority="
+                    + priority
+                    + ", state="
+                    + state
+                    + '}';
         }
     }
 
     @Nonnull
     @Override
-    public List<CraftingTask> provideCraftingRequestResolvers(
-            @Nonnull CraftingRequest<IAEItemStack> request, @Nonnull CraftingContext context) {
+    public List<CraftingTask> provideCraftingRequestResolvers(@Nonnull CraftingRequest<IAEItemStack> request,
+            @Nonnull CraftingContext context) {
         final ImmutableList.Builder<CraftingTask> tasks = new ImmutableList.Builder<>();
         final Set<ICraftingPatternDetails> denyList = request.patternParents;
         final List<ICraftingPatternDetails> patterns = new ArrayList<>(context.getPrecisePatternsFor(request.stack));
@@ -408,11 +420,10 @@ public class CraftableItemResolver implements CraftingRequestResolver<IAEItemSta
         patterns.sort(Comparator.comparing(ICraftingPatternDetails::getPriority).reversed());
         // If fuzzy patterns are allowed,
         if (request.substitutionMode == SubstitutionMode.ACCEPT_FUZZY) {
-            final List<ICraftingPatternDetails> fuzzyPatterns =
-                    new ArrayList<>(context.getFuzzyPatternsFor(request.stack));
+            final List<ICraftingPatternDetails> fuzzyPatterns = new ArrayList<>(
+                    context.getFuzzyPatternsFor(request.stack));
             fuzzyPatterns.removeAll(denyList);
-            fuzzyPatterns.sort(
-                    Comparator.comparing(ICraftingPatternDetails::getPriority).reversed());
+            fuzzyPatterns.sort(Comparator.comparing(ICraftingPatternDetails::getPriority).reversed());
             patterns.addAll(fuzzyPatterns);
         }
         int priority = CraftingTask.PRIORITY_CRAFT_OFFSET + patterns.size() - 1;

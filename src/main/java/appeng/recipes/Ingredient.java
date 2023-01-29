@@ -1,22 +1,22 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.recipes;
+
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.AEApi;
 import appeng.api.exceptions.MissingIngredientError;
@@ -25,14 +25,9 @@ import appeng.api.exceptions.RegistrationError;
 import appeng.api.recipes.IIngredient;
 import appeng.api.recipes.ResolverResult;
 import appeng.api.recipes.ResolverResultSet;
+
 import com.google.common.base.Preconditions;
 import cpw.mods.fml.common.registry.GameRegistry;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class Ingredient implements IIngredient {
 
@@ -77,8 +72,7 @@ public class Ingredient implements IIngredient {
                     sel = OreDictionary.WILDCARD_VALUE;
                 } else {
                     try {
-                        final Object ro =
-                                AEApi.instance().registries().recipes().resolveItem(this.nameSpace, tmpName);
+                        final Object ro = AEApi.instance().registries().recipes().resolveItem(this.nameSpace, tmpName);
                         if (ro instanceof ResolverResult) {
                             final ResolverResult rr = (ResolverResult) ro;
                             tmpName = rr.itemName;
@@ -150,19 +144,17 @@ public class Ingredient implements IIngredient {
 
         /*
          * Object o = Item.itemRegistry.getObject( nameSpace + ":" + itemName ); if ( o instanceof Item ) return new
-         * ItemStack( (Item) o, qty, meta );
-         * if ( o instanceof Block ) return new ItemStack( (Block) o, qty, meta );
-         * o = Item.itemRegistry.getObject( nameSpace + ":item." + itemName ); if ( o instanceof Item ) return new
-         * ItemStack( (Item) o, qty, meta );
-         * o = Block.blockRegistry.getObject( nameSpace + ":tile." + itemName ); if ( o instanceof Block && (!(o
-         * instanceof BlockAir)) ) return new ItemStack( (Block) o, qty, meta );
+         * ItemStack( (Item) o, qty, meta ); if ( o instanceof Block ) return new ItemStack( (Block) o, qty, meta ); o =
+         * Item.itemRegistry.getObject( nameSpace + ":item." + itemName ); if ( o instanceof Item ) return new
+         * ItemStack( (Item) o, qty, meta ); o = Block.blockRegistry.getObject( nameSpace + ":tile." + itemName ); if (
+         * o instanceof Block && (!(o instanceof BlockAir)) ) return new ItemStack( (Block) o, qty, meta );
          */
 
         throw new MissingIngredientError("Unable to find item: " + this.toString());
     }
 
-    private ItemStack makeItemStack(
-            final Item it, final int quantity, final int damageValue, final NBTTagCompound compound) {
+    private ItemStack makeItemStack(final Item it, final int quantity, final int damageValue,
+            final NBTTagCompound compound) {
         final ItemStack is = new ItemStack(it, quantity, damageValue);
         is.setTagCompound(compound);
         return is;
@@ -193,7 +185,7 @@ public class Ingredient implements IIngredient {
             return set;
         }
 
-        return new ItemStack[] {this.getItemStack()};
+        return new ItemStack[] { this.getItemStack() };
     }
 
     @Override

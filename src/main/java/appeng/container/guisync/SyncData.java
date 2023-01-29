@@ -1,33 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.guisync;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.EnumSet;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.ICrafting;
 
 import appeng.container.AEBaseContainer;
 import appeng.core.AELog;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketProgressBar;
 import appeng.core.sync.packets.PacketValueConfig;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.EnumSet;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.ICrafting;
 
 public class SyncData {
 
@@ -97,8 +91,8 @@ public class SyncData {
     private void send(final ICrafting o, final Object val) throws IOException {
         if (val instanceof String) {
             if (o instanceof EntityPlayerMP) {
-                NetworkHandler.instance.sendTo(
-                        new PacketValueConfig("SyncDat." + this.channel, (String) val), (EntityPlayerMP) o);
+                NetworkHandler.instance
+                        .sendTo(new PacketValueConfig("SyncDat." + this.channel, (String) val), (EntityPlayerMP) o);
             }
         } else if (this.field.getType().isEnum()) {
             o.sendProgressBarUpdate(this.source, this.channel, ((Enum) val).ordinal());

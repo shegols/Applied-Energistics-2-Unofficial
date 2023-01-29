@@ -1,29 +1,22 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.integration;
+
+import java.lang.reflect.Field;
 
 import appeng.api.exceptions.ModNotInstalled;
 import appeng.core.AEConfig;
 import appeng.core.AELog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModAPIManager;
-import java.lang.reflect.Field;
 
 public final class IntegrationNode {
 
@@ -38,8 +31,8 @@ public final class IntegrationNode {
     private Object instance;
     private IIntegrationModule mod = null;
 
-    public IntegrationNode(
-            final String displayName, final String modID, final IntegrationType shortName, final String name) {
+    public IntegrationNode(final String displayName, final String modID, final IntegrationType shortName,
+            final String name) {
         this.displayName = displayName;
         this.shortName = shortName;
         this.modID = modID;
@@ -69,15 +62,14 @@ public final class IntegrationNode {
                 switch (stage) {
                     case PRE_INIT:
                         final ModAPIManager apiManager = ModAPIManager.INSTANCE;
-                        boolean enabled =
-                                this.modID == null || Loader.isModLoaded(this.modID) || apiManager.hasAPI(this.modID);
+                        boolean enabled = this.modID == null || Loader.isModLoaded(this.modID)
+                                || apiManager.hasAPI(this.modID);
 
                         AEConfig.instance.addCustomCategoryComment(
                                 "ModIntegration",
                                 "Valid Values are 'AUTO', 'ON', or 'OFF' - defaults to 'AUTO' ; Suggested that you leave this alone unless your experiencing an issue, or wish to disable the integration for a reason.");
                         final String mode = AEConfig.instance
-                                .get("ModIntegration", this.displayName.replace(" ", ""), "AUTO")
-                                .getString();
+                                .get("ModIntegration", this.displayName.replace(" ", ""), "AUTO").getString();
 
                         if (mode.toUpperCase().equals("ON")) {
                             enabled = true;
@@ -88,8 +80,7 @@ public final class IntegrationNode {
 
                         if (enabled) {
                             this.classValue = this.getClass().getClassLoader().loadClass(this.name);
-                            this.mod = (IIntegrationModule)
-                                    this.classValue.getConstructor().newInstance();
+                            this.mod = (IIntegrationModule) this.classValue.getConstructor().newInstance();
                             final Field f = this.classValue.getField("instance");
                             f.set(this.classValue, this.setInstance(this.mod));
                         } else {

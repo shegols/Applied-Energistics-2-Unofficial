@@ -1,29 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
 
-import appeng.block.storage.BlockDrive;
-import appeng.client.render.BaseBlockRender;
-import appeng.client.texture.ExtraBlockTextures;
-import appeng.tile.storage.TileDrive;
-import appeng.util.Platform;
 import java.util.EnumSet;
+
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
@@ -32,6 +20,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import appeng.block.storage.BlockDrive;
+import appeng.client.render.BaseBlockRender;
+import appeng.client.texture.ExtraBlockTextures;
+import appeng.tile.storage.TileDrive;
+import appeng.util.Platform;
+
 public class RenderDrive extends BaseBlockRender<BlockDrive, TileDrive> {
 
     public RenderDrive() {
@@ -39,12 +33,8 @@ public class RenderDrive extends BaseBlockRender<BlockDrive, TileDrive> {
     }
 
     @Override
-    public void renderInventory(
-            final BlockDrive block,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockDrive block, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         renderer.overrideBlockTexture = ExtraBlockTextures.getMissing();
         this.renderInvBlock(EnumSet.of(ForgeDirection.SOUTH), block, is, Tessellator.instance, 0x000000, renderer);
 
@@ -53,12 +43,7 @@ public class RenderDrive extends BaseBlockRender<BlockDrive, TileDrive> {
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockDrive imb,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
+    public boolean renderInWorld(final BlockDrive imb, final IBlockAccess world, final int x, final int y, final int z,
             final RenderBlocks renderer) {
         final TileDrive sp = imb.getTileEntity(world, x, y, z);
         final ForgeDirection up = sp.getUp();
@@ -72,8 +57,8 @@ public class RenderDrive extends BaseBlockRender<BlockDrive, TileDrive> {
         final Tessellator tess = Tessellator.instance;
         final IIcon ico = ExtraBlockTextures.MEStorageCellTextures.getIcon();
 
-        final int b =
-                world.getLightBrightnessForSkyBlocks(x + forward.offsetX, y + forward.offsetY, z + forward.offsetZ, 0);
+        final int b = world
+                .getLightBrightnessForSkyBlocks(x + forward.offsetX, y + forward.offsetY, z + forward.offsetZ, 0);
 
         for (int yy = 0; yy < 5; yy++) {
             for (int xx = 0; xx < 2; xx++) {
@@ -210,63 +195,159 @@ public class RenderDrive extends BaseBlockRender<BlockDrive, TileDrive> {
                 switch (forward.offsetX + forward.offsetY * 2 + forward.offsetZ * 3) {
                     case 1:
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMinZ, u1, v1);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMinZ,
+                                u1,
+                                v1);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u2, v2);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMaxZ,
+                                u2,
+                                v2);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMaxZ, u3, v3);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMinY,
+                                z + renderer.renderMaxZ,
+                                u3,
+                                v3);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMinZ, u4, v4);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMinY,
+                                z + renderer.renderMinZ,
+                                u4,
+                                v4);
                         break;
                     case -1:
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMinZ, u1, v1);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMinY,
+                                z + renderer.renderMinZ,
+                                u1,
+                                v1);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMaxZ, u2, v2);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMinY,
+                                z + renderer.renderMaxZ,
+                                u2,
+                                v2);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u3, v3);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMaxZ,
+                                u3,
+                                v3);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMinZ, u4, v4);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMinZ,
+                                u4,
+                                v4);
                         break;
                     case -2:
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMinZ, u1, v1);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMinZ,
+                                u1,
+                                v1);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u2, v2);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMaxZ,
+                                u2,
+                                v2);
                         tess.addVertexWithUV(
-                                x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u3, v3);
+                                x + renderer.renderMinX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMaxZ,
+                                u3,
+                                v3);
                         tess.addVertexWithUV(
-                                x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMinZ, u4, v4);
+                                x + renderer.renderMinX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMinZ,
+                                u4,
+                                v4);
                         break;
                     case 2:
                         tess.addVertexWithUV(
-                                x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMinZ, u1, v1);
+                                x + renderer.renderMinX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMinZ,
+                                u1,
+                                v1);
                         tess.addVertexWithUV(
-                                x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u2, v2);
+                                x + renderer.renderMinX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMaxZ,
+                                u2,
+                                v2);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u3, v3);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMaxZ,
+                                u3,
+                                v3);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMinZ, u4, v4);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMinZ,
+                                u4,
+                                v4);
                         break;
                     case 3:
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMaxZ, u1, v1);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMinY,
+                                z + renderer.renderMaxZ,
+                                u1,
+                                v1);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u2, v2);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMaxZ,
+                                u2,
+                                v2);
                         tess.addVertexWithUV(
-                                x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u3, v3);
+                                x + renderer.renderMinX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMaxZ,
+                                u3,
+                                v3);
                         tess.addVertexWithUV(
-                                x + renderer.renderMinX, y + renderer.renderMinY, z + renderer.renderMaxZ, u4, v4);
+                                x + renderer.renderMinX,
+                                y + renderer.renderMinY,
+                                z + renderer.renderMaxZ,
+                                u4,
+                                v4);
                         break;
                     case -3:
                         tess.addVertexWithUV(
-                                x + renderer.renderMinX, y + renderer.renderMinY, z + renderer.renderMaxZ, u1, v1);
+                                x + renderer.renderMinX,
+                                y + renderer.renderMinY,
+                                z + renderer.renderMaxZ,
+                                u1,
+                                v1);
                         tess.addVertexWithUV(
-                                x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u2, v2);
+                                x + renderer.renderMinX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMaxZ,
+                                u2,
+                                v2);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u3, v3);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMaxY,
+                                z + renderer.renderMaxZ,
+                                u3,
+                                v3);
                         tess.addVertexWithUV(
-                                x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMaxZ, u4, v4);
+                                x + renderer.renderMaxX,
+                                y + renderer.renderMinY,
+                                z + renderer.renderMaxZ,
+                                u4,
+                                v4);
                         break;
                 }
 
@@ -307,63 +388,159 @@ public class RenderDrive extends BaseBlockRender<BlockDrive, TileDrive> {
                     switch (forward.offsetX + forward.offsetY * 2 + forward.offsetZ * 3) {
                         case 1:
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMinZ, u1, v1);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMinZ,
+                                    u1,
+                                    v1);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u2, v2);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMaxZ,
+                                    u2,
+                                    v2);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMaxZ, u3, v3);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMinY,
+                                    z + renderer.renderMaxZ,
+                                    u3,
+                                    v3);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMinZ, u4, v4);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMinY,
+                                    z + renderer.renderMinZ,
+                                    u4,
+                                    v4);
                             break;
                         case -1:
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMinZ, u1, v1);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMinY,
+                                    z + renderer.renderMinZ,
+                                    u1,
+                                    v1);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMaxZ, u2, v2);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMinY,
+                                    z + renderer.renderMaxZ,
+                                    u2,
+                                    v2);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u3, v3);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMaxZ,
+                                    u3,
+                                    v3);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMinZ, u4, v4);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMinZ,
+                                    u4,
+                                    v4);
                             break;
                         case -2:
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMinZ, u1, v1);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMinZ,
+                                    u1,
+                                    v1);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u2, v2);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMaxZ,
+                                    u2,
+                                    v2);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u3, v3);
+                                    x + renderer.renderMinX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMaxZ,
+                                    u3,
+                                    v3);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMinZ, u4, v4);
+                                    x + renderer.renderMinX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMinZ,
+                                    u4,
+                                    v4);
                             break;
                         case 2:
                             tess.addVertexWithUV(
-                                    x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMinZ, u1, v1);
+                                    x + renderer.renderMinX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMinZ,
+                                    u1,
+                                    v1);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u2, v2);
+                                    x + renderer.renderMinX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMaxZ,
+                                    u2,
+                                    v2);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u3, v3);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMaxZ,
+                                    u3,
+                                    v3);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMinZ, u4, v4);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMinZ,
+                                    u4,
+                                    v4);
                             break;
                         case 3:
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMaxZ, u1, v1);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMinY,
+                                    z + renderer.renderMaxZ,
+                                    u1,
+                                    v1);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u2, v2);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMaxZ,
+                                    u2,
+                                    v2);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u3, v3);
+                                    x + renderer.renderMinX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMaxZ,
+                                    u3,
+                                    v3);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMinX, y + renderer.renderMinY, z + renderer.renderMaxZ, u4, v4);
+                                    x + renderer.renderMinX,
+                                    y + renderer.renderMinY,
+                                    z + renderer.renderMaxZ,
+                                    u4,
+                                    v4);
                             break;
                         case -3:
                             tess.addVertexWithUV(
-                                    x + renderer.renderMinX, y + renderer.renderMinY, z + renderer.renderMaxZ, u1, v1);
+                                    x + renderer.renderMinX,
+                                    y + renderer.renderMinY,
+                                    z + renderer.renderMaxZ,
+                                    u1,
+                                    v1);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMinX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u2, v2);
+                                    x + renderer.renderMinX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMaxZ,
+                                    u2,
+                                    v2);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMaxY, z + renderer.renderMaxZ, u3, v3);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMaxY,
+                                    z + renderer.renderMaxZ,
+                                    u3,
+                                    v3);
                             tess.addVertexWithUV(
-                                    x + renderer.renderMaxX, y + renderer.renderMinY, z + renderer.renderMaxZ, u4, v4);
+                                    x + renderer.renderMaxX,
+                                    y + renderer.renderMinY,
+                                    z + renderer.renderMaxZ,
+                                    u4,
+                                    v4);
                             break;
                     }
                 }

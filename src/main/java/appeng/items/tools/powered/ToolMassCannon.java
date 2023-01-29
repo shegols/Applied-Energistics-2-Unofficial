@@ -1,22 +1,34 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.tools.powered;
+
+import java.text.NumberFormat;
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -51,27 +63,11 @@ import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.storage.CellInventoryHandler;
 import appeng.tile.misc.TilePaint;
 import appeng.util.Platform;
+
 import com.google.common.base.Optional;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.text.NumberFormat;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ToolMassCannon extends AEBasePoweredItem implements IStorageCell {
 
@@ -88,20 +84,30 @@ public class ToolMassCannon extends AEBasePoweredItem implements IStorageCell {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addCheckedInformation(
-            final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
+    public void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+            final boolean displayMoreInfo) {
         super.addCheckedInformation(stack, player, lines, displayMoreInfo);
 
-        final IMEInventory<IAEItemStack> cdi =
-                AEApi.instance().registries().cell().getCellInventory(stack, null, StorageChannel.ITEMS);
+        final IMEInventory<IAEItemStack> cdi = AEApi.instance().registries().cell()
+                .getCellInventory(stack, null, StorageChannel.ITEMS);
 
         if (cdi instanceof CellInventoryHandler) {
             final ICellInventory cd = ((ICellInventoryHandler) cdi).getCellInv();
             if (cd != null) {
-                lines.add(cd.getUsedBytes() + " " + GuiText.Of.getLocal() + ' '
-                        + NumberFormat.getInstance().format(cd.getTotalBytes()) + ' ' + GuiText.BytesUsed.getLocal());
-                lines.add(cd.getStoredItemTypes() + " " + GuiText.Of.getLocal() + ' '
-                        + NumberFormat.getInstance().format(cd.getTotalItemTypes()) + ' ' + GuiText.Types.getLocal());
+                lines.add(
+                        cd.getUsedBytes() + " "
+                                + GuiText.Of.getLocal()
+                                + ' '
+                                + NumberFormat.getInstance().format(cd.getTotalBytes())
+                                + ' '
+                                + GuiText.BytesUsed.getLocal());
+                lines.add(
+                        cd.getStoredItemTypes() + " "
+                                + GuiText.Of.getLocal()
+                                + ' '
+                                + NumberFormat.getInstance().format(cd.getTotalItemTypes())
+                                + ' '
+                                + GuiText.Types.getLocal());
             }
         }
     }
@@ -116,11 +122,10 @@ public class ToolMassCannon extends AEBasePoweredItem implements IStorageCell {
                 shots += cu.getInstalledUpgrades(Upgrades.SPEED);
             }
 
-            final IMEInventory inv =
-                    AEApi.instance().registries().cell().getCellInventory(item, null, StorageChannel.ITEMS);
+            final IMEInventory inv = AEApi.instance().registries().cell()
+                    .getCellInventory(item, null, StorageChannel.ITEMS);
             if (inv != null) {
-                final IItemList itemList =
-                        inv.getAvailableItems(AEApi.instance().storage().createItemList());
+                final IItemList itemList = inv.getAvailableItems(AEApi.instance().storage().createItemList());
                 IAEStack aeAmmo = itemList.getFirstItem();
                 if (aeAmmo instanceof IAEItemStack) {
                     shots = Math.min(shots, (int) aeAmmo.getStackSize());
@@ -162,8 +167,7 @@ public class ToolMassCannon extends AEBasePoweredItem implements IStorageCell {
                         final Vec3 direction = Vec3.createVectorHelper(f7 * d3, f6 * d3, f8 * d3);
                         direction.normalize();
 
-                        final float penetration =
-                                AEApi.instance().registries().matterCannon().getPenetration(ammo); // 196.96655f;
+                        final float penetration = AEApi.instance().registries().matterCannon().getPenetration(ammo); // 196.96655f;
                         if (penetration <= 0) {
                             final ItemStack type = ((IAEItemStack) aeAmmo).getItemStack();
                             if (type.getItem() instanceof ItemPaintBall) {
@@ -185,24 +189,15 @@ public class ToolMassCannon extends AEBasePoweredItem implements IStorageCell {
         return item;
     }
 
-    private void shootPaintBalls(
-            final ItemStack type,
-            final World w,
-            final EntityPlayer p,
-            final Vec3 vec3,
-            final Vec3 vec31,
-            final Vec3 direction,
-            final double d0,
-            final double d1,
-            final double d2) {
+    private void shootPaintBalls(final ItemStack type, final World w, final EntityPlayer p, final Vec3 vec3,
+            final Vec3 vec31, final Vec3 direction, final double d0, final double d1, final double d2) {
         final AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(
-                        Math.min(vec3.xCoord, vec31.xCoord),
-                        Math.min(vec3.yCoord, vec31.yCoord),
-                        Math.min(vec3.zCoord, vec31.zCoord),
-                        Math.max(vec3.xCoord, vec31.xCoord),
-                        Math.max(vec3.yCoord, vec31.yCoord),
-                        Math.max(vec3.zCoord, vec31.zCoord))
-                .expand(16, 16, 16);
+                Math.min(vec3.xCoord, vec31.xCoord),
+                Math.min(vec3.yCoord, vec31.yCoord),
+                Math.min(vec3.zCoord, vec31.zCoord),
+                Math.max(vec3.xCoord, vec31.xCoord),
+                Math.max(vec3.yCoord, vec31.yCoord),
+                Math.max(vec3.zCoord, vec31.zCoord)).expand(16, 16, 16);
 
         Entity entity = null;
         final List list = w.getEntitiesWithinAABBExcludingEntity(p, bb);
@@ -295,11 +290,7 @@ public class ToolMassCannon extends AEBasePoweredItem implements IStorageCell {
 
                 final Block whatsThere = w.getBlock(x, y, z);
                 if (whatsThere.isReplaceable(w, x, y, z) && w.isAirBlock(x, y, z)) {
-                    for (final Block paintBlock : AEApi.instance()
-                            .definitions()
-                            .blocks()
-                            .paint()
-                            .maybeBlock()
+                    for (final Block paintBlock : AEApi.instance().definitions().blocks().paint().maybeBlock()
                             .asSet()) {
                         w.setBlock(x, y, z, paintBlock, 0, 3);
                     }
@@ -316,28 +307,19 @@ public class ToolMassCannon extends AEBasePoweredItem implements IStorageCell {
         }
     }
 
-    private void standardAmmo(
-            float penetration,
-            final World w,
-            final EntityPlayer p,
-            final Vec3 vec3,
-            final Vec3 vec31,
-            final Vec3 direction,
-            final double d0,
-            final double d1,
-            final double d2) {
+    private void standardAmmo(float penetration, final World w, final EntityPlayer p, final Vec3 vec3, final Vec3 vec31,
+            final Vec3 direction, final double d0, final double d1, final double d2) {
         boolean hasDestroyed = true;
         while (penetration > 0 && hasDestroyed) {
             hasDestroyed = false;
 
             final AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(
-                            Math.min(vec3.xCoord, vec31.xCoord),
-                            Math.min(vec3.yCoord, vec31.yCoord),
-                            Math.min(vec3.zCoord, vec31.zCoord),
-                            Math.max(vec3.xCoord, vec31.xCoord),
-                            Math.max(vec3.yCoord, vec31.yCoord),
-                            Math.max(vec3.zCoord, vec31.zCoord))
-                    .expand(16, 16, 16);
+                    Math.min(vec3.xCoord, vec31.xCoord),
+                    Math.min(vec3.yCoord, vec31.yCoord),
+                    Math.min(vec3.zCoord, vec31.zCoord),
+                    Math.max(vec3.xCoord, vec31.xCoord),
+                    Math.max(vec3.yCoord, vec31.yCoord),
+                    Math.max(vec3.zCoord, vec31.zCoord)).expand(16, 16, 16);
 
             Entity entity = null;
             final List list = w.getEntitiesWithinAABBExcludingEntity(p, bb);
@@ -430,9 +412,8 @@ public class ToolMassCannon extends AEBasePoweredItem implements IStorageCell {
 
                         final float hardness = b.getBlockHardness(w, pos.blockX, pos.blockY, pos.blockZ) * 9.0f;
                         if (hardness >= 0.0) {
-                            if (penetration > hardness
-                                    && Platform.hasPermissions(
-                                            new DimensionalCoord(w, pos.blockX, pos.blockY, pos.blockZ), p)) {
+                            if (penetration > hardness && Platform
+                                    .hasPermissions(new DimensionalCoord(w, pos.blockX, pos.blockY, pos.blockZ), p)) {
                                 hasDestroyed = true;
                                 penetration -= hardness;
                                 penetration *= 0.60;

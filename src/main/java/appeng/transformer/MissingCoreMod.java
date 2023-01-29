@@ -1,31 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.transformer;
 
-import cpw.mods.fml.client.CustomModLoadingErrorDisplayException;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiErrorScreen;
 
+import cpw.mods.fml.client.CustomModLoadingErrorDisplayException;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
 public final class MissingCoreMod extends CustomModLoadingErrorDisplayException {
+
     private static final int SHADOW_WHITE = 0xeeeeee;
     private static final int COLOR_WHITE = 0xffffff;
     private static final long serialVersionUID = -966774766922821652L;
@@ -45,15 +39,15 @@ public final class MissingCoreMod extends CustomModLoadingErrorDisplayException 
     }
 
     @Override
-    public void drawScreen(
-            final GuiErrorScreen errorScreen,
-            final FontRenderer fontRenderer,
-            final int mouseRelX,
-            final int mouseRelY,
-            final float tickTime) {
+    public void drawScreen(final GuiErrorScreen errorScreen, final FontRenderer fontRenderer, final int mouseRelX,
+            final int mouseRelY, final float tickTime) {
         int offset = 10;
         this.drawCenteredString(
-                fontRenderer, "Sorry, couldn't load AE2 properly.", errorScreen.width / 2, offset, COLOR_WHITE);
+                fontRenderer,
+                "Sorry, couldn't load AE2 properly.",
+                errorScreen.width / 2,
+                offset,
+                COLOR_WHITE);
 
         offset += SCREEN_OFFSET;
         this.drawCenteredString(
@@ -124,8 +118,8 @@ public final class MissingCoreMod extends CustomModLoadingErrorDisplayException 
         }
     }
 
-    private void drawCenteredString(
-            final FontRenderer fontRenderer, final String string, final int x, final int y, final int colour) {
+    private void drawCenteredString(final FontRenderer fontRenderer, final String string, final int x, final int y,
+            final int colour) {
         final String reEncoded = string.replaceAll("\\P{InBasic_Latin}", "");
         final int reEncodedWidth = fontRenderer.getStringWidth(reEncoded);
         final int centeredX = x - reEncodedWidth / 2;

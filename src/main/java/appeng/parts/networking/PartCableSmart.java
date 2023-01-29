@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.networking;
+
+import java.util.EnumSet;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
@@ -37,15 +39,9 @@ import appeng.helpers.Reflected;
 import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.EnumSet;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 
 public class PartCableSmart extends PartCable {
+
     @Reflected
     public PartCableSmart(final ItemStack is) {
         super(is);
@@ -157,8 +153,8 @@ public class PartCableSmart extends PartCable {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x, final int y, final int z, final IPartRenderHelper rh, final RenderBlocks renderer) {
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {
         this.setRenderCache(rh.useSimplifiedRendering(x, y, z, this, this.getRenderCache()));
         rh.setTexture(this.getTexture(this.getCableColor()));
 
@@ -202,12 +198,10 @@ public class PartCableSmart extends PartCable {
 
                     this.setSmartConnectionRotations(of, renderer);
                     final IIcon firstIcon = new TaughtIcon(
-                            this.getChannelTex(this.getChannelsOnSide()[of.ordinal()], false)
-                                    .getIcon(),
+                            this.getChannelTex(this.getChannelsOnSide()[of.ordinal()], false).getIcon(),
                             -0.2f);
                     final IIcon secondIcon = new TaughtIcon(
-                            this.getChannelTex(this.getChannelsOnSide()[of.ordinal()], true)
-                                    .getIcon(),
+                            this.getChannelTex(this.getChannelsOnSide()[of.ordinal()], true).getIcon(),
                             -0.2f);
 
                     if (of == ForgeDirection.EAST || of == ForgeDirection.WEST) {
@@ -225,8 +219,7 @@ public class PartCableSmart extends PartCable {
                     rh.setTexture(secondIcon, secondIcon, secondIcon, secondIcon, secondIcon, secondIcon);
                     this.renderAllFaces((AEBaseBlock) rh.getBlock(), x, y, z, rh, renderer);
 
-                    renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth =
-                            renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
+                    renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
 
                     rh.setTexture(this.getTexture(this.getCableColor()));
                 }
@@ -253,12 +246,10 @@ public class PartCableSmart extends PartCable {
             final IIcon def = this.getTexture(this.getCableColor());
             final IIcon off = new OffsetIcon(def, 0, -12);
 
-            final IIcon firstTaughtIcon =
-                    new TaughtIcon(this.getChannelTex(channels, false).getIcon(), -0.2f);
+            final IIcon firstTaughtIcon = new TaughtIcon(this.getChannelTex(channels, false).getIcon(), -0.2f);
             final IIcon firstOffsetIcon = new OffsetIcon(firstTaughtIcon, 0, -12);
 
-            final IIcon secondTaughtIcon =
-                    new TaughtIcon(this.getChannelTex(channels, true).getIcon(), -0.2f);
+            final IIcon secondTaughtIcon = new TaughtIcon(this.getChannelTex(channels, true).getIcon(), -0.2f);
             final IIcon secondOffsetIcon = new OffsetIcon(secondTaughtIcon, 0, -12);
 
             switch (selectedSide) {
@@ -325,7 +316,12 @@ public class PartCableSmart extends PartCable {
 
                     Tessellator.instance.setColorOpaque_I(this.getCableColor().blackVariant);
                     rh.setTexture(
-                            firstOffsetIcon, firstOffsetIcon, firstOffsetIcon, firstOffsetIcon, firstTaughtIcon, fpA);
+                            firstOffsetIcon,
+                            firstOffsetIcon,
+                            firstOffsetIcon,
+                            firstOffsetIcon,
+                            firstTaughtIcon,
+                            fpA);
                     this.renderAllFaces((AEBaseBlock) rh.getBlock(), x, y, z, rh, renderer);
 
                     Tessellator.instance.setColorOpaque_I(this.getCableColor().whiteVariant);
@@ -376,8 +372,7 @@ public class PartCableSmart extends PartCable {
             }
         }
 
-        renderer.uvRotateBottom = renderer.uvRotateEast =
-                renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
+        renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
         rh.setTexture(null);
     }
 }

@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.sync.packets;
+
+import java.io.IOException;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.client.ClientHelper;
@@ -32,10 +30,6 @@ import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import java.io.IOException;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
 
 public class PacketInventoryAction extends AppEngPacket {
 
@@ -115,14 +109,16 @@ public class PacketInventoryAction extends AppEngPacket {
                 if (context != null) {
                     final TileEntity te = context.getTile();
                     Platform.openGUI(
-                            sender, te, baseContainer.getOpenContext().getSide(), GuiBridge.GUI_CRAFTING_AMOUNT);
+                            sender,
+                            te,
+                            baseContainer.getOpenContext().getSide(),
+                            GuiBridge.GUI_CRAFTING_AMOUNT);
 
                     if (sender.openContainer instanceof ContainerCraftAmount) {
                         final ContainerCraftAmount cca = (ContainerCraftAmount) sender.openContainer;
 
                         if (baseContainer.getTargetStack() != null) {
-                            cca.getCraftingItem()
-                                    .putStack(baseContainer.getTargetStack().getItemStack());
+                            cca.getCraftingItem().putStack(baseContainer.getTargetStack().getItemStack());
                             cca.setItemToCraft(baseContainer.getTargetStack());
                         }
 
@@ -134,13 +130,15 @@ public class PacketInventoryAction extends AppEngPacket {
                 if (context != null) {
                     final TileEntity te = context.getTile();
                     Platform.openGUI(
-                            sender, te, baseContainer.getOpenContext().getSide(), GuiBridge.GUI_PATTERN_VALUE_AMOUNT);
+                            sender,
+                            te,
+                            baseContainer.getOpenContext().getSide(),
+                            GuiBridge.GUI_PATTERN_VALUE_AMOUNT);
                     if (sender.openContainer instanceof ContainerPatternValueAmount) {
                         final ContainerPatternValueAmount cpv = (ContainerPatternValueAmount) sender.openContainer;
                         if (baseContainer.getTargetStack() != null) {
                             cpv.setValueIndex(this.slot);
-                            cpv.getPatternValue()
-                                    .putStack(baseContainer.getTargetStack().getItemStack());
+                            cpv.getPatternValue().putStack(baseContainer.getTargetStack().getItemStack());
                         }
                         cpv.detectAndSendChanges();
                     }

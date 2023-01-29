@@ -1,19 +1,11 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.api.definitions;
@@ -42,6 +34,7 @@ import appeng.items.tools.quartz.*;
  * Internal implementation for the API items
  */
 public final class ApiItems implements IItems {
+
     private final IItemDefinition certusQuartzAxe;
     private final IItemDefinition certusQuartzHoe;
     private final IItemDefinition certusQuartzShovel;
@@ -107,8 +100,8 @@ public final class ApiItems implements IItems {
         this.certusQuartzPick = constructor.registerItemDefinition(new ToolQuartzPickaxe(AEFeature.CertusQuartzTools));
         this.certusQuartzSword = constructor.registerItemDefinition(new ToolQuartzSword(AEFeature.CertusQuartzTools));
         this.certusQuartzWrench = constructor.registerItemDefinition(new ToolQuartzWrench(AEFeature.CertusQuartzTools));
-        this.certusQuartzKnife =
-                constructor.registerItemDefinition(new ToolQuartzCuttingKnife(AEFeature.CertusQuartzTools));
+        this.certusQuartzKnife = constructor
+                .registerItemDefinition(new ToolQuartzCuttingKnife(AEFeature.CertusQuartzTools));
 
         this.netherQuartzAxe = constructor.registerItemDefinition(new ToolQuartzAxe(AEFeature.NetherQuartzTools));
         this.netherQuartzHoe = constructor.registerItemDefinition(new ToolQuartzHoe(AEFeature.NetherQuartzTools));
@@ -116,8 +109,8 @@ public final class ApiItems implements IItems {
         this.netherQuartzPick = constructor.registerItemDefinition(new ToolQuartzPickaxe(AEFeature.NetherQuartzTools));
         this.netherQuartzSword = constructor.registerItemDefinition(new ToolQuartzSword(AEFeature.NetherQuartzTools));
         this.netherQuartzWrench = constructor.registerItemDefinition(new ToolQuartzWrench(AEFeature.NetherQuartzTools));
-        this.netherQuartzKnife =
-                constructor.registerItemDefinition(new ToolQuartzCuttingKnife(AEFeature.NetherQuartzTools));
+        this.netherQuartzKnife = constructor
+                .registerItemDefinition(new ToolQuartzCuttingKnife(AEFeature.NetherQuartzTools));
 
         this.entropyManipulator = constructor.registerItemDefinition(new ToolEntropyManipulator());
         this.wirelessTerminal = constructor.registerItemDefinition(new ToolWirelessTerminal());
@@ -136,12 +129,12 @@ public final class ApiItems implements IItems {
         this.cell16k = constructor.registerItemDefinition(new ItemBasicStorageCell(MaterialType.Cell16kPart, 16));
         this.cell64k = constructor.registerItemDefinition(new ItemBasicStorageCell(MaterialType.Cell64kPart, 64));
         this.cell256k = constructor.registerItemDefinition(new ItemAdvancedStorageCell(MaterialType.Cell256kPart, 256));
-        this.cell1024k =
-                constructor.registerItemDefinition(new ItemAdvancedStorageCell(MaterialType.Cell1024kPart, 1024));
-        this.cell4096k =
-                constructor.registerItemDefinition(new ItemAdvancedStorageCell(MaterialType.Cell4096kPart, 4096));
-        this.cell16384k =
-                constructor.registerItemDefinition(new ItemAdvancedStorageCell(MaterialType.Cell16384kPart, 16384));
+        this.cell1024k = constructor
+                .registerItemDefinition(new ItemAdvancedStorageCell(MaterialType.Cell1024kPart, 1024));
+        this.cell4096k = constructor
+                .registerItemDefinition(new ItemAdvancedStorageCell(MaterialType.Cell4096kPart, 4096));
+        this.cell16384k = constructor
+                .registerItemDefinition(new ItemAdvancedStorageCell(MaterialType.Cell16384kPart, 16384));
 
         this.spatialCell2 = constructor.registerItemDefinition(new ItemSpatialStorageCell(2));
         this.spatialCell16 = constructor.registerItemDefinition(new ItemSpatialStorageCell(16));

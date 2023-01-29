@@ -1,22 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.automation;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.config.Upgrades;
 import appeng.api.implementations.items.IUpgradeModule;
@@ -24,12 +21,9 @@ import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.tile.inventory.IAEAppEngInventory;
 import appeng.tile.inventory.InvOperation;
 import appeng.util.Platform;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class UpgradeInventory extends AppEngInternalInventory implements IAEAppEngInventory {
+
     private final IAEAppEngInventory parent;
 
     private boolean cached = false;
@@ -107,9 +101,7 @@ public abstract class UpgradeInventory extends AppEngInternalInventory implement
 
     private void updateUpgradeInfo() {
         this.cached = true;
-        this.patternCapacityUpgrades = this.inverterUpgrades =
-                this.capacityUpgrades = this.redstoneUpgrades = this.speedUpgrades = this.superSpeedUpgrades =
-                        this.fuzzyUpgrades = this.craftingUpgrades = this.oreFilterUpgrades = 0;
+        this.patternCapacityUpgrades = this.inverterUpgrades = this.capacityUpgrades = this.redstoneUpgrades = this.speedUpgrades = this.superSpeedUpgrades = this.fuzzyUpgrades = this.craftingUpgrades = this.oreFilterUpgrades = 0;
 
         for (final ItemStack is : this) {
             if (is == null || is.getItem() == null || !(is.getItem() instanceof IUpgradeModule)) {
@@ -157,8 +149,8 @@ public abstract class UpgradeInventory extends AppEngInternalInventory implement
         this.superSpeedUpgrades = Math.min(this.superSpeedUpgrades, this.getMaxInstalled(Upgrades.SPEED));
         this.inverterUpgrades = Math.min(this.inverterUpgrades, this.getMaxInstalled(Upgrades.INVERTER));
         this.craftingUpgrades = Math.min(this.craftingUpgrades, this.getMaxInstalled(Upgrades.CRAFTING));
-        this.patternCapacityUpgrades =
-                Math.min(this.patternCapacityUpgrades, this.getMaxInstalled(Upgrades.PATTERN_CAPACITY));
+        this.patternCapacityUpgrades = Math
+                .min(this.patternCapacityUpgrades, this.getMaxInstalled(Upgrades.PATTERN_CAPACITY));
         this.oreFilterUpgrades = Math.min(this.oreFilterUpgrades, this.getMaxInstalled(Upgrades.ORE_FILTER));
     }
 
@@ -174,12 +166,8 @@ public abstract class UpgradeInventory extends AppEngInternalInventory implement
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removedStack,
-            final ItemStack newStack) {
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         this.cached = false;
         if (this.parent != null && Platform.isServer()) {
             this.parent.onChangeInventory(inv, slot, mc, removedStack, newStack);

@@ -1,15 +1,17 @@
 package appeng.me.pathfinding;
 
-import appeng.me.cache.PathGridCache;
 import java.util.*;
 
+import appeng.me.cache.PathGridCache;
+
 public class BackbonePathSegment extends PathSegment {
+
     IPathItem startNode;
     private Set<IPathItem> controllerRoutes = new HashSet<>();
     Map<BackbonePathSegment, List<IPathItem>> neighbours = new HashMap<>();
 
-    public BackbonePathSegment(
-            IPathItem node, final PathGridCache myPGC, final Set<IPathItem> semiOpen, final Set<IPathItem> closed) {
+    public BackbonePathSegment(IPathItem node, final PathGridCache myPGC, final Set<IPathItem> semiOpen,
+            final Set<IPathItem> closed) {
         super(myPGC, new LinkedList<IPathItem>(), semiOpen, closed);
         startNode = node;
     }
@@ -31,7 +33,8 @@ public class BackbonePathSegment extends PathSegment {
     public boolean switchControllerRoute() {
         if (controllerRoutes.isEmpty() || startNode.getControllerRoute() == null) return false;
         if (startNode.getControllerRoute().getControllerRoute() != null
-                && startNode.getControllerRoute().getControllerRoute().canSupportMoreChannels()) return true;
+                && startNode.getControllerRoute().getControllerRoute().canSupportMoreChannels())
+            return true;
         controllerRoutes.remove(startNode.getControllerRoute());
         if (controllerRoutes.isEmpty()) return false;
         startNode.setControllerRoute(controllerRoutes.iterator().next(), false);

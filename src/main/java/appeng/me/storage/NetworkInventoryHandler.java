@@ -1,22 +1,16 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.storage;
+
+import java.util.*;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -33,7 +27,6 @@ import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.me.cache.SecurityCache;
 import appeng.util.ItemSorters;
-import java.util.*;
 
 public class NetworkInventoryHandler<T extends IAEStack<T>> implements IMEInventoryHandler<T> {
 
@@ -56,8 +49,7 @@ public class NetworkInventoryHandler<T extends IAEStack<T>> implements IMEInvent
     public NetworkInventoryHandler(final StorageChannel chan, final SecurityCache security) {
         this.myChannel = chan;
         this.security = security;
-        this.priorityInventory =
-                new TreeMap<Integer, List<IMEInventoryHandler<T>>>(PRIORITY_SORTER); // TreeMultimap.create(
+        this.priorityInventory = new TreeMap<Integer, List<IMEInventoryHandler<T>>>(PRIORITY_SORTER); // TreeMultimap.create(
         // prioritySorter,
         // hashSorter );
     }
@@ -88,8 +80,7 @@ public class NetworkInventoryHandler<T extends IAEStack<T>> implements IMEInvent
             while (ii.hasNext() && input != null) {
                 final IMEInventoryHandler<T> inv = ii.next();
 
-                if (inv.validForPass(1)
-                        && inv.canAccept(input)
+                if (inv.validForPass(1) && inv.canAccept(input)
                         && (inv.isPrioritized(input) || inv.extractItems(input, Actionable.SIMULATE, src) != null)) {
                     input = inv.injectItems(input, type, src);
                 }
@@ -181,10 +172,7 @@ public class NetworkInventoryHandler<T extends IAEStack<T>> implements IMEInvent
             return null;
         }
 
-        final Iterator<List<IMEInventoryHandler<T>>> i = this.priorityInventory
-                .descendingMap()
-                .values()
-                .iterator(); // priorityInventory.asMap().descendingMap().entrySet().iterator();
+        final Iterator<List<IMEInventoryHandler<T>>> i = this.priorityInventory.descendingMap().values().iterator(); // priorityInventory.asMap().descendingMap().entrySet().iterator();
 
         final T output = request.copy();
         request = request.copy();

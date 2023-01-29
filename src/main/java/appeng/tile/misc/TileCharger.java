@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.misc;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -38,18 +40,10 @@ import appeng.tile.inventory.InvOperation;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileCharger extends AENetworkPowerTile implements ICrankable {
 
-    private final int[] sides = {0};
+    private final int[] sides = { 0 };
     private final AppEngInternalInventory inv = new AppEngInternalInventory(this, 1);
     private int tickTickTimer = 0;
 
@@ -110,12 +104,10 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable {
             try {
                 this.injectExternalPower(
                         PowerUnits.AE,
-                        this.getProxy()
-                                .getEnergy()
-                                .extractAEPower(
-                                        Math.min(150.0, getInternalMaxPower() - this.getInternalCurrentPower()),
-                                        Actionable.MODULATE,
-                                        PowerMultiplier.ONE));
+                        this.getProxy().getEnergy().extractAEPower(
+                                Math.min(150.0, getInternalMaxPower() - this.getInternalCurrentPower()),
+                                Actionable.MODULATE,
+                                PowerMultiplier.ONE));
                 this.tickTickTimer = 20; // keep ticking...
             } catch (final GridAccessException e) {
                 // continue!
@@ -133,8 +125,8 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable {
             if (ps.getAEMaxPower(myItem) > ps.getAECurrentPower(myItem)) {
                 final double oldPower = this.getInternalCurrentPower();
 
-                final double adjustment = ps.injectAEPower(
-                        myItem, this.extractAEPower(150.0, Actionable.MODULATE, PowerMultiplier.CONFIG));
+                final double adjustment = ps
+                        .injectAEPower(myItem, this.extractAEPower(150.0, Actionable.MODULATE, PowerMultiplier.CONFIG));
                 this.setInternalCurrentPower(this.getInternalCurrentPower() + adjustment);
                 if (oldPower > this.getInternalCurrentPower()) {
                     this.requiresUpdate = true;
@@ -143,21 +135,19 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable {
             }
         } else if (this.getInternalCurrentPower() == getInternalMaxPower()
                 && materials.certusQuartzCrystal().isSameAs(myItem)) {
-            if (Platform.getRandomFloat() > 0.8f) // simulate wait
-            {
-                this.extractAEPower(
-                        this.getInternalMaxPower() / PowerMultiplier.CONFIG.multiplier,
-                        Actionable.MODULATE,
-                        PowerMultiplier.CONFIG); // 1500
+                    if (Platform.getRandomFloat() > 0.8f) // simulate wait
+                    {
+                        this.extractAEPower(
+                                this.getInternalMaxPower() / PowerMultiplier.CONFIG.multiplier,
+                                Actionable.MODULATE,
+                                PowerMultiplier.CONFIG); // 1500
 
-                for (final ItemStack charged : materials
-                        .certusQuartzCrystalCharged()
-                        .maybeStack(myItem.stackSize)
-                        .asSet()) {
-                    this.setInventorySlotContents(0, charged);
+                        for (final ItemStack charged : materials.certusQuartzCrystalCharged()
+                                .maybeStack(myItem.stackSize).asSet()) {
+                            this.setInventorySlotContents(0, charged);
+                        }
+                    }
                 }
-            }
-        }
     }
 
     @Override
@@ -188,9 +178,7 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable {
             if (materials.certusQuartzCrystal().isSameAs(myItem)) {
                 this.extractAEPower(this.getInternalMaxPower(), Actionable.MODULATE, PowerMultiplier.CONFIG); // 1500
 
-                for (final ItemStack charged : materials
-                        .certusQuartzCrystalCharged()
-                        .maybeStack(myItem.stackSize)
+                for (final ItemStack charged : materials.certusQuartzCrystalCharged().maybeStack(myItem.stackSize)
                         .asSet()) {
                     this.setInventorySlotContents(0, charged);
                 }
@@ -221,11 +209,7 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable {
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {
         this.markForUpdate();
     }
@@ -239,11 +223,7 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable {
             }
         }
 
-        return AEApi.instance()
-                .definitions()
-                .materials()
-                .certusQuartzCrystalCharged()
-                .isSameAs(extractedItem);
+        return AEApi.instance().definitions().materials().certusQuartzCrystalCharged().isSameAs(extractedItem);
     }
 
     @Override

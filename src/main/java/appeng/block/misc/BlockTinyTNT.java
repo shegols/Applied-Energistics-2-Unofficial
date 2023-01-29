@@ -1,38 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.block.misc;
 
-import appeng.block.AEBaseBlock;
-import appeng.client.render.blocks.RenderTinyTNT;
-import appeng.client.texture.FullIcon;
-import appeng.core.AppEng;
-import appeng.core.features.AEFeature;
-import appeng.entity.EntityIds;
-import appeng.entity.EntityTinyTNTPrimed;
-import appeng.helpers.ICustomCollision;
-import appeng.hooks.DispenserBehaviorTinyTNT;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.Material;
@@ -48,6 +29,19 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+
+import appeng.block.AEBaseBlock;
+import appeng.client.render.blocks.RenderTinyTNT;
+import appeng.client.texture.FullIcon;
+import appeng.core.AppEng;
+import appeng.core.features.AEFeature;
+import appeng.entity.EntityIds;
+import appeng.entity.EntityTinyTNTPrimed;
+import appeng.helpers.ICustomCollision;
+import appeng.hooks.DispenserBehaviorTinyTNT;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockTinyTNT extends AEBaseBlock implements ICustomCollision {
 
@@ -88,8 +82,8 @@ public class BlockTinyTNT extends AEBaseBlock implements ICustomCollision {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World w, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY,
+            float hitZ) {
         if (player.getCurrentEquippedItem() != null
                 && player.getCurrentEquippedItem().getItem() == Items.flint_and_steel) {
             this.startFuse(w, x, y, z, player);
@@ -128,8 +122,12 @@ public class BlockTinyTNT extends AEBaseBlock implements ICustomCollision {
     @Override
     public void onBlockDestroyedByExplosion(final World w, final int x, final int y, final int z, final Explosion exp) {
         if (!w.isRemote) {
-            final EntityTinyTNTPrimed primedTinyTNTEntity =
-                    new EntityTinyTNTPrimed(w, x + 0.5F, y + 0.5F, z + 0.5F, exp.getExplosivePlacedBy());
+            final EntityTinyTNTPrimed primedTinyTNTEntity = new EntityTinyTNTPrimed(
+                    w,
+                    x + 0.5F,
+                    y + 0.5F,
+                    z + 0.5F,
+                    exp.getExplosivePlacedBy());
             primedTinyTNTEntity.fuse = w.rand.nextInt(primedTinyTNTEntity.fuse / 4) + primedTinyTNTEntity.fuse / 8;
             w.spawnEntityInWorld(primedTinyTNTEntity);
         }
@@ -160,27 +158,25 @@ public class BlockTinyTNT extends AEBaseBlock implements ICustomCollision {
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(
-            final World w, final int x, final int y, final int z, final Entity e, final boolean isVisual) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final int x, final int y,
+            final int z, final Entity e, final boolean isVisual) {
         return Collections.singletonList(AxisAlignedBB.getBoundingBox(0.25, 0, 0.25, 0.75, 0.5, 0.75));
     }
 
     @Override
-    public void addCollidingBlockToList(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final AxisAlignedBB bb,
-            final List<AxisAlignedBB> out,
-            final Entity e) {
+    public void addCollidingBlockToList(final World w, final int x, final int y, final int z, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         out.add(AxisAlignedBB.getBoundingBox(0.25, 0, 0.25, 0.75, 0.5, 0.75));
     }
 
     public void startFuse(final World w, final int x, final int y, final int z, final EntityLivingBase igniter) {
         if (!w.isRemote) {
-            final EntityTinyTNTPrimed primedTinyTNTEntity =
-                    new EntityTinyTNTPrimed(w, x + 0.5F, y + 0.5F, z + 0.5F, igniter);
+            final EntityTinyTNTPrimed primedTinyTNTEntity = new EntityTinyTNTPrimed(
+                    w,
+                    x + 0.5F,
+                    y + 0.5F,
+                    z + 0.5F,
+                    igniter);
             w.spawnEntityInWorld(primedTinyTNTEntity);
             w.playSoundAtEntity(primedTinyTNTEntity, "game.tnt.primed", 1.0F, 1.0F);
         }

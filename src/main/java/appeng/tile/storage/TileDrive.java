@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.storage;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.tiles.IChestOrDrive;
@@ -46,17 +47,10 @@ import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.tile.inventory.InvOperation;
 import appeng.util.Platform;
 import io.netty.buffer.ByteBuf;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileDrive extends AENetworkInvTile implements IChestOrDrive, IPriorityHost {
 
-    private final int[] sides = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    private final int[] sides = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     private final AppEngInternalInventory inv = new AppEngInternalInventory(this, 10);
     private final ICellHandler[] handlersBySlot = new ICellHandler[10];
     private final DriveWatcher<IAEItemStack>[] invBySlot = new DriveWatcher[10];
@@ -225,11 +219,7 @@ public class TileDrive extends AENetworkInvTile implements IChestOrDrive, IPrior
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {
         if (this.isCached) {
             this.isCached = false; // recalculate the storage cell.
@@ -241,8 +231,7 @@ public class TileDrive extends AENetworkInvTile implements IChestOrDrive, IPrior
 
             final IStorageGrid gs = this.getProxy().getStorage();
             Platform.postChanges(gs, removed, added, this.mySrc);
-        } catch (final GridAccessException ignored) {
-        }
+        } catch (final GridAccessException ignored) {}
 
         this.markForUpdate();
     }
@@ -265,18 +254,20 @@ public class TileDrive extends AENetworkInvTile implements IChestOrDrive, IPrior
                 this.handlersBySlot[x] = null;
 
                 if (is != null) {
-                    this.handlersBySlot[x] =
-                            AEApi.instance().registries().cell().getHandler(is);
+                    this.handlersBySlot[x] = AEApi.instance().registries().cell().getHandler(is);
 
                     if (this.handlersBySlot[x] != null) {
-                        IMEInventoryHandler cell =
-                                this.handlersBySlot[x].getCellInventory(is, this, StorageChannel.ITEMS);
+                        IMEInventoryHandler cell = this.handlersBySlot[x]
+                                .getCellInventory(is, this, StorageChannel.ITEMS);
 
                         if (cell != null) {
                             power += this.handlersBySlot[x].cellIdleDrain(is, cell);
 
-                            final DriveWatcher<IAEItemStack> ih =
-                                    new DriveWatcher(cell, is, this.handlersBySlot[x], this);
+                            final DriveWatcher<IAEItemStack> ih = new DriveWatcher(
+                                    cell,
+                                    is,
+                                    this.handlersBySlot[x],
+                                    this);
                             ih.setPriority(this.priority);
                             this.invBySlot[x] = ih;
                             this.items.add(ih);
@@ -286,8 +277,11 @@ public class TileDrive extends AENetworkInvTile implements IChestOrDrive, IPrior
                             if (cell != null) {
                                 power += this.handlersBySlot[x].cellIdleDrain(is, cell);
 
-                                final DriveWatcher<IAEItemStack> ih =
-                                        new DriveWatcher(cell, is, this.handlersBySlot[x], this);
+                                final DriveWatcher<IAEItemStack> ih = new DriveWatcher(
+                                        cell,
+                                        is,
+                                        this.handlersBySlot[x],
+                                        this);
                                 ih.setPriority(this.priority);
                                 this.invBySlot[x] = ih;
                                 this.fluids.add(ih);

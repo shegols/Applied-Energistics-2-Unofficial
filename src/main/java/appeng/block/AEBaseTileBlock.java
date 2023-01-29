@@ -1,22 +1,38 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.block;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.world.BlockEvent;
 
 import appeng.api.implementations.items.IMemoryCard;
 import appeng.api.implementations.items.MemoryCardMessages;
@@ -35,30 +51,10 @@ import appeng.tile.networking.TileCableBus;
 import appeng.tile.storage.TileSkyChest;
 import appeng.util.Platform;
 import appeng.util.SettingsFrom;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.BlockEvent;
 
 public abstract class AEBaseTileBlock extends AEBaseBlock implements IAEFeature, ITileEntityProvider {
 
@@ -119,7 +115,8 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements IAEFeature,
                 return this.tileEntityType.newInstance();
             } catch (final InstantiationException e) {
                 throw new IllegalStateException(
-                        "Failed to create a new instance of an illegal class " + this.tileEntityType, e);
+                        "Failed to create a new instance of an illegal class " + this.tileEntityType,
+                        e);
             } catch (final IllegalAccessException e) {
                 throw new IllegalStateException(
                         "Failed to create a new instance of " + this.tileEntityType + ", because lack of permissions",
@@ -160,8 +157,8 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements IAEFeature,
     }
 
     @Override
-    public boolean recolourBlock(
-            final World world, final int x, final int y, final int z, final ForgeDirection side, final int colour) {
+    public boolean recolourBlock(final World world, final int x, final int y, final int z, final ForgeDirection side,
+            final int colour) {
         final TileEntity te = this.getTileEntity(world, x, y, z);
 
         if (te instanceof IColorableTile) {
@@ -189,21 +186,16 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements IAEFeature,
     }
 
     @Override
-    public boolean onBlockEventReceived(
-            final World p_149696_1_,
-            final int p_149696_2_,
-            final int p_149696_3_,
-            final int p_149696_4_,
-            final int p_149696_5_,
-            final int p_149696_6_) {
+    public boolean onBlockEventReceived(final World p_149696_1_, final int p_149696_2_, final int p_149696_3_,
+            final int p_149696_4_, final int p_149696_5_, final int p_149696_6_) {
         super.onBlockEventReceived(p_149696_1_, p_149696_2_, p_149696_3_, p_149696_4_, p_149696_5_, p_149696_6_);
         final TileEntity tileentity = p_149696_1_.getTileEntity(p_149696_2_, p_149696_3_, p_149696_4_);
         return tileentity != null && tileentity.receiveClientEvent(p_149696_5_, p_149696_6_);
     }
 
     @Override
-    public void onBlockPlacedBy(
-            final World w, final int x, final int y, final int z, final EntityLivingBase player, final ItemStack is) {
+    public void onBlockPlacedBy(final World w, final int x, final int y, final int z, final EntityLivingBase player,
+            final ItemStack is) {
         if (is.hasDisplayName()) {
             final TileEntity te = this.getTileEntity(w, x, y, z);
             if (te instanceof AEBaseTile) {
@@ -213,16 +205,8 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements IAEFeature,
     }
 
     @Override
-    public boolean onBlockActivated(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onBlockActivated(final World w, final int x, final int y, final int z, final EntityPlayer player,
+            final int side, final float hitX, final float hitY, final float hitZ) {
         if (player != null) {
             final ItemStack is = player.inventory.getCurrentItem();
             if (is != null) {

@@ -1,22 +1,22 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 
 import appeng.api.config.*;
 import appeng.api.util.IConfigManager;
@@ -31,23 +31,18 @@ import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import java.io.File;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 
 public final class AEConfig extends Configuration implements IConfigurableObject, IConfigManagerHost {
+
     public static double TUNNEL_POWER_LOSS = 0.05;
     public static final String VERSION = "GRADLETOKEN_VERSION";
     public static final String PACKET_CHANNEL = "AE";
     public static AEConfig instance;
     public final IConfigManager settings = new ConfigManager(this);
     public final EnumSet<AEFeature> featureFlags = EnumSet.noneOf(AEFeature.class);
-    public final int[] craftByStacks = {1, 10, 100, 1000};
-    public final int[] priorityByStacks = {1, 10, 100, 1000};
-    public final int[] levelByStacks = {1, 10, 100, 1000};
+    public final int[] craftByStacks = { 1, 10, 100, 1000 };
+    public final int[] priorityByStacks = { 1, 10, 100, 1000 };
+    public final int[] levelByStacks = { 1, 10, 100, 1000 };
     private final double WirelessHighWirelessCount = 64;
     private final File configFile;
     public int storageBiomeID = -1;
@@ -62,35 +57,14 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     public double spatialPowerExponent = 1.35;
     public double spatialPowerMultiplier = 1250.0;
     public String[] grinderOres = {
-        // Vanilla Items
-        "Obsidian",
-        "Ender",
-        "EnderPearl",
-        "Coal",
-        "Iron",
-        "Gold",
-        "Charcoal",
-        "NetherQuartz",
-        // Common Mod Ores
-        "Copper",
-        "Tin",
-        "Silver",
-        "Lead",
-        "Bronze",
-        // AE
-        "CertusQuartz",
-        "Wheat",
-        "Fluix",
-        // Other Mod Ores
-        "Brass",
-        "Platinum",
-        "Nickel",
-        "Invar",
-        "Aluminium",
-        "Electrum",
-        "Osmium",
-        "Zinc"
-    };
+            // Vanilla Items
+            "Obsidian", "Ender", "EnderPearl", "Coal", "Iron", "Gold", "Charcoal", "NetherQuartz",
+            // Common Mod Ores
+            "Copper", "Tin", "Silver", "Lead", "Bronze",
+            // AE
+            "CertusQuartz", "Wheat", "Fluix",
+            // Other Mod Ores
+            "Brass", "Platinum", "Nickel", "Invar", "Aluminium", "Electrum", "Osmium", "Zinc" };
     public double oreDoublePercentage = 90.0;
     public boolean enableEffects = true;
     public boolean useLargeFonts = false;
@@ -114,7 +88,7 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     public boolean updatable = false;
     public double meteoriteClusterChance = 0.1;
     public double meteoriteSpawnChance = 0.3;
-    public int[] meteoriteDimensionWhitelist = {0};
+    public int[] meteoriteDimensionWhitelist = { 0 };
     public int craftingCalculationTimePerTick = 5;
     PowerUnits selectedPowerUnit = PowerUnits.AE;
     private double WirelessBaseCost = 8;
@@ -133,33 +107,29 @@ public final class AEConfig extends Configuration implements IConfigurableObject
         FMLCommonHandler.instance().bus().register(this);
 
         final double DEFAULT_MEKANISM_EXCHANGE = 0.2;
-        PowerUnits.MK.conversionRatio =
-                this.get("PowerRatios", "Mekanism", DEFAULT_MEKANISM_EXCHANGE).getDouble(DEFAULT_MEKANISM_EXCHANGE);
+        PowerUnits.MK.conversionRatio = this.get("PowerRatios", "Mekanism", DEFAULT_MEKANISM_EXCHANGE)
+                .getDouble(DEFAULT_MEKANISM_EXCHANGE);
         final double DEFAULT_IC2_EXCHANGE = 2.0;
-        PowerUnits.EU.conversionRatio =
-                this.get("PowerRatios", "IC2", DEFAULT_IC2_EXCHANGE).getDouble(DEFAULT_IC2_EXCHANGE);
+        PowerUnits.EU.conversionRatio = this.get("PowerRatios", "IC2", DEFAULT_IC2_EXCHANGE)
+                .getDouble(DEFAULT_IC2_EXCHANGE);
         final double DEFAULT_RTC_EXCHANGE = 1.0 / 11256.0;
-        PowerUnits.WA.conversionRatio =
-                this.get("PowerRatios", "RotaryCraft", DEFAULT_RTC_EXCHANGE).getDouble(DEFAULT_RTC_EXCHANGE);
+        PowerUnits.WA.conversionRatio = this.get("PowerRatios", "RotaryCraft", DEFAULT_RTC_EXCHANGE)
+                .getDouble(DEFAULT_RTC_EXCHANGE);
         final double DEFAULT_RF_EXCHANGE = 0.5;
-        PowerUnits.RF.conversionRatio =
-                this.get("PowerRatios", "ThermalExpansion", DEFAULT_RF_EXCHANGE).getDouble(DEFAULT_RF_EXCHANGE);
+        PowerUnits.RF.conversionRatio = this.get("PowerRatios", "ThermalExpansion", DEFAULT_RF_EXCHANGE)
+                .getDouble(DEFAULT_RF_EXCHANGE);
         final double DEFAULT_TUNNEL_POWER_LOSS = 0.05;
         TUNNEL_POWER_LOSS = this.get("PowerRatios", "TunnelPowerLoss", DEFAULT_TUNNEL_POWER_LOSS)
                 .getDouble(DEFAULT_TUNNEL_POWER_LOSS);
         if (TUNNEL_POWER_LOSS < 0 || TUNNEL_POWER_LOSS >= 1) TUNNEL_POWER_LOSS = DEFAULT_TUNNEL_POWER_LOSS;
 
-        final double usageEffective =
-                this.get("PowerRatios", "UsageMultiplier", 1.0).getDouble(1.0);
+        final double usageEffective = this.get("PowerRatios", "UsageMultiplier", 1.0).getDouble(1.0);
         PowerMultiplier.CONFIG.multiplier = Math.max(0.01, usageEffective);
 
-        CondenserOutput.MATTER_BALLS.requiredPower =
-                this.get("Condenser", "MatterBalls", 256).getInt(256);
-        CondenserOutput.SINGULARITY.requiredPower =
-                this.get("Condenser", "Singularity", 256000).getInt(256000);
+        CondenserOutput.MATTER_BALLS.requiredPower = this.get("Condenser", "MatterBalls", 256).getInt(256);
+        CondenserOutput.SINGULARITY.requiredPower = this.get("Condenser", "Singularity", 256000).getInt(256000);
 
-        this.grinderOres =
-                this.get("GrindStone", "grinderOres", this.grinderOres).getStringList();
+        this.grinderOres = this.get("GrindStone", "grinderOres", this.grinderOres).getStringList();
         this.oreDoublePercentage = this.get("GrindStone", "oreDoublePercentage", this.oreDoublePercentage)
                 .getDouble(this.oreDoublePercentage);
 
@@ -178,9 +148,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
                 .getDouble(this.meteoriteClusterChance);
         this.meteoriteSpawnChance = this.get("worldGen", "meteoriteSpawnChance", this.meteoriteSpawnChance)
                 .getDouble(this.meteoriteSpawnChance);
-        this.meteoriteDimensionWhitelist = this.get(
-                        "worldGen", "meteoriteDimensionWhitelist", this.meteoriteDimensionWhitelist)
-                .getIntList();
+        this.meteoriteDimensionWhitelist = this
+                .get("worldGen", "meteoriteDimensionWhitelist", this.meteoriteDimensionWhitelist).getIntList();
 
         this.quartzOresPerCluster = this.get("worldGen", "quartzOresPerCluster", this.quartzOresPerCluster)
                 .getInt(this.quartzOresPerCluster);
@@ -193,48 +162,47 @@ public final class AEConfig extends Configuration implements IConfigurableObject
                 "wireless",
                 "Range= WirelessBaseRange + WirelessBoosterRangeMultiplier * Math.pow( boosters, WirelessBoosterExp )\nPowerDrain= WirelessBaseCost + WirelessCostMultiplier * Math.pow( boosters, 1 + boosters / WirelessHighWirelessCount )");
 
-        this.WirelessBaseCost =
-                this.get("wireless", "WirelessBaseCost", this.WirelessBaseCost).getDouble(this.WirelessBaseCost);
+        this.WirelessBaseCost = this.get("wireless", "WirelessBaseCost", this.WirelessBaseCost)
+                .getDouble(this.WirelessBaseCost);
         this.WirelessCostMultiplier = this.get("wireless", "WirelessCostMultiplier", this.WirelessCostMultiplier)
                 .getDouble(this.WirelessCostMultiplier);
         this.WirelessBaseRange = this.get("wireless", "WirelessBaseRange", this.WirelessBaseRange)
                 .getDouble(this.WirelessBaseRange);
-        this.WirelessBoosterRangeMultiplier = this.get(
-                        "wireless", "WirelessBoosterRangeMultiplier", this.WirelessBoosterRangeMultiplier)
+        this.WirelessBoosterRangeMultiplier = this
+                .get("wireless", "WirelessBoosterRangeMultiplier", this.WirelessBoosterRangeMultiplier)
                 .getDouble(this.WirelessBoosterRangeMultiplier);
         this.WirelessBoosterExp = this.get("wireless", "WirelessBoosterExp", this.WirelessBoosterExp)
                 .getDouble(this.WirelessBoosterExp);
-        this.WirelessTerminalDrainMultiplier = this.get(
-                        "wireless", "WirelessTerminalDrainMultiplier", this.WirelessTerminalDrainMultiplier)
+        this.WirelessTerminalDrainMultiplier = this
+                .get("wireless", "WirelessTerminalDrainMultiplier", this.WirelessTerminalDrainMultiplier)
                 .getDouble(this.WirelessTerminalDrainMultiplier);
 
-        this.formationPlaneEntityLimit = this.get(
-                        "automation", "formationPlaneEntityLimit", this.formationPlaneEntityLimit)
+        this.formationPlaneEntityLimit = this
+                .get("automation", "formationPlaneEntityLimit", this.formationPlaneEntityLimit)
                 .getInt(this.formationPlaneEntityLimit);
 
         this.wirelessTerminalBattery = this.get("battery", "wirelessTerminal", this.wirelessTerminalBattery)
                 .getInt(this.wirelessTerminalBattery);
-        this.chargedStaffBattery =
-                this.get("battery", "chargedStaff", this.chargedStaffBattery).getInt(this.chargedStaffBattery);
+        this.chargedStaffBattery = this.get("battery", "chargedStaff", this.chargedStaffBattery)
+                .getInt(this.chargedStaffBattery);
         this.entropyManipulatorBattery = this.get("battery", "entropyManipulator", this.entropyManipulatorBattery)
                 .getInt(this.entropyManipulatorBattery);
-        this.portableCellBattery =
-                this.get("battery", "portableCell", this.portableCellBattery).getInt(this.portableCellBattery);
+        this.portableCellBattery = this.get("battery", "portableCell", this.portableCellBattery)
+                .getInt(this.portableCellBattery);
         this.colorApplicatorBattery = this.get("battery", "colorApplicator", this.colorApplicatorBattery)
                 .getInt(this.colorApplicatorBattery);
-        this.matterCannonBattery =
-                this.get("battery", "matterCannon", this.matterCannonBattery).getInt(this.matterCannonBattery);
+        this.matterCannonBattery = this.get("battery", "matterCannon", this.matterCannonBattery)
+                .getInt(this.matterCannonBattery);
 
         this.levelEmitterDelay = this.get("tickrates", "LevelEmitterDelay", this.levelEmitterDelay)
                 .getInt(this.levelEmitterDelay);
-        this.debugLogTiming =
-                this.get("debug", "LogTiming", this.debugLogTiming).getBoolean(this.debugLogTiming);
-        this.debugPathFinding =
-                this.get("debug", "LogPathFinding", this.debugPathFinding).getBoolean(this.debugPathFinding);
+        this.debugLogTiming = this.get("debug", "LogTiming", this.debugLogTiming).getBoolean(this.debugLogTiming);
+        this.debugPathFinding = this.get("debug", "LogPathFinding", this.debugPathFinding)
+                .getBoolean(this.debugPathFinding);
         this.p2pBackboneTransfer = this.get("debug", "EnableP2pBackboneTransfer", this.p2pBackboneTransfer)
                 .getBoolean(this.p2pBackboneTransfer);
-        this.quantumBridgeBackboneTransfer = this.get(
-                        "debug", "EnableQuantumBridgeBackboneTransfer", this.quantumBridgeBackboneTransfer)
+        this.quantumBridgeBackboneTransfer = this
+                .get("debug", "EnableQuantumBridgeBackboneTransfer", this.quantumBridgeBackboneTransfer)
                 .getBoolean(this.quantumBridgeBackboneTransfer);
         this.craftingCalculatorVersion = this.get("debug", "CraftingCalculatorVersion", this.craftingCalculatorVersion)
                 .getInt(this.craftingCalculatorVersion);
@@ -252,8 +220,7 @@ public final class AEConfig extends Configuration implements IConfigurableObject
             }
         }
 
-        final ModContainer imb =
-                cpw.mods.fml.common.Loader.instance().getIndexedModList().get("ImmibisCore");
+        final ModContainer imb = cpw.mods.fml.common.Loader.instance().getIndexedModList().get("ImmibisCore");
         if (imb != null) {
             final List<String> version = Arrays.asList("59.0.0", "59.0.1", "59.0.2");
             if (version.contains(imb.getVersion())) {
@@ -262,12 +229,12 @@ public final class AEConfig extends Configuration implements IConfigurableObject
         }
 
         try {
-            this.selectedPowerUnit = PowerUnits.valueOf(this.get(
+            this.selectedPowerUnit = PowerUnits.valueOf(
+                    this.get(
                             "Client",
                             "PowerUnit",
                             this.selectedPowerUnit.name(),
-                            this.getListComment(this.selectedPowerUnit))
-                    .getString());
+                            this.getListComment(this.selectedPowerUnit)).getString());
         } catch (final Throwable t) {
             this.selectedPowerUnit = PowerUnits.AE;
         }
@@ -277,8 +244,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
         }
 
         if (this.isFeatureEnabled(AEFeature.SpatialIO)) {
-            this.storageBiomeID =
-                    this.get("spatialio", "storageBiomeID", this.storageBiomeID).getInt(this.storageBiomeID);
+            this.storageBiomeID = this.get("spatialio", "storageBiomeID", this.storageBiomeID)
+                    .getInt(this.storageBiomeID);
             this.storageProviderID = this.get("spatialio", "storageProviderID", this.storageProviderID)
                     .getInt(this.storageProviderID);
             this.spatialPowerMultiplier = this.get("spatialio", "spatialPowerMultiplier", this.spatialPowerMultiplier)
@@ -288,8 +255,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
         }
 
         if (this.isFeatureEnabled(AEFeature.CraftingCPU)) {
-            this.craftingCalculationTimePerTick = this.get(
-                            "craftingCPU", "craftingCalculationTimePerTick", this.craftingCalculationTimePerTick)
+            this.craftingCalculationTimePerTick = this
+                    .get("craftingCPU", "craftingCalculationTimePerTick", this.craftingCalculationTimePerTick)
                     .getInt(this.craftingCalculationTimePerTick);
         }
 
@@ -297,21 +264,16 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     }
 
     private void clientSync() {
-        this.disableColoredCableRecipesInNEI =
-                this.get("Client", "disableColoredCableRecipesInNEI", true).getBoolean(true);
+        this.disableColoredCableRecipesInNEI = this.get("Client", "disableColoredCableRecipesInNEI", true)
+                .getBoolean(true);
         this.enableEffects = this.get("Client", "enableEffects", true).getBoolean(true);
-        this.useLargeFonts =
-                this.get("Client", "useTerminalUseLargeFont", false).getBoolean(false);
-        this.useColoredCraftingStatus =
-                this.get("Client", "useColoredCraftingStatus", true).getBoolean(true);
+        this.useLargeFonts = this.get("Client", "useTerminalUseLargeFont", false).getBoolean(false);
+        this.useColoredCraftingStatus = this.get("Client", "useColoredCraftingStatus", true).getBoolean(true);
         this.preserveSearchBar = this.get("Client", "preserveSearchBar", true).getBoolean(true);
-        this.showOnlyInterfacesWithFreeSlotsInInterfaceTerminal = this.get(
-                        "Client", "showOnlyInterfacesWithFreeSlotsInInterfaceTerminal", false)
-                .getBoolean(false);
-        this.MEMonitorableSmallSize =
-                this.get("Client", "MEMonitorableSmallSize", 6).getInt(6);
-        this.InterfaceTerminalSmallSize =
-                this.get("Client", "InterfaceTerminalSmallSize", 6).getInt(6);
+        this.showOnlyInterfacesWithFreeSlotsInInterfaceTerminal = this
+                .get("Client", "showOnlyInterfacesWithFreeSlotsInInterfaceTerminal", false).getBoolean(false);
+        this.MEMonitorableSmallSize = this.get("Client", "MEMonitorableSmallSize", 6).getInt(6);
+        this.InterfaceTerminalSmallSize = this.get("Client", "InterfaceTerminalSmallSize", 6).getInt(6);
         // load buttons..
         for (int btnNum = 0; btnNum < 4; btnNum++) {
             final Property cmb = this.get("Client", "craftAmtButton" + (btnNum + 1), this.craftByStacks[btnNum]);
@@ -342,8 +304,9 @@ public final class AEConfig extends Configuration implements IConfigurableObject
             try {
                 value = Enum.valueOf(value.getClass(), p.getString());
             } catch (final IllegalArgumentException er) {
-                AELog.info("Invalid value '" + p.getString() + "' for " + e.name() + " using '" + value.name()
-                        + "' instead");
+                AELog.info(
+                        "Invalid value '" + p
+                                .getString() + "' for " + e.name() + " using '" + value.name() + "' instead");
             }
 
             this.settings.putSetting(e, value);
@@ -388,11 +351,7 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     }
 
     @Override
-    public Property get(
-            final String category,
-            final String key,
-            final String defaultValue,
-            final String comment,
+    public Property get(final String category, final String key, final String defaultValue, final String comment,
             final Property.Type type) {
         final Property prop = super.get(category, key, defaultValue, comment, type);
 
@@ -454,8 +413,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
         for (final Settings e : this.settings.getSettings()) {
             if (e == setting) {
                 final String Category = "Client";
-                final Property p =
-                        this.get(Category, e.name(), this.settings.getSetting(e).name(), this.getListComment(newValue));
+                final Property p = this
+                        .get(Category, e.name(), this.settings.getSetting(e).name(), this.getListComment(newValue));
                 p.set(newValue.name());
             }
         }
@@ -543,8 +502,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     }
 
     public void nextPowerUnit(final boolean backwards) {
-        this.selectedPowerUnit =
-                Platform.rotateEnum(this.selectedPowerUnit, backwards, Settings.POWER_UNITS.getPossibleValues());
+        this.selectedPowerUnit = Platform
+                .rotateEnum(this.selectedPowerUnit, backwards, Settings.POWER_UNITS.getPossibleValues());
         this.save();
     }
 }

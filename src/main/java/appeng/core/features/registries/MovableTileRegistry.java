@@ -1,40 +1,33 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.features.registries;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
 
 import appeng.api.exceptions.AppEngException;
 import appeng.api.movable.IMovableHandler;
 import appeng.api.movable.IMovableRegistry;
 import appeng.api.movable.IMovableTile;
 import appeng.spatial.DefaultSpatialHandler;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
 
 public class MovableTileRegistry implements IMovableRegistry {
 
     private final HashSet<Block> blacklisted = new HashSet<Block>();
 
-    private final HashMap<Class<? extends TileEntity>, IMovableHandler> Valid =
-            new HashMap<Class<? extends TileEntity>, IMovableHandler>();
+    private final HashMap<Class<? extends TileEntity>, IMovableHandler> Valid = new HashMap<Class<? extends TileEntity>, IMovableHandler>();
     private final LinkedList<Class<? extends TileEntity>> test = new LinkedList<Class<? extends TileEntity>>();
     private final LinkedList<IMovableHandler> handlers = new LinkedList<IMovableHandler>();
     private final DefaultSpatialHandler dsh = new DefaultSpatialHandler();
@@ -49,8 +42,10 @@ public class MovableTileRegistry implements IMovableRegistry {
     @Override
     public void whiteListTileEntity(final Class<? extends TileEntity> c) {
         if (c.getName().equals(TileEntity.class.getName())) {
-            throw new IllegalArgumentException(new AppEngException("Someone tried to make all tiles movable with " + c
-                    + ", this is a clear violation of the purpose of the white list."));
+            throw new IllegalArgumentException(
+                    new AppEngException(
+                            "Someone tried to make all tiles movable with " + c
+                                    + ", this is a clear violation of the purpose of the white list."));
         }
 
         this.test.add(c);

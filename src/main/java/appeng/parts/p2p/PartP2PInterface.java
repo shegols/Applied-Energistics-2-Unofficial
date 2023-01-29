@@ -1,5 +1,20 @@
 package appeng.parts.p2p;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.Vec3;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.Upgrades;
@@ -32,32 +47,15 @@ import appeng.tile.inventory.IAEAppEngInventory;
 import appeng.tile.inventory.InvOperation;
 import appeng.util.Platform;
 import appeng.util.inv.IInventoryDestination;
+
 import com.google.common.collect.ImmutableSet;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class PartP2PInterface extends PartP2PTunnel<PartP2PInterface>
-        implements IGridTickable,
-                IStorageMonitorable,
-                IInventoryDestination,
-                IInterfaceHost,
-                ISidedInventory,
-                IAEAppEngInventory,
-                ITileStorageMonitorable,
-                IPriorityHost {
+        implements IGridTickable, IStorageMonitorable, IInventoryDestination, IInterfaceHost, ISidedInventory,
+        IAEAppEngInventory, ITileStorageMonitorable, IPriorityHost {
 
     @Reflected
     public PartP2PInterface(ItemStack is) {
@@ -65,6 +63,7 @@ public class PartP2PInterface extends PartP2PTunnel<PartP2PInterface>
     }
 
     private final DualityInterface duality = new DualityInterface(this.getProxy(), this) {
+
         @Override
         public void updateCraftingList() {
             if (!isOutput()) {
@@ -80,8 +79,7 @@ public class PartP2PInterface extends PartP2PTunnel<PartP2PInterface>
                     this.craftingList = p2p.duality.craftingList;
 
                     try {
-                        this.gridProxy
-                                .getGrid()
+                        this.gridProxy.getGrid()
                                 .postEvent(new MENetworkCraftingPatternChange(this, this.gridProxy.getNode()));
                     } catch (final GridAccessException e) {
                         // :P
@@ -115,13 +113,7 @@ public class PartP2PInterface extends PartP2PTunnel<PartP2PInterface>
     @Override
     @SideOnly(Side.CLIENT)
     protected IIcon getTypeTexture() {
-        return AEApi.instance()
-                .definitions()
-                .blocks()
-                .iface()
-                .maybeBlock()
-                .get()
-                .getBlockTextureFromSide(0);
+        return AEApi.instance().definitions().blocks().iface().maybeBlock().get().getBlockTextureFromSide(0);
     }
 
     @Override
@@ -304,12 +296,8 @@ public class PartP2PInterface extends PartP2PTunnel<PartP2PInterface>
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removedStack,
-            final ItemStack newStack) {
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         this.duality.onChangeInventory(inv, slot, mc, removedStack, newStack);
     }
 

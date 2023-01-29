@@ -1,22 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.networking;
+
+import java.util.EnumSet;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.AEApi;
 import appeng.api.networking.GridFlags;
@@ -40,16 +43,9 @@ import appeng.helpers.Reflected;
 import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.EnumSet;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 
 public class PartDenseCable extends PartCable {
+
     @Reflected
     public PartDenseCable(final ItemStack is) {
         super(is);
@@ -180,12 +176,7 @@ public class PartDenseCable extends PartCable {
     @Override
     public IIcon getTexture(final AEColor c) {
         if (c == AEColor.Transparent) {
-            return AEApi.instance()
-                    .definitions()
-                    .parts()
-                    .cableSmart()
-                    .stack(AEColor.Transparent, 1)
-                    .getIconIndex();
+            return AEApi.instance().definitions().parts().cableSmart().stack(AEColor.Transparent, 1).getIconIndex();
         }
 
         return this.getSmartTexture(c);
@@ -193,8 +184,8 @@ public class PartDenseCable extends PartCable {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x, final int y, final int z, final IPartRenderHelper rh, final RenderBlocks renderer) {
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {
         this.setRenderCache(rh.useSimplifiedRendering(x, y, z, this, this.getRenderCache()));
         rh.setTexture(this.getTexture(this.getCableColor()));
 
@@ -233,12 +224,10 @@ public class PartDenseCable extends PartCable {
             final IIcon def = this.getTexture(this.getCableColor());
             final IIcon off = new OffsetIcon(def, 0, -12);
 
-            final IIcon firstIcon =
-                    new TaughtIcon(this.getChannelTex(channels, false).getIcon(), -0.2f);
+            final IIcon firstIcon = new TaughtIcon(this.getChannelTex(channels, false).getIcon(), -0.2f);
             final IIcon firstOffset = new OffsetIcon(firstIcon, 0, -12);
 
-            final IIcon secondIcon =
-                    new TaughtIcon(this.getChannelTex(channels, true).getIcon(), -0.2f);
+            final IIcon secondIcon = new TaughtIcon(this.getChannelTex(channels, true).getIcon(), -0.2f);
             final IIcon secondOffset = new OffsetIcon(secondIcon, 0, -12);
 
             switch (selectedSide) {
@@ -322,58 +311,42 @@ public class PartDenseCable extends PartCable {
             }
         }
 
-        renderer.uvRotateBottom = renderer.uvRotateEast =
-                renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
+        renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
         rh.setTexture(null);
     }
 
     @SideOnly(Side.CLIENT)
-    private void renderDenseConnection(
-            final int x,
-            final int y,
-            final int z,
-            final IPartRenderHelper rh,
-            final RenderBlocks renderer,
-            final int channels,
-            final ForgeDirection of) {
-        final TileEntity te =
-                this.getTile().getWorldObj().getTileEntity(x + of.offsetX, y + of.offsetY, z + of.offsetZ);
+    private void renderDenseConnection(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer, final int channels, final ForgeDirection of) {
+        final TileEntity te = this.getTile().getWorldObj()
+                .getTileEntity(x + of.offsetX, y + of.offsetY, z + of.offsetZ);
         final IPartHost partHost = te instanceof IPartHost ? (IPartHost) te : null;
         final IGridHost ghh = te instanceof IGridHost ? (IGridHost) te : null;
         AEColor myColor = this.getCableColor();
         /*
          * ( ghh != null && partHost != null && ghh.getCableConnectionType( of ) == AECableType.GLASS &&
-         * partHost.getPart(
-         * of.getOpposite() ) == null ) { isGlass = true; rh.setTexture( getGlassTexture( myColor = partHost.getColor()
-         * ) );
-         * } else if ( partHost == null && ghh != null && ghh.getCableConnectionType( of ) != AECableType.GLASS ) {
-         * rh.setTexture( getSmartTexture( myColor ) ); switch (of) { case DOWN: rh.setBounds( 3, 0, 3, 13, 4, 13 );
-         * break; case EAST: rh.setBounds( 12, 3, 3, 16, 13, 13 ); break; case NORTH: rh.setBounds( 3, 3, 0, 13, 13, 4
-         * ); break; case SOUTH: rh.setBounds( 3, 3, 12, 13, 13, 16 ); break; case UP: rh.setBounds( 3, 12, 3, 13, 16,
-         * 13 ); break; case WEST: rh.setBounds( 0, 3, 3, 4, 13, 13 ); break; default: return; } rh.renderBlock( x, y,
-         * z, renderer );
-         * if ( true ) { setSmartConnectionRotations( of, renderer ); IIcon firstIcon = new TaughtIcon( getChannelTex(
-         * channels, false ).getIcon(), -0.2f ); IIcon secondIcon = new TaughtIcon( getChannelTex( channels, true
-         * ).getIcon(),
-         * -0.2f );
-         * if ( of == ForgeDirection.EAST || of == ForgeDirection.WEST ) { AEBaseBlock blk = (AEBaseBlock)
-         * rh.getBlock(); FlippableIcon ico = blk.getRendererInstance().getTexture( ForgeDirection.EAST ); ico.setFlip(
-         * false, true ); }
+         * partHost.getPart( of.getOpposite() ) == null ) { isGlass = true; rh.setTexture( getGlassTexture( myColor =
+         * partHost.getColor() ) ); } else if ( partHost == null && ghh != null && ghh.getCableConnectionType( of ) !=
+         * AECableType.GLASS ) { rh.setTexture( getSmartTexture( myColor ) ); switch (of) { case DOWN: rh.setBounds( 3,
+         * 0, 3, 13, 4, 13 ); break; case EAST: rh.setBounds( 12, 3, 3, 16, 13, 13 ); break; case NORTH: rh.setBounds(
+         * 3, 3, 0, 13, 13, 4 ); break; case SOUTH: rh.setBounds( 3, 3, 12, 13, 13, 16 ); break; case UP: rh.setBounds(
+         * 3, 12, 3, 13, 16, 13 ); break; case WEST: rh.setBounds( 0, 3, 3, 4, 13, 13 ); break; default: return; }
+         * rh.renderBlock( x, y, z, renderer ); if ( true ) { setSmartConnectionRotations( of, renderer ); IIcon
+         * firstIcon = new TaughtIcon( getChannelTex( channels, false ).getIcon(), -0.2f ); IIcon secondIcon = new
+         * TaughtIcon( getChannelTex( channels, true ).getIcon(), -0.2f ); if ( of == ForgeDirection.EAST || of ==
+         * ForgeDirection.WEST ) { AEBaseBlock blk = (AEBaseBlock) rh.getBlock(); FlippableIcon ico =
+         * blk.getRendererInstance().getTexture( ForgeDirection.EAST ); ico.setFlip( false, true ); }
          * Tessellator.INSTANCE.setBrightness( 15 << 20 | 15 << 5 ); Tessellator.INSTANCE.setColorOpaque_I(
          * myColor.mediumVariant ); rh.setTexture( firstIcon, firstIcon, firstIcon, firstIcon, firstIcon, firstIcon );
-         * renderAllFaces( (AEBaseBlock)
-         * rh.getBlock(), x, y, z, renderer );
-         * Tessellator.INSTANCE.setColorOpaque_I( myColor.whiteVariant ); rh.setTexture( secondIcon, secondIcon,
-         * secondIcon, secondIcon, secondIcon,
-         * secondIcon ); renderAllFaces( (AEBaseBlock) rh.getBlock(), x, y, z, renderer );
-         * renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth =
-         * renderer.uvRotateTop = renderer.uvRotateWest = 0; }
-         * rh.setTexture( getTexture( getCableColor() ) ); }
+         * renderAllFaces( (AEBaseBlock) rh.getBlock(), x, y, z, renderer ); Tessellator.INSTANCE.setColorOpaque_I(
+         * myColor.whiteVariant ); rh.setTexture( secondIcon, secondIcon, secondIcon, secondIcon, secondIcon, secondIcon
+         * ); renderAllFaces( (AEBaseBlock) rh.getBlock(), x, y, z, renderer ); renderer.uvRotateBottom =
+         * renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop =
+         * renderer.uvRotateWest = 0; } rh.setTexture( getTexture( getCableColor() ) ); }
          */
 
         rh.setFacesToRender(EnumSet.complementOf(EnumSet.of(of, of.getOpposite())));
-        if (ghh != null
-                && partHost != null
+        if (ghh != null && partHost != null
                 && ghh.getCableConnectionType(of) != AECableType.GLASS
                 && partHost.getColor() != AEColor.Transparent
                 && partHost.getPart(of.getOpposite()) == null) {
@@ -412,10 +385,8 @@ public class PartDenseCable extends PartCable {
         if (!isGlass) {
             this.setSmartConnectionRotations(of, renderer);
 
-            final IIcon firstIcon =
-                    new TaughtIcon(this.getChannelTex(channels, false).getIcon(), -0.2f);
-            final IIcon secondIcon =
-                    new TaughtIcon(this.getChannelTex(channels, true).getIcon(), -0.2f);
+            final IIcon firstIcon = new TaughtIcon(this.getChannelTex(channels, false).getIcon(), -0.2f);
+            final IIcon secondIcon = new TaughtIcon(this.getChannelTex(channels, true).getIcon(), -0.2f);
 
             Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
             Tessellator.instance.setColorOpaque_I(myColor.blackVariant);
@@ -426,18 +397,15 @@ public class PartDenseCable extends PartCable {
             rh.setTexture(secondIcon, secondIcon, secondIcon, secondIcon, secondIcon, secondIcon);
             this.renderAllFaces((AEBaseBlock) rh.getBlock(), x, y, z, rh, renderer);
 
-            renderer.uvRotateBottom = renderer.uvRotateEast =
-                    renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
+            renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
         }
     }
 
     private boolean isSmart(final ForgeDirection of) {
-        final TileEntity te = this.getTile()
-                .getWorldObj()
-                .getTileEntity(
-                        this.getTile().xCoord + of.offsetX,
-                        this.getTile().yCoord + of.offsetY,
-                        this.getTile().zCoord + of.offsetZ);
+        final TileEntity te = this.getTile().getWorldObj().getTileEntity(
+                this.getTile().xCoord + of.offsetX,
+                this.getTile().yCoord + of.offsetY,
+                this.getTile().zCoord + of.offsetZ);
         if (te instanceof IGridHost) {
             final AECableType t = ((IGridHost) te).getCableConnectionType(of.getOpposite());
             return t == AECableType.SMART;
@@ -486,16 +454,13 @@ public class PartDenseCable extends PartCable {
     }
 
     private boolean isDense(final ForgeDirection of) {
-        final TileEntity te = this.getTile()
-                .getWorldObj()
-                .getTileEntity(
-                        this.getTile().xCoord + of.offsetX,
-                        this.getTile().yCoord + of.offsetY,
-                        this.getTile().zCoord + of.offsetZ);
+        final TileEntity te = this.getTile().getWorldObj().getTileEntity(
+                this.getTile().xCoord + of.offsetX,
+                this.getTile().yCoord + of.offsetY,
+                this.getTile().zCoord + of.offsetZ);
         if (te instanceof IGridHost) {
             final AECableType t = ((IGridHost) te).getCableConnectionType(of.getOpposite());
-            return t == AECableType.DENSE
-                    || t == AECableType.DENSE_COVERED
+            return t == AECableType.DENSE || t == AECableType.DENSE_COVERED
                     || t == AECableType.ULTRA_DENSE_SMART
                     || t == AECableType.ULTRA_DENSE;
         }

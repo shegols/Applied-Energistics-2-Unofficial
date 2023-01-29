@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import java.io.IOException;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Keyboard;
 
 import appeng.api.config.ActionItems;
 import appeng.api.config.ItemSubstitution;
@@ -31,12 +32,6 @@ import appeng.core.localization.GuiColors;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
-import java.io.IOException;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
 
 public class GuiPatternTerm extends GuiMEMonitorable {
 
@@ -70,26 +65,32 @@ public class GuiPatternTerm extends GuiMEMonitorable {
 
         try {
             if (this.tabCraftButton == btn || this.tabProcessButton == btn) {
-                NetworkHandler.instance.sendToServer(new PacketValueConfig(
-                        "PatternTerminal.CraftMode",
-                        this.tabProcessButton == btn ? CRAFTMODE_CRFTING : CRAFTMODE_PROCESSING));
+                NetworkHandler.instance.sendToServer(
+                        new PacketValueConfig(
+                                "PatternTerminal.CraftMode",
+                                this.tabProcessButton == btn ? CRAFTMODE_CRFTING : CRAFTMODE_PROCESSING));
             } else if (this.encodeBtn == btn) {
-                NetworkHandler.instance.sendToServer(new PacketValueConfig(
-                        "PatternTerminal.Encode",
-                        isCtrlKeyDown() ? (isShiftKeyDown() ? "6" : "1") : (isShiftKeyDown() ? "2" : "1")));
+                NetworkHandler.instance.sendToServer(
+                        new PacketValueConfig(
+                                "PatternTerminal.Encode",
+                                isCtrlKeyDown() ? (isShiftKeyDown() ? "6" : "1") : (isShiftKeyDown() ? "2" : "1")));
             } else if (this.clearBtn == btn) {
                 NetworkHandler.instance.sendToServer(new PacketValueConfig("PatternTerminal.Clear", "1"));
             } else if (this.substitutionsEnabledBtn == btn || this.substitutionsDisabledBtn == btn) {
-                NetworkHandler.instance.sendToServer(new PacketValueConfig(
-                        "PatternTerminal.Substitute",
-                        this.substitutionsEnabledBtn == btn ? SUBSITUTION_DISABLE : SUBSITUTION_ENABLE));
+                NetworkHandler.instance.sendToServer(
+                        new PacketValueConfig(
+                                "PatternTerminal.Substitute",
+                                this.substitutionsEnabledBtn == btn ? SUBSITUTION_DISABLE : SUBSITUTION_ENABLE));
             } else if (this.beSubstitutionsEnabledBtn == btn || this.beSubstitutionsDisabledBtn == btn) {
-                NetworkHandler.instance.sendToServer(new PacketValueConfig(
-                        "PatternTerminal.BeSubstitute",
-                        this.beSubstitutionsEnabledBtn == btn ? SUBSITUTION_DISABLE : SUBSITUTION_ENABLE));
+                NetworkHandler.instance.sendToServer(
+                        new PacketValueConfig(
+                                "PatternTerminal.BeSubstitute",
+                                this.beSubstitutionsEnabledBtn == btn ? SUBSITUTION_DISABLE : SUBSITUTION_ENABLE));
             } else if (doubleBtn == btn) {
-                NetworkHandler.instance.sendToServer(new PacketValueConfig(
-                        "PatternTerminal.Double", Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? "1" : "0"));
+                NetworkHandler.instance.sendToServer(
+                        new PacketValueConfig(
+                                "PatternTerminal.Double",
+                                Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? "1" : "0"));
             }
         } catch (final IOException e) {
             // TODO Auto-generated catch block
@@ -117,36 +118,57 @@ public class GuiPatternTerm extends GuiMEMonitorable {
         this.buttonList.add(this.tabProcessButton);
 
         this.substitutionsEnabledBtn = new GuiImgButton(
-                this.guiLeft + 84, this.guiTop + this.ySize - 163, Settings.ACTIONS, ItemSubstitution.ENABLED);
+                this.guiLeft + 84,
+                this.guiTop + this.ySize - 163,
+                Settings.ACTIONS,
+                ItemSubstitution.ENABLED);
         this.substitutionsEnabledBtn.setHalfSize(true);
         this.buttonList.add(this.substitutionsEnabledBtn);
 
         this.substitutionsDisabledBtn = new GuiImgButton(
-                this.guiLeft + 84, this.guiTop + this.ySize - 163, Settings.ACTIONS, ItemSubstitution.DISABLED);
+                this.guiLeft + 84,
+                this.guiTop + this.ySize - 163,
+                Settings.ACTIONS,
+                ItemSubstitution.DISABLED);
         this.substitutionsDisabledBtn.setHalfSize(true);
         this.buttonList.add(this.substitutionsDisabledBtn);
 
         this.beSubstitutionsEnabledBtn = new GuiImgButton(
-                this.guiLeft + 84, this.guiTop + this.ySize - 153, Settings.ACTIONS, PatternBeSubstitution.ENABLED);
+                this.guiLeft + 84,
+                this.guiTop + this.ySize - 153,
+                Settings.ACTIONS,
+                PatternBeSubstitution.ENABLED);
         this.beSubstitutionsEnabledBtn.setHalfSize(true);
         this.buttonList.add(this.beSubstitutionsEnabledBtn);
 
         this.beSubstitutionsDisabledBtn = new GuiImgButton(
-                this.guiLeft + 84, this.guiTop + this.ySize - 153, Settings.ACTIONS, PatternBeSubstitution.DISABLED);
+                this.guiLeft + 84,
+                this.guiTop + this.ySize - 153,
+                Settings.ACTIONS,
+                PatternBeSubstitution.DISABLED);
         this.beSubstitutionsDisabledBtn.setHalfSize(true);
         this.buttonList.add(this.beSubstitutionsDisabledBtn);
 
         this.clearBtn = new GuiImgButton(
-                this.guiLeft + 74, this.guiTop + this.ySize - 163, Settings.ACTIONS, ActionItems.CLOSE);
+                this.guiLeft + 74,
+                this.guiTop + this.ySize - 163,
+                Settings.ACTIONS,
+                ActionItems.CLOSE);
         this.clearBtn.setHalfSize(true);
         this.buttonList.add(this.clearBtn);
 
         this.encodeBtn = new GuiImgButton(
-                this.guiLeft + 147, this.guiTop + this.ySize - 142, Settings.ACTIONS, ActionItems.ENCODE);
+                this.guiLeft + 147,
+                this.guiTop + this.ySize - 142,
+                Settings.ACTIONS,
+                ActionItems.ENCODE);
         this.buttonList.add(this.encodeBtn);
 
         this.doubleBtn = new GuiImgButton(
-                this.guiLeft + 74, this.guiTop + this.ySize - 153, Settings.ACTIONS, ActionItems.DOUBLE);
+                this.guiLeft + 74,
+                this.guiTop + this.ySize - 153,
+                Settings.ACTIONS,
+                ActionItems.DOUBLE);
         this.doubleBtn.setHalfSize(true);
         this.buttonList.add(this.doubleBtn);
     }

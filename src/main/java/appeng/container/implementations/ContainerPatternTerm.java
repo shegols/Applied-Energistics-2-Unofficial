@@ -1,22 +1,32 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -40,22 +50,6 @@ import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.inv.AdaptorPlayerHand;
 import appeng.util.item.AEItemStack;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ContainerPatternTerm extends ContainerMEMonitorable
         implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket {
@@ -90,8 +84,11 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
                 this.addSlotToContainer(
-                        this.craftingSlots[x + y * 3] =
-                                new SlotFakeCraftingMatrix(this.crafting, x + y * 3, 18 + x * 18, -76 + y * 18));
+                        this.craftingSlots[x + y * 3] = new SlotFakeCraftingMatrix(
+                                this.crafting,
+                                x + y * 3,
+                                18 + x * 18,
+                                -76 + y * 18));
             }
         }
 
@@ -184,12 +181,8 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
     public void saveChanges() {}
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removedStack,
-            final ItemStack newStack) {}
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {}
 
     public void encodeAndMoveToInventory(boolean encodeWholeStack) {
         encode();
@@ -235,12 +228,8 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
             }
 
             // add a new encoded pattern.
-            for (final ItemStack encodedPatternStack : AEApi.instance()
-                    .definitions()
-                    .items()
-                    .encodedPattern()
-                    .maybeStack(1)
-                    .asSet()) {
+            for (final ItemStack encodedPatternStack : AEApi.instance().definitions().items().encodedPattern()
+                    .maybeStack(1).asSet()) {
                 output = encodedPatternStack;
                 this.patternSlotOUT.putStack(output);
             }
@@ -292,7 +281,7 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
             final ItemStack out = this.getAndUpdateOutput();
 
             if (out != null && out.stackSize > 0) {
-                return new ItemStack[] {out};
+                return new ItemStack[] { out };
             }
         } else {
             final List<ItemStack> list = new ArrayList<>(3);
@@ -354,8 +343,8 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
         if (packetPatternSlot.slotItem != null && this.getCellInventory() != null) {
             final IAEItemStack out = packetPatternSlot.slotItem.copy();
             InventoryAdaptor inv = new AdaptorPlayerHand(this.getPlayerInv().player);
-            final InventoryAdaptor playerInv =
-                    InventoryAdaptor.getAdaptor(this.getPlayerInv().player, ForgeDirection.UNKNOWN);
+            final InventoryAdaptor playerInv = InventoryAdaptor
+                    .getAdaptor(this.getPlayerInv().player, ForgeDirection.UNKNOWN);
 
             if (packetPatternSlot.shift) {
                 inv = playerInv;
@@ -365,8 +354,8 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
                 return;
             }
 
-            final IAEItemStack extracted = Platform.poweredExtraction(
-                    this.getPowerSource(), this.getCellInventory(), out, this.getActionSource());
+            final IAEItemStack extracted = Platform
+                    .poweredExtraction(this.getPowerSource(), this.getCellInventory(), out, this.getActionSource());
             final EntityPlayer p = this.getPlayerInv().player;
 
             if (extracted != null) {
@@ -383,7 +372,8 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
 
             for (int x = 0; x < 9; x++) {
                 ic.setInventorySlotContents(
-                        x, packetPatternSlot.pattern[x] == null ? null : packetPatternSlot.pattern[x].getItemStack());
+                        x,
+                        packetPatternSlot.pattern[x] == null ? null : packetPatternSlot.pattern[x].getItemStack());
             }
 
             final IRecipe r = Platform.findMatchingRecipe(ic, p.worldObj);
@@ -439,11 +429,10 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
                 for (int x = 0; x < real.getSizeInventory(); x++) {
                     final ItemStack failed = real.getStackInSlot(x);
                     if (failed != null) {
-                        this.getCellInventory()
-                                .injectItems(
-                                        AEItemStack.create(failed),
-                                        Actionable.MODULATE,
-                                        new MachineSource(this.getPatternTerminal()));
+                        this.getCellInventory().injectItems(
+                                AEItemStack.create(failed),
+                                Actionable.MODULATE,
+                                new MachineSource(this.getPatternTerminal()));
                     }
                 }
             }
@@ -554,20 +543,16 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
     }
 
     static boolean canDoubleStacks(SlotFake[] slots) {
-        List<SlotFake> enabledSlots =
-                Arrays.stream(slots).filter(SlotFake::isEnabled).collect(Collectors.toList());
-        long emptyStots =
-                enabledSlots.stream().filter(s -> s.getStack() == null).count();
-        long fullSlots = enabledSlots.stream()
-                .filter(s -> s.getStack() != null && s.getStack().stackSize * 2 > 127)
+        List<SlotFake> enabledSlots = Arrays.stream(slots).filter(SlotFake::isEnabled).collect(Collectors.toList());
+        long emptyStots = enabledSlots.stream().filter(s -> s.getStack() == null).count();
+        long fullSlots = enabledSlots.stream().filter(s -> s.getStack() != null && s.getStack().stackSize * 2 > 127)
                 .count();
         return fullSlots <= emptyStots && emptyStots < enabledSlots.size();
     }
 
     static void doubleStacksInternal(SlotFake[] slots) {
         List<ItemStack> overFlowStacks = new ArrayList<>();
-        List<SlotFake> enabledSlots =
-                Arrays.stream(slots).filter(SlotFake::isEnabled).collect(Collectors.toList());
+        List<SlotFake> enabledSlots = Arrays.stream(slots).filter(SlotFake::isEnabled).collect(Collectors.toList());
         for (final Slot s : enabledSlots) {
             ItemStack st = s.getStack();
             if (st == null) continue;

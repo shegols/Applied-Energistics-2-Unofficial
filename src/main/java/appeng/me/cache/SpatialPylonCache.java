@@ -1,22 +1,18 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.cache;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridHost;
@@ -31,9 +27,6 @@ import appeng.core.AEConfig;
 import appeng.me.cluster.implementations.SpatialPylonCluster;
 import appeng.tile.spatial.TileSpatialIOPort;
 import appeng.tile.spatial.TileSpatialPylon;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 public class SpatialPylonCache implements ISpatialCache {
 
@@ -44,8 +37,7 @@ public class SpatialPylonCache implements ISpatialCache {
     private DimensionalCoord captureMax;
     private boolean isValid = false;
     private List<TileSpatialIOPort> ioPorts = new LinkedList<TileSpatialIOPort>();
-    private HashMap<SpatialPylonCluster, SpatialPylonCluster> clusters =
-            new HashMap<SpatialPylonCluster, SpatialPylonCluster>();
+    private HashMap<SpatialPylonCluster, SpatialPylonCluster> clusters = new HashMap<SpatialPylonCluster, SpatialPylonCluster>();
 
     public SpatialPylonCache(final IGrid g) {
         this.myGrid = g;
@@ -102,8 +94,7 @@ public class SpatialPylonCache implements ISpatialCache {
         double maxPower = 0;
         double minPower = 0;
         if (this.hasRegion()) {
-            this.isValid = this.captureMax.x - this.captureMin.x > 1
-                    && this.captureMax.y - this.captureMin.y > 1
+            this.isValid = this.captureMax.x - this.captureMin.x > 1 && this.captureMax.y - this.captureMin.y > 1
                     && this.captureMax.z - this.captureMin.z > 1;
 
             for (final SpatialPylonCluster cl : this.clusters.values()) {

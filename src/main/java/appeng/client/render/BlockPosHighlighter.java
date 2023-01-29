@@ -4,6 +4,7 @@ import appeng.api.util.DimensionalCoord;
 
 // taken from McJty's McJtyLib
 public class BlockPosHighlighter {
+
     private static DimensionalCoord highlightedBlock;
     private static long expireHighlight;
 

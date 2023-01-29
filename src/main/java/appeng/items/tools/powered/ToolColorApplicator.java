@@ -1,22 +1,30 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.tools.powered;
+
+import java.util.*;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemSnowball;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -51,23 +59,11 @@ import appeng.tile.misc.TilePaint;
 import appeng.util.ItemSorters;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
+
 import com.google.common.base.Optional;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemSnowball;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class ToolColorApplicator extends AEBasePoweredItem
         implements IStorageCell, IItemGroup, IBlockTool, IMouseWheelItem {
@@ -99,26 +95,17 @@ public class ToolColorApplicator extends AEBasePoweredItem
     }
 
     @Override
-    public boolean onItemUse(
-            final ItemStack is,
-            final EntityPlayer p,
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onItemUse(final ItemStack is, final EntityPlayer p, final World w, final int x, final int y,
+            final int z, final int side, final float hitX, final float hitY, final float hitZ) {
         final Block blk = w.getBlock(x, y, z);
 
         ItemStack paintBall = this.getColor(is);
 
-        final IMEInventory<IAEItemStack> inv =
-                AEApi.instance().registries().cell().getCellInventory(is, null, StorageChannel.ITEMS);
+        final IMEInventory<IAEItemStack> inv = AEApi.instance().registries().cell()
+                .getCellInventory(is, null, StorageChannel.ITEMS);
         if (inv != null) {
-            final IAEItemStack option =
-                    inv.extractItems(AEItemStack.create(paintBall), Actionable.SIMULATE, new BaseActionSource());
+            final IAEItemStack option = inv
+                    .extractItems(AEItemStack.create(paintBall), Actionable.SIMULATE, new BaseActionSource());
 
             if (option != null) {
                 paintBall = option.getItemStack();
@@ -141,7 +128,9 @@ public class ToolColorApplicator extends AEBasePoweredItem
                             && ((IColorableTile) te).getColor() != AEColor.Transparent) {
                         if (((IColorableTile) te).recolourBlock(orientation, AEColor.Transparent, p)) {
                             inv.extractItems(
-                                    AEItemStack.create(paintBall), Actionable.MODULATE, new BaseActionSource());
+                                    AEItemStack.create(paintBall),
+                                    Actionable.MODULATE,
+                                    new BaseActionSource());
                             this.extractAEPower(is, powerPerUse);
                             return true;
                         }
@@ -149,12 +138,11 @@ public class ToolColorApplicator extends AEBasePoweredItem
                 }
 
                 // clean paint balls..
-                final Block testBlk =
-                        w.getBlock(x + orientation.offsetX, y + orientation.offsetY, z + orientation.offsetZ);
-                final TileEntity painted =
-                        w.getTileEntity(x + orientation.offsetX, y + orientation.offsetY, z + orientation.offsetZ);
-                if (this.getAECurrentPower(is) > powerPerUse
-                        && testBlk instanceof BlockPaint
+                final Block testBlk = w
+                        .getBlock(x + orientation.offsetX, y + orientation.offsetY, z + orientation.offsetZ);
+                final TileEntity painted = w
+                        .getTileEntity(x + orientation.offsetX, y + orientation.offsetY, z + orientation.offsetZ);
+                if (this.getAECurrentPower(is) > powerPerUse && testBlk instanceof BlockPaint
                         && painted instanceof TilePaint) {
                     inv.extractItems(AEItemStack.create(paintBall), Actionable.MODULATE, new BaseActionSource());
                     this.extractAEPower(is, powerPerUse);
@@ -165,17 +153,16 @@ public class ToolColorApplicator extends AEBasePoweredItem
                 final AEColor color = this.getColorFromItem(paintBall);
 
                 if (color != null && this.getAECurrentPower(is) > powerPerUse) {
-                    if (color != AEColor.Transparent
-                            && this.recolourBlock(
-                                    blk,
-                                    ForgeDirection.getOrientation(side),
-                                    w,
-                                    x,
-                                    y,
-                                    z,
-                                    ForgeDirection.getOrientation(side),
-                                    color,
-                                    p)) {
+                    if (color != AEColor.Transparent && this.recolourBlock(
+                            blk,
+                            ForgeDirection.getOrientation(side),
+                            w,
+                            x,
+                            y,
+                            z,
+                            ForgeDirection.getOrientation(side),
+                            color,
+                            p)) {
                         inv.extractItems(AEItemStack.create(paintBall), Actionable.MODULATE, new BaseActionSource());
                         this.extractAEPower(is, powerPerUse);
                         return true;
@@ -249,11 +236,10 @@ public class ToolColorApplicator extends AEBasePoweredItem
     private ItemStack findNextColor(final ItemStack is, final ItemStack anchor, final int scrollOffset) {
         ItemStack newColor = null;
 
-        final IMEInventory<IAEItemStack> inv =
-                AEApi.instance().registries().cell().getCellInventory(is, null, StorageChannel.ITEMS);
+        final IMEInventory<IAEItemStack> inv = AEApi.instance().registries().cell()
+                .getCellInventory(is, null, StorageChannel.ITEMS);
         if (inv != null) {
-            final IItemList<IAEItemStack> itemList =
-                    inv.getAvailableItems(AEApi.instance().storage().createItemList());
+            final IItemList<IAEItemStack> itemList = inv.getAvailableItems(AEApi.instance().storage().createItemList());
             if (anchor == null) {
                 final IAEItemStack firstItem = itemList.getFirstItem();
                 if (firstItem != null) {
@@ -317,16 +303,8 @@ public class ToolColorApplicator extends AEBasePoweredItem
         }
     }
 
-    private boolean recolourBlock(
-            final Block blk,
-            final ForgeDirection side,
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final ForgeDirection orientation,
-            final AEColor newColor,
-            final EntityPlayer p) {
+    private boolean recolourBlock(final Block blk, final ForgeDirection side, final World w, final int x, final int y,
+            final int z, final ForgeDirection orientation, final AEColor newColor, final EntityPlayer p) {
         if (blk == Blocks.carpet) {
             final int meta = w.getBlockMetadata(x, y, z);
             if (newColor.ordinal() == meta) {
@@ -388,20 +366,30 @@ public class ToolColorApplicator extends AEBasePoweredItem
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addCheckedInformation(
-            final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
+    public void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+            final boolean displayMoreInfo) {
         super.addCheckedInformation(stack, player, lines, displayMoreInfo);
 
-        final IMEInventory<IAEItemStack> cdi =
-                AEApi.instance().registries().cell().getCellInventory(stack, null, StorageChannel.ITEMS);
+        final IMEInventory<IAEItemStack> cdi = AEApi.instance().registries().cell()
+                .getCellInventory(stack, null, StorageChannel.ITEMS);
 
         if (cdi instanceof CellInventoryHandler) {
             final ICellInventory cd = ((ICellInventoryHandler) cdi).getCellInv();
             if (cd != null) {
-                lines.add(cd.getUsedBytes() + " " + GuiText.Of.getLocal() + ' ' + cd.getTotalBytes() + ' '
-                        + GuiText.BytesUsed.getLocal());
-                lines.add(cd.getStoredItemTypes() + " " + GuiText.Of.getLocal() + ' ' + cd.getTotalItemTypes() + ' '
-                        + GuiText.Types.getLocal());
+                lines.add(
+                        cd.getUsedBytes() + " "
+                                + GuiText.Of.getLocal()
+                                + ' '
+                                + cd.getTotalBytes()
+                                + ' '
+                                + GuiText.BytesUsed.getLocal());
+                lines.add(
+                        cd.getStoredItemTypes() + " "
+                                + GuiText.Of.getLocal()
+                                + ' '
+                                + cd.getTotalItemTypes()
+                                + ' '
+                                + GuiText.Types.getLocal());
             }
         }
     }

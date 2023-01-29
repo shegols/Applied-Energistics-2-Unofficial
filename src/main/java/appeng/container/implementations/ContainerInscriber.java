@@ -1,22 +1,18 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IItemDefinition;
@@ -27,9 +23,6 @@ import appeng.container.slot.SlotOutput;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.tile.misc.TileInscriber;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 /**
  * @author AlgorithmX2
@@ -122,8 +115,7 @@ public class ContainerInscriber extends ContainerUpgradeable implements IProgres
         final ItemStack bot = this.ti.getStackInSlot(1);
 
         if (s == this.middle) {
-            for (final ItemStack optional :
-                    AEApi.instance().registries().inscriber().getOptionals()) {
+            for (final ItemStack optional : AEApi.instance().registries().inscriber().getOptionals()) {
                 if (Platform.isSameItemPrecise(optional, is)) {
                     return false;
                 }
@@ -132,23 +124,16 @@ public class ContainerInscriber extends ContainerUpgradeable implements IProgres
             boolean matches = false;
             boolean found = false;
 
-            for (final IInscriberRecipe recipe :
-                    AEApi.instance().registries().inscriber().getRecipes()) {
+            for (final IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
                 final boolean matchA = (top == null && !recipe.getTopOptional().isPresent())
-                        || (Platform.isSameItemPrecise(
-                                        top, recipe.getTopOptional().orNull()))
-                                && // and...
+                        || (Platform.isSameItemPrecise(top, recipe.getTopOptional().orNull())) && // and...
                                 (bot == null && !recipe.getBottomOptional().isPresent())
-                                        | (Platform.isSameItemPrecise(
-                                                bot, recipe.getBottomOptional().orNull()));
+                                        | (Platform.isSameItemPrecise(bot, recipe.getBottomOptional().orNull()));
 
                 final boolean matchB = (bot == null && !recipe.getTopOptional().isPresent())
-                        || (Platform.isSameItemPrecise(
-                                        bot, recipe.getTopOptional().orNull()))
-                                && // and...
+                        || (Platform.isSameItemPrecise(bot, recipe.getTopOptional().orNull())) && // and...
                                 (top == null && !recipe.getBottomOptional().isPresent())
-                                        | (Platform.isSameItemPrecise(
-                                                top, recipe.getBottomOptional().orNull()));
+                                        | (Platform.isSameItemPrecise(top, recipe.getBottomOptional().orNull()));
 
                 if (matchA || matchB) {
                     matches = true;
@@ -174,22 +159,18 @@ public class ContainerInscriber extends ContainerUpgradeable implements IProgres
             }
 
             // name presses
-            final IItemDefinition namePress =
-                    AEApi.instance().definitions().materials().namePress();
+            final IItemDefinition namePress = AEApi.instance().definitions().materials().namePress();
             if (namePress.isSameAs(otherSlot)) {
                 return namePress.isSameAs(is);
             }
 
             // everything else
             boolean isValid = false;
-            for (final IInscriberRecipe recipe :
-                    AEApi.instance().registries().inscriber().getRecipes()) {
+            for (final IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
                 if (Platform.isSameItemPrecise(recipe.getTopOptional().orNull(), otherSlot)) {
-                    isValid = Platform.isSameItemPrecise(
-                            is, recipe.getBottomOptional().orNull());
+                    isValid = Platform.isSameItemPrecise(is, recipe.getBottomOptional().orNull());
                 } else if (Platform.isSameItemPrecise(recipe.getBottomOptional().orNull(), otherSlot)) {
-                    isValid = Platform.isSameItemPrecise(
-                            is, recipe.getTopOptional().orNull());
+                    isValid = Platform.isSameItemPrecise(is, recipe.getTopOptional().orNull());
                 }
 
                 if (isValid) {

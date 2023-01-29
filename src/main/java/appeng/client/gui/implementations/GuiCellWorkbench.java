@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import java.io.IOException;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Mouse;
 
 import appeng.api.config.*;
 import appeng.api.implementations.items.IUpgradeModule;
@@ -28,12 +29,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.tile.misc.TileCellWorkbench;
 import appeng.util.Platform;
-import java.io.IOException;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Mouse;
 
 public class GuiCellWorkbench extends GuiUpgradeable {
 
@@ -60,10 +55,16 @@ public class GuiCellWorkbench extends GuiUpgradeable {
                 12 * 16 + 5,
                 GuiText.CopyMode.getLocal(),
                 GuiText.CopyModeDesc.getLocal());
-        this.fuzzyMode =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
-        this.oreFilter =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.ACTIONS, ActionItems.ORE_FILTER);
+        this.fuzzyMode = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 68,
+                Settings.FUZZY_MODE,
+                FuzzyMode.IGNORE_ALL);
+        this.oreFilter = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 68,
+                Settings.ACTIONS,
+                ActionItems.ORE_FILTER);
 
         this.buttonList.add(this.fuzzyMode);
         this.buttonList.add(this.partition);
@@ -81,9 +82,19 @@ public class GuiCellWorkbench extends GuiUpgradeable {
         if (this.drawUpgrades()) {
             if (this.workbench.availableUpgrades() <= 8) {
                 this.drawTexturedModalRect(
-                        offsetX + 177, offsetY, 177, 0, 35, 7 + this.workbench.availableUpgrades() * 18);
+                        offsetX + 177,
+                        offsetY,
+                        177,
+                        0,
+                        35,
+                        7 + this.workbench.availableUpgrades() * 18);
                 this.drawTexturedModalRect(
-                        offsetX + 177, offsetY + (7 + (this.workbench.availableUpgrades()) * 18), 177, 151, 35, 7);
+                        offsetX + 177,
+                        offsetY + (7 + (this.workbench.availableUpgrades()) * 18),
+                        177,
+                        151,
+                        35,
+                        7);
             } else if (this.workbench.availableUpgrades() <= 16) {
                 this.drawTexturedModalRect(offsetX + 177, offsetY, 177, 0, 35, 7 + 8 * 18);
                 this.drawTexturedModalRect(offsetX + 177, offsetY + (7 + (8) * 18), 177, 151, 35, 7);
@@ -94,7 +105,12 @@ public class GuiCellWorkbench extends GuiUpgradeable {
                     this.drawTexturedModalRect(offsetX + 177 + 27, offsetY + (7 + (dx) * 18), 186, 151, 35 - 8, 7);
                 } else {
                     this.drawTexturedModalRect(
-                            offsetX + 177 + 27 + 4, offsetY + (7 + (dx) * 18), 186 + 4, 151, 35 - 8, 7);
+                            offsetX + 177 + 27 + 4,
+                            offsetY + (7 + (dx) * 18),
+                            186 + 4,
+                            151,
+                            35 - 8,
+                            7);
                 }
             } else {
                 this.drawTexturedModalRect(offsetX + 177, offsetY, 177, 0, 35, 7 + 8 * 18);
@@ -109,7 +125,12 @@ public class GuiCellWorkbench extends GuiUpgradeable {
                     this.drawTexturedModalRect(offsetX + 177 + 27 + 18, offsetY + (7 + (dx) * 18), 186, 151, 35 - 8, 7);
                 } else {
                     this.drawTexturedModalRect(
-                            offsetX + 177 + 27 + 18 + 4, offsetY + (7 + (dx) * 18), 186 + 4, 151, 35 - 8, 7);
+                            offsetX + 177 + 27 + 18 + 4,
+                            offsetY + (7 + (dx) * 18),
+                            186 + 4,
+                            151,
+                            35 - 8,
+                            7);
                 }
             }
         }
@@ -174,7 +195,6 @@ public class GuiCellWorkbench extends GuiUpgradeable {
             } else {
                 super.actionPerformed(btn);
             }
-        } catch (final IOException ignored) {
-        }
+        } catch (final IOException ignored) {}
     }
 }

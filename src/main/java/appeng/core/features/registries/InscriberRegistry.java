@@ -1,31 +1,26 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.features.registries;
+
+import java.util.*;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.item.ItemStack;
 
 import appeng.api.features.IInscriberRecipe;
 import appeng.api.features.IInscriberRecipeBuilder;
 import appeng.api.features.IInscriberRegistry;
 import appeng.api.features.InscriberProcessType;
 import appeng.core.features.registries.entries.InscriberRecipe;
-import java.util.*;
-import javax.annotation.Nonnull;
-import net.minecraft.item.ItemStack;
 
 /**
  * @author thatsIch
@@ -33,6 +28,7 @@ import net.minecraft.item.ItemStack;
  * @since rv2
  */
 public final class InscriberRegistry implements IInscriberRegistry {
+
     private final Set<IInscriberRecipe> recipes;
     private final Set<ItemStack> optionals;
     private final Set<ItemStack> inputs;
@@ -83,7 +79,7 @@ public final class InscriberRegistry implements IInscriberRegistry {
 
     @Override
     public void removeRecipe(final IInscriberRecipe toBeRemovedRecipe) {
-        for (final Iterator<IInscriberRecipe> iterator = this.recipes.iterator(); iterator.hasNext(); ) {
+        for (final Iterator<IInscriberRecipe> iterator = this.recipes.iterator(); iterator.hasNext();) {
             final IInscriberRecipe recipe = iterator.next();
             if (recipe.equals(toBeRemovedRecipe)) {
                 iterator.remove();
@@ -92,10 +88,11 @@ public final class InscriberRegistry implements IInscriberRegistry {
     }
 
     /**
-     * Internal {@link IInscriberRecipeBuilder} implementation.
-     * Needs to be adapted to represent a correct {@link IInscriberRecipe}
+     * Internal {@link IInscriberRecipeBuilder} implementation. Needs to be adapted to represent a correct
+     * {@link IInscriberRecipe}
      */
     private static final class Builder implements IInscriberRecipeBuilder {
+
         private List<ItemStack> inputs;
         private ItemStack output;
         private ItemStack topOptional;

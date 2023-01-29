@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.integration.modules.NEIHelpers;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiCrafting;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IDefinitions;
@@ -31,15 +32,9 @@ import codechicken.nei.api.IRecipeOverlayRenderer;
 import codechicken.nei.api.IStackPositioner;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.gui.inventory.GuiCrafting;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
 
 public class NEIFacadeRecipeHandler extends TemplateRecipeHandler {
+
     private final ItemFacade facade;
     private final IItemDefinition anchorDefinition;
 
@@ -59,8 +54,7 @@ public class NEIFacadeRecipeHandler extends TemplateRecipeHandler {
     public void loadCraftingRecipes(final String outputId, final Object... results) {
         if ((outputId.equals("crafting")) && (this.getClass() == NEIFacadeRecipeHandler.class)) {
             final List<ItemStack> facades = this.facade.getFacades();
-            for (final ItemStack anchorStack :
-                    this.anchorDefinition.maybeStack(1).asSet()) {
+            for (final ItemStack anchorStack : this.anchorDefinition.maybeStack(1).asSet()) {
                 for (final ItemStack is : facades) {
                     final CachedShapedRecipe recipe = new CachedShapedRecipe(this.facade, anchorStack, is);
                     recipe.computeVisuals();
@@ -75,8 +69,7 @@ public class NEIFacadeRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(final ItemStack result) {
         if (result.getItem() == this.facade) {
-            for (final ItemStack anchorStack :
-                    this.anchorDefinition.maybeStack(1).asSet()) {
+            for (final ItemStack anchorStack : this.anchorDefinition.maybeStack(1).asSet()) {
                 final CachedShapedRecipe recipe = new CachedShapedRecipe(this.facade, anchorStack, result);
                 recipe.computeVisuals();
                 this.arecipes.add(recipe);
@@ -163,6 +156,7 @@ public class NEIFacadeRecipeHandler extends TemplateRecipeHandler {
     }
 
     private final class CachedShapedRecipe extends TemplateRecipeHandler.CachedRecipe {
+
         public final List<PositionedStack> ingredients;
         public final PositionedStack result;
 
@@ -171,7 +165,7 @@ public class NEIFacadeRecipeHandler extends TemplateRecipeHandler {
             this.result = new PositionedStack(output, 119, 24);
             this.ingredients = new ArrayList<PositionedStack>();
             final ItemStack in = facade.getTextureItem(output);
-            this.setIngredients(3, 3, new Object[] {null, anchor, null, anchor, in, anchor, null, anchor, null});
+            this.setIngredients(3, 3, new Object[] { null, anchor, null, anchor, in, anchor, null, anchor, null });
         }
 
         public void setIngredients(final int width, final int height, final Object[] items) {

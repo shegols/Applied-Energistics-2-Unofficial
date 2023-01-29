@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.slot;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.energy.IEnergySource;
@@ -34,14 +36,6 @@ import appeng.util.Platform;
 import appeng.util.inv.AdaptorPlayerHand;
 import appeng.util.item.AEItemStack;
 import appeng.util.prioitylist.IPartitionList;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 
 public class SlotCraftingTerm extends AppEngCraftingSlot {
 
@@ -53,17 +47,9 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
     private final IStorageMonitorable storage;
     private final IContainerCraftingPacket container;
 
-    public SlotCraftingTerm(
-            final EntityPlayer player,
-            final BaseActionSource mySrc,
-            final IEnergySource energySrc,
-            final IStorageMonitorable storage,
-            final IInventory cMatrix,
-            final IInventory secondMatrix,
-            final IInventory output,
-            final int x,
-            final int y,
-            final IContainerCraftingPacket ccp) {
+    public SlotCraftingTerm(final EntityPlayer player, final BaseActionSource mySrc, final IEnergySource energySrc,
+            final IStorageMonitorable storage, final IInventory cMatrix, final IInventory secondMatrix,
+            final IInventory output, final int x, final int y, final IContainerCraftingPacket ccp) {
         super(player, cMatrix, output, 0, x, y);
         this.energySrc = energySrc;
         this.storage = storage;
@@ -140,8 +126,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
         return maxTimesToCraft;
     }
 
-    private ItemStack craftItem(
-            final EntityPlayer p, final ItemStack request, final IMEMonitor<IAEItemStack> inv, final IItemList all) {
+    private ItemStack craftItem(final EntityPlayer p, final ItemStack request, final IMEMonitor<IAEItemStack> inv,
+            final IItemList all) {
         // update crafting matrix...
         ItemStack is = this.getStack();
 
@@ -160,7 +146,7 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
 
                 if (r == null) {
                     if (request.stackSize > is.stackSize) // do not try to batch invalid recipes
-                    return null;
+                        return null;
                     final Item target = request.getItem();
                     if (target.isDamageable() && target.isRepairable()) {
                         boolean isBad = false;
@@ -217,16 +203,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
         return null;
     }
 
-    private boolean extractItems(
-            EntityPlayer p,
-            IMEMonitor<IAEItemStack> inv,
-            IItemList all,
-            ItemStack is,
-            ItemStack[] set,
-            int multiple,
-            InventoryCrafting ic,
-            IRecipe r,
-            IPartitionList<IAEItemStack> filter) {
+    private boolean extractItems(EntityPlayer p, IMEMonitor<IAEItemStack> inv, IItemList all, ItemStack is,
+            ItemStack[] set, int multiple, InventoryCrafting ic, IRecipe r, IPartitionList<IAEItemStack> filter) {
         for (int x = 0; x < this.getPattern().getSizeInventory(); x++) {
             if (this.getPattern().getStackInSlot(x) != null) {
                 set[x] = Platform.extractItemsByRecipe(
@@ -253,8 +231,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
         return true;
     }
 
-    private boolean preCraft(
-            final EntityPlayer p, final IMEMonitor<IAEItemStack> inv, final ItemStack[] set, final ItemStack result) {
+    private boolean preCraft(final EntityPlayer p, final IMEMonitor<IAEItemStack> inv, final ItemStack[] set,
+            final ItemStack result) {
         return true;
     }
 
@@ -262,8 +240,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
         super.onPickupFromSlot(p, is);
     }
 
-    private boolean postCraft(
-            final EntityPlayer p, final IMEMonitor<IAEItemStack> inv, final ItemStack[] set, final ItemStack result) {
+    private boolean postCraft(final EntityPlayer p, final IMEMonitor<IAEItemStack> inv, final ItemStack[] set,
+            final ItemStack result) {
         final List<ItemStack> drops = new ArrayList<ItemStack>();
 
         boolean hadEmptyStacks = false;
@@ -284,8 +262,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
                 } else if (set[x] != null) {
                     if (!Platform.isSameItem(this.craftInv.getStackInSlot(x), set[x])) {
                         // for the recipes that leave e.g. empty buckets in the grid, can't batch them
-                        final IAEItemStack fail =
-                                inv.injectItems(AEItemStack.create(set[x]), Actionable.MODULATE, this.mySrc);
+                        final IAEItemStack fail = inv
+                                .injectItems(AEItemStack.create(set[x]), Actionable.MODULATE, this.mySrc);
                         if (fail != null) {
                             drops.add(fail.getItemStack());
                         }
@@ -307,8 +285,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
             final List<ItemStack> drops = new ArrayList<ItemStack>();
             for (int i = 0; i < set.length; ++i) {
                 if (set[i] != null && set[i].stackSize > 0) {
-                    final IAEItemStack fail =
-                            inv.injectItems(AEItemStack.create(set[i]), Actionable.MODULATE, this.mySrc);
+                    final IAEItemStack fail = inv
+                            .injectItems(AEItemStack.create(set[i]), Actionable.MODULATE, this.mySrc);
                     if (fail != null) {
                         drops.add(fail.getItemStack());
                     }

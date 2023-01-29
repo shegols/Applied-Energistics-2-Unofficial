@@ -1,5 +1,10 @@
 package appeng.integration.modules.helpers;
 
+import mcp.mobius.betterbarrels.common.blocks.TileEntityBarrel;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.storage.IMEInventory;
@@ -7,11 +12,9 @@ import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
-import mcp.mobius.betterbarrels.common.blocks.TileEntityBarrel;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 public class JabbaBarrel implements IMEInventory<IAEItemStack> {
+
     private final TileEntityBarrel barrel;
 
     public JabbaBarrel(final TileEntity te) {
@@ -48,8 +51,7 @@ public class JabbaBarrel implements IMEInventory<IAEItemStack> {
             if (input.getTagCompound() != null) {
                 return input;
             }
-            long max = ((long) this.barrel.getStorage().getMaxStacks())
-                    * input.getItemStack().getMaxStackSize();
+            long max = ((long) this.barrel.getStorage().getMaxStacks()) * input.getItemStack().getMaxStackSize();
             if (input.getStackSize() <= max || barrel.getStorage().isVoid()) {
                 if (mode == Actionable.MODULATE) {
                     this.barrel.setStoredItemType(input.getItemStack(), (int) input.getStackSize());

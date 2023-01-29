@@ -1,5 +1,10 @@
 package appeng.crafting.v2.resolvers;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
@@ -7,17 +12,15 @@ import appeng.crafting.MECraftingInventory;
 import appeng.crafting.v2.CraftingContext;
 import appeng.crafting.v2.CraftingRequest;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
-import java.util.Collections;
-import java.util.List;
-import javax.annotation.Nonnull;
 
 public class SimulateMissingItemResolver<StackType extends IAEStack<StackType>>
         implements CraftingRequestResolver<StackType> {
+
     public static class ConjureItemTask<StackType extends IAEStack<StackType>> extends CraftingTask<StackType> {
+
         public ConjureItemTask(CraftingRequest<StackType> request) {
-            super(
-                    request,
-                    CraftingTask.PRIORITY_SIMULATE); // conjure items for calculations out of thin air as a last resort
+            super(request, CraftingTask.PRIORITY_SIMULATE); // conjure items for calculations out of thin air as a last
+                                                            // resort
         }
 
         @Override
@@ -52,8 +55,8 @@ public class SimulateMissingItemResolver<StackType extends IAEStack<StackType>>
         }
 
         @Override
-        public void startOnCpu(
-                CraftingContext context, CraftingCPUCluster cpuCluster, MECraftingInventory craftingInv) {
+        public void startOnCpu(CraftingContext context, CraftingCPUCluster cpuCluster,
+                MECraftingInventory craftingInv) {
             throw new IllegalStateException("Trying to start crafting a schedule with simulated items");
         }
 
@@ -65,8 +68,8 @@ public class SimulateMissingItemResolver<StackType extends IAEStack<StackType>>
 
     @Nonnull
     @Override
-    public List<CraftingTask> provideCraftingRequestResolvers(
-            @Nonnull CraftingRequest<StackType> request, @Nonnull CraftingContext context) {
+    public List<CraftingTask> provideCraftingRequestResolvers(@Nonnull CraftingRequest<StackType> request,
+            @Nonnull CraftingContext context) {
         if (request.allowSimulation) {
             return Collections.singletonList(new ConjureItemTask<>(request));
         } else {

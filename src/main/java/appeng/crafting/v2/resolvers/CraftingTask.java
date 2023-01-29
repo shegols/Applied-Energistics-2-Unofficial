@@ -1,5 +1,11 @@
 package appeng.crafting.v2.resolvers;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
@@ -7,23 +13,22 @@ import appeng.crafting.MECraftingInventory;
 import appeng.crafting.v2.CraftingContext;
 import appeng.crafting.v2.CraftingRequest;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import javax.annotation.Nonnull;
 
 /**
- * A single action that can be performed to solve a {@link CraftingRequest}.
- * Can have multiple inputs and outputs, resolved at runtime during crafting resolution (e.g. for handling substitutions).
+ * A single action that can be performed to solve a {@link CraftingRequest}. Can have multiple inputs and outputs,
+ * resolved at runtime during crafting resolution (e.g. for handling substitutions).
  */
 public abstract class CraftingTask<RequestStackType extends IAEStack<RequestStackType>> {
+
     public enum State {
+
         NEEDS_MORE_WORK(true),
         SUCCESS(false),
         /**
          * This aborts the entire crafting operation, use only if absolutely necessary
          */
         FAILURE(false);
+
         public final boolean needsMoreWork;
 
         State(boolean needsMoreWork) {
@@ -32,6 +37,7 @@ public abstract class CraftingTask<RequestStackType extends IAEStack<RequestStac
     }
 
     public static final class StepOutput {
+
         @Nonnull
         public final List<CraftingRequest<?>> extraInputsRequired;
 
@@ -59,8 +65,8 @@ public abstract class CraftingTask<RequestStackType extends IAEStack<RequestStac
     /**
      * Called when it's this task's turn for computation.
      *
-     * @return A {@link StepOutput} instance describing progress made by the task in this call.
-     * If success or failure, the task should have cleaned up after itself - cancel won't be called.
+     * @return A {@link StepOutput} instance describing progress made by the task in this call. If success or failure,
+     *         the task should have cleaned up after itself - cancel won't be called.
      */
     public abstract StepOutput calculateOneStep(CraftingContext context);
 
@@ -73,8 +79,8 @@ public abstract class CraftingTask<RequestStackType extends IAEStack<RequestStac
 
     public abstract void populatePlan(IItemList<IAEItemStack> targetPlan);
 
-    public abstract void startOnCpu(
-            CraftingContext context, CraftingCPUCluster cpuCluster, MECraftingInventory craftingInv);
+    public abstract void startOnCpu(CraftingContext context, CraftingCPUCluster cpuCluster,
+            MECraftingInventory craftingInv);
 
     protected CraftingTask(CraftingRequest<RequestStackType> request, int priority) {
         this.request = request;

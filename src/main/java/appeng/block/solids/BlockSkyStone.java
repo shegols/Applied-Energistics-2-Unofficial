@@ -1,36 +1,18 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.block.solids;
 
-import appeng.api.util.IOrientable;
-import appeng.api.util.IOrientableBlock;
-import appeng.block.AEBaseBlock;
-import appeng.core.features.AEFeature;
-import appeng.core.worlddata.WorldData;
-import appeng.helpers.LocationRotation;
-import appeng.helpers.NullRotation;
-import appeng.util.Platform;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.util.EnumSet;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -45,7 +27,20 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
+import appeng.api.util.IOrientable;
+import appeng.api.util.IOrientableBlock;
+import appeng.block.AEBaseBlock;
+import appeng.core.features.AEFeature;
+import appeng.core.worlddata.WorldData;
+import appeng.helpers.LocationRotation;
+import appeng.helpers.NullRotation;
+import appeng.util.Platform;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class BlockSkyStone extends AEBaseBlock implements IOrientableBlock {
+
     private static final float BLOCK_RESISTANCE = 150.0f;
     private static final double BREAK_SPEAK_SCALAR = 0.1;
     private static final double BREAK_SPEAK_THRESHOLD = 7.0;
@@ -92,13 +87,8 @@ public class BlockSkyStone extends AEBaseBlock implements IOrientableBlock {
     }
 
     @Override
-    public ItemStack getPickBlock(
-            final MovingObjectPosition target,
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer player) {
+    public ItemStack getPickBlock(final MovingObjectPosition target, final World world, final int x, final int y,
+            final int z, final EntityPlayer player) {
         final ItemStack is = super.getPickBlock(target, world, x, y, z, player);
         is.setItemDamage(world.getBlockMetadata(x, y, z));
 

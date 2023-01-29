@@ -1,22 +1,30 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.helpers;
+
+import java.util.*;
+
+import net.minecraft.block.Block;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -72,39 +80,19 @@ import appeng.util.inv.ItemSlot;
 import appeng.util.inv.WrapperInvSlot;
 import appeng.util.item.AEItemStack;
 import cofh.api.transport.IItemDuct;
-import com.google.common.collect.ImmutableSet;
-import java.util.*;
-import net.minecraft.block.Block;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class DualityInterface
-        implements IGridTickable,
-                IStorageMonitorable,
-                IInventoryDestination,
-                IAEAppEngInventory,
-                IConfigManagerHost,
-                ICraftingProvider,
-                IUpgradeableHost,
-                IPriorityHost {
+import com.google.common.collect.ImmutableSet;
+
+public class DualityInterface implements IGridTickable, IStorageMonitorable, IInventoryDestination, IAEAppEngInventory,
+        IConfigManagerHost, ICraftingProvider, IUpgradeableHost, IPriorityHost {
 
     public static final int NUMBER_OF_STORAGE_SLOTS = 9;
     public static final int NUMBER_OF_CONFIG_SLOTS = 9;
     public static final int NUMBER_OF_PATTERN_SLOTS = 9;
 
     private static final Collection<Block> BAD_BLOCKS = new HashSet<Block>(100);
-    private final int[] sides = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    private final IAEItemStack[] requireWork = {null, null, null, null, null, null, null, null, null};
+    private final int[] sides = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+    private final IAEItemStack[] requireWork = { null, null, null, null, null, null, null, null, null };
     private final MultiCraftingTracker craftingTracker;
     protected final AENetworkProxy gridProxy;
     private final IInterfaceHost iHost;
@@ -115,10 +103,12 @@ public class DualityInterface
     private final AppEngInternalInventory storage = new AppEngInternalInventory(this, NUMBER_OF_STORAGE_SLOTS);
     private final AppEngInternalInventory patterns = new AppEngInternalInventory(this, NUMBER_OF_PATTERN_SLOTS * 4);
     private final WrapperInvSlot slotInv = new WrapperInvSlot(this.storage);
-    private final MEMonitorPassThrough<IAEItemStack> items =
-            new MEMonitorPassThrough<IAEItemStack>(new NullInventory<IAEItemStack>(), StorageChannel.ITEMS);
-    private final MEMonitorPassThrough<IAEFluidStack> fluids =
-            new MEMonitorPassThrough<IAEFluidStack>(new NullInventory<IAEFluidStack>(), StorageChannel.FLUIDS);
+    private final MEMonitorPassThrough<IAEItemStack> items = new MEMonitorPassThrough<IAEItemStack>(
+            new NullInventory<IAEItemStack>(),
+            StorageChannel.ITEMS);
+    private final MEMonitorPassThrough<IAEFluidStack> fluids = new MEMonitorPassThrough<IAEFluidStack>(
+            new NullInventory<IAEFluidStack>(),
+            StorageChannel.FLUIDS);
     private final UpgradeInventory upgrades;
     private boolean hasConfig = false;
     private int priority;
@@ -153,11 +143,7 @@ public class DualityInterface
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {
         if (mc == InvOperation.markDirty) {
             TileEntity te = getHost().getTile();
@@ -405,8 +391,7 @@ public class DualityInterface
 
         if (is.getItem() instanceof ICraftingPatternItem) {
             final ICraftingPatternItem cpi = (ICraftingPatternItem) is.getItem();
-            final ICraftingPatternDetails details =
-                    cpi.getPatternForItem(is, this.iHost.getTileEntity().getWorldObj());
+            final ICraftingPatternDetails details = cpi.getPatternForItem(is, this.iHost.getTileEntity().getWorldObj());
 
             if (details != null) {
                 if (this.craftingList == null) {
@@ -424,8 +409,8 @@ public class DualityInterface
 
     @Override
     public boolean canInsert(final ItemStack stack) {
-        final IAEItemStack out = this.destination.injectItems(
-                AEApi.instance().storage().createItemStack(stack), Actionable.SIMULATE, null);
+        final IAEItemStack out = this.destination
+                .injectItems(AEApi.instance().storage().createItemStack(stack), Actionable.SIMULATE, null);
         if (out == null) {
             return true;
         }
@@ -481,7 +466,10 @@ public class DualityInterface
     @Override
     public TickingRequest getTickingRequest(final IGridNode node) {
         return new TickingRequest(
-                TickRates.Interface.getMin(), TickRates.Interface.getMax(), !this.hasWorkToDo(), true);
+                TickRates.Interface.getMin(),
+                TickRates.Interface.getMax(),
+                !this.hasWorkToDo(),
+                true);
     }
 
     @Override
@@ -491,7 +479,9 @@ public class DualityInterface
                 TileEntity te = iHost.getTileEntity();
                 AELog.debug(
                         "Timing: interface at (%d %d %d) is ticking while the grid is booting",
-                        te.xCoord, te.yCoord, te.zCoord);
+                        te.xCoord,
+                        te.yCoord,
+                        te.zCoord);
             }
             return this.hasWorkToDo() ? TickRateModulation.SLOWER : TickRateModulation.SLEEP;
         }
@@ -523,8 +513,8 @@ public class DualityInterface
             ItemStack whatToSend = i.next();
 
             for (final ForgeDirection s : possibleDirections) {
-                final TileEntity te =
-                        w.getTileEntity(tile.xCoord + s.offsetX, tile.yCoord + s.offsetY, tile.zCoord + s.offsetZ);
+                final TileEntity te = w
+                        .getTileEntity(tile.xCoord + s.offsetX, tile.yCoord + s.offsetY, tile.zCoord + s.offsetZ);
                 if (te == null) {
                     continue;
                 }
@@ -620,8 +610,8 @@ public class DualityInterface
                     throw new GridAccessException();
                 }
 
-                final IAEItemStack acquired =
-                        Platform.poweredExtraction(src, this.destination, itemStack, this.interfaceRequestSource);
+                final IAEItemStack acquired = Platform
+                        .poweredExtraction(src, this.destination, itemStack, this.interfaceRequestSource);
                 if (acquired != null) {
                     changed = true;
                     final ItemStack issue = adaptor.addItems(acquired.getItemStack());
@@ -747,8 +737,8 @@ public class DualityInterface
         this.craftingTracker.cancel();
     }
 
-    public IStorageMonitorable getMonitorable(
-            final ForgeDirection side, final BaseActionSource src, final IStorageMonitorable myInterface) {
+    public IStorageMonitorable getMonitorable(final ForgeDirection side, final BaseActionSource src,
+            final IStorageMonitorable myInterface) {
         if (Platform.canAccess(this.gridProxy, src)) {
             return myInterface;
         }
@@ -794,8 +784,8 @@ public class DualityInterface
 
         final EnumSet<ForgeDirection> possibleDirections = this.iHost.getTargets();
         for (final ForgeDirection s : possibleDirections) {
-            final TileEntity te =
-                    w.getTileEntity(tile.xCoord + s.offsetX, tile.yCoord + s.offsetY, tile.zCoord + s.offsetZ);
+            final TileEntity te = w
+                    .getTileEntity(tile.xCoord + s.offsetX, tile.yCoord + s.offsetY, tile.zCoord + s.offsetZ);
             if (te instanceof IInterfaceHost) {
                 try {
                     if (((IInterfaceHost) te).getInterfaceDuality().sameGrid(this.gridProxy.getGrid())) {
@@ -837,8 +827,10 @@ public class DualityInterface
                     final ItemStack is = table.getStackInSlot(x);
                     if (is != null) {
                         final ItemStack rest = ((IItemDuct) te).insertItem(s.getOpposite(), is);
-                        if (!hadAcceptedSome && rest != null && rest.stackSize == is.stackSize)
-                            break; // conduit should accept all the pattern or nothing.
+                        if (!hadAcceptedSome && rest != null && rest.stackSize == is.stackSize) break; // conduit should
+                                                                                                       // accept all the
+                                                                                                       // pattern or
+                                                                                                       // nothing.
                         hadAcceptedSome = true;
                         this.addToSendList(rest);
                     }
@@ -869,8 +861,8 @@ public class DualityInterface
             boolean allAreBusy = true;
 
             for (final ForgeDirection s : possibleDirections) {
-                final TileEntity te =
-                        w.getTileEntity(tile.xCoord + s.offsetX, tile.yCoord + s.offsetY, tile.zCoord + s.offsetZ);
+                final TileEntity te = w
+                        .getTileEntity(tile.xCoord + s.offsetX, tile.yCoord + s.offsetY, tile.zCoord + s.offsetZ);
                 if (te != null && te.getClass().getName().equals("li.cil.oc.common.tileentity.Adapter")) continue;
                 final InventoryAdaptor ad = InventoryAdaptor.getAdaptor(te, s.getOpposite());
                 if (ad != null) {
@@ -899,8 +891,8 @@ public class DualityInterface
         return (InsertionMode) cm.getSetting(Settings.INSERTION_MODE);
     }
 
-    private static boolean acceptsItems(
-            final InventoryAdaptor ad, final InventoryCrafting table, final InsertionMode insertionMode) {
+    private static boolean acceptsItems(final InventoryAdaptor ad, final InventoryCrafting table,
+            final InsertionMode insertionMode) {
         for (int x = 0; x < table.getSizeInventory(); x++) {
             ItemStack is = table.getStackInSlot(x);
             if (is == null) {
@@ -989,8 +981,8 @@ public class DualityInterface
         return this.craftingTracker.getRequestedJobs();
     }
 
-    public IAEItemStack injectCraftedItems(
-            final ICraftingLink link, final IAEItemStack acquired, final Actionable mode) {
+    public IAEItemStack injectCraftedItems(final ICraftingLink link, final IAEItemStack acquired,
+            final Actionable mode) {
         final int slot = this.craftingTracker.getSlot(link);
 
         if (acquired != null && slot >= 0 && slot <= this.requireWork.length) {
@@ -1057,18 +1049,19 @@ public class DualityInterface
                 }
 
                 final Block directedBlock = hostWorld.getBlock(xPos, yPos, zPos);
-                ItemStack what =
-                        new ItemStack(directedBlock, 1, directedBlock.getDamageValue(hostWorld, xPos, yPos, zPos));
+                ItemStack what = new ItemStack(
+                        directedBlock,
+                        1,
+                        directedBlock.getDamageValue(hostWorld, xPos, yPos, zPos));
                 try {
-                    Vec3 from = Vec3.createVectorHelper(
-                            hostTile.xCoord + 0.5, hostTile.yCoord + 0.5, hostTile.zCoord + 0.5);
-                    from = from.addVector(
-                            direction.offsetX * 0.501, direction.offsetY * 0.501, direction.offsetZ * 0.501);
+                    Vec3 from = Vec3
+                            .createVectorHelper(hostTile.xCoord + 0.5, hostTile.yCoord + 0.5, hostTile.zCoord + 0.5);
+                    from = from
+                            .addVector(direction.offsetX * 0.501, direction.offsetY * 0.501, direction.offsetZ * 0.501);
                     final Vec3 to = from.addVector(direction.offsetX, direction.offsetY, direction.offsetZ);
                     final MovingObjectPosition mop = hostWorld.rayTraceBlocks(from, to, true);
                     if (mop != null && !BAD_BLOCKS.contains(directedBlock)) {
-                        if (mop.blockX == directedTile.xCoord
-                                && mop.blockY == directedTile.yCoord
+                        if (mop.blockX == directedTile.xCoord && mop.blockY == directedTile.yCoord
                                 && mop.blockZ == directedTile.zCoord) {
                             final ItemStack g = directedBlock.getPickBlock(
                                     mop,
@@ -1150,8 +1143,8 @@ public class DualityInterface
         }
 
         @Override
-        public IAEItemStack extractItems(
-                final IAEItemStack request, final Actionable type, final BaseActionSource src) {
+        public IAEItemStack extractItems(final IAEItemStack request, final Actionable type,
+                final BaseActionSource src) {
             if (src instanceof InterfaceRequestSource) {
                 return null;
             }

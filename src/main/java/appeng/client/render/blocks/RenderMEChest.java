@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
+
+import java.util.EnumSet;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.storage.ICellHandler;
@@ -28,14 +30,6 @@ import appeng.client.texture.FlippableIcon;
 import appeng.client.texture.OffsetIcon;
 import appeng.tile.storage.TileChest;
 import appeng.util.Platform;
-import java.util.EnumSet;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class RenderMEChest extends BaseBlockRender<BlockChest, TileChest> {
 
@@ -44,12 +38,8 @@ public class RenderMEChest extends BaseBlockRender<BlockChest, TileChest> {
     }
 
     @Override
-    public void renderInventory(
-            final BlockChest block,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockChest block, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         Tessellator.instance.setBrightness(0);
 
         renderer.overrideBlockTexture = ExtraBlockTextures.getMissing();
@@ -69,12 +59,7 @@ public class RenderMEChest extends BaseBlockRender<BlockChest, TileChest> {
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockChest imb,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
+    public boolean renderInWorld(final BlockChest imb, final IBlockAccess world, final int x, final int y, final int z,
             final RenderBlocks renderer) {
         final TileChest sp = imb.getTileEntity(world, x, y, z);
 
@@ -105,8 +90,8 @@ public class RenderMEChest extends BaseBlockRender<BlockChest, TileChest> {
         Tessellator.instance.setColorOpaque_I(0xffffff);
 
         final int offsetU = -4;
-        final FlippableIcon flippableIcon =
-                new FlippableIcon(new OffsetIcon(ExtraBlockTextures.MEStorageCellTextures.getIcon(), offsetU, offsetV));
+        final FlippableIcon flippableIcon = new FlippableIcon(
+                new OffsetIcon(ExtraBlockTextures.MEStorageCellTextures.getIcon(), offsetU, offsetV));
 
         if (forward == ForgeDirection.EAST && (up == ForgeDirection.NORTH || up == ForgeDirection.SOUTH)) {
             flippableIcon.setFlip(true, false);

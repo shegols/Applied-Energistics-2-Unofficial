@@ -1,22 +1,21 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.integration.modules;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 import appeng.api.AEApi;
 import appeng.api.storage.IMEInventory;
@@ -26,16 +25,12 @@ import appeng.integration.abstraction.IFZ;
 import appeng.integration.modules.helpers.FactorizationBarrel;
 import appeng.integration.modules.helpers.FactorizationHandler;
 import appeng.util.Platform;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 /**
  * 100% Hacks.
  */
 public class FZ implements IFZ, IIntegrationModule {
+
     @Reflected
     public static FZ instance;
 
@@ -59,9 +54,7 @@ public class FZ implements IFZ, IIntegrationModule {
             }
 
             return i;
-        } catch (final IllegalArgumentException ignored) {
-        } catch (final IllegalAccessException ignored) {
-        }
+        } catch (final IllegalArgumentException ignored) {} catch (final IllegalAccessException ignored) {}
         return null;
     }
 
@@ -71,10 +64,7 @@ public class FZ implements IFZ, IIntegrationModule {
             if (day_BarrelClass.isInstance(te)) {
                 return (Integer) day_getMaxSize.invoke(te);
             }
-        } catch (final IllegalAccessException ignored) {
-        } catch (final IllegalArgumentException ignored) {
-        } catch (final InvocationTargetException ignored) {
-        }
+        } catch (final IllegalAccessException ignored) {} catch (final IllegalArgumentException ignored) {} catch (final InvocationTargetException ignored) {}
         return 0;
     }
 
@@ -84,10 +74,7 @@ public class FZ implements IFZ, IIntegrationModule {
             if (day_BarrelClass.isInstance(te)) {
                 return (Integer) day_getItemCount.invoke(te);
             }
-        } catch (final IllegalAccessException ignored) {
-        } catch (final IllegalArgumentException ignored) {
-        } catch (final InvocationTargetException ignored) {
-        }
+        } catch (final IllegalAccessException ignored) {} catch (final IllegalArgumentException ignored) {} catch (final InvocationTargetException ignored) {}
         return 0;
     }
 
@@ -97,9 +84,7 @@ public class FZ implements IFZ, IIntegrationModule {
             if (day_BarrelClass.isInstance(te)) {
                 day_item.set(te, input == null ? null : input.copy());
             }
-        } catch (final IllegalArgumentException ignored) {
-        } catch (final IllegalAccessException ignored) {
-        }
+        } catch (final IllegalArgumentException ignored) {} catch (final IllegalAccessException ignored) {}
     }
 
     @Override
@@ -110,10 +95,7 @@ public class FZ implements IFZ, IIntegrationModule {
             }
 
             te.markDirty();
-        } catch (final IllegalAccessException ignored) {
-        } catch (final IllegalArgumentException ignored) {
-        } catch (final InvocationTargetException ignored) {
-        }
+        } catch (final IllegalAccessException ignored) {} catch (final IllegalArgumentException ignored) {} catch (final InvocationTargetException ignored) {}
     }
 
     @Override

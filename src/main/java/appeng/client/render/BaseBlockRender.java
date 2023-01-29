@@ -1,33 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render;
 
-import appeng.api.util.IOrientable;
-import appeng.block.AEBaseBlock;
-import appeng.client.texture.ExtraBlockTextures;
-import appeng.tile.AEBaseTile;
-import appeng.util.Platform;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.nio.FloatBuffer;
 import java.util.EnumSet;
+
 import javax.annotation.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderHelper;
@@ -42,11 +29,21 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
+import appeng.api.util.IOrientable;
+import appeng.block.AEBaseBlock;
+import appeng.client.texture.ExtraBlockTextures;
+import appeng.tile.AEBaseTile;
+import appeng.util.Platform;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 @SideOnly(Side.CLIENT)
 public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
+
     private static final int ORIENTATION_BITS = 7;
     private static final int FLIP_H_BIT = 8;
     private static final int FLIP_V_BIT = 16;
@@ -266,12 +263,8 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
         return this.renderDistance;
     }
 
-    public void renderInventory(
-            final B block,
-            final ItemStack item,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] data) {
+    public void renderInventory(final B block, final ItemStack item, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] data) {
         final Tessellator tess = Tessellator.instance;
         final BlockRenderInfo info = block.getRendererInstance();
 
@@ -302,13 +295,11 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
             info.setTemporaryRenderIcon(null);
         }
 
-        renderer.uvRotateBottom = renderer.uvRotateEast =
-                renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
+        renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
     }
 
     static int getOrientation(final ForgeDirection in, final ForgeDirection forward, final ForgeDirection up) {
-        if (in == null
-                || in == ForgeDirection.UNKNOWN // 1
+        if (in == null || in == ForgeDirection.UNKNOWN // 1
                 || forward == null
                 || forward == ForgeDirection.UNKNOWN // 2
                 || up == null
@@ -323,13 +314,8 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
         return ORIENTATION_MAP[a][b][c];
     }
 
-    public void renderInvBlock(
-            final EnumSet<ForgeDirection> sides,
-            final B block,
-            final ItemStack item,
-            final Tessellator tess,
-            final int color,
-            final RenderBlocks renderer) {
+    public void renderInvBlock(final EnumSet<ForgeDirection> sides, final B block, final ItemStack item,
+            final Tessellator tess, final int color, final RenderBlocks renderer) {
         if (block == null) {
             return;
         }
@@ -447,12 +433,7 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
         return ExtraBlockTextures.getMissing();
     }
 
-    public boolean renderInWorld(
-            final B block,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
+    public boolean renderInWorld(final B block, final IBlockAccess world, final int x, final int y, final int z,
             final RenderBlocks renderer) {
         this.preRenderInWorld(block, world, x, y, z, renderer);
 
@@ -463,12 +444,7 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
         return o;
     }
 
-    public void preRenderInWorld(
-            final B block,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
+    public void preRenderInWorld(final B block, final IBlockAccess world, final int x, final int y, final int z,
             final RenderBlocks renderer) {
 
         final BlockRenderInfo info = block.getRendererInstance();
@@ -478,26 +454,25 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
             final ForgeDirection forward = te.getForward();
             final ForgeDirection up = te.getUp();
 
-            renderer.uvRotateBottom =
-                    info.getTexture(ForgeDirection.DOWN).setFlip(getOrientation(ForgeDirection.DOWN, forward, up));
-            renderer.uvRotateTop =
-                    info.getTexture(ForgeDirection.UP).setFlip(getOrientation(ForgeDirection.UP, forward, up));
+            renderer.uvRotateBottom = info.getTexture(ForgeDirection.DOWN)
+                    .setFlip(getOrientation(ForgeDirection.DOWN, forward, up));
+            renderer.uvRotateTop = info.getTexture(ForgeDirection.UP)
+                    .setFlip(getOrientation(ForgeDirection.UP, forward, up));
 
-            renderer.uvRotateEast =
-                    info.getTexture(ForgeDirection.EAST).setFlip(getOrientation(ForgeDirection.EAST, forward, up));
-            renderer.uvRotateWest =
-                    info.getTexture(ForgeDirection.WEST).setFlip(getOrientation(ForgeDirection.WEST, forward, up));
+            renderer.uvRotateEast = info.getTexture(ForgeDirection.EAST)
+                    .setFlip(getOrientation(ForgeDirection.EAST, forward, up));
+            renderer.uvRotateWest = info.getTexture(ForgeDirection.WEST)
+                    .setFlip(getOrientation(ForgeDirection.WEST, forward, up));
 
-            renderer.uvRotateNorth =
-                    info.getTexture(ForgeDirection.NORTH).setFlip(getOrientation(ForgeDirection.NORTH, forward, up));
-            renderer.uvRotateSouth =
-                    info.getTexture(ForgeDirection.SOUTH).setFlip(getOrientation(ForgeDirection.SOUTH, forward, up));
+            renderer.uvRotateNorth = info.getTexture(ForgeDirection.NORTH)
+                    .setFlip(getOrientation(ForgeDirection.NORTH, forward, up));
+            renderer.uvRotateSouth = info.getTexture(ForgeDirection.SOUTH)
+                    .setFlip(getOrientation(ForgeDirection.SOUTH, forward, up));
         }
     }
 
     public void postRenderInWorld(final RenderBlocks renderer) {
-        renderer.uvRotateBottom = renderer.uvRotateEast =
-                renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
+        renderer.uvRotateBottom = renderer.uvRotateEast = renderer.uvRotateNorth = renderer.uvRotateSouth = renderer.uvRotateTop = renderer.uvRotateWest = 0;
     }
 
     @Nullable
@@ -505,22 +480,13 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
         return block.getOrientable(w, x, y, z);
     }
 
-    protected void setInvRenderBounds(
-            final RenderBlocks renderer, final int i, final int j, final int k, final int l, final int m, final int n) {
+    protected void setInvRenderBounds(final RenderBlocks renderer, final int i, final int j, final int k, final int l,
+            final int m, final int n) {
         renderer.setRenderBounds(i / 16.0, j / 16.0, k / 16.0, l / 16.0, m / 16.0, n / 16.0);
     }
 
-    protected void renderBlockBounds(
-            final RenderBlocks renderer,
-            double minX,
-            double minY,
-            double minZ,
-            double maxX,
-            double maxY,
-            double maxZ,
-            final ForgeDirection x,
-            final ForgeDirection y,
-            final ForgeDirection z) {
+    protected void renderBlockBounds(final RenderBlocks renderer, double minX, double minY, double minZ, double maxX,
+            double maxY, double maxZ, final ForgeDirection x, final ForgeDirection y, final ForgeDirection z) {
         minX /= 16.0;
         minY /= 16.0;
         minZ /= 16.0;
@@ -560,15 +526,8 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
     }
 
     @SideOnly(Side.CLIENT)
-    protected void renderCutoutFace(
-            final B block,
-            final IIcon ico,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer,
-            final ForgeDirection orientation,
-            final float edgeThickness) {
+    protected void renderCutoutFace(final B block, final IIcon ico, final int x, final int y, final int z,
+            final RenderBlocks renderer, final ForgeDirection orientation, final float edgeThickness) {
         final Tessellator tess = Tessellator.instance;
 
         double offsetX = 0.0;
@@ -709,23 +668,9 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
     }
 
     @SideOnly(Side.CLIENT)
-    private void renderFace(
-            final Tessellator tess,
-            final double offsetX,
-            final double offsetY,
-            final double offsetZ,
-            final double ax,
-            final double ay,
-            final double az,
-            final double bx,
-            final double by,
-            final double bz,
-            final double ua,
-            final double ub,
-            final double va,
-            final double vb,
-            final IIcon ico,
-            final boolean flip) {
+    private void renderFace(final Tessellator tess, final double offsetX, final double offsetY, final double offsetZ,
+            final double ax, final double ay, final double az, final double bx, final double by, final double bz,
+            final double ua, final double ub, final double va, final double vb, final IIcon ico, final boolean flip) {
         if (flip) {
             tess.addVertexWithUV(
                     offsetX + ax * ua + bx * va,
@@ -780,14 +725,8 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
     }
 
     @SideOnly(Side.CLIENT)
-    protected void renderFace(
-            final int x,
-            final int y,
-            final int z,
-            final B block,
-            final IIcon ico,
-            final RenderBlocks renderer,
-            final ForgeDirection orientation) {
+    protected void renderFace(final int x, final int y, final int z, final B block, final IIcon ico,
+            final RenderBlocks renderer, final ForgeDirection orientation) {
         switch (orientation) {
             case NORTH:
                 renderer.renderFaceZNeg(block, x, y, z, ico);
@@ -812,31 +751,24 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
         }
     }
 
-    public void selectFace(
-            final RenderBlocks renderer,
-            final ForgeDirection west,
-            final ForgeDirection up,
-            final ForgeDirection forward,
-            final int u1,
-            final int u2,
-            int v1,
-            int v2) {
+    public void selectFace(final RenderBlocks renderer, final ForgeDirection west, final ForgeDirection up,
+            final ForgeDirection forward, final int u1, final int u2, int v1, int v2) {
         v1 = 16 - v1;
         v2 = 16 - v2;
 
-        final double minX =
-                (forward.offsetX > 0 ? 1 : 0) + this.mapFaceUV(west.offsetX, u1) + this.mapFaceUV(up.offsetX, v1);
-        final double minY =
-                (forward.offsetY > 0 ? 1 : 0) + this.mapFaceUV(west.offsetY, u1) + this.mapFaceUV(up.offsetY, v1);
-        final double minZ =
-                (forward.offsetZ > 0 ? 1 : 0) + this.mapFaceUV(west.offsetZ, u1) + this.mapFaceUV(up.offsetZ, v1);
+        final double minX = (forward.offsetX > 0 ? 1 : 0) + this.mapFaceUV(west.offsetX, u1)
+                + this.mapFaceUV(up.offsetX, v1);
+        final double minY = (forward.offsetY > 0 ? 1 : 0) + this.mapFaceUV(west.offsetY, u1)
+                + this.mapFaceUV(up.offsetY, v1);
+        final double minZ = (forward.offsetZ > 0 ? 1 : 0) + this.mapFaceUV(west.offsetZ, u1)
+                + this.mapFaceUV(up.offsetZ, v1);
 
-        final double maxX =
-                (forward.offsetX > 0 ? 1 : 0) + this.mapFaceUV(west.offsetX, u2) + this.mapFaceUV(up.offsetX, v2);
-        final double maxY =
-                (forward.offsetY > 0 ? 1 : 0) + this.mapFaceUV(west.offsetY, u2) + this.mapFaceUV(up.offsetY, v2);
-        final double maxZ =
-                (forward.offsetZ > 0 ? 1 : 0) + this.mapFaceUV(west.offsetZ, u2) + this.mapFaceUV(up.offsetZ, v2);
+        final double maxX = (forward.offsetX > 0 ? 1 : 0) + this.mapFaceUV(west.offsetX, u2)
+                + this.mapFaceUV(up.offsetX, v2);
+        final double maxY = (forward.offsetY > 0 ? 1 : 0) + this.mapFaceUV(west.offsetY, u2)
+                + this.mapFaceUV(up.offsetY, v2);
+        final double maxZ = (forward.offsetZ > 0 ? 1 : 0) + this.mapFaceUV(west.offsetZ, u2)
+                + this.mapFaceUV(up.offsetZ, v2);
 
         renderer.renderMinX = Math.max(0.0, Math.min(minX, maxX) - (forward.offsetX != 0 ? 0 : 0.001));
         renderer.renderMaxX = Math.min(1.0, Math.max(minX, maxX) + (forward.offsetX != 0 ? 0 : 0.001));
@@ -860,17 +792,9 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
         return (16.0 - uv) / 16.0;
     }
 
-    public void renderTile(
-            final B block,
-            final T tile,
-            final Tessellator tess,
-            final double x,
-            final double y,
-            final double z,
-            final float f,
-            final RenderBlocks renderer) {
-        renderer.uvRotateBottom = renderer.uvRotateTop =
-                renderer.uvRotateEast = renderer.uvRotateWest = renderer.uvRotateNorth = renderer.uvRotateSouth = 0;
+    public void renderTile(final B block, final T tile, final Tessellator tess, final double x, final double y,
+            final double z, final float f, final RenderBlocks renderer) {
+        renderer.uvRotateBottom = renderer.uvRotateTop = renderer.uvRotateEast = renderer.uvRotateWest = renderer.uvRotateNorth = renderer.uvRotateSouth = 0;
 
         final ForgeDirection up = ForgeDirection.UP;
         final ForgeDirection forward = ForgeDirection.SOUTH;
@@ -898,12 +822,11 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
         tess.setTranslation(0, 0, 0);
         RenderHelper.enableStandardItemLighting();
 
-        renderer.uvRotateBottom = renderer.uvRotateTop =
-                renderer.uvRotateEast = renderer.uvRotateWest = renderer.uvRotateNorth = renderer.uvRotateSouth = 0;
+        renderer.uvRotateBottom = renderer.uvRotateTop = renderer.uvRotateEast = renderer.uvRotateWest = renderer.uvRotateNorth = renderer.uvRotateSouth = 0;
     }
 
-    protected void applyTESRRotation(
-            final double x, final double y, final double z, ForgeDirection forward, ForgeDirection up) {
+    protected void applyTESRRotation(final double x, final double y, final double z, ForgeDirection forward,
+            ForgeDirection up) {
         if (forward != null && up != null) {
             if (forward == ForgeDirection.UNKNOWN) {
                 forward = ForgeDirection.SOUTH;
@@ -944,8 +867,12 @@ public class BaseBlockRender<B extends AEBaseBlock, T extends AEBaseTile> {
 
     public void doRenderItem(final ItemStack itemstack, final TileEntity par1EntityItemFrame) {
         if (itemstack != null) {
-            final EntityItem entityitem =
-                    new EntityItem(par1EntityItemFrame.getWorldObj(), 0.0D, 0.0D, 0.0D, itemstack);
+            final EntityItem entityitem = new EntityItem(
+                    par1EntityItemFrame.getWorldObj(),
+                    0.0D,
+                    0.0D,
+                    0.0D,
+                    itemstack);
 
             entityitem.getEntityItem().stackSize = 1;
 

@@ -1,22 +1,37 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.client.gui.widgets.GuiScrollbar;
@@ -41,31 +56,13 @@ import appeng.integration.IntegrationType;
 import appeng.integration.abstraction.INEI;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 public abstract class AEBaseGui extends GuiContainer {
+
     private static boolean switchingGuis;
     private final List<InternalSlotME> meSlots = new LinkedList<InternalSlotME>();
     // drag y
@@ -381,8 +378,8 @@ public abstract class AEBaseGui extends GuiContainer {
         } else {
 
             if (slot instanceof SlotFake) {
-                final InventoryAction action =
-                        ctrlDown == 1 ? InventoryAction.SPLIT_OR_PLACE_SINGLE : InventoryAction.PICKUP_OR_SET_DOWN;
+                final InventoryAction action = ctrlDown == 1 ? InventoryAction.SPLIT_OR_PLACE_SINGLE
+                        : InventoryAction.PICKUP_OR_SET_DOWN;
 
                 if (this.drag_click.size() > 1) {
                     return;
@@ -453,13 +450,12 @@ public abstract class AEBaseGui extends GuiContainer {
 
             switch (mouseButton) {
                 case 0: // pickup / set-down.
-                    {
-                        ItemStack heldStack = player.inventory.getItemStack();
-                        if (slot.getStack() == null && heldStack != null)
-                            action = InventoryAction.SPLIT_OR_PLACE_SINGLE;
-                        else if (slot.getStack() != null && (heldStack == null || heldStack.stackSize <= 1))
-                            action = InventoryAction.PICKUP_OR_SET_DOWN;
-                    }
+                {
+                    ItemStack heldStack = player.inventory.getItemStack();
+                    if (slot.getStack() == null && heldStack != null) action = InventoryAction.SPLIT_OR_PLACE_SINGLE;
+                    else if (slot.getStack() != null && (heldStack == null || heldStack.stackSize <= 1))
+                        action = InventoryAction.PICKUP_OR_SET_DOWN;
+                }
                     break;
                 case 1:
                     action = ctrlDown == 1 ? InventoryAction.PICKUP_SINGLE : InventoryAction.SHIFT_CLICK;
@@ -497,8 +493,7 @@ public abstract class AEBaseGui extends GuiContainer {
                     action = ctrlDown == 1 ? InventoryAction.SPLIT_OR_PLACE_SINGLE : InventoryAction.PICKUP_OR_SET_DOWN;
                     stack = ((SlotME) slot).getAEStack();
 
-                    if (stack != null
-                            && action == InventoryAction.PICKUP_OR_SET_DOWN
+                    if (stack != null && action == InventoryAction.PICKUP_OR_SET_DOWN
                             && stack.getStackSize() == 0
                             && player.inventory.getItemStack() == null) {
                         action = InventoryAction.AUTO_CRAFT;
@@ -529,8 +524,7 @@ public abstract class AEBaseGui extends GuiContainer {
 
             if (action != null) {
                 ((AEBaseContainer) this.inventorySlots).setTargetStack(stack);
-                final PacketInventoryAction p = new PacketInventoryAction(
-                        action, this.getInventorySlots().size(), 0);
+                final PacketInventoryAction p = new PacketInventoryAction(action, this.getInventorySlots().size(), 0);
                 NetworkHandler.instance.sendToServer(p);
             }
 
@@ -540,8 +534,7 @@ public abstract class AEBaseGui extends GuiContainer {
         if (!this.disableShiftClick && isShiftKeyDown()) {
             this.disableShiftClick = true;
 
-            if (this.dbl_whichItem == null
-                    || this.bl_clicked != slot
+            if (this.dbl_whichItem == null || this.bl_clicked != slot
                     || this.dbl_clickTimer.elapsed(TimeUnit.MILLISECONDS) > 150) {
                 // some simple double click logic.
                 this.bl_clicked = slot;
@@ -556,8 +549,7 @@ public abstract class AEBaseGui extends GuiContainer {
 
                 final List<Slot> slots = this.getInventorySlots();
                 for (final Slot inventorySlot : slots) {
-                    if (inventorySlot != null
-                            && inventorySlot.canTakeStack(this.mc.thePlayer)
+                    if (inventorySlot != null && inventorySlot.canTakeStack(this.mc.thePlayer)
                             && inventorySlot.getHasStack()
                             && inventorySlot.inventory == slot.inventory
                             && Container.func_94527_a(inventorySlot, this.dbl_whichItem, true)) {
@@ -577,8 +569,8 @@ public abstract class AEBaseGui extends GuiContainer {
         final Slot theSlot;
 
         try {
-            theSlot = ObfuscationReflectionHelper.getPrivateValue(
-                    GuiContainer.class, this, "theSlot", "field_147006_u", "f");
+            theSlot = ObfuscationReflectionHelper
+                    .getPrivateValue(GuiContainer.class, this, "theSlot", "field_147006_u", "f");
         } catch (final Throwable t) {
             return false;
         }
@@ -603,8 +595,8 @@ public abstract class AEBaseGui extends GuiContainer {
                         for (final Slot s : slots) {
                             if (s.getSlotIndex() == j
                                     && s.inventory == ((AEBaseContainer) this.inventorySlots).getPlayerInv()) {
-                                NetworkHandler.instance.sendToServer(
-                                        new PacketSwapSlots(s.slotNumber, theSlot.slotNumber));
+                                NetworkHandler.instance
+                                        .sendToServer(new PacketSwapSlots(s.slotNumber, theSlot.slotNumber));
                                 return true;
                             }
                         }
@@ -651,8 +643,7 @@ public abstract class AEBaseGui extends GuiContainer {
             } else if (this.getScrollBar() != null) {
                 final GuiScrollbar scrollBar = this.getScrollBar();
 
-                if (x > this.guiLeft
-                        && y - this.guiTop > scrollBar.getTop()
+                if (x > this.guiLeft && y - this.guiTop > scrollBar.getTop()
                         && x <= this.guiLeft + this.xSize
                         && y - this.guiTop <= scrollBar.getTop() + scrollBar.getHeight()) {
                     this.getScrollBar().wheel(wheel);
@@ -756,8 +747,7 @@ public abstract class AEBaseGui extends GuiContainer {
         } else {
             try {
                 final ItemStack is = s.getStack();
-                if (s instanceof AppEngSlot
-                        && (((AppEngSlot) s).renderIconWithItem() || is == null)
+                if (s instanceof AppEngSlot && (((AppEngSlot) s).renderIconWithItem() || is == null)
                         && (((AppEngSlot) s).shouldDisplay())) {
                     final AppEngSlot aes = (AppEngSlot) s;
                     if (aes.getIcon() >= 0) {
@@ -785,27 +775,37 @@ public abstract class AEBaseGui extends GuiContainer {
                             final float f = 0.00390625F;
                             final float par6 = 16;
                             tessellator.addVertexWithUV(
-                                    par1 + 0, par2 + par6, this.zLevel, (par3 + 0) * f, (par4 + par6) * f1);
+                                    par1 + 0,
+                                    par2 + par6,
+                                    this.zLevel,
+                                    (par3 + 0) * f,
+                                    (par4 + par6) * f1);
                             final float par5 = 16;
                             tessellator.addVertexWithUV(
-                                    par1 + par5, par2 + par6, this.zLevel, (par3 + par5) * f, (par4 + par6) * f1);
+                                    par1 + par5,
+                                    par2 + par6,
+                                    this.zLevel,
+                                    (par3 + par5) * f,
+                                    (par4 + par6) * f1);
                             tessellator.addVertexWithUV(
-                                    par1 + par5, par2 + 0, this.zLevel, (par3 + par5) * f, (par4 + 0) * f1);
-                            tessellator.addVertexWithUV(
-                                    par1 + 0, par2 + 0, this.zLevel, (par3 + 0) * f, (par4 + 0) * f1);
+                                    par1 + par5,
+                                    par2 + 0,
+                                    this.zLevel,
+                                    (par3 + par5) * f,
+                                    (par4 + 0) * f1);
+                            tessellator
+                                    .addVertexWithUV(par1 + 0, par2 + 0, this.zLevel, (par3 + 0) * f, (par4 + 0) * f1);
                             tessellator.setColorRGBA_F(1.0f, 1.0f, 1.0f, 1.0f);
                             tessellator.draw();
 
-                        } catch (final Exception err) {
-                        }
+                        } catch (final Exception err) {}
                         GL11.glPopAttrib();
                     }
                 }
 
                 if (is != null && s instanceof AppEngSlot) {
                     if (((AppEngSlot) s).getIsValid() == hasCalculatedValidness.NotAvailable) {
-                        boolean isValid = s.isItemValid(is)
-                                || s instanceof SlotOutput
+                        boolean isValid = s.isItemValid(is) || s instanceof SlotOutput
                                 || s instanceof AppEngCraftingSlot
                                 || s instanceof SlotDisabled
                                 || s instanceof SlotInaccessible
@@ -873,11 +873,8 @@ public abstract class AEBaseGui extends GuiContainer {
 
     private void safeDrawSlot(final Slot s) {
         try {
-            GuiContainer.class
-                    .getDeclaredMethod("func_146977_a_original", Slot.class)
-                    .invoke(this, s);
-        } catch (final Exception err) {
-        }
+            GuiContainer.class.getDeclaredMethod("func_146977_a_original", Slot.class).invoke(this, s);
+        } catch (final Exception err) {}
     }
 
     public void bindTexture(final String file) {

@@ -1,32 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.util.item;
 
+import java.util.*;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import appeng.api.storage.data.IAEItemStack;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Sets;
-import java.util.*;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class OreHelper {
 
@@ -37,6 +32,7 @@ public class OreHelper {
      */
     private final LoadingCache<String, List<ItemStack>> oreDictCache = CacheBuilder.newBuilder()
             .build(new CacheLoader<String, List<ItemStack>>() {
+
                 @Override
                 public List<ItemStack> load(final String oreName) {
                     return OreDictionary.getOres(oreName);
@@ -76,9 +72,7 @@ public class OreHelper {
 
     boolean sameOre(final AEItemStack aeItemStack, final IAEItemStack is) {
         if (is instanceof AEItemStack) {
-            return this.sameOre(
-                    aeItemStack.getDefinition().getIsOre(),
-                    ((AEItemStack) is).getDefinition().getIsOre());
+            return this.sameOre(aeItemStack.getDefinition().getIsOre(), ((AEItemStack) is).getDefinition().getIsOre());
         }
 
         return this.sameOre(aeItemStack, is.getItemStack());
@@ -148,8 +142,8 @@ public class OreHelper {
 
         @Override
         public String toString() {
-            return "ItemRef [ref=" + this.ref.getUnlocalizedName() + ", damage=" + this.damage + ", hash=" + this.hash
-                    + ']';
+            return "ItemRef [ref=" + this.ref
+                    .getUnlocalizedName() + ", damage=" + this.damage + ", hash=" + this.hash + ']';
         }
     }
 }

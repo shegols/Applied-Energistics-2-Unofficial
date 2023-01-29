@@ -1,22 +1,36 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import appeng.api.AEApi;
 import appeng.api.config.Upgrades;
@@ -41,30 +55,12 @@ import appeng.parts.networking.PartCable;
 import appeng.tile.inventory.AppEngInternalAEInventory;
 import appeng.util.Platform;
 import appeng.util.SettingsFrom;
+
 import com.google.common.base.Preconditions;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, IUpgradeableHost, ICustomNameObject {
 
@@ -172,8 +168,8 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x, final int y, final int z, final IPartRenderHelper rh, final RenderBlocks renderer) {
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {
         rh.setBounds(1, 1, 1, 15, 15, 15);
         rh.renderBlock(x, y, z, renderer);
     }
@@ -189,8 +185,8 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderDynamic(
-            final double x, final double y, final double z, final IPartRenderHelper rh, final RenderBlocks renderer) {}
+    public void renderDynamic(final double x, final double y, final double z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {}
 
     @Override
     public ItemStack getItemStack(final PartItemStack type) {
@@ -377,8 +373,7 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
             // Blocks and parts share the same soul!
             final IDefinitions definitions = AEApi.instance().definitions();
             if (definitions.parts().iface().isSameAs(is)) {
-                for (final ItemStack iface :
-                        definitions.blocks().iface().maybeStack(1).asSet()) {
+                for (final ItemStack iface : definitions.blocks().iface().maybeStack(1).asSet()) {
                     is = iface;
                 }
             }
@@ -418,10 +413,16 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
 
     @Override
     public final boolean onActivate(final EntityPlayer player, final Vec3 pos) {
-        //		int x = (int) pos.xCoord, y = (int) pos.yCoord, z = (int) pos.zCoord;
+        // int x = (int) pos.xCoord, y = (int) pos.yCoord, z = (int) pos.zCoord;
         int x = this.tile.xCoord, y = this.tile.yCoord, z = this.tile.zCoord;
         PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(
-                player, PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, x, y, z, this.side.flag, player.getEntityWorld());
+                player,
+                PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK,
+                x,
+                y,
+                z,
+                this.side.flag,
+                player.getEntityWorld());
         if (event.isCanceled()) return false;
 
         if (this.useMemoryCard(player) || useRenamer(player)) return true;
@@ -431,10 +432,16 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
 
     @Override
     public final boolean onShiftActivate(final EntityPlayer player, final Vec3 pos) {
-        //		int x = (int) pos.xCoord, y = (int) pos.yCoord, z = (int) pos.zCoord;
+        // int x = (int) pos.xCoord, y = (int) pos.yCoord, z = (int) pos.zCoord;
         int x = this.tile.xCoord, y = this.tile.yCoord, z = this.tile.zCoord;
         PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(
-                player, PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK, x, y, z, this.side.flag, player.getEntityWorld());
+                player,
+                PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK,
+                x,
+                y,
+                z,
+                this.side.flag,
+                player.getEntityWorld());
         if (event.isCanceled()) return false;
 
         if (this.useMemoryCard(player)) {

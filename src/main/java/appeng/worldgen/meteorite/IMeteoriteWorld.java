@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public interface IMeteoriteWorld {
+
     int minX(int in);
 
     int minZ(int in);

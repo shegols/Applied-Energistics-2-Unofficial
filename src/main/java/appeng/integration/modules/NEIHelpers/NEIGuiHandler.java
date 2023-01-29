@@ -1,14 +1,16 @@
 package appeng.integration.modules.NEIHelpers;
 
+import java.util.regex.Pattern;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
 import appeng.client.gui.implementations.GuiCraftConfirm;
 import appeng.client.gui.implementations.GuiCraftingStatus;
 import appeng.client.gui.implementations.GuiMEMonitorable;
 import appeng.client.gui.widgets.IDropToFillTextField;
 import codechicken.nei.api.INEIGuiAdapter;
-import java.util.regex.Pattern;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 public class NEIGuiHandler extends INEIGuiAdapter {
 
@@ -22,7 +24,10 @@ public class NEIGuiHandler extends INEIGuiAdapter {
 
             if (gmm.isOverTextField(mousex, mousey)) {
                 gmm.setTextFieldValue(
-                        formattingText(draggedStack.getDisplayName()), mousex, mousey, draggedStack.copy());
+                        formattingText(draggedStack.getDisplayName()),
+                        mousex,
+                        mousey,
+                        draggedStack.copy());
                 return true;
             }
         }
@@ -44,8 +49,7 @@ public class NEIGuiHandler extends INEIGuiAdapter {
     }
 
     protected String formattingText(final String displayName) {
-        return SPECIAL_REGEX_CHARS
-                .matcher(EnumChatFormatting.getTextWithoutFormattingCodes(displayName))
+        return SPECIAL_REGEX_CHARS.matcher(EnumChatFormatting.getTextWithoutFormattingCodes(displayName))
                 .replaceAll("\\\\$0");
     }
 }

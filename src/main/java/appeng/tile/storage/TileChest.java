@@ -1,22 +1,29 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.storage;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -50,26 +57,13 @@ import appeng.util.IConfigManagerHost;
 import appeng.util.Platform;
 import appeng.util.item.AEFluidStack;
 import io.netty.buffer.ByteBuf;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileChest extends AENetworkPowerTile
         implements IMEChest, IFluidHandler, ITerminalHost, IPriorityHost, IConfigManagerHost, IColorableTile {
 
     private static final ChestNoHandler NO_HANDLER = new ChestNoHandler();
-    private static final int[] SIDES = {0};
-    private static final int[] FRONT = {1};
+    private static final int[] SIDES = { 0 };
+    private static final int[] FRONT = { 1 };
     private static final int[] NO_SLOTS = {};
     private final AppEngInternalInventory inv = new AppEngInternalInventory(this, 2);
     private final BaseActionSource mySrc = new MachineSource(this);
@@ -154,10 +148,10 @@ public class TileChest extends AENetworkPowerTile
                 if (this.cellHandler != null) {
                     double power = 1.0;
 
-                    final IMEInventoryHandler<IAEItemStack> itemCell =
-                            this.cellHandler.getCellInventory(is, this, StorageChannel.ITEMS);
-                    final IMEInventoryHandler<IAEFluidStack> fluidCell =
-                            this.cellHandler.getCellInventory(is, this, StorageChannel.FLUIDS);
+                    final IMEInventoryHandler<IAEItemStack> itemCell = this.cellHandler
+                            .getCellInventory(is, this, StorageChannel.ITEMS);
+                    final IMEInventoryHandler<IAEFluidStack> fluidCell = this.cellHandler
+                            .getCellInventory(is, this, StorageChannel.FLUIDS);
 
                     if (itemCell != null) {
                         power += this.cellHandler.cellIdleDrain(is, itemCell);
@@ -219,16 +213,14 @@ public class TileChest extends AENetworkPowerTile
                 if (handler instanceof ChestMonitorHandler) {
                     return ch.getStatusForCell(cell, ((ChestMonitorHandler) handler).getInternalHandler());
                 }
-            } catch (final ChestNoHandler ignored) {
-            }
+            } catch (final ChestNoHandler ignored) {}
 
             try {
                 final IMEInventoryHandler handler = this.getHandler(StorageChannel.FLUIDS);
                 if (handler instanceof ChestMonitorHandler) {
                     return ch.getStatusForCell(cell, ((ChestMonitorHandler) handler).getInternalHandler());
                 }
-            } catch (final ChestNoHandler ignored) {
-            }
+            } catch (final ChestNoHandler ignored) {}
         }
 
         return 0;
@@ -245,8 +237,7 @@ public class TileChest extends AENetworkPowerTile
         if (!gridPowered) {
             try {
                 gridPowered = this.getProxy().getEnergy().isNetworkPowered();
-            } catch (final GridAccessException ignored) {
-            }
+            } catch (final GridAccessException ignored) {}
         }
 
         return super.getAECurrentPower() > 1 || gridPowered;
@@ -290,15 +281,14 @@ public class TileChest extends AENetworkPowerTile
 
         try {
             if (!this.getProxy().getEnergy().isNetworkPowered()) {
-                final double powerUsed =
-                        this.extractAEPower(idleUsage, Actionable.MODULATE, PowerMultiplier.CONFIG); // drain
+                final double powerUsed = this.extractAEPower(idleUsage, Actionable.MODULATE, PowerMultiplier.CONFIG); // drain
                 if (powerUsed + 0.1 >= idleUsage != (this.state & 0x40) > 0) {
                     this.recalculateDisplay();
                 }
             }
         } catch (final GridAccessException e) {
-            final double powerUsed = this.extractAEPower(
-                    this.getProxy().getIdlePowerUsage(), Actionable.MODULATE, PowerMultiplier.CONFIG); // drain
+            final double powerUsed = this
+                    .extractAEPower(this.getProxy().getIdlePowerUsage(), Actionable.MODULATE, PowerMultiplier.CONFIG); // drain
             if (powerUsed + 0.1 >= idleUsage != (this.state & 0x40) > 0) {
                 this.recalculateDisplay();
             }
@@ -358,8 +348,7 @@ public class TileChest extends AENetworkPowerTile
 
         this.lastStateChange = this.worldObj.getTotalWorldTime();
 
-        return oldPaintedColor != this.paintedColor
-                || (this.state & 0xDB6DB6DB) != (oldState & 0xDB6DB6DB)
+        return oldPaintedColor != this.paintedColor || (this.state & 0xDB6DB6DB) != (oldState & 0xDB6DB6DB)
                 || !Platform.isSameItemPrecise(oldType, this.storageType);
     }
 
@@ -411,11 +400,7 @@ public class TileChest extends AENetworkPowerTile
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {
         if (slot == 1) {
             this.itemCell = null;
@@ -458,8 +443,7 @@ public class TileChest extends AENetworkPowerTile
                         Actionable.SIMULATE,
                         this.mySrc);
                 return returns == null || returns.getStackSize() != insertingItem.stackSize;
-            } catch (final ChestNoHandler ignored) {
-            }
+            } catch (final ChestNoHandler ignored) {}
         }
         return false;
     }
@@ -493,7 +477,10 @@ public class TileChest extends AENetworkPowerTile
                 final IMEInventory<IAEItemStack> cell = this.getHandler(StorageChannel.ITEMS);
 
                 final IAEItemStack returns = Platform.poweredInsert(
-                        this, cell, AEApi.instance().storage().createItemStack(this.inv.getStackInSlot(0)), this.mySrc);
+                        this,
+                        cell,
+                        AEApi.instance().storage().createItemStack(this.inv.getStackInSlot(0)),
+                        this.mySrc);
 
                 if (returns == null) {
                     this.inv.setInventorySlotContents(0, null);
@@ -501,8 +488,7 @@ public class TileChest extends AENetworkPowerTile
                     this.inv.setInventorySlotContents(0, returns.getItemStack());
                 }
             }
-        } catch (final ChestNoHandler ignored) {
-        }
+        } catch (final ChestNoHandler ignored) {}
     }
 
     @Override
@@ -560,15 +546,16 @@ public class TileChest extends AENetworkPowerTile
 
                 this.extractAEPower(req, Actionable.MODULATE, PowerMultiplier.CONFIG);
                 final IAEStack results = h.injectItems(
-                        AEFluidStack.create(resource), doFill ? Actionable.MODULATE : Actionable.SIMULATE, this.mySrc);
+                        AEFluidStack.create(resource),
+                        doFill ? Actionable.MODULATE : Actionable.SIMULATE,
+                        this.mySrc);
 
                 if (results == null) {
                     return resource.amount;
                 }
 
                 return resource.amount - (int) results.getStackSize();
-            } catch (final ChestNoHandler ignored) {
-            }
+            } catch (final ChestNoHandler ignored) {}
         }
         return 0;
     }
@@ -588,8 +575,7 @@ public class TileChest extends AENetworkPowerTile
         try {
             final IMEInventoryHandler h = this.getHandler(StorageChannel.FLUIDS);
             return h.canAccept(AEFluidStack.create(new FluidStack(fluid, 1)));
-        } catch (final ChestNoHandler ignored) {
-        }
+        } catch (final ChestNoHandler ignored) {}
         return false;
     }
 
@@ -603,10 +589,9 @@ public class TileChest extends AENetworkPowerTile
         try {
             final IMEInventoryHandler h = this.getHandler(StorageChannel.FLUIDS);
             if (h.getChannel() == StorageChannel.FLUIDS) {
-                return new FluidTankInfo[] {new FluidTankInfo(null, 1)}; // eh?
+                return new FluidTankInfo[] { new FluidTankInfo(null, 1) }; // eh?
             }
-        } catch (final ChestNoHandler ignored) {
-        }
+        } catch (final ChestNoHandler ignored) {}
 
         return null;
     }
@@ -681,6 +666,7 @@ public class TileChest extends AENetworkPowerTile
     }
 
     private static class ChestNoHandler extends Exception {
+
         private static final long serialVersionUID = 7995805326136526631L;
     }
 
@@ -709,9 +695,7 @@ public class TileChest extends AENetworkPowerTile
                     || (source instanceof PlayerSource && ((PlayerSource) source).via == TileChest.this)) {
                 try {
                     if (TileChest.this.getProxy().isActive()) {
-                        TileChest.this
-                                .getProxy()
-                                .getStorage()
+                        TileChest.this.getProxy().getStorage()
                                 .postAlterationOfStoredItems(this.chan, change, TileChest.this.mySrc);
                     }
                 } catch (final GridAccessException e) {

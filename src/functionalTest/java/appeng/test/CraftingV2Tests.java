@@ -2,12 +2,8 @@ package appeng.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import appeng.api.storage.data.IAEItemStack;
-import appeng.crafting.v2.CraftingJobV2;
-import appeng.test.mockme.MockAESystem;
-import appeng.util.item.AEItemStack;
-import appeng.util.item.ItemList;
 import java.io.File;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,11 +11,19 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.*;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.common.DimensionManager;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import appeng.api.storage.data.IAEItemStack;
+import appeng.crafting.v2.CraftingJobV2;
+import appeng.test.mockme.MockAESystem;
+import appeng.util.item.AEItemStack;
+import appeng.util.item.ItemList;
+
 public class CraftingV2Tests {
+
     static World dummyWorld = null;
     final int SIMPLE_SIMULATION_TIMEOUT_MS = 100;
 
@@ -29,19 +33,19 @@ public class CraftingV2Tests {
             DimensionManager.registerDimension(256, 256);
         }
         if (dummyWorld == null) {
-            dummyWorld =
-                    new WorldServer(
-                            MinecraftServer.getServer(),
-                            new DummySaveHandler(),
-                            "DummyTestWorld",
-                            256,
-                            new WorldSettings(256, GameType.SURVIVAL, false, false, WorldType.DEFAULT),
-                            MinecraftServer.getServer().theProfiler) {
-                        @Override
-                        public File getChunkSaveLocation() {
-                            return new File("dummy-ignoreme");
-                        }
-                    };
+            dummyWorld = new WorldServer(
+                    MinecraftServer.getServer(),
+                    new DummySaveHandler(),
+                    "DummyTestWorld",
+                    256,
+                    new WorldSettings(256, GameType.SURVIVAL, false, false, WorldType.DEFAULT),
+                    MinecraftServer.getServer().theProfiler) {
+
+                @Override
+                public File getChunkSaveLocation() {
+                    return new File("dummy-ignoreme");
+                }
+            };
         }
     }
 
@@ -61,7 +65,9 @@ public class CraftingV2Tests {
             assertNotNull(matching, stack::toString);
             assertEquals(stack.getStackSize(), matching.getStackSize(), () -> "Stack size of " + stack);
             assertEquals(
-                    stack.getCountRequestable(), matching.getCountRequestable(), () -> "Requestable count of " + stack);
+                    stack.getCountRequestable(),
+                    matching.getCountRequestable(),
+                    () -> "Requestable count of " + stack);
             matching.setStackSize(0);
             matching.setCountRequestable(0);
         }
@@ -72,10 +78,8 @@ public class CraftingV2Tests {
     }
 
     private void addDummyGappleRecipe(MockAESystem aeSystem) {
-        aeSystem.newProcessingPattern()
-                .addInput(new ItemStack(Items.gold_ingot, 1))
-                .addOutput(new ItemStack(Items.golden_apple, 1))
-                .buildAndAdd();
+        aeSystem.newProcessingPattern().addInput(new ItemStack(Items.gold_ingot, 1))
+                .addOutput(new ItemStack(Items.golden_apple, 1)).buildAndAdd();
     }
 
     @Test
@@ -92,10 +96,8 @@ public class CraftingV2Tests {
     void simplePatternSimulation() {
         MockAESystem aeSystem = new MockAESystem(dummyWorld);
         // Very expensive sticks
-        aeSystem.newProcessingPattern()
-                .addInput(new ItemStack(Items.diamond, 1))
-                .addOutput(new ItemStack(Items.stick, 1))
-                .buildAndAdd();
+        aeSystem.newProcessingPattern().addInput(new ItemStack(Items.diamond, 1))
+                .addOutput(new ItemStack(Items.stick, 1)).buildAndAdd();
         // Another pattern that shouldn't match
         addDummyGappleRecipe(aeSystem);
         final CraftingJobV2 job = aeSystem.makeCraftingJob(new ItemStack(Items.stick, 13));
@@ -127,10 +129,8 @@ public class CraftingV2Tests {
         aeSystem.addStoredItem(new ItemStack(Items.diamond, 64));
         aeSystem.addStoredItem(new ItemStack(Items.gold_ingot, 64));
         // Very expensive sticks
-        aeSystem.newProcessingPattern()
-                .addInput(new ItemStack(Items.diamond, 1))
-                .addOutput(new ItemStack(Items.stick, 1))
-                .buildAndAdd();
+        aeSystem.newProcessingPattern().addInput(new ItemStack(Items.diamond, 1))
+                .addOutput(new ItemStack(Items.stick, 1)).buildAndAdd();
         // Another pattern that shouldn't match
         addDummyGappleRecipe(aeSystem);
         final CraftingJobV2 job = aeSystem.makeCraftingJob(new ItemStack(Items.stick, 13));
@@ -146,36 +146,27 @@ public class CraftingV2Tests {
     private void addPlankPatterns(MockAESystem aeSystem) {
         // Add all types of wood
         for (int meta = 0; meta < 4; meta++) {
-            aeSystem.newCraftingPattern()
-                    .allowBeingASubstitute()
-                    .addInput(new ItemStack(Blocks.log, 1, meta))
-                    .addOutput(new ItemStack(Blocks.planks, 4, meta))
-                    .buildAndAdd();
+            aeSystem.newCraftingPattern().allowBeingASubstitute().addInput(new ItemStack(Blocks.log, 1, meta))
+                    .addOutput(new ItemStack(Blocks.planks, 4, meta)).buildAndAdd();
         }
     }
 
     private void addFuzzyChestPattern(MockAESystem aeSystem) {
-        aeSystem.newCraftingPattern()
-                .allowUsingSubstitutes()
+        aeSystem.newCraftingPattern().allowUsingSubstitutes()
                 // row 1
-                .addInput(new ItemStack(Blocks.planks, 1))
-                .addInput(new ItemStack(Blocks.planks, 1))
+                .addInput(new ItemStack(Blocks.planks, 1)).addInput(new ItemStack(Blocks.planks, 1))
                 .addInput(new ItemStack(Blocks.planks, 1))
                 // row 2
-                .addInput(new ItemStack(Blocks.planks, 1))
-                .addInput(null)
-                .addInput(new ItemStack(Blocks.planks, 1))
+                .addInput(new ItemStack(Blocks.planks, 1)).addInput(null).addInput(new ItemStack(Blocks.planks, 1))
                 // row 3
-                .addInput(new ItemStack(Blocks.planks, 1))
-                .addInput(new ItemStack(Blocks.planks, 1))
+                .addInput(new ItemStack(Blocks.planks, 1)).addInput(new ItemStack(Blocks.planks, 1))
                 .addInput(new ItemStack(Blocks.planks, 1))
                 // end
-                .addOutput(new ItemStack(Blocks.chest, 1))
-                .buildAndAdd();
+                .addOutput(new ItemStack(Blocks.chest, 1)).buildAndAdd();
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1})
+    @ValueSource(ints = { 0, 1 })
     void craftChestFromLogs(int woodMetadata) {
         MockAESystem aeSystem = new MockAESystem(dummyWorld);
         aeSystem.addStoredItem(new ItemStack(Blocks.log, 64, woodMetadata));
@@ -191,8 +182,7 @@ public class CraftingV2Tests {
         assertJobPlanEquals(
                 job,
                 AEItemStack.create(new ItemStack(Blocks.log, 2, woodMetadata)),
-                AEItemStack.create(new ItemStack(Blocks.planks, 0, woodMetadata))
-                        .setCountRequestable(8),
+                AEItemStack.create(new ItemStack(Blocks.planks, 0, woodMetadata)).setCountRequestable(8),
                 AEItemStack.create(new ItemStack(Blocks.chest, 0)).setCountRequestable(1));
     }
 
@@ -223,14 +213,10 @@ public class CraftingV2Tests {
     void canHandleCyclicalPatterns() {
         MockAESystem aeSystem = new MockAESystem(dummyWorld);
         aeSystem.addStoredItem(new ItemStack(Blocks.log, 4, 0));
-        aeSystem.newProcessingPattern()
-                .addInput(new ItemStack(Blocks.log, 1))
-                .addOutput(new ItemStack(Blocks.planks, 4))
-                .buildAndAdd();
-        aeSystem.newProcessingPattern()
-                .addInput(new ItemStack(Blocks.planks, 4))
-                .addOutput(new ItemStack(Blocks.log, 1))
-                .buildAndAdd();
+        aeSystem.newProcessingPattern().addInput(new ItemStack(Blocks.log, 1))
+                .addOutput(new ItemStack(Blocks.planks, 4)).buildAndAdd();
+        aeSystem.newProcessingPattern().addInput(new ItemStack(Blocks.planks, 4))
+                .addOutput(new ItemStack(Blocks.log, 1)).buildAndAdd();
         for (int plankAmount = 1; plankAmount < 64; plankAmount++) {
             final CraftingJobV2 job = aeSystem.makeCraftingJob(new ItemStack(Blocks.planks, plankAmount));
             simulateJobAndCheck(job, SIMPLE_SIMULATION_TIMEOUT_MS);
@@ -242,11 +228,8 @@ public class CraftingV2Tests {
     void strictNamedItems() {
         MockAESystem aeSystem = new MockAESystem(dummyWorld);
         aeSystem.addStoredItem(new ItemStack(Blocks.log, 4, 0).setStackDisplayName("Named Log"));
-        aeSystem.newProcessingPattern()
-                .addInput(new ItemStack(Blocks.log, 1))
-                .addOutput(new ItemStack(Blocks.planks, 4))
-                .allowBeingASubstitute()
-                .buildAndAdd();
+        aeSystem.newProcessingPattern().addInput(new ItemStack(Blocks.log, 1))
+                .addOutput(new ItemStack(Blocks.planks, 4)).allowBeingASubstitute().buildAndAdd();
 
         final CraftingJobV2 job = aeSystem.makeCraftingJob(new ItemStack(Blocks.planks, 1));
         simulateJobAndCheck(job, SIMPLE_SIMULATION_TIMEOUT_MS);

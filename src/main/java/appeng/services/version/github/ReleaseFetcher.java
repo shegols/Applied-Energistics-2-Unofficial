@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.services.version.github;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.apache.commons.io.IOUtils;
 
 import appeng.core.AELog;
 import appeng.services.version.Channel;
@@ -24,19 +26,13 @@ import appeng.services.version.Version;
 import appeng.services.version.VersionCheckerConfig;
 import appeng.services.version.VersionParser;
 import appeng.services.version.exceptions.VersionCheckerException;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-import javax.annotation.Nonnull;
-import org.apache.commons.io.IOUtils;
 
 public final class ReleaseFetcher {
-    private static final String GITHUB_RELEASES_URL =
-            "https://api.github.com/repos/xsun2001/Applied-Energistics-2-Unofficial/releases";
+
+    private static final String GITHUB_RELEASES_URL = "https://api.github.com/repos/xsun2001/Applied-Energistics-2-Unofficial/releases";
     private static final FormattedRelease EXCEPTIONAL_RELEASE = new MissingFormattedRelease();
 
     @Nonnull
@@ -98,5 +94,6 @@ public final class ReleaseFetcher {
         return EXCEPTIONAL_RELEASE;
     }
 
-    private static final class ReleasesTypeToken extends TypeToken<List<Release>> {}
+    private static final class ReleasesTypeToken extends TypeToken<List<Release>> {
+    }
 }

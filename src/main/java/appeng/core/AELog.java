@@ -1,31 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core;
 
-import appeng.core.features.AEFeature;
-import appeng.tile.AEBaseTile;
-import appeng.util.Platform;
 import javax.annotation.Nonnull;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.ParameterizedMessage;
+
+import appeng.core.features.AEFeature;
+import appeng.tile.AEBaseTile;
+import appeng.util.Platform;
 
 /**
  * Utility class for easier logging.
@@ -97,10 +91,7 @@ public final class AELog {
      * @param params    the parameters used for {@link String#format(String, Object...)}.
      * @see AELog#log(Level, String, Object...)
      */
-    public static void log(
-            @Nonnull final Level level,
-            @Nonnull final Throwable exception,
-            @Nonnull String message,
+    public static void log(@Nonnull final Level level, @Nonnull final Throwable exception, @Nonnull String message,
             final Object... params) {
         if (AELog.isLogEnabled()) {
             final String formattedMessage = String.format(message, params);
@@ -286,8 +277,8 @@ public final class AELog {
      * @param aeBaseTile
      * @see AELog#log(Level, String, Object...)
      */
-    public static void blockUpdate(
-            final int xCoord, final int yCoord, final int zCoord, @Nonnull final AEBaseTile aeBaseTile) {
+    public static void blockUpdate(final int xCoord, final int yCoord, final int zCoord,
+            @Nonnull final AEBaseTile aeBaseTile) {
         if (AEConfig.instance.isFeatureEnabled(AEFeature.UpdateLogging)) {
             info(BLOCK_UPDATE, aeBaseTile.getClass().getName(), xCoord, +yCoord, +zCoord);
         }

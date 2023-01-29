@@ -1,34 +1,29 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.util;
+
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Set;
+
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.config.LevelEmitterMode;
 import appeng.api.config.Settings;
 import appeng.api.config.StorageFilter;
 import appeng.api.util.IConfigManager;
 import appeng.core.AELog;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Set;
-import net.minecraft.nbt.NBTTagCompound;
 
 public final class ConfigManager implements IConfigManager {
+
     private final Map<Settings, Enum<?>> settings = new EnumMap<Settings, Enum<?>>(Settings.class);
     private final IConfigManagerHost target;
 
@@ -73,8 +68,7 @@ public final class ConfigManager implements IConfigManager {
     @Override
     public void writeToNBT(final NBTTagCompound tagCompound) {
         for (final Map.Entry<Settings, Enum<?>> entry : this.settings.entrySet()) {
-            tagCompound.setString(
-                    entry.getKey().name(), this.settings.get(entry.getKey()).toString());
+            tagCompound.setString(entry.getKey().name(), this.settings.get(entry.getKey()).toString());
         }
     }
 

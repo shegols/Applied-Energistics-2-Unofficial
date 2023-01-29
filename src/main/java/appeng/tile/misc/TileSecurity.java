@@ -1,22 +1,28 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.misc;
+
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -56,26 +62,9 @@ import appeng.util.IConfigManagerHost;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import io.netty.buffer.ByteBuf;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileSecurity extends AENetworkTile
-        implements ITerminalHost,
-                IAEAppEngInventory,
-                ILocatable,
-                IConfigManagerHost,
-                ISecurityProvider,
-                IColorableTile {
+public class TileSecurity extends AENetworkTile implements ITerminalHost, IAEAppEngInventory, ILocatable,
+        IConfigManagerHost, ISecurityProvider, IColorableTile {
 
     private static int difference = 0;
     private final AppEngInternalInventory configSlot = new AppEngInternalInventory(this, 1);
@@ -102,12 +91,8 @@ public class TileSecurity extends AENetworkTile
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removedStack,
-            final ItemStack newStack) {}
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {}
 
     @Override
     public void getDrops(final World w, final int x, final int y, final int z, final List<ItemStack> drops) {
@@ -176,8 +161,8 @@ public class TileSecurity extends AENetworkTile
         for (final Object key : storedItems.func_150296_c()) {
             final NBTBase obj = storedItems.getTag((String) key);
             if (obj instanceof NBTTagCompound) {
-                this.inventory.getStoredItems().add(AEItemStack.create(ItemStack.loadItemStackFromNBT((NBTTagCompound)
-                        obj)));
+                this.inventory.getStoredItems()
+                        .add(AEItemStack.create(ItemStack.loadItemStackFromNBT((NBTTagCompound) obj)));
             }
         }
     }

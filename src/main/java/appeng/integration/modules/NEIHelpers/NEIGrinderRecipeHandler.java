@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.integration.modules.NEIHelpers;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.AEApi;
 import appeng.api.features.IGrinderEntry;
@@ -29,30 +34,19 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 public class NEIGrinderRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        this.transferRects.add(
-                new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(84, 23, 24, 18), "grindstone"));
+        this.transferRects
+                .add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(84, 23, 24, 18), "grindstone"));
     }
 
     @Override
     public void loadCraftingRecipes(final String outputId, final Object... results) {
         if ((outputId.equals("grindstone")) && (this.getClass() == NEIGrinderRecipeHandler.class)) {
-            for (final IGrinderEntry recipe :
-                    AEApi.instance().registries().grinder().getRecipes()) {
+            for (final IGrinderEntry recipe : AEApi.instance().registries().grinder().getRecipes()) {
                 final CachedGrindStoneRecipe cachedRecipe = new CachedGrindStoneRecipe(recipe);
                 cachedRecipe.computeVisuals();
                 this.arecipes.add(cachedRecipe);
@@ -64,8 +58,7 @@ public class NEIGrinderRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(final ItemStack result) {
-        for (final IGrinderEntry recipe :
-                AEApi.instance().registries().grinder().getRecipes()) {
+        for (final IGrinderEntry recipe : AEApi.instance().registries().grinder().getRecipes()) {
             if (NEIServerUtils.areStacksSameTypeCrafting(recipe.getOutput(), result)) {
                 final CachedGrindStoneRecipe cachedRecipe = new CachedGrindStoneRecipe(recipe);
                 cachedRecipe.computeVisuals();
@@ -76,8 +69,7 @@ public class NEIGrinderRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(final ItemStack ingredient) {
-        for (final IGrinderEntry recipe :
-                AEApi.instance().registries().grinder().getRecipes()) {
+        for (final IGrinderEntry recipe : AEApi.instance().registries().grinder().getRecipes()) {
             final CachedGrindStoneRecipe cachedRecipe = new CachedGrindStoneRecipe(recipe);
 
             if ((cachedRecipe.contains(cachedRecipe.ingredients, ingredient.getItem()))) {
@@ -163,6 +155,7 @@ public class NEIGrinderRecipeHandler extends TemplateRecipeHandler {
     }
 
     private class CachedGrindStoneRecipe extends TemplateRecipeHandler.CachedRecipe {
+
         private final List<PositionedStack> ingredients;
         private final PositionedStack result;
         private String displayChance;
@@ -184,8 +177,8 @@ public class NEIGrinderRecipeHandler extends TemplateRecipeHandler {
             final int secondOptionalChancePercent = (int) (recipe.getSecondOptionalChance() * 100);
             if (secondOptionalOutput != null) {
                 this.hasOptional = true;
-                this.displayChance = String.format(
-                        GuiText.MultipleOutputs.getLocal(), optionalChancePercent, secondOptionalChancePercent);
+                this.displayChance = String
+                        .format(GuiText.MultipleOutputs.getLocal(), optionalChancePercent, secondOptionalChancePercent);
                 this.ingredients.add(new PositionedStack(secondOptionalOutput, -30 + 107 + 18 + 18, 47));
             }
 

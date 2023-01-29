@@ -1,22 +1,22 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import java.io.IOException;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.networking.IGrid;
@@ -40,12 +40,6 @@ import appeng.me.cluster.IAEMultiBlock;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
 import appeng.tile.crafting.TileCraftingTile;
 import appeng.util.Platform;
-import java.io.IOException;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ContainerCraftingCPU extends AEBaseContainer
         implements IMEMonitorHandlerReceiver<IAEItemStack>, ICustomNameObject {
@@ -99,8 +93,8 @@ public class ContainerCraftingCPU extends AEBaseContainer
         for (final Object g : this.crafters) {
             if (g instanceof EntityPlayer) {
                 try {
-                    NetworkHandler.instance.sendTo(
-                            new PacketValueConfig("CraftingStatus", "Clear"), (EntityPlayerMP) g);
+                    NetworkHandler.instance
+                            .sendTo(new PacketValueConfig("CraftingStatus", "Clear"), (EntityPlayerMP) g);
                 } catch (final IOException e) {
                     AELog.debug(e);
                 }
@@ -153,8 +147,8 @@ public class ContainerCraftingCPU extends AEBaseContainer
                     final long elapsedTime = this.getMonitor().getElapsedTime();
                     final double remainingItems = this.getMonitor().getRemainingItemCount();
                     final double startItems = this.getMonitor().getStartItemCount();
-                    final long eta =
-                            (long) (elapsedTime / Math.max(1d, (startItems - remainingItems)) * remainingItems);
+                    final long eta = (long) (elapsedTime / Math.max(1d, (startItems - remainingItems))
+                            * remainingItems);
                     this.setEstimatedTime(eta);
                 }
 
@@ -198,9 +192,7 @@ public class ContainerCraftingCPU extends AEBaseContainer
     }
 
     @Override
-    public void postChange(
-            final IBaseMonitor<IAEItemStack> monitor,
-            final Iterable<IAEItemStack> change,
+    public void postChange(final IBaseMonitor<IAEItemStack> monitor, final Iterable<IAEItemStack> change,
             final BaseActionSource actionSource) {
         for (IAEItemStack is : change) {
             is = is.copy();

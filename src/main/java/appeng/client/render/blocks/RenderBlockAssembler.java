@@ -1,22 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
+
+import java.util.EnumSet;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.networking.IGridHost;
 import appeng.api.parts.IBoxProvider;
@@ -33,15 +36,6 @@ import appeng.client.texture.TaughtIcon;
 import appeng.parts.networking.PartCable;
 import appeng.tile.crafting.TileMolecularAssembler;
 import appeng.util.Platform;
-import java.util.EnumSet;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class RenderBlockAssembler extends BaseBlockRender<BlockMolecularAssembler, TileMolecularAssembler>
         implements IBoxProvider {
@@ -51,12 +45,8 @@ public class RenderBlockAssembler extends BaseBlockRender<BlockMolecularAssemble
     }
 
     @Override
-    public void renderInventory(
-            final BlockMolecularAssembler blk,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockMolecularAssembler blk, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         renderer.setOverrideBlockTexture(blk.getIcon(0, 0));
 
         this.setInvRenderBounds(renderer, 2, 14, 0, 14, 16, 2);
@@ -102,21 +92,26 @@ public class RenderBlockAssembler extends BaseBlockRender<BlockMolecularAssemble
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockMolecularAssembler maBlock,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            RenderBlocks renderer) {
+    public boolean renderInWorld(final BlockMolecularAssembler maBlock, final IBlockAccess world, final int x,
+            final int y, final int z, RenderBlocks renderer) {
         final TileMolecularAssembler tma = maBlock.getTileEntity(world, x, y, z);
 
         if (BlockMolecularAssembler.isBooleanAlphaPass()) {
             if (tma.isPowered()) {
                 this.renderBlockBounds(
-                        renderer, 1, 1, 1, 15, 15, 15, ForgeDirection.WEST, ForgeDirection.UP, ForgeDirection.SOUTH);
-                final TaughtIcon lights =
-                        new TaughtIcon(ExtraBlockTextures.BlockMolecularAssemblerLights.getIcon(), -2.0f);
+                        renderer,
+                        1,
+                        1,
+                        1,
+                        15,
+                        15,
+                        15,
+                        ForgeDirection.WEST,
+                        ForgeDirection.UP,
+                        ForgeDirection.SOUTH);
+                final TaughtIcon lights = new TaughtIcon(
+                        ExtraBlockTextures.BlockMolecularAssemblerLights.getIcon(),
+                        -2.0f);
                 Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.3f);
                 Tessellator.instance.setBrightness(14 << 20 | 14 << 4);
                 renderer.renderFaceXNeg(maBlock, x, y, z, lights);
@@ -203,15 +198,8 @@ public class RenderBlockAssembler extends BaseBlockRender<BlockMolecularAssemble
         return true;
     }
 
-    private void renderCableAt(
-            final double thickness,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final BlockMolecularAssembler block,
-            final RenderBlocks renderer,
-            final double pull,
+    private void renderCableAt(final double thickness, final IBlockAccess world, final int x, final int y, final int z,
+            final BlockMolecularAssembler block, final RenderBlocks renderer, final double pull,
             final boolean covered) {
         IIcon texture = null;
 
@@ -296,13 +284,8 @@ public class RenderBlockAssembler extends BaseBlockRender<BlockMolecularAssemble
         block.getRendererInstance().setTemporaryRenderIcon(null);
     }
 
-    private IIcon getConnectedCable(
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final ForgeDirection side,
-            final boolean covered) {
+    private IIcon getConnectedCable(final IBlockAccess world, final int x, final int y, final int z,
+            final ForgeDirection side, final boolean covered) {
         final int tileYPos = y + side.offsetY;
 
         if (-1 < tileYPos && tileYPos < 256) {

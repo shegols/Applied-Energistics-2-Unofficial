@@ -1,5 +1,11 @@
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import appeng.client.gui.AEBaseGui;
 import appeng.client.gui.widgets.IDropToFillTextField;
 import appeng.client.gui.widgets.MEGuiTextField;
@@ -16,12 +22,9 @@ import appeng.helpers.IOreFilterable;
 import appeng.parts.automation.PartSharedItemBus;
 import appeng.parts.misc.PartStorageBus;
 import appeng.tile.misc.TileCellWorkbench;
-import java.io.IOException;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class GuiOreFilter extends AEBaseGui implements IDropToFillTextField {
+
     private MEGuiTextField textField;
 
     public GuiOreFilter(InventoryPlayer ip, IOreFilterable obj) {

@@ -1,31 +1,21 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.transformer.asm;
 
-import appeng.helpers.Reflected;
-import appeng.integration.IntegrationRegistry;
-import appeng.integration.IntegrationType;
-import appeng.transformer.annotations.Integration;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import java.util.Iterator;
+
 import javax.annotation.Nullable;
+
 import net.minecraft.launchwrapper.IClassTransformer;
+
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -34,8 +24,15 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import appeng.helpers.Reflected;
+import appeng.integration.IntegrationRegistry;
+import appeng.integration.IntegrationType;
+import appeng.transformer.annotations.Integration;
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
+
 @Reflected
 public final class ASMIntegration implements IClassTransformer {
+
     @Reflected
     public ASMIntegration() {
 
@@ -152,13 +149,23 @@ public final class ASMIntegration implements IClassTransformer {
         if (iName != null && iFace != null) {
             final IntegrationType type = IntegrationType.valueOf(iName);
             if (!IntegrationRegistry.INSTANCE.isEnabled(type)) {
-                this.log("Removing Interface " + iFace + " from " + classNode.name + " because " + iName
-                        + " integration is disabled.");
+                this.log(
+                        "Removing Interface " + iFace
+                                + " from "
+                                + classNode.name
+                                + " because "
+                                + iName
+                                + " integration is disabled.");
                 classNode.interfaces.remove(iFace.replace('.', '/'));
                 return true;
             } else {
-                this.log("Allowing Interface " + iFace + " from " + classNode.name + " because " + iName
-                        + " integration is enabled.");
+                this.log(
+                        "Allowing Interface " + iFace
+                                + " from "
+                                + classNode.name
+                                + " because "
+                                + iName
+                                + " integration is enabled.");
             }
         } else {
             throw new IllegalStateException("Unable to handle Method annotation on " + classNode.name);
@@ -167,12 +174,8 @@ public final class ASMIntegration implements IClassTransformer {
         return false;
     }
 
-    private boolean stripMethod(
-            final ClassNode classNode,
-            final MethodNode mn,
-            final Iterator<MethodNode> i,
-            final Class class1,
-            final AnnotationNode an) {
+    private boolean stripMethod(final ClassNode classNode, final MethodNode mn, final Iterator<MethodNode> i,
+            final Class class1, final AnnotationNode an) {
         if (an.values.size() != 2) {
             throw new IllegalArgumentException("Unable to handle Method annotation on " + classNode.name);
         }
@@ -186,13 +189,23 @@ public final class ASMIntegration implements IClassTransformer {
         if (iName != null) {
             final IntegrationType type = IntegrationType.valueOf(iName);
             if (!IntegrationRegistry.INSTANCE.isEnabled(type)) {
-                this.log("Removing Method " + mn.name + " from " + classNode.name + " because " + iName
-                        + " integration is disabled.");
+                this.log(
+                        "Removing Method " + mn.name
+                                + " from "
+                                + classNode.name
+                                + " because "
+                                + iName
+                                + " integration is disabled.");
                 i.remove();
                 return true;
             } else {
-                this.log("Allowing Method " + mn.name + " from " + classNode.name + " because " + iName
-                        + " integration is enabled.");
+                this.log(
+                        "Allowing Method " + mn.name
+                                + " from "
+                                + classNode.name
+                                + " because "
+                                + iName
+                                + " integration is enabled.");
             }
         } else {
             throw new IllegalStateException("Unable to handle Method annotation on " + classNode.name);

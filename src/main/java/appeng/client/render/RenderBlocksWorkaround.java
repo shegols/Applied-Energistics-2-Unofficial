@@ -1,37 +1,31 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render;
 
-import appeng.api.parts.ISimplifiedBundle;
-import appeng.core.AELog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import appeng.api.parts.ISimplifiedBundle;
+import appeng.core.AELog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderBlocksWorkaround extends RenderBlocks {
@@ -80,17 +74,11 @@ public class RenderBlocksWorkaround extends RenderBlocks {
     }
 
     void setTexture(final IIcon ico) {
-        this.lightState.rXPos = this.lightState.rXNeg =
-                this.lightState.rYPos = this.lightState.rYNeg = this.lightState.rZPos = this.lightState.rZNeg = ico;
+        this.lightState.rXPos = this.lightState.rXNeg = this.lightState.rYPos = this.lightState.rYNeg = this.lightState.rZPos = this.lightState.rZNeg = ico;
     }
 
-    public void setTexture(
-            final IIcon rYNeg,
-            final IIcon rYPos,
-            final IIcon rZNeg,
-            final IIcon rZPos,
-            final IIcon rXNeg,
-            final IIcon rXPos) {
+    public void setTexture(final IIcon rYNeg, final IIcon rYPos, final IIcon rZNeg, final IIcon rZPos,
+            final IIcon rXNeg, final IIcon rXPos) {
         this.lightState.rXPos = rXPos;
         this.lightState.rXNeg = rXNeg;
         this.lightState.rYPos = rYPos;
@@ -107,8 +95,7 @@ public class RenderBlocksWorkaround extends RenderBlocks {
                 x,
                 y,
                 z,
-                this.isUseTextures()
-                        ? this.lightState.rXPos
+                this.isUseTextures() ? this.lightState.rXPos
                         : this.getBlockIcon(b, this.blockAccess, x, y, z, ForgeDirection.EAST.ordinal()));
 
         Tessellator.instance.setBrightness(this.lightState.bXNeg);
@@ -118,8 +105,7 @@ public class RenderBlocksWorkaround extends RenderBlocks {
                 x,
                 y,
                 z,
-                this.isUseTextures()
-                        ? this.lightState.rXNeg
+                this.isUseTextures() ? this.lightState.rXNeg
                         : this.getBlockIcon(b, this.blockAccess, x, y, z, ForgeDirection.WEST.ordinal()));
 
         Tessellator.instance.setBrightness(this.lightState.bYPos);
@@ -129,8 +115,7 @@ public class RenderBlocksWorkaround extends RenderBlocks {
                 x,
                 y,
                 z,
-                this.isUseTextures()
-                        ? this.lightState.rYPos
+                this.isUseTextures() ? this.lightState.rYPos
                         : this.getBlockIcon(b, this.blockAccess, x, y, z, ForgeDirection.UP.ordinal()));
 
         Tessellator.instance.setBrightness(this.lightState.bYNeg);
@@ -140,8 +125,7 @@ public class RenderBlocksWorkaround extends RenderBlocks {
                 x,
                 y,
                 z,
-                this.isUseTextures()
-                        ? this.lightState.rYNeg
+                this.isUseTextures() ? this.lightState.rYNeg
                         : this.getBlockIcon(b, this.blockAccess, x, y, z, ForgeDirection.DOWN.ordinal()));
 
         Tessellator.instance.setBrightness(this.lightState.bZPos);
@@ -151,8 +135,7 @@ public class RenderBlocksWorkaround extends RenderBlocks {
                 x,
                 y,
                 z,
-                this.isUseTextures()
-                        ? this.lightState.rZPos
+                this.isUseTextures() ? this.lightState.rZPos
                         : this.getBlockIcon(b, this.blockAccess, x, y, z, ForgeDirection.SOUTH.ordinal()));
 
         Tessellator.instance.setBrightness(this.lightState.bZNeg);
@@ -162,8 +145,7 @@ public class RenderBlocksWorkaround extends RenderBlocks {
                 x,
                 y,
                 z,
-                this.isUseTextures()
-                        ? this.lightState.rZNeg
+                this.isUseTextures() ? this.lightState.rZNeg
                         : this.getBlockIcon(b, this.blockAccess, x, y, z, ForgeDirection.NORTH.ordinal()));
 
         return true;
@@ -231,8 +213,8 @@ public class RenderBlocksWorkaround extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceYNeg(
-            final Block par1Block, final double par2, final double par4, final double par6, final IIcon par8Icon) {
+    public void renderFaceYNeg(final Block par1Block, final double par2, final double par4, final double par6,
+            final IIcon par8Icon) {
         if (this.getFaces().contains(ForgeDirection.DOWN)) {
             if (!this.getRenderFaces().contains(ForgeDirection.DOWN)) {
                 return;
@@ -279,8 +261,8 @@ public class RenderBlocksWorkaround extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceYPos(
-            final Block par1Block, final double par2, final double par4, final double par6, final IIcon par8Icon) {
+    public void renderFaceYPos(final Block par1Block, final double par2, final double par4, final double par6,
+            final IIcon par8Icon) {
         if (this.getFaces().contains(ForgeDirection.UP)) {
             if (!this.getRenderFaces().contains(ForgeDirection.UP)) {
                 return;
@@ -327,8 +309,8 @@ public class RenderBlocksWorkaround extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceZNeg(
-            final Block par1Block, final double par2, final double par4, final double par6, final IIcon par8Icon) {
+    public void renderFaceZNeg(final Block par1Block, final double par2, final double par4, final double par6,
+            final IIcon par8Icon) {
         if (this.getFaces().contains(ForgeDirection.NORTH)) {
             if (!this.getRenderFaces().contains(ForgeDirection.NORTH)) {
                 return;
@@ -375,8 +357,8 @@ public class RenderBlocksWorkaround extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceZPos(
-            final Block par1Block, final double par2, final double par4, final double par6, final IIcon par8Icon) {
+    public void renderFaceZPos(final Block par1Block, final double par2, final double par4, final double par6,
+            final IIcon par8Icon) {
         if (this.getFaces().contains(ForgeDirection.SOUTH)) {
             if (!this.getRenderFaces().contains(ForgeDirection.SOUTH)) {
                 return;
@@ -423,8 +405,8 @@ public class RenderBlocksWorkaround extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceXNeg(
-            final Block par1Block, final double par2, final double par4, final double par6, final IIcon par8Icon) {
+    public void renderFaceXNeg(final Block par1Block, final double par2, final double par4, final double par6,
+            final IIcon par8Icon) {
         if (this.getFaces().contains(ForgeDirection.WEST)) {
             if (!this.getRenderFaces().contains(ForgeDirection.WEST)) {
                 return;
@@ -471,8 +453,8 @@ public class RenderBlocksWorkaround extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceXPos(
-            final Block par1Block, final double par2, final double par4, final double par6, final IIcon par8Icon) {
+    public void renderFaceXPos(final Block par1Block, final double par2, final double par4, final double par6,
+            final IIcon par8Icon) {
         if (this.getFaces().contains(ForgeDirection.EAST)) {
             if (!this.getRenderFaces().contains(ForgeDirection.EAST)) {
                 return;
@@ -531,10 +513,10 @@ public class RenderBlocksWorkaround extends RenderBlocks {
         final double bB = this.colorBlueBottomLeft * u + (1.0 - u) * this.colorBlueBottomRight;
         final float b = (float) (bA * v + bB * (1.0 - v));
 
-        final double highA =
-                (this.brightnessTopLeft >> 16 & 255) * u + (1.0 - u) * (this.brightnessTopRight >> 16 & 255);
-        final double highB =
-                (this.brightnessBottomLeft >> 16 & 255) * u + (1.0 - u) * (this.brightnessBottomRight >> 16 & 255);
+        final double highA = (this.brightnessTopLeft >> 16 & 255) * u
+                + (1.0 - u) * (this.brightnessTopRight >> 16 & 255);
+        final double highB = (this.brightnessBottomLeft >> 16 & 255) * u
+                + (1.0 - u) * (this.brightnessBottomRight >> 16 & 255);
         final int high = ((int) (highA * v + highB * (1.0 - v))) & 255;
 
         final double lowA = ((this.brightnessTopLeft & 255)) * u + (1.0 - u) * ((this.brightnessTopRight & 255));
@@ -547,8 +529,8 @@ public class RenderBlocksWorkaround extends RenderBlocks {
         Tessellator.instance.setBrightness(out);
     }
 
-    public boolean similarLighting(
-            final Block blk, final IBlockAccess w, final int x, final int y, final int z, final ISimplifiedBundle sim) {
+    public boolean similarLighting(final Block blk, final IBlockAccess w, final int x, final int y, final int z,
+            final ISimplifiedBundle sim) {
         final int lh = this.getLightingHash(blk, w, x, y, z);
         return ((LightingCache) sim).lightHash == lh;
     }
@@ -626,6 +608,7 @@ public class RenderBlocksWorkaround extends RenderBlocks {
     }
 
     private static class LightingCache implements ISimplifiedBundle {
+
         public final int[] aoXPos;
         public final int[] aoXNeg;
         public final int[] aoYPos;

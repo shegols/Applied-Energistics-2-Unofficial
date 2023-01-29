@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import java.util.ArrayList;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 import appeng.api.config.*;
 import appeng.api.util.IConfigManager;
@@ -25,10 +23,6 @@ import appeng.container.slot.*;
 import appeng.helpers.DualityInterface;
 import appeng.helpers.IInterfaceHost;
 import appeng.util.Platform;
-import java.util.ArrayList;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 public class ContainerInterface extends ContainerUpgradeable implements IOptionalSlotHost {
 
@@ -57,7 +51,8 @@ public class ContainerInterface extends ContainerUpgradeable implements IOptiona
 
         for (int row = 0; row < 4; ++row) {
             for (int x = 0; x < DualityInterface.NUMBER_OF_PATTERN_SLOTS; x++) {
-                this.addSlotToContainer(new OptionalSlotRestrictedInput(
+                this.addSlotToContainer(
+                        new OptionalSlotRestrictedInput(
                                 SlotRestrictedInput.PlacableItemType.ENCODED_PATTERN,
                                 this.myDuality.getPatterns(),
                                 this,
@@ -65,8 +60,7 @@ public class ContainerInterface extends ContainerUpgradeable implements IOptiona
                                 8 + 18 * x,
                                 108 - row * 18,
                                 row,
-                                this.getInventoryPlayer())
-                        .setStackLimit(1));
+                                this.getInventoryPlayer()).setStackLimit(1));
             }
         }
 

@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import java.util.*;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.world.World;
+
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.AEApi;
 import appeng.api.config.ActionItems;
@@ -45,17 +50,8 @@ import appeng.integration.IntegrationRegistry;
 import appeng.integration.IntegrationType;
 import appeng.parts.reporting.PartInterfaceTerminal;
 import appeng.util.Platform;
+
 import com.google.common.collect.HashMultimap;
-import java.util.*;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.world.World;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextField {
 
@@ -96,6 +92,7 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
         this.ySize = 255;
 
         searchFieldInputs = new MEGuiTextField(86, 12, ButtonToolTips.SearchFieldInputs.getLocal()) {
+
             @Override
             public void onTextChange(final String oldText) {
                 refreshList();
@@ -103,6 +100,7 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
         };
 
         searchFieldOutputs = new MEGuiTextField(86, 12, ButtonToolTips.SearchFieldOutputs.getLocal()) {
+
             @Override
             public void onTextChange(final String oldText) {
                 refreshList();
@@ -110,6 +108,7 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
         };
 
         searchFieldNames = new MEGuiTextField(71, 12, ButtonToolTips.SearchFieldNames.getLocal()) {
+
             @Override
             public void onTextChange(final String oldText) {
                 refreshList();
@@ -202,13 +201,12 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
             if (lineObj instanceof ClientDCInternalInv) {
                 final ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
                 for (int z = 0; z < inv.getInventory().getSizeInventory(); z++) {
-                    if (this.matchedStacks.contains(inv.getInventory().getStackInSlot(z)))
-                        drawRect(
-                                z * 18 + 22,
-                                1 + offset,
-                                z * 18 + 22 + 16,
-                                1 + offset + 16,
-                                GuiColors.InterfaceTerminalMatch.getColor());
+                    if (this.matchedStacks.contains(inv.getInventory().getStackInSlot(z))) drawRect(
+                            z * 18 + 22,
+                            1 + offset,
+                            z * 18 + 22 + 16,
+                            1 + offset + 16,
+                            GuiColors.InterfaceTerminalMatch.getColor());
                 }
             } else if (lineObj instanceof String) {
                 String name = (String) lineObj;
@@ -247,8 +245,7 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
                         ? ActionItems.TOGGLE_SHOW_FULL_INTERFACES_OFF
                         : ActionItems.TOGGLE_SHOW_FULL_INTERFACES_ON);
         guiButtonBrokenRecipes.set(
-                onlyBrokenRecipes
-                        ? ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERN_OFF
+                onlyBrokenRecipes ? ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERN_OFF
                         : ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERN_ON);
 
         terminalStyleBox.set(AEConfig.instance.settings.getSetting(Settings.TERMINAL_STYLE));
@@ -270,7 +267,10 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
                 }
 
                 GuiButton guiButton = new GuiImgButton(
-                        guiLeft + 4, guiTop + offset + 1, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
+                        guiLeft + 4,
+                        guiTop + offset + 1,
+                        Settings.ACTIONS,
+                        ActionItems.HIGHLIGHT_INTERFACE);
                 guiButtonHashMap.put(guiButton, inv);
                 buttonList.add(guiButton);
             }
@@ -298,22 +298,29 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
     protected void actionPerformed(final GuiButton btn) {
         if (guiButtonHashMap.containsKey(btn)) {
             DimensionalCoord blockPos = blockPosHashMap.get(guiButtonHashMap.get(btn));
-            WorldCoord blockPos2 =
-                    new WorldCoord((int) mc.thePlayer.posX, (int) mc.thePlayer.posY, (int) mc.thePlayer.posZ);
+            WorldCoord blockPos2 = new WorldCoord(
+                    (int) mc.thePlayer.posX,
+                    (int) mc.thePlayer.posY,
+                    (int) mc.thePlayer.posZ);
             if (mc.theWorld.provider.dimensionId != blockPos.getDimension()) {
-                mc.thePlayer.addChatMessage(new ChatComponentTranslation(
-                        PlayerMessages.InterfaceInOtherDim.getName(), blockPos.getDimension()));
+                mc.thePlayer.addChatMessage(
+                        new ChatComponentTranslation(
+                                PlayerMessages.InterfaceInOtherDim.getName(),
+                                blockPos.getDimension()));
             } else {
                 BlockPosHighlighter.highlightBlock(
                         blockPos,
                         System.currentTimeMillis() + 500 * WorldCoord.getTaxicabDistance(blockPos, blockPos2));
-                mc.thePlayer.addChatMessage(new ChatComponentTranslation(
-                        PlayerMessages.InterfaceHighlighted.getName(), blockPos.x, blockPos.y, blockPos.z));
+                mc.thePlayer.addChatMessage(
+                        new ChatComponentTranslation(
+                                PlayerMessages.InterfaceHighlighted.getName(),
+                                blockPos.x,
+                                blockPos.y,
+                                blockPos.z));
             }
             mc.thePlayer.closeScreen();
         } else if (btn == guiButtonHideFull) {
-            AEConfig.instance.showOnlyInterfacesWithFreeSlotsInInterfaceTerminal =
-                    !AEConfig.instance.showOnlyInterfacesWithFreeSlotsInInterfaceTerminal;
+            AEConfig.instance.showOnlyInterfacesWithFreeSlotsInInterfaceTerminal = !AEConfig.instance.showOnlyInterfacesWithFreeSlotsInInterfaceTerminal;
             this.refreshList();
         } else if (btn == guiButtonAssemblersOnly) {
             onlyMolecularAssemblers = !onlyMolecularAssemblers;
@@ -326,8 +333,7 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
             if (iBtn.getSetting() != Settings.ACTIONS) {
                 final Enum cv = iBtn.getCurrentValue();
                 final boolean backwards = Mouse.isButtonDown(1);
-                final Enum next =
-                        Platform.rotateEnum(cv, backwards, iBtn.getSetting().getPossibleValues());
+                final Enum next = Platform.rotateEnum(cv, backwards, iBtn.getSetting().getPossibleValues());
 
                 if (btn == this.terminalStyleBox) {
                     AEConfig.instance.settings.putSetting(iBtn.getSetting(), next);
@@ -384,12 +390,12 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
             if (character == ' ') {
                 if ((searchFieldInputs.getText().isEmpty() && searchFieldInputs.isFocused())
                         || (searchFieldOutputs.getText().isEmpty() && searchFieldOutputs.isFocused())
-                        || (searchFieldNames.getText().isEmpty() && searchFieldNames.isFocused())) return;
+                        || (searchFieldNames.getText().isEmpty() && searchFieldNames.isFocused()))
+                    return;
             } else if (character == '\t') {
                 if (handleTab()) return;
             }
-            if (searchFieldInputs.textboxKeyTyped(character, key)
-                    || searchFieldOutputs.textboxKeyTyped(character, key)
+            if (searchFieldInputs.textboxKeyTyped(character, key) || searchFieldOutputs.textboxKeyTyped(character, key)
                     || searchFieldNames.textboxKeyTyped(character, key)) {
                 refreshList();
             } else {
@@ -430,8 +436,8 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
                 try {
                     final long id = Long.parseLong(key.substring(1), Character.MAX_RADIX);
                     final NBTTagCompound invData = in.getCompoundTag(key);
-                    final ClientDCInternalInv current =
-                            this.getById(id, invData.getLong("sortBy"), invData.getString("un"));
+                    final ClientDCInternalInv current = this
+                            .getById(id, invData.getLong("sortBy"), invData.getString("un"));
                     int X = invData.getInteger("x");
                     int Y = invData.getInteger("y");
                     int Z = invData.getInteger("z");
@@ -441,13 +447,12 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
                     for (int x = 0; x < current.getInventory().getSizeInventory(); x++) {
                         final String which = Integer.toString(x);
                         if (invData.hasKey(which)) {
-                            current.getInventory()
-                                    .setInventorySlotContents(
-                                            x, ItemStack.loadItemStackFromNBT(invData.getCompoundTag(which)));
+                            current.getInventory().setInventorySlotContents(
+                                    x,
+                                    ItemStack.loadItemStackFromNBT(invData.getCompoundTag(which)));
                         }
                     }
-                } catch (final NumberFormatException ignored) {
-                }
+                } catch (final NumberFormatException ignored) {}
             }
         }
 
@@ -473,11 +478,15 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
         final String searchFieldOutputs = this.searchFieldOutputs.getText().toLowerCase();
         final String searchFieldNames = this.searchFieldNames.getText().toLowerCase();
 
-        final Set<Object> cachedSearch = this.getCacheForSearchTerm("IN:" + searchFieldInputs + "OUT:"
-                + searchFieldOutputs + "NAME:"
-                + searchFieldNames + AEConfig.instance.showOnlyInterfacesWithFreeSlotsInInterfaceTerminal
-                + onlyMolecularAssemblers
-                + onlyBrokenRecipes);
+        final Set<Object> cachedSearch = this.getCacheForSearchTerm(
+                "IN:" + searchFieldInputs
+                        + "OUT:"
+                        + searchFieldOutputs
+                        + "NAME:"
+                        + searchFieldNames
+                        + AEConfig.instance.showOnlyInterfacesWithFreeSlotsInInterfaceTerminal
+                        + onlyMolecularAssemblers
+                        + onlyBrokenRecipes);
         final boolean rebuild = cachedSearch.isEmpty();
 
         for (final ClientDCInternalInv entry : this.byId.values()) {
@@ -554,17 +563,15 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
         }
 
         final NBTTagList tags = encodedValue.getTagList(pass == 0 ? "in" : "out", 10);
-        final boolean containsInvalidDisplayName =
-                GuiText.UnknownItem.getLocal().toLowerCase().contains(searchTerm);
+        final boolean containsInvalidDisplayName = GuiText.UnknownItem.getLocal().toLowerCase().contains(searchTerm);
 
         for (int i = 0; i < tags.tagCount(); i++) {
             final NBTTagCompound tag = tags.getCompoundTagAt(i);
             final ItemStack parsedItemStack = ItemStack.loadItemStackFromNBT(tag);
 
             if (parsedItemStack != null) {
-                final String displayName = Platform.getItemDisplayName(
-                                AEApi.instance().storage().createItemStack(parsedItemStack))
-                        .toLowerCase();
+                final String displayName = Platform
+                        .getItemDisplayName(AEApi.instance().storage().createItemStack(parsedItemStack)).toLowerCase();
                 if (displayName.contains(searchTerm)) {
                     return true;
                 }
@@ -642,8 +649,7 @@ public class GuiInterfaceTerminal extends AEBaseGui implements IDropToFillTextFi
     }
 
     public boolean isOverTextField(final int mousex, final int mousey) {
-        return searchFieldInputs.isMouseIn(mousex, mousey)
-                || searchFieldOutputs.isMouseIn(mousex, mousey)
+        return searchFieldInputs.isMouseIn(mousex, mousey) || searchFieldOutputs.isMouseIn(mousex, mousey)
                 || searchFieldNames.isMouseIn(mousex, mousey);
     }
 

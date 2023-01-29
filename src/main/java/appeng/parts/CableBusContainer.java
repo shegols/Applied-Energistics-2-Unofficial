@@ -1,22 +1,29 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts;
+
+import java.io.IOException;
+import java.util.*;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.YesNo;
@@ -40,19 +47,6 @@ import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import java.util.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class CableBusContainer extends CableBusStorage implements AEMultiTile, ICableBusContainer {
 
@@ -434,8 +428,7 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
 
     private void updateRedstone() {
         final TileEntity te = this.getTile();
-        this.hasRedstone = te.getWorldObj().isBlockIndirectlyGettingPowered(te.xCoord, te.yCoord, te.zCoord)
-                ? YesNo.YES
+        this.hasRedstone = te.getWorldObj().isBlockIndirectlyGettingPowered(te.xCoord, te.yCoord, te.zCoord) ? YesNo.YES
                 : YesNo.NO;
     }
 
@@ -578,8 +571,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
         }
     }
 
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(
-            final boolean ignoreConnections, final boolean includeFacades, final Entity e, final boolean visual) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final boolean ignoreConnections,
+            final boolean includeFacades, final Entity e, final boolean visual) {
         final List<AxisAlignedBB> boxes = new LinkedList<AxisAlignedBB>();
 
         final IFacadeContainer fc = this.getFacadeContainer();
@@ -863,8 +856,9 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
                         p = this.getPart(side);
                         p.readFromNBT(extra);
                     } else {
-                        AELog.warn("Invalid NBT For CableBus Container: "
-                                + iss.getItem().getClass().getName() + " is not a valid part; it was ignored.");
+                        AELog.warn(
+                                "Invalid NBT For CableBus Container: " + iss.getItem().getClass().getName()
+                                        + " is not a valid part; it was ignored.");
                     }
                 }
             } else {

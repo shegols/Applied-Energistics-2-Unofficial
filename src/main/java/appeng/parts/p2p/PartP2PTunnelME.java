@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.p2p;
+
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.exceptions.FailedConnection;
@@ -35,14 +37,6 @@ import appeng.me.GridAccessException;
 import appeng.me.cache.helpers.Connections;
 import appeng.me.cache.helpers.TunnelConnection;
 import appeng.me.helpers.AENetworkProxy;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class PartP2PTunnelME extends PartP2PTunnel<PartP2PTunnelME> implements IGridTickable {
 
@@ -52,9 +46,8 @@ public class PartP2PTunnelME extends PartP2PTunnel<PartP2PTunnelME> implements I
     public PartP2PTunnelME(final ItemStack is) {
         super(is);
         this.getProxy().setFlags(GridFlags.REQUIRE_CHANNEL, GridFlags.COMPRESSED_CHANNEL);
-        if (AEConfig.instance.p2pBackboneTransfer)
-            this.outerProxy.setFlags(
-                    GridFlags.DENSE_CAPACITY, GridFlags.ULTRA_DENSE_CAPACITY, GridFlags.CANNOT_CARRY_COMPRESSED);
+        if (AEConfig.instance.p2pBackboneTransfer) this.outerProxy
+                .setFlags(GridFlags.DENSE_CAPACITY, GridFlags.ULTRA_DENSE_CAPACITY, GridFlags.CANNOT_CARRY_COMPRESSED);
         else this.outerProxy.setFlags(GridFlags.DENSE_CAPACITY, GridFlags.CANNOT_CARRY_COMPRESSED);
     }
 
@@ -157,8 +150,7 @@ public class PartP2PTunnelME extends PartP2PTunnel<PartP2PTunnelME> implements I
             this.connection.getConnections().clear();
         } else if (connections.isCreate()) {
 
-            final Iterator<TunnelConnection> i =
-                    this.connection.getConnections().values().iterator();
+            final Iterator<TunnelConnection> i = this.connection.getConnections().values().iterator();
             while (i.hasNext()) {
                 final TunnelConnection cw = i.next();
                 try {
@@ -184,15 +176,13 @@ public class PartP2PTunnelME extends PartP2PTunnel<PartP2PTunnelME> implements I
 
                 for (final PartP2PTunnelME me : newSides) {
                     try {
-                        connections
-                                .getConnections()
-                                .put(
-                                        me.getGridNode(),
-                                        new TunnelConnection(
-                                                me,
-                                                AEApi.instance()
-                                                        .createGridConnection(
-                                                                this.outerProxy.getNode(), me.outerProxy.getNode())));
+                        connections.getConnections().put(
+                                me.getGridNode(),
+                                new TunnelConnection(
+                                        me,
+                                        AEApi.instance().createGridConnection(
+                                                this.outerProxy.getNode(),
+                                                me.outerProxy.getNode())));
                     } catch (final FailedConnection e) {
                         final TileEntity start = this.getTile();
                         final TileEntity end = me.getTile();

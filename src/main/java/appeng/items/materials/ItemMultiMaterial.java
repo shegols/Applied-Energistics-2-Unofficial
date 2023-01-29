@@ -1,22 +1,36 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.materials;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.config.Upgrades;
 import appeng.api.implementations.IUpgradeableHost;
@@ -35,30 +49,12 @@ import appeng.core.features.NameResolver;
 import appeng.items.AEBaseItem;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.oredict.OreDictionary;
 
 public final class ItemMultiMaterial extends AEBaseItem implements IStorageComponent, IUpgradeModule {
+
     public static ItemMultiMaterial instance;
 
     private static final int KILO_SCALAR = 1024;
@@ -74,8 +70,8 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
     }
 
     @Override
-    public void addCheckedInformation(
-            final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
+    public void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+            final boolean displayMoreInfo) {
         super.addCheckedInformation(stack, player, lines, displayMoreInfo);
 
         final MaterialType mt = this.getTypeByStack(stack);
@@ -98,8 +94,7 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
 
                 if (j.getKey().getItem() instanceof IItemGroup) {
                     final IItemGroup ig = (IItemGroup) j.getKey().getItem();
-                    final String str =
-                            ig.getUnlocalizedGroupName(u.getSupported().keySet(), j.getKey());
+                    final String str = ig.getUnlocalizedGroupName(u.getSupported().keySet(), j.getKey());
                     if (str != null) {
                         name = Platform.gui_localize(str) + (limit > 1 ? " (" + limit + ')' : "");
                     }
@@ -247,8 +242,8 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
     }
 
     @Override
-    protected void getCheckedSubItems(
-            final Item sameItem, final CreativeTabs creativeTab, final List<ItemStack> itemStacks) {
+    protected void getCheckedSubItems(final Item sameItem, final CreativeTabs creativeTab,
+            final List<ItemStack> itemStacks) {
         final List<MaterialType> types = Arrays.asList(MaterialType.values());
         Collections.sort(types, new Comparator<MaterialType>() {
 
@@ -279,17 +274,8 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
     }
 
     @Override
-    public boolean onItemUseFirst(
-            final ItemStack is,
-            final EntityPlayer player,
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onItemUseFirst(final ItemStack is, final EntityPlayer player, final World world, final int x,
+            final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ) {
         if (ForgeEventFactory.onItemUseStart(player, is, 1) <= 0) return true;
 
         if (player.isSneaking()) {
@@ -333,13 +319,11 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
 
     @Override
     public Entity createEntity(final World w, final Entity location, final ItemStack itemstack) {
-        final Class<? extends Entity> droppedEntity =
-                this.getTypeByStack(itemstack).getCustomEntityClass();
+        final Class<? extends Entity> droppedEntity = this.getTypeByStack(itemstack).getCustomEntityClass();
         final Entity eqi;
 
         try {
-            eqi = droppedEntity
-                    .getConstructor(World.class, double.class, double.class, double.class, ItemStack.class)
+            eqi = droppedEntity.getConstructor(World.class, double.class, double.class, double.class, ItemStack.class)
                     .newInstance(w, location.posX, location.posY, location.posZ, itemstack);
         } catch (final Throwable t) {
             throw new IllegalStateException(t);
@@ -386,6 +370,7 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
     }
 
     private static class SlightlyBetterSort implements Comparator<String> {
+
         private final Pattern pattern;
 
         public SlightlyBetterSort(final Pattern pattern) {

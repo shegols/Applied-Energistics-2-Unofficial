@@ -1,34 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
 
-import appeng.api.features.IInscriberRecipe;
-import appeng.api.util.IOrientable;
-import appeng.block.AEBaseBlock;
-import appeng.block.misc.BlockInscriber;
-import appeng.client.render.BaseBlockRender;
-import appeng.client.texture.ExtraBlockTextures;
-import appeng.core.AELog;
-import appeng.tile.AEBaseTile;
-import appeng.tile.misc.TileInscriber;
-import appeng.util.Platform;
 import java.util.EnumSet;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -40,8 +23,20 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import appeng.api.features.IInscriberRecipe;
+import appeng.api.util.IOrientable;
+import appeng.block.AEBaseBlock;
+import appeng.block.misc.BlockInscriber;
+import appeng.client.render.BaseBlockRender;
+import appeng.client.texture.ExtraBlockTextures;
+import appeng.core.AELog;
+import appeng.tile.AEBaseTile;
+import appeng.tile.misc.TileInscriber;
+import appeng.util.Platform;
 
 /**
  * @author AlgorithmX2
@@ -50,6 +45,7 @@ import org.lwjgl.opengl.GL12;
  * @since rv0
  */
 public class RenderBlockInscriber extends BaseBlockRender<BlockInscriber, TileInscriber> {
+
     private static final float ITEM_RENDER_SCALE = 1.0f / 1.1f;
 
     public RenderBlockInscriber() {
@@ -57,12 +53,8 @@ public class RenderBlockInscriber extends BaseBlockRender<BlockInscriber, TileIn
     }
 
     @Override
-    public void renderInventory(
-            final BlockInscriber blk,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockInscriber blk, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         final Tessellator tess = Tessellator.instance;
 
         renderer.renderAllFaces = true;
@@ -102,13 +94,8 @@ public class RenderBlockInscriber extends BaseBlockRender<BlockInscriber, TileIn
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockInscriber block,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer) {
+    public boolean renderInWorld(final BlockInscriber block, final IBlockAccess world, final int x, final int y,
+            final int z, final RenderBlocks renderer) {
         final IOrientable te = this.getOrientable(block, world, x, y, z);
 
         if (te == null) {
@@ -150,15 +137,8 @@ public class RenderBlockInscriber extends BaseBlockRender<BlockInscriber, TileIn
     }
 
     @Override
-    public void renderTile(
-            final BlockInscriber block,
-            final TileInscriber tile,
-            final Tessellator tess,
-            final double x,
-            final double y,
-            final double z,
-            final float f,
-            final RenderBlocks renderer) {
+    public void renderTile(final BlockInscriber block, final TileInscriber tile, final Tessellator tess, final double x,
+            final double y, final double z, final float f, final RenderBlocks renderer) {
         // render inscriber
 
         GL11.glPushMatrix();
@@ -209,7 +189,11 @@ public class RenderBlockInscriber extends BaseBlockRender<BlockInscriber, TileIn
         tess.addVertexWithUV(TwoPx, middle + press, TwoPx, ic.getInterpolatedU(2), ic.getInterpolatedV(2));
         tess.addVertexWithUV(1.0 - TwoPx, middle + press, TwoPx, ic.getInterpolatedU(14), ic.getInterpolatedV(2));
         tess.addVertexWithUV(
-                1.0 - TwoPx, middle + press, 1.0 - TwoPx, ic.getInterpolatedU(14), ic.getInterpolatedV(13));
+                1.0 - TwoPx,
+                middle + press,
+                1.0 - TwoPx,
+                ic.getInterpolatedU(14),
+                ic.getInterpolatedV(13));
         tess.addVertexWithUV(TwoPx, middle + press, 1.0 - TwoPx, ic.getInterpolatedU(2), ic.getInterpolatedV(13));
 
         tess.addVertexWithUV(TwoPx, middle + press, 1.0 - TwoPx, ic.getInterpolatedU(2), ic.getInterpolatedV(3));
@@ -289,16 +273,8 @@ public class RenderBlockInscriber extends BaseBlockRender<BlockInscriber, TileIn
         GL11.glCullFace(GL11.GL_BACK);
     }
 
-    private void renderItem(
-            ItemStack sis,
-            final float o,
-            final AEBaseBlock block,
-            final AEBaseTile tile,
-            final Tessellator tess,
-            final double x,
-            final double y,
-            final double z,
-            final float f,
+    private void renderItem(ItemStack sis, final float o, final AEBaseBlock block, final AEBaseTile tile,
+            final Tessellator tess, final double x, final double y, final double z, final float f,
             final RenderBlocks renderer) {
         if (sis != null) {
             sis = sis.copy();
@@ -317,8 +293,7 @@ public class RenderBlockInscriber extends BaseBlockRender<BlockInscriber, TileIn
                 final Block blk = Block.getBlockFromItem(sis.getItem());
 
                 // is a block
-                if (sis.getItemSpriteNumber() == 0
-                        && block != null
+                if (sis.getItemSpriteNumber() == 0 && block != null
                         && RenderBlocks.renderItemIn3d(blk.getRenderType())) {
                     // rotate block in angle to make it more plastic
                     GL11.glRotatef(22.5f, 1f, 0f, 0f);
@@ -330,8 +305,8 @@ public class RenderBlockInscriber extends BaseBlockRender<BlockInscriber, TileIn
                 }
 
                 // << 20 | light << 4;
-                final int br =
-                        tile.getWorldObj().getLightBrightnessForSkyBlocks(tile.xCoord, tile.yCoord, tile.zCoord, 0);
+                final int br = tile.getWorldObj()
+                        .getLightBrightnessForSkyBlocks(tile.xCoord, tile.yCoord, tile.zCoord, 0);
                 final int var11 = br % 65536;
                 final int var12 = br / 65536;
 

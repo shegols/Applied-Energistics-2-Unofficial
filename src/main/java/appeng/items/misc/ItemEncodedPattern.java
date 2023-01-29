@@ -1,22 +1,31 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.misc;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.ICraftingPatternItem;
@@ -29,23 +38,9 @@ import appeng.core.localization.GuiText;
 import appeng.helpers.PatternHelper;
 import appeng.items.AEBaseItem;
 import appeng.util.Platform;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class ItemEncodedPattern extends AEBaseItem implements ICraftingPatternItem {
+
     // rather simple client side caching.
     private static final Map<ItemStack, ItemStack> SIMPLE_CACHE = new WeakHashMap<ItemStack, ItemStack>();
 
@@ -65,17 +60,8 @@ public class ItemEncodedPattern extends AEBaseItem implements ICraftingPatternIt
     }
 
     @Override
-    public boolean onItemUseFirst(
-            final ItemStack stack,
-            final EntityPlayer player,
-            final World world,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onItemUseFirst(final ItemStack stack, final EntityPlayer player, final World world, final int x,
+            final int y, final int z, final int side, final float hitX, final float hitY, final float hitZ) {
         if (ForgeEventFactory.onItemUseStart(player, stack, 1) <= 0) return true;
 
         return this.clearPattern(stack, player);
@@ -91,12 +77,8 @@ public class ItemEncodedPattern extends AEBaseItem implements ICraftingPatternIt
 
             for (int s = 0; s < player.inventory.getSizeInventory(); s++) {
                 if (inv.getStackInSlot(s) == stack) {
-                    for (final ItemStack blankPattern : AEApi.instance()
-                            .definitions()
-                            .materials()
-                            .blankPattern()
-                            .maybeStack(stack.stackSize)
-                            .asSet()) {
+                    for (final ItemStack blankPattern : AEApi.instance().definitions().materials().blankPattern()
+                            .maybeStack(stack.stackSize).asSet()) {
                         inv.setInventorySlotContents(s, blankPattern);
                     }
 
@@ -109,8 +91,8 @@ public class ItemEncodedPattern extends AEBaseItem implements ICraftingPatternIt
     }
 
     @Override
-    public void addCheckedInformation(
-            final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
+    public void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+            final boolean displayMoreInfo) {
         final NBTTagCompound encodedValue = stack.getTagCompound();
 
         if (encodedValue == null) {
@@ -196,13 +178,8 @@ public class ItemEncodedPattern extends AEBaseItem implements ICraftingPatternIt
         return out;
     }
 
-    private boolean addInformation(
-            final EntityPlayer player,
-            final IAEItemStack[] items,
-            final List<String> lines,
-            final String label,
-            final String and,
-            final boolean displayMoreInfo) {
+    private boolean addInformation(final EntityPlayer player, final IAEItemStack[] items, final List<String> lines,
+            final String label, final String and, final boolean displayMoreInfo) {
         final ItemStack unknownItem = new ItemStack(Blocks.fire);
         boolean recipeIsBroken = false;
         boolean first = true;

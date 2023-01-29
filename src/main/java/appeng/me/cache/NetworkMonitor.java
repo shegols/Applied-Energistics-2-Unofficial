@@ -1,22 +1,21 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.cache;
+
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -29,15 +28,12 @@ import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.me.storage.ItemWatcher;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import java.util.*;
-import java.util.Map.Entry;
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class NetworkMonitor<T extends IAEStack<T>> implements IMEMonitor<T> {
+
     @Nonnull
     private static final Deque<NetworkMonitor<?>> GLOBAL_DEPTH = Lists.newLinkedList();
 
@@ -179,8 +175,8 @@ public class NetworkMonitor<T extends IAEStack<T>> implements IMEMonitor<T> {
         return this.listeners.entrySet().iterator();
     }
 
-    private T monitorDifference(
-            final IAEStack original, final T leftOvers, final boolean extraction, final BaseActionSource src) {
+    private T monitorDifference(final IAEStack original, final T leftOvers, final boolean extraction,
+            final BaseActionSource src) {
         final T diff = (T) original.copy();
 
         if (extraction) {
@@ -236,8 +232,7 @@ public class NetworkMonitor<T extends IAEStack<T>> implements IMEMonitor<T> {
             }
 
             if (this.myGridCache.getInterestManager().containsKey(changedItem)) {
-                final Collection<ItemWatcher> list =
-                        this.myGridCache.getInterestManager().get(changedItem);
+                final Collection<ItemWatcher> list = this.myGridCache.getInterestManager().get(changedItem);
 
                 if (!list.isEmpty()) {
                     IAEStack fullStack = this.getStorageList().findPrecise(changedItem);

@@ -1,11 +1,13 @@
 package appeng.worldgen.meteorite;
 
-import appeng.api.definitions.IBlockDefinition;
-import appeng.util.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
+import appeng.api.definitions.IBlockDefinition;
+import appeng.util.Platform;
+
 public class Fallout {
+
     private final MeteoriteBlockPutter putter;
     private final IBlockDefinition skyStoneDefinition;
 
@@ -38,8 +40,7 @@ public class Fallout {
         } else if (random > 0.7) {
             this.putter.put(w, x, y, z, Blocks.grass);
         } else if (random > 0.6) {
-            for (final Block skyStoneBlock :
-                    this.skyStoneDefinition.maybeBlock().asSet()) {
+            for (final Block skyStoneBlock : this.skyStoneDefinition.maybeBlock().asSet()) {
                 this.putter.put(w, x, y, z, skyStoneBlock);
             }
         } else if (random > 0.5) {

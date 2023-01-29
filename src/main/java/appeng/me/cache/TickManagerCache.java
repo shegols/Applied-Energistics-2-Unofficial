@@ -1,22 +1,21 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.cache;
+
+import java.util.HashMap;
+import java.util.PriorityQueue;
+
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.util.ReportedException;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridHost;
@@ -30,11 +29,6 @@ import appeng.api.util.DimensionalCoord;
 import appeng.core.AEConfig;
 import appeng.core.AELog;
 import appeng.me.cache.helpers.TickTracker;
-import java.util.HashMap;
-import java.util.PriorityQueue;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.util.ReportedException;
 
 public class TickManagerCache implements ITickManager {
 
@@ -85,7 +79,11 @@ public class TickManagerCache implements ITickManager {
                         DimensionalCoord c = tt.getNode().getGridBlock().getLocation();
                         AELog.debug(
                                 "Timing: machine tick at (%d %d %d) took %d ns, new state is %s",
-                                c.x, c.y, c.z, System.nanoTime() - tickStartTime, mod.toString());
+                                c.x,
+                                c.y,
+                                c.z,
+                                System.nanoTime() - tickStartTime,
+                                mod.toString());
                     }
                     switch (mod) {
                         case FASTER:
@@ -118,8 +116,8 @@ public class TickManagerCache implements ITickManager {
             }
         } catch (final Throwable t) {
             final CrashReport crashreport = CrashReport.makeCrashReport(t, "Ticking GridNode");
-            final CrashReportCategory crashreportcategory =
-                    crashreport.makeCategory(tt.getGridTickable().getClass().getSimpleName() + " being ticked.");
+            final CrashReportCategory crashreportcategory = crashreport
+                    .makeCategory(tt.getGridTickable().getClass().getSimpleName() + " being ticked.");
             tt.addEntityCrashInfo(crashreportcategory);
             throw new ReportedException(crashreport);
         }

@@ -1,22 +1,21 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core;
+
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nonnull;
+
+import net.minecraftforge.common.config.Configuration;
 
 import appeng.core.crash.CrashInfo;
 import appeng.core.crash.IntegrationCrashEnhancement;
@@ -34,17 +33,15 @@ import appeng.services.export.ExportConfig;
 import appeng.services.export.ExportProcess;
 import appeng.services.export.ForgeExportConfig;
 import appeng.util.Platform;
+
 import com.google.common.base.Stopwatch;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-import javax.annotation.Nonnull;
-import net.minecraftforge.common.config.Configuration;
 
 @Mod(
         modid = AppEng.MOD_ID,
@@ -54,6 +51,7 @@ import net.minecraftforge.common.config.Configuration;
         dependencies = AppEng.MOD_DEPENDENCIES,
         guiFactory = "appeng.client.gui.config.AEConfigGuiFactory")
 public final class AppEng {
+
     public static final String MOD_ID = "appliedenergistics2";
     public static final String MOD_NAME = "Applied Energistics 2";
     public static final String MOD_DEPENDENCIES =
@@ -63,10 +61,14 @@ public final class AppEng {
 
             // depend on version of forge used for build.
             "after:appliedenergistics2-core;" + "required-after:Forge@[" // require forge.
-                    + net.minecraftforge.common.ForgeVersion.majorVersion + '.' // majorVersion
-                    + net.minecraftforge.common.ForgeVersion.minorVersion + '.' // minorVersion
-                    + net.minecraftforge.common.ForgeVersion.revisionVersion + '.' // revisionVersion
-                    + net.minecraftforge.common.ForgeVersion.buildVersion + ",)"; // buildVersion
+                    + net.minecraftforge.common.ForgeVersion.majorVersion
+                    + '.' // majorVersion
+                    + net.minecraftforge.common.ForgeVersion.minorVersion
+                    + '.' // minorVersion
+                    + net.minecraftforge.common.ForgeVersion.revisionVersion
+                    + '.' // revisionVersion
+                    + net.minecraftforge.common.ForgeVersion.buildVersion
+                    + ",)"; // buildVersion
 
     @Nonnull
     private static final AppEng INSTANCE = new AppEng();

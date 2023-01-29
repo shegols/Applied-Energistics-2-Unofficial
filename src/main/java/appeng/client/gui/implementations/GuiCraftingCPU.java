@@ -1,22 +1,29 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
+import org.apache.commons.lang3.time.DurationFormatUtils;
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.AEApi;
 import appeng.api.config.SortDir;
@@ -36,21 +43,11 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
+
 import com.google.common.base.Joiner;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import org.apache.commons.lang3.time.DurationFormatUtils;
-import org.lwjgl.opengl.GL11;
 
 public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
+
     private static final int GUI_HEIGHT = 184;
     private static final int GUI_WIDTH = 238;
 
@@ -178,15 +175,15 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
         String title = this.getGuiDisplayName(GuiText.CraftingStatus.getLocal());
 
         if (this.craftingCpu.getEstimatedTime() > 0 && !this.visual.isEmpty()) {
-            final long etaInMilliseconds =
-                    TimeUnit.MILLISECONDS.convert(this.craftingCpu.getEstimatedTime(), TimeUnit.NANOSECONDS);
-            final String etaTimeText =
-                    DurationFormatUtils.formatDuration(etaInMilliseconds, GuiText.ETAFormat.getLocal());
+            final long etaInMilliseconds = TimeUnit.MILLISECONDS
+                    .convert(this.craftingCpu.getEstimatedTime(), TimeUnit.NANOSECONDS);
+            final String etaTimeText = DurationFormatUtils
+                    .formatDuration(etaInMilliseconds, GuiText.ETAFormat.getLocal());
             title += " - " + etaTimeText;
         }
 
-        this.fontRendererObj.drawString(
-                title, TITLE_LEFT_OFFSET, TITLE_TOP_OFFSET, GuiColors.CraftingCPUTitle.getColor());
+        this.fontRendererObj
+                .drawString(title, TITLE_LEFT_OFFSET, TITLE_TOP_OFFSET, GuiColors.CraftingCPUTitle.getColor());
 
         int x = 0;
         int y = 0;
@@ -230,8 +227,8 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
                 }
 
                 if (AEConfig.instance.useColoredCraftingStatus && (active || scheduled)) {
-                    final int bgColor =
-                            active ? GuiColors.CraftingCPUActive.getColor() : GuiColors.CraftingCPUInactive.getColor();
+                    final int bgColor = active ? GuiColors.CraftingCPUActive.getColor()
+                            : GuiColors.CraftingCPUInactive.getColor();
                     final int startX = (x * (1 + SECTION_LENGTH) + ITEMSTACK_LEFT_OFFSET) * 2;
                     final int startY = ((y * offY + ITEMSTACK_TOP_OFFSET) - 3) * 2;
                     drawRect(startX, startY, startX + (SECTION_LENGTH * 2), startY + (offY * 2) - 2, bgColor);
@@ -241,8 +238,8 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
                 int downY = 0;
 
                 if (stored != null && stored.getStackSize() > 0) {
-                    final String str =
-                            GuiText.Stored.getLocal() + ": " + converter.toWideReadableForm(stored.getStackSize());
+                    final String str = GuiText.Stored.getLocal() + ": "
+                            + converter.toWideReadableForm(stored.getStackSize());
                     final int w = 4 + this.fontRendererObj.getStringWidth(str);
                     this.fontRendererObj.drawString(
                             str,
@@ -252,8 +249,9 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
                             GuiColors.CraftingCPUStored.getColor());
 
                     if (this.tooltip == z - viewStart) {
-                        lineList.add(GuiText.Stored.getLocal() + ": "
-                                + NumberFormat.getInstance().format(stored.getStackSize()));
+                        lineList.add(
+                                GuiText.Stored.getLocal() + ": "
+                                        + NumberFormat.getInstance().format(stored.getStackSize()));
                     }
 
                     downY += 5;
@@ -272,8 +270,9 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
                             GuiColors.CraftingCPUAmount.getColor());
 
                     if (this.tooltip == z - viewStart) {
-                        lineList.add(GuiText.Crafting.getLocal() + ": "
-                                + NumberFormat.getInstance().format(activeStack.getStackSize()));
+                        lineList.add(
+                                GuiText.Crafting.getLocal() + ": "
+                                        + NumberFormat.getInstance().format(activeStack.getStackSize()));
                     }
 
                     downY += 5;
@@ -292,8 +291,9 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
                             GuiColors.CraftingCPUScheduled.getColor());
 
                     if (this.tooltip == z - viewStart) {
-                        lineList.add(GuiText.Scheduled.getLocal() + ": "
-                                + NumberFormat.getInstance().format(pendingStack.getStackSize()));
+                        lineList.add(
+                                GuiText.Scheduled.getLocal() + ": "
+                                        + NumberFormat.getInstance().format(pendingStack.getStackSize()));
                     }
                 }
 

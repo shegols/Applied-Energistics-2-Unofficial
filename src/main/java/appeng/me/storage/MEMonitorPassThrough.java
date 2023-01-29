@@ -1,22 +1,18 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.storage;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.storage.IBaseMonitor;
@@ -28,15 +24,11 @@ import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.Platform;
 import appeng.util.inv.ItemListIgnoreCrafting;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 public class MEMonitorPassThrough<T extends IAEStack<T>> extends MEPassThrough<T>
         implements IMEMonitor<T>, IMEMonitorHandlerReceiver<T> {
 
-    private final HashMap<IMEMonitorHandlerReceiver<T>, Object> listeners =
-            new HashMap<IMEMonitorHandlerReceiver<T>, Object>();
+    private final HashMap<IMEMonitorHandlerReceiver<T>, Object> listeners = new HashMap<IMEMonitorHandlerReceiver<T>, Object>();
     private BaseActionSource changeSource;
     private IMEMonitor<T> monitor;
 
@@ -54,22 +46,18 @@ public class MEMonitorPassThrough<T extends IAEStack<T>> extends MEPassThrough<T
         }
 
         this.monitor = null;
-        final IItemList<T> before = this.getInternal() == null
-                ? this.getWrappedChannel().createList()
+        final IItemList<T> before = this.getInternal() == null ? this.getWrappedChannel().createList()
                 : this.getInternal()
-                        .getAvailableItems(new ItemListIgnoreCrafting(
-                                this.getWrappedChannel().createList()));
+                        .getAvailableItems(new ItemListIgnoreCrafting(this.getWrappedChannel().createList()));
 
         super.setInternal(i);
         if (i instanceof IMEMonitor) {
             this.monitor = (IMEMonitor<T>) i;
         }
 
-        final IItemList<T> after = this.getInternal() == null
-                ? this.getWrappedChannel().createList()
+        final IItemList<T> after = this.getInternal() == null ? this.getWrappedChannel().createList()
                 : this.getInternal()
-                        .getAvailableItems(new ItemListIgnoreCrafting(
-                                this.getWrappedChannel().createList()));
+                        .getAvailableItems(new ItemListIgnoreCrafting(this.getWrappedChannel().createList()));
 
         if (this.monitor != null) {
             this.monitor.addListener(this, this.monitor);
@@ -111,8 +99,7 @@ public class MEMonitorPassThrough<T extends IAEStack<T>> extends MEPassThrough<T
 
     @Override
     public void postChange(final IBaseMonitor<T> monitor, final Iterable<T> change, final BaseActionSource source) {
-        final Iterator<Entry<IMEMonitorHandlerReceiver<T>, Object>> i =
-                this.listeners.entrySet().iterator();
+        final Iterator<Entry<IMEMonitorHandlerReceiver<T>, Object>> i = this.listeners.entrySet().iterator();
         while (i.hasNext()) {
             final Entry<IMEMonitorHandlerReceiver<T>, Object> e = i.next();
             final IMEMonitorHandlerReceiver<T> receiver = e.getKey();
@@ -126,8 +113,7 @@ public class MEMonitorPassThrough<T extends IAEStack<T>> extends MEPassThrough<T
 
     @Override
     public void onListUpdate() {
-        final Iterator<Entry<IMEMonitorHandlerReceiver<T>, Object>> i =
-                this.listeners.entrySet().iterator();
+        final Iterator<Entry<IMEMonitorHandlerReceiver<T>, Object>> i = this.listeners.entrySet().iterator();
         while (i.hasNext()) {
             final Entry<IMEMonitorHandlerReceiver<T>, Object> e = i.next();
             final IMEMonitorHandlerReceiver<T> receiver = e.getKey();

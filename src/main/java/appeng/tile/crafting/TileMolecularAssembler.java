@@ -1,22 +1,26 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.crafting;
+
+import java.io.IOException;
+import java.util.List;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -56,20 +60,11 @@ import appeng.util.item.AEItemStack;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import java.util.List;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileMolecularAssembler extends AENetworkInvTile
         implements IUpgradeableHost, IConfigManagerHost, IGridTickable, ICraftingMachine, IPowerChannelState {
-    private static final int[] SIDES = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    private static final int[] SIDES = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
     private final InventoryCrafting craftingInv;
     private final AppEngInternalInventory inv = new AppEngInternalInventory(this, 9 + 2);
@@ -86,8 +81,7 @@ public class TileMolecularAssembler extends AENetworkInvTile
     private boolean reboot = true;
 
     public TileMolecularAssembler() {
-        final ITileDefinition assembler =
-                AEApi.instance().definitions().blocks().molecularAssembler();
+        final ITileDefinition assembler = AEApi.instance().definitions().blocks().molecularAssembler();
 
         this.settings = new ConfigManager(this);
         this.settings.registerSetting(Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
@@ -102,8 +96,8 @@ public class TileMolecularAssembler extends AENetworkInvTile
     }
 
     @Override
-    public boolean pushPattern(
-            final ICraftingPatternDetails patternDetails, final InventoryCrafting table, final ForgeDirection where) {
+    public boolean pushPattern(final ICraftingPatternDetails patternDetails, final InventoryCrafting table,
+            final ForgeDirection where) {
         if (this.myPattern == null) {
             boolean isEmpty = true;
             for (int x = 0; x < this.inv.getSizeInventory(); x++) {
@@ -312,11 +306,7 @@ public class TileMolecularAssembler extends AENetworkInvTile
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {
         if (inv == this.inv) {
             this.recalculatePlan();
@@ -416,9 +406,10 @@ public class TileMolecularAssembler extends AENetworkInvTile
             this.progress = 0;
             final ItemStack output = this.myPlan.getOutput(this.craftingInv, this.getWorldObj());
             if (output != null) {
-                FMLCommonHandler.instance()
-                        .firePlayerCraftingEvent(
-                                Platform.getPlayer((WorldServer) this.getWorldObj()), output, this.craftingInv);
+                FMLCommonHandler.instance().firePlayerCraftingEvent(
+                        Platform.getPlayer((WorldServer) this.getWorldObj()),
+                        output,
+                        this.craftingInv);
 
                 this.pushOut(output.copy());
 
@@ -436,7 +427,11 @@ public class TileMolecularAssembler extends AENetworkInvTile
 
                 try {
                     final TargetPoint where = new TargetPoint(
-                            this.worldObj.provider.dimensionId, this.xCoord, this.yCoord, this.zCoord, 32);
+                            this.worldObj.provider.dimensionId,
+                            this.xCoord,
+                            this.yCoord,
+                            this.zCoord,
+                            32);
                     final IAEItemStack item = AEItemStack.create(output);
                     NetworkHandler.instance.sendToAllAround(
                             new PacketAssemblerAnimation(this.xCoord, this.yCoord, this.zCoord, (byte) speed, item),
@@ -472,13 +467,10 @@ public class TileMolecularAssembler extends AENetworkInvTile
 
     private int userPower(final int ticksPassed, final int bonusValue, final double acceleratorTax) {
         try {
-            return (int) (this.getProxy()
-                            .getEnergy()
-                            .extractAEPower(
-                                    ticksPassed * bonusValue * acceleratorTax,
-                                    Actionable.MODULATE,
-                                    PowerMultiplier.CONFIG)
-                    / acceleratorTax);
+            return (int) (this.getProxy().getEnergy().extractAEPower(
+                    ticksPassed * bonusValue * acceleratorTax,
+                    Actionable.MODULATE,
+                    PowerMultiplier.CONFIG) / acceleratorTax);
         } catch (final GridAccessException e) {
             return 0;
         }

@@ -1,36 +1,32 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.integration.modules.waila.part;
+
+import java.util.List;
+
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 import appeng.api.parts.IPart;
 import appeng.core.localization.ButtonToolTips;
 import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.parts.p2p.PartP2PTunnel;
+
 import com.google.common.collect.Iterators;
-import java.util.List;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 /**
  * Provides information about a P2P tunnel to WAILA.
@@ -47,19 +43,16 @@ public final class P2PStateWailaDataProvider extends BasePartWailaDataProvider {
     /**
      * Adds state to the tooltip
      *
-     * @param part part with state
+     * @param part           part with state
      * @param currentToolTip to be added to tooltip
-     * @param accessor wrapper for various information
-     * @param config config settings
+     * @param accessor       wrapper for various information
+     * @param config         config settings
      *
      * @return modified tooltip
      */
     @Override
-    public List<String> getWailaBody(
-            final IPart part,
-            final List<String> currentToolTip,
-            final IWailaDataAccessor accessor,
-            final IWailaConfigHandler config) {
+    public List<String> getWailaBody(final IPart part, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         if (part instanceof PartP2PTunnel) {
             NBTTagCompound nbtData = accessor.getNBTData();
             if (nbtData.hasKey(TAG_P2P_STATE)) {
@@ -82,8 +75,7 @@ public final class P2PStateWailaDataProvider extends BasePartWailaDataProvider {
                 }
 
                 final long freq = nbtData.getLong(TAG_P2P_FREQUENCY);
-                final String freqTooltip =
-                        String.format("%X", freq).replaceAll("(.{4})", "$0 ").trim();
+                final String freqTooltip = String.format("%X", freq).replaceAll("(.{4})", "$0 ").trim();
 
                 final String local = ButtonToolTips.P2PFrequency.getLocal();
 
@@ -96,15 +88,8 @@ public final class P2PStateWailaDataProvider extends BasePartWailaDataProvider {
     }
 
     @Override
-    public NBTTagCompound getNBTData(
-            final EntityPlayerMP player,
-            final IPart part,
-            final TileEntity te,
-            final NBTTagCompound tag,
-            final World world,
-            final int x,
-            final int y,
-            final int z) {
+    public NBTTagCompound getNBTData(final EntityPlayerMP player, final IPart part, final TileEntity te,
+            final NBTTagCompound tag, final World world, final int x, final int y, final int z) {
         if (part instanceof PartP2PTunnel) {
             final PartP2PTunnel tunnel = (PartP2PTunnel) part;
 
@@ -133,7 +118,7 @@ public final class P2PStateWailaDataProvider extends BasePartWailaDataProvider {
                 }
             }
 
-            tag.setIntArray(TAG_P2P_STATE, new int[] {state, outputCount});
+            tag.setIntArray(TAG_P2P_STATE, new int[] { state, outputCount });
         }
 
         return tag;

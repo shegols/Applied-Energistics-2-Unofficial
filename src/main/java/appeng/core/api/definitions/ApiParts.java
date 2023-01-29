@@ -1,19 +1,11 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.api.definitions;
@@ -31,6 +23,7 @@ import appeng.items.parts.PartType;
  * Internal implementation for the API parts
  */
 public final class ApiParts implements IParts {
+
     private final AEColoredItemDefinition cableSmart;
     private final AEColoredItemDefinition cableCovered;
     private final AEColoredItemDefinition cableGlass;
@@ -85,10 +78,10 @@ public final class ApiParts implements IParts {
         this.cableGlass = constructor.constructColoredDefinition(itemMultiPart, PartType.CableGlass);
         this.cableDense = constructor.constructColoredDefinition(itemMultiPart, PartType.CableDense);
         this.cableDenseCovered = constructor.constructColoredDefinition(itemMultiPart, PartType.CableDenseCovered);
-        this.cableUltraDenseSmart =
-                constructor.constructColoredDefinition(itemMultiPart, PartType.CableUltraDenseSmart);
-        this.cableUltraDenseCovered =
-                constructor.constructColoredDefinition(itemMultiPart, PartType.CableUltraDenseCovered);
+        this.cableUltraDenseSmart = constructor
+                .constructColoredDefinition(itemMultiPart, PartType.CableUltraDenseSmart);
+        this.cableUltraDenseCovered = constructor
+                .constructColoredDefinition(itemMultiPart, PartType.CableUltraDenseCovered);
         // this.lumenCableSmart = Optional.absent(); // has yet to be implemented, no PartType defined for it yet
         // this.lumenCableCovered = Optional.absent(); // has yet to be implemented, no PartType defined for it yet
         // this.lumenCableGlass = Optional.absent(); // has yet to be implemented, no PartType defined for it yet
@@ -102,8 +95,8 @@ public final class ApiParts implements IParts {
         this.iface = new DamagedItemDefinition(itemMultiPart.createPart(PartType.Interface));
         this.levelEmitter = new DamagedItemDefinition(itemMultiPart.createPart(PartType.LevelEmitter));
         this.annihilationPlane = new DamagedItemDefinition(itemMultiPart.createPart(PartType.AnnihilationPlane));
-        this.identityAnnihilationPlane =
-                new DamagedItemDefinition(itemMultiPart.createPart(PartType.IdentityAnnihilationPlane));
+        this.identityAnnihilationPlane = new DamagedItemDefinition(
+                itemMultiPart.createPart(PartType.IdentityAnnihilationPlane));
         this.formationPlane = new DamagedItemDefinition(itemMultiPart.createPart(PartType.FormationPlane));
         this.p2PTunnelME = new DamagedItemDefinition(itemMultiPart.createPart(PartType.P2PTunnelME));
         this.p2PTunnelRedstone = new DamagedItemDefinition(itemMultiPart.createPart(PartType.P2PTunnelRedstone));
@@ -112,8 +105,8 @@ public final class ApiParts implements IParts {
         this.p2PTunnelEU = new DamagedItemDefinition(itemMultiPart.createPart(PartType.P2PTunnelEU));
         this.p2PTunnelRF = new DamagedItemDefinition(itemMultiPart.createPart(PartType.P2PTunnelRF));
         this.p2PTunnelLight = new DamagedItemDefinition(itemMultiPart.createPart(PartType.P2PTunnelLight));
-        this.p2PTunnelOpenComputers =
-                new DamagedItemDefinition(itemMultiPart.createPart(PartType.P2PTunnelOpenComputers));
+        this.p2PTunnelOpenComputers = new DamagedItemDefinition(
+                itemMultiPart.createPart(PartType.P2PTunnelOpenComputers));
         this.p2PTunnelPneumaticCraft = new DamagedItemDefinition(itemMultiPart.createPart(PartType.P2PTunnelPressure));
         this.p2PTunnelGregtech = new DamagedItemDefinition(itemMultiPart.createPart(PartType.P2PTunnelGT));
         this.p2PTunnelInterface = new DamagedItemDefinition(itemMultiPart.createPart(PartType.P2PTunnelInterface));

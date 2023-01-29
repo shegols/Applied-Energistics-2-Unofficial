@@ -1,30 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import appeng.api.config.TunnelType;
 import appeng.core.api.IIMCProcessor;
 import appeng.core.api.imc.*;
 import cpw.mods.fml.common.event.FMLInterModComms;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * Handles the delegation of the corresponding IMC messages to the suitable IMC processors
@@ -34,6 +27,7 @@ import java.util.Map;
  * @since rv1
  */
 public class IMCHandler {
+
     private static final int INITIAL_PROCESSORS_CAPACITY = 20;
 
     /**
@@ -62,7 +56,8 @@ public class IMCHandler {
     }
 
     /**
-     * Tries to find every message matching the internal IMC keys. When found the corresponding handler will process the attached message.
+     * Tries to find every message matching the internal IMC keys. When found the corresponding handler will process the
+     * attached message.
      *
      * @param event Event carrying the identifier and message for the handlers
      */

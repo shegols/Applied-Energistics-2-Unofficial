@@ -1,31 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.widgets;
 
-import appeng.client.texture.ExtraBlockTextures;
 import java.util.regex.Pattern;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
 
+import appeng.client.texture.ExtraBlockTextures;
+
 public class GuiToggleButton extends GuiButton implements ITooltip {
+
     private static final Pattern PATTERN_NEW_LINE = Pattern.compile("\\n", Pattern.LITERAL);
     private final int iconIdxOn;
     private final int iconIdxOff;
@@ -35,8 +31,8 @@ public class GuiToggleButton extends GuiButton implements ITooltip {
 
     private boolean isActive;
 
-    public GuiToggleButton(
-            final int x, final int y, final int on, final int off, final String displayName, final String displayHint) {
+    public GuiToggleButton(final int x, final int y, final int on, final int off, final String displayName,
+            final String displayHint) {
         super(0, 0, 16, "");
         this.iconIdxOn = on;
         this.iconIdxOff = off;
@@ -59,8 +55,7 @@ public class GuiToggleButton extends GuiButton implements ITooltip {
 
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             par1Minecraft.renderEngine.bindTexture(ExtraBlockTextures.GuiTexture("guis/states.png"));
-            this.field_146123_n = par2 >= this.xPosition
-                    && par3 >= this.yPosition
+            this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition
                     && par2 < this.xPosition + this.width
                     && par3 < this.yPosition + this.height;
 

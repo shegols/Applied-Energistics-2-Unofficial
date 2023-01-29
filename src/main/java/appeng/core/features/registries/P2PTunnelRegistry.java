@@ -1,22 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.features.registries;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.AEApi;
 import appeng.api.config.TunnelType;
@@ -28,16 +31,9 @@ import appeng.api.features.IP2PTunnelRegistry;
 import appeng.api.util.AEColor;
 import appeng.util.Platform;
 import cpw.mods.fml.common.registry.GameRegistry;
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Nullable;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
+
     private static final int INITIAL_CAPACITY = 40;
 
     private final Map<ItemStack, TunnelType> tunnels = new HashMap<ItemStack, TunnelType>(INITIAL_CAPACITY);
@@ -64,7 +60,8 @@ public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
         this.addNewAttunement(new ItemStack(Blocks.redstone_block), TunnelType.REDSTONE);
         this.addNewAttunement(new ItemStack(Blocks.lever), TunnelType.REDSTONE);
         this.addNewAttunement(
-                this.getModItem("EnderIO", "itemRedstoneConduit", OreDictionary.WILDCARD_VALUE), TunnelType.REDSTONE);
+                this.getModItem("EnderIO", "itemRedstoneConduit", OreDictionary.WILDCARD_VALUE),
+                TunnelType.REDSTONE);
 
         /**
          * attune based on lots of random item related stuff
@@ -83,7 +80,8 @@ public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
         this.addNewAttunement(this.getModItem("ExtraUtilities", "extractor_base", 0), TunnelType.ITEM);
         this.addNewAttunement(this.getModItem("Mekanism", "PartTransmitter", 9), TunnelType.ITEM);
         this.addNewAttunement(
-                this.getModItem("EnderIO", "itemItemConduit", OreDictionary.WILDCARD_VALUE), TunnelType.ITEM);
+                this.getModItem("EnderIO", "itemItemConduit", OreDictionary.WILDCARD_VALUE),
+                TunnelType.ITEM);
         this.addNewAttunement(this.getModItem("ThermalDynamics", "ThermalDynamics_32", 0), TunnelType.ITEM);
 
         /**
@@ -97,9 +95,11 @@ public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
         this.addNewAttunement(this.getModItem("Mekanism", "PartTransmitter", 4), TunnelType.FLUID);
         this.addNewAttunement(this.getModItem("ExtraUtilities", "extractor_base", 6), TunnelType.FLUID);
         this.addNewAttunement(
-                this.getModItem("ExtraUtilities", "drum", OreDictionary.WILDCARD_VALUE), TunnelType.FLUID);
+                this.getModItem("ExtraUtilities", "drum", OreDictionary.WILDCARD_VALUE),
+                TunnelType.FLUID);
         this.addNewAttunement(
-                this.getModItem("EnderIO", "itemLiquidConduit", OreDictionary.WILDCARD_VALUE), TunnelType.FLUID);
+                this.getModItem("EnderIO", "itemLiquidConduit", OreDictionary.WILDCARD_VALUE),
+                TunnelType.FLUID);
         this.addNewAttunement(this.getModItem("ThermalDynamics", "ThermalDynamics_16", 0), TunnelType.FLUID);
 
         for (final AEColor c : AEColor.values()) {

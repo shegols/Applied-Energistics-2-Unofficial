@@ -1,22 +1,29 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.items.parts;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 import appeng.api.AEApi;
 import appeng.api.exceptions.MissingDefinition;
@@ -34,26 +41,16 @@ import appeng.core.localization.GuiText;
 import appeng.integration.IntegrationRegistry;
 import appeng.integration.IntegrationType;
 import appeng.items.AEBaseItem;
+
 import com.google.common.base.Preconditions;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.Map.Entry;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 
 public final class ItemMultiPart extends AEBaseItem implements IPartItem, IItemGroup {
+
     private static final int INITIAL_REGISTERED_CAPACITY = PartType.values().length;
-    private static final Comparator<Entry<Integer, PartTypeWithVariant>> REGISTERED_COMPARATOR =
-            new RegisteredComparator();
+    private static final Comparator<Entry<Integer, PartTypeWithVariant>> REGISTERED_COMPARATOR = new RegisteredComparator();
 
     public static ItemMultiPart instance;
     private final NameResolver nameResolver;
@@ -121,16 +118,21 @@ public final class ItemMultiPart extends AEBaseItem implements IPartItem, IItemG
         return output;
     }
 
-    private void processMetaOverlap(
-            final boolean enabled, final int partDamage, final PartType mat, final PartTypeWithVariant pti) {
+    private void processMetaOverlap(final boolean enabled, final int partDamage, final PartType mat,
+            final PartTypeWithVariant pti) {
         assert partDamage >= 0;
         assert mat != null;
         assert pti != null;
 
         final PartTypeWithVariant registeredPartType = this.registered.get(partDamage);
         if (registeredPartType != null) {
-            throw new IllegalStateException("Meta Overlap detected with type " + mat + " and damage " + partDamage
-                    + ". Found " + registeredPartType + " there already.");
+            throw new IllegalStateException(
+                    "Meta Overlap detected with type " + mat
+                            + " and damage "
+                            + partDamage
+                            + ". Found "
+                            + registeredPartType
+                            + " there already.");
         }
 
         if (enabled) {
@@ -162,24 +164,17 @@ public final class ItemMultiPart extends AEBaseItem implements IPartItem, IItemG
             return registeredType.ico;
         }
 
-        final String formattedRegistered =
-                Arrays.toString(this.registered.keySet().toArray());
-        throw new MissingDefinition("Tried to get the icon from a non-existent part with damage value " + dmg
-                + ". There were registered: " + formattedRegistered + '.');
+        final String formattedRegistered = Arrays.toString(this.registered.keySet().toArray());
+        throw new MissingDefinition(
+                "Tried to get the icon from a non-existent part with damage value " + dmg
+                        + ". There were registered: "
+                        + formattedRegistered
+                        + '.');
     }
 
     @Override
-    public boolean onItemUse(
-            final ItemStack is,
-            final EntityPlayer player,
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onItemUse(final ItemStack is, final EntityPlayer player, final World w, final int x, final int y,
+            final int z, final int side, final float hitX, final float hitY, final float hitZ) {
         if (this.getTypeByStack(is) == PartType.InvalidType) {
             return false;
         }
@@ -222,10 +217,10 @@ public final class ItemMultiPart extends AEBaseItem implements IPartItem, IItemG
     }
 
     @Override
-    protected void getCheckedSubItems(
-            final Item sameItem, final CreativeTabs creativeTab, final List<ItemStack> itemStacks) {
-        final List<Entry<Integer, PartTypeWithVariant>> types =
-                new ArrayList<Entry<Integer, PartTypeWithVariant>>(this.registered.entrySet());
+    protected void getCheckedSubItems(final Item sameItem, final CreativeTabs creativeTab,
+            final List<ItemStack> itemStacks) {
+        final List<Entry<Integer, PartTypeWithVariant>> types = new ArrayList<Entry<Integer, PartTypeWithVariant>>(
+                this.registered.entrySet());
         Collections.sort(types, REGISTERED_COMPARATOR);
 
         for (final Entry<Integer, PartTypeWithVariant> part : types) {
@@ -339,6 +334,7 @@ public final class ItemMultiPart extends AEBaseItem implements IPartItem, IItemG
     }
 
     private static final class PartTypeWithVariant {
+
         private final PartType part;
         private final int variant;
 
@@ -356,13 +352,17 @@ public final class ItemMultiPart extends AEBaseItem implements IPartItem, IItemG
         @Override
         public String toString() {
             return "PartTypeWithVariant{" + "part="
-                    + this.part + ", variant="
-                    + this.variant + ", ico="
-                    + this.ico + '}';
+                    + this.part
+                    + ", variant="
+                    + this.variant
+                    + ", ico="
+                    + this.ico
+                    + '}';
         }
     }
 
     private static final class RegisteredComparator implements Comparator<Entry<Integer, PartTypeWithVariant>> {
+
         @Override
         public int compare(final Entry<Integer, PartTypeWithVariant> o1, final Entry<Integer, PartTypeWithVariant> o2) {
             return o1.getValue().part.name().compareTo(o2.getValue().part.name());

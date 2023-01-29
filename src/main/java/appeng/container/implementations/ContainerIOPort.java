@@ -1,22 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
 
 import appeng.api.config.*;
 import appeng.container.guisync.GuiSync;
@@ -24,8 +19,6 @@ import appeng.container.slot.SlotOutput;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.tile.storage.TileIOPort;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
 
 public class ContainerIOPort extends ContainerUpgradeable {
 
@@ -53,13 +46,14 @@ public class ContainerIOPort extends ContainerUpgradeable {
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 2; x++) {
-                this.addSlotToContainer(new SlotRestrictedInput(
-                        SlotRestrictedInput.PlacableItemType.STORAGE_CELLS,
-                        cells,
-                        x + y * 2,
-                        offX + x * 18,
-                        offY + y * 18,
-                        this.getInventoryPlayer()));
+                this.addSlotToContainer(
+                        new SlotRestrictedInput(
+                                SlotRestrictedInput.PlacableItemType.STORAGE_CELLS,
+                                cells,
+                                x + y * 2,
+                                offX + x * 18,
+                                offY + y * 18,
+                                this.getInventoryPlayer()));
             }
         }
 
@@ -67,35 +61,41 @@ public class ContainerIOPort extends ContainerUpgradeable {
         offY = 17;
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 2; x++) {
-                this.addSlotToContainer(new SlotOutput(
-                        cells,
-                        6 + x + y * 2,
-                        offX + x * 18,
-                        offY + y * 18,
-                        SlotRestrictedInput.PlacableItemType.STORAGE_CELLS.IIcon));
+                this.addSlotToContainer(
+                        new SlotOutput(
+                                cells,
+                                6 + x + y * 2,
+                                offX + x * 18,
+                                offY + y * 18,
+                                SlotRestrictedInput.PlacableItemType.STORAGE_CELLS.IIcon));
             }
         }
 
         final IInventory upgrades = this.getUpgradeable().getInventoryByName("upgrades");
-        this.addSlotToContainer((new SlotRestrictedInput(
-                        SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0, 187, 8, this.getInventoryPlayer()))
-                .setNotDraggable());
-        this.addSlotToContainer((new SlotRestrictedInput(
+        this.addSlotToContainer(
+                (new SlotRestrictedInput(
+                        SlotRestrictedInput.PlacableItemType.UPGRADES,
+                        upgrades,
+                        0,
+                        187,
+                        8,
+                        this.getInventoryPlayer())).setNotDraggable());
+        this.addSlotToContainer(
+                (new SlotRestrictedInput(
                         SlotRestrictedInput.PlacableItemType.UPGRADES,
                         upgrades,
                         1,
                         187,
                         8 + 18,
-                        this.getInventoryPlayer()))
-                .setNotDraggable());
-        this.addSlotToContainer((new SlotRestrictedInput(
+                        this.getInventoryPlayer())).setNotDraggable());
+        this.addSlotToContainer(
+                (new SlotRestrictedInput(
                         SlotRestrictedInput.PlacableItemType.UPGRADES,
                         upgrades,
                         2,
                         187,
                         8 + 18 * 2,
-                        this.getInventoryPlayer()))
-                .setNotDraggable());
+                        this.getInventoryPlayer())).setNotDraggable());
     }
 
     @Override

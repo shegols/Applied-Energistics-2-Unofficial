@@ -1,15 +1,16 @@
 package appeng.crafting.v2;
 
-import appeng.api.networking.crafting.ICraftingPatternDetails;
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IAEStack;
-import appeng.crafting.v2.resolvers.CraftingTask;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+
+import appeng.api.networking.crafting.ICraftingPatternDetails;
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IAEStack;
+import appeng.crafting.v2.resolvers.CraftingTask;
 
 /**
  * A single requested stack (item or fluid) to craft, e.g. 32x Torches
@@ -17,6 +18,7 @@ import java.util.function.Predicate;
  * @param <StackType> Should be {@link IAEItemStack} or {@link appeng.api.storage.data.IAEFluidStack}
  */
 public class CraftingRequest<StackType extends IAEStack<StackType>> {
+
     public enum SubstitutionMode {
         /**
          * No substitution, do not use items from the AE system - used for user-started requests
@@ -27,12 +29,14 @@ public class CraftingRequest<StackType extends IAEStack<StackType>> {
          */
         PRECISE,
         /**
-         * Allow fuzzy matching of ingredients, the request will have a {@link CraftingRequest#acceptableSubstituteFn} predicate to determine if the given fuzzy match item is valid
+         * Allow fuzzy matching of ingredients, the request will have a {@link CraftingRequest#acceptableSubstituteFn}
+         * predicate to determine if the given fuzzy match item is valid
          */
         ACCEPT_FUZZY
     }
 
     public static class UsedResolverEntry {
+
         public final CraftingTask task;
         public final IAEStack<?> resolvedStack;
 
@@ -64,7 +68,8 @@ public class CraftingRequest<StackType extends IAEStack<StackType>> {
     private volatile long byteCost = 0;
     private volatile long untransformedByteCost = 0;
     /**
-     * If the item had to be simulated (there was not enough ingredients in the system to fulfill this request in any way)
+     * If the item had to be simulated (there was not enough ingredients in the system to fulfill this request in any
+     * way)
      */
     public volatile boolean wasSimulated = false;
 
@@ -79,12 +84,8 @@ public class CraftingRequest<StackType extends IAEStack<StackType>> {
      * @param stackTypeClass         Pass in {@code StackType.class}, needed for resolving types at runtime
      * @param acceptableSubstituteFn A predicate testing if a given item (in fuzzy mode) can fulfill the request
      */
-    public CraftingRequest(
-            StackType stack,
-            SubstitutionMode substitutionMode,
-            Class<StackType> stackTypeClass,
-            boolean allowSimulation,
-            Predicate<StackType> acceptableSubstituteFn) {
+    public CraftingRequest(StackType stack, SubstitutionMode substitutionMode, Class<StackType> stackTypeClass,
+            boolean allowSimulation, Predicate<StackType> acceptableSubstituteFn) {
         this.stackTypeClass = stackTypeClass;
         this.stack = stack;
         this.substitutionMode = substitutionMode;
@@ -102,10 +103,7 @@ public class CraftingRequest<StackType extends IAEStack<StackType>> {
      * @param substitutionMode Whether and how to allow substitutions when resolving this request
      * @param stackTypeClass   Pass in {@code StackType.class}, needed for resolving types at runtime
      */
-    public CraftingRequest(
-            StackType request,
-            SubstitutionMode substitutionMode,
-            Class<StackType> stackTypeClass,
+    public CraftingRequest(StackType request, SubstitutionMode substitutionMode, Class<StackType> stackTypeClass,
             boolean allowSimulation) {
         this(request, substitutionMode, stackTypeClass, allowSimulation, stack -> true);
         if (substitutionMode == SubstitutionMode.ACCEPT_FUZZY) {
@@ -122,8 +120,16 @@ public class CraftingRequest<StackType extends IAEStack<StackType>> {
 
     @Override
     public String toString() {
-        return "CraftingRequest{request=" + stack + ", substitutionMode=" + substitutionMode + ", remainingToProcess="
-                + remainingToProcess + ", byteCost=" + byteCost + ", wasSimulated=" + wasSimulated + '}';
+        return "CraftingRequest{request=" + stack
+                + ", substitutionMode="
+                + substitutionMode
+                + ", remainingToProcess="
+                + remainingToProcess
+                + ", byteCost="
+                + byteCost
+                + ", wasSimulated="
+                + wasSimulated
+                + '}';
     }
 
     /**
@@ -148,7 +154,8 @@ public class CraftingRequest<StackType extends IAEStack<StackType>> {
     }
 
     /**
-     * Reduces the amount of items needed by {@code amount}, propagating any necessary refunds via the resolver crafting tasks.
+     * Reduces the amount of items needed by {@code amount}, propagating any necessary refunds via the resolver crafting
+     * tasks.
      */
     public void partialRefund(CraftingContext context, long amount) {
         long remainingTaskAmount = amount;
@@ -159,8 +166,8 @@ public class CraftingRequest<StackType extends IAEStack<StackType>> {
             if (resolver.resolvedStack.getStackSize() <= 0) {
                 continue;
             }
-            final long taskRefunded = resolver.task.partialRefund(
-                    context, Math.min(remainingTaskAmount, resolver.resolvedStack.getStackSize()));
+            final long taskRefunded = resolver.task
+                    .partialRefund(context, Math.min(remainingTaskAmount, resolver.resolvedStack.getStackSize()));
             remainingTaskAmount -= taskRefunded;
             resolver.resolvedStack.setStackSize(resolver.resolvedStack.getStackSize() - taskRefunded);
         }
@@ -193,6 +200,7 @@ public class CraftingRequest<StackType extends IAEStack<StackType>> {
 
     /**
      * Gets the resolved item stack.
+     * 
      * @throws IllegalStateException if multiple item types were used to resolve the request
      */
     public IAEStack<?> getOneResolvedType() {

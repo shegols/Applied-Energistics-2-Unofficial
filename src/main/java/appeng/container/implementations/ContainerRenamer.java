@@ -1,5 +1,8 @@
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.tileentity.TileEntity;
+
 import appeng.api.config.SecurityPermissions;
 import appeng.api.parts.IPart;
 import appeng.client.gui.widgets.MEGuiTextField;
@@ -8,10 +11,9 @@ import appeng.helpers.ICustomNameObject;
 import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
 
 public class ContainerRenamer extends AEBaseContainer {
+
     private final ICustomNameObject namedObject;
 
     @SideOnly(Side.CLIENT)

@@ -1,34 +1,30 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import javax.annotation.Nonnull;
+
+import org.apache.commons.io.FileUtils;
 
 import appeng.api.recipes.IRecipeHandler;
 import appeng.recipes.CustomRecipeConfig;
 import appeng.recipes.loader.ConfigLoader;
 import appeng.recipes.loader.JarLoader;
 import appeng.recipes.loader.RecipeResourceCopier;
+
 import com.google.common.base.Preconditions;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import javax.annotation.Nonnull;
-import org.apache.commons.io.FileUtils;
 
 /**
  * handles the decision if recipes should be loaded from jar, loaded from file system or force copied from jar
@@ -38,6 +34,7 @@ import org.apache.commons.io.FileUtils;
  * @since rv3 12.05.2015
  */
 public class RecipeLoader implements Runnable {
+
     /**
      * recipe path in the jar
      */
@@ -57,9 +54,7 @@ public class RecipeLoader implements Runnable {
      * @param handler handler to load the recipes
      * @throws NullPointerException if handler is <tt>null</tt>
      */
-    public RecipeLoader(
-            @Nonnull final File recipeDirectory,
-            @Nonnull final CustomRecipeConfig config,
+    public RecipeLoader(@Nonnull final File recipeDirectory, @Nonnull final CustomRecipeConfig config,
             @Nonnull final IRecipeHandler handler) {
         this.recipeDirectory = Preconditions.checkNotNull(recipeDirectory);
         Preconditions.checkArgument(!recipeDirectory.isFile());

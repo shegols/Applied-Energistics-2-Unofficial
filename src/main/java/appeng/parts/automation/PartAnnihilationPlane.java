@@ -1,22 +1,33 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.automation;
+
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.world.BlockEvent;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -47,28 +58,14 @@ import appeng.server.ServerHelper;
 import appeng.util.IWorldCallable;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
+
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.world.BlockEvent;
 
 public class PartAnnihilationPlane extends PartBasicState implements IGridTickable, IWorldCallable<TickRateModulation> {
+
     private static final IIcon SIDE_ICON = CableBusTextures.PartPlaneSides.getIcon();
     private static final IIcon BACK_ICON = CableBusTextures.PartTransitionPlaneBack.getIcon();
     private static final IIcon STATUS_ICON = CableBusTextures.PartMonitorSidesStatus.getIcon();
@@ -117,22 +114,26 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
             final ForgeDirection u = bch.getWorldY();
 
             if (this.isAnnihilationPlane(
-                    te.getWorldObj().getTileEntity(x - e.offsetX, y - e.offsetY, z - e.offsetZ), this.getSide())) {
+                    te.getWorldObj().getTileEntity(x - e.offsetX, y - e.offsetY, z - e.offsetZ),
+                    this.getSide())) {
                 minX = 0;
             }
 
             if (this.isAnnihilationPlane(
-                    te.getWorldObj().getTileEntity(x + e.offsetX, y + e.offsetY, z + e.offsetZ), this.getSide())) {
+                    te.getWorldObj().getTileEntity(x + e.offsetX, y + e.offsetY, z + e.offsetZ),
+                    this.getSide())) {
                 maxX = 16;
             }
 
             if (this.isAnnihilationPlane(
-                    te.getWorldObj().getTileEntity(x - u.offsetX, y - u.offsetY, z - u.offsetZ), this.getSide())) {
+                    te.getWorldObj().getTileEntity(x - u.offsetX, y - u.offsetY, z - u.offsetZ),
+                    this.getSide())) {
                 minY = 0;
             }
 
             if (this.isAnnihilationPlane(
-                    te.getWorldObj().getTileEntity(x + u.offsetX, y + u.offsetY, z + u.offsetZ), this.getSide())) {
+                    te.getWorldObj().getTileEntity(x + u.offsetX, y + u.offsetY, z + u.offsetZ),
+                    this.getSide())) {
                 maxY = 16;
             }
         }
@@ -155,18 +156,13 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x, final int y, final int z, final IPartRenderHelper rh, final RenderBlocks renderer) {
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {
         this.renderStaticWithIcon(x, y, z, rh, renderer, ACTIVE_ICON);
     }
 
-    protected void renderStaticWithIcon(
-            final int x,
-            final int y,
-            final int z,
-            final IPartRenderHelper rh,
-            final RenderBlocks renderer,
-            final IIcon activeIcon) {
+    protected void renderStaticWithIcon(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer, final IIcon activeIcon) {
         int minX = 1;
 
         final ForgeDirection e = rh.getWorldX();
@@ -175,25 +171,29 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
         final TileEntity te = this.getHost().getTile();
 
         if (this.isAnnihilationPlane(
-                te.getWorldObj().getTileEntity(x - e.offsetX, y - e.offsetY, z - e.offsetZ), this.getSide())) {
+                te.getWorldObj().getTileEntity(x - e.offsetX, y - e.offsetY, z - e.offsetZ),
+                this.getSide())) {
             minX = 0;
         }
 
         int maxX = 15;
         if (this.isAnnihilationPlane(
-                te.getWorldObj().getTileEntity(x + e.offsetX, y + e.offsetY, z + e.offsetZ), this.getSide())) {
+                te.getWorldObj().getTileEntity(x + e.offsetX, y + e.offsetY, z + e.offsetZ),
+                this.getSide())) {
             maxX = 16;
         }
 
         int minY = 1;
         if (this.isAnnihilationPlane(
-                te.getWorldObj().getTileEntity(x - u.offsetX, y - u.offsetY, z - u.offsetZ), this.getSide())) {
+                te.getWorldObj().getTileEntity(x - u.offsetX, y - u.offsetY, z - u.offsetZ),
+                this.getSide())) {
             minY = 0;
         }
 
         int maxY = 15;
         if (this.isAnnihilationPlane(
-                te.getWorldObj().getTileEntity(x + u.offsetX, y + u.offsetY, z + u.offsetZ), this.getSide())) {
+                te.getWorldObj().getTileEntity(x + u.offsetX, y + u.offsetY, z + u.offsetZ),
+                this.getSide())) {
             maxY = 16;
         }
 
@@ -238,8 +238,7 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
 
     @Override
     public void onEntityCollision(final Entity entity) {
-        if (this.isAccepting
-                && entity instanceof EntityItem
+        if (this.isAccepting && entity instanceof EntityItem
                 && !entity.isDead
                 && Platform.isServer()
                 && this.getProxy().isActive()) {
@@ -335,8 +334,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
         try {
             final IStorageGrid storage = this.getProxy().getStorage();
             final IEnergyGrid energy = this.getProxy().getEnergy();
-            final IAEItemStack overflow =
-                    Platform.poweredInsert(energy, storage.getItemInventory(), itemToStore, this.mySrc);
+            final IAEItemStack overflow = Platform
+                    .poweredInsert(energy, storage.getItemInventory(), itemToStore, this.mySrc);
 
             this.isAccepting = overflow == null;
 
@@ -349,9 +348,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
     }
 
     /**
-     * Handles a possible overflow or none at all.
-     * It will update the entity to match the leftover stack size as well as mark it as dead without any leftover
-     * amount.
+     * Handles a possible overflow or none at all. It will update the entity to match the leftover stack size as well as
+     * mark it as dead without any leftover amount.
      *
      * @param entityItem the entity to update or destroy
      * @param overflow   the leftover {@link IAEItemStack}
@@ -434,9 +432,9 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                     final List<ItemStack> items = this.obtainBlockDrops(w, x, y, z);
                     final float requiredPower = this.calculateEnergyUsage(w, x, y, z, items);
 
-                    final boolean hasPower =
-                            energy.extractAEPower(requiredPower, Actionable.SIMULATE, PowerMultiplier.CONFIG)
-                                    > requiredPower - 0.1;
+                    final boolean hasPower = energy
+                            .extractAEPower(requiredPower, Actionable.SIMULATE, PowerMultiplier.CONFIG)
+                            > requiredPower - 0.1;
                     final boolean canStore = this.canStoreItemStacks(items);
 
                     if (hasPower && canStore) {
@@ -444,7 +442,13 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                             energy.extractAEPower(requiredPower, Actionable.MODULATE, PowerMultiplier.CONFIG);
                             this.breakBlockAndStoreItems(w, x, y, z, items);
                             ServerHelper.proxy.sendToAllNearExcept(
-                                    null, x, y, z, 64, w, new PacketTransitionEffect(x, y, z, this.getSide(), true));
+                                    null,
+                                    x,
+                                    y,
+                                    z,
+                                    64,
+                                    w,
+                                    new PacketTransitionEffect(x, y, z, this.getSide(), true));
                         } else {
                             this.breaking = true;
                             TickHandler.INSTANCE.addCallable(this.getTile().getWorldObj(), this);
@@ -464,7 +468,10 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
     @Override
     public TickingRequest getTickingRequest(final IGridNode node) {
         return new TickingRequest(
-                TickRates.AnnihilationPlane.getMin(), TickRates.AnnihilationPlane.getMax(), false, true);
+                TickRates.AnnihilationPlane.getMin(),
+                TickRates.AnnihilationPlane.getMax(),
+                false,
+                true);
     }
 
     @Override
@@ -489,23 +496,26 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
         final Block block = w.getBlock(x, y, z);
         final Material material = block.getMaterial();
         final float hardness = block.getBlockHardness(w, x, y, z);
-        final boolean ignoreMaterials = material == Material.air
-                || material == Material.lava
+        final boolean ignoreMaterials = material == Material.air || material == Material.lava
                 || material == Material.water
                 || material.isLiquid();
-        final boolean ignoreBlocks = block == Blocks.bedrock
-                || block == Blocks.end_portal
+        final boolean ignoreBlocks = block == Blocks.bedrock || block == Blocks.end_portal
                 || block == Blocks.end_portal_frame
                 || block == Blocks.command_block;
         final EntityPlayer player = owner == null ? Platform.getPlayer(w) : owner;
         if (permissionCache == YesNo.UNDECIDED) {
-            BlockEvent.BreakEvent event =
-                    new BlockEvent.BreakEvent(x, y, z, w, block, w.getBlockMetadata(x, y, z), player);
+            BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(
+                    x,
+                    y,
+                    z,
+                    w,
+                    block,
+                    w.getBlockMetadata(x, y, z),
+                    player);
             MinecraftForge.EVENT_BUS.post(event);
             permissionCache = (event.isCanceled()) ? YesNo.NO : YesNo.YES;
         }
-        return permissionCache == YesNo.YES
-                && !ignoreMaterials
+        return permissionCache == YesNo.YES && !ignoreMaterials
                 && !ignoreBlocks
                 && !w.isAirBlock(x, y, z)
                 && w.blockExists(x, y, z)
@@ -521,8 +531,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
     /**
      * Checks if this plane can handle the block at the specific coordinates.
      */
-    protected float calculateEnergyUsage(
-            final WorldServer w, final int x, final int y, final int z, final List<ItemStack> items) {
+    protected float calculateEnergyUsage(final WorldServer w, final int x, final int y, final int z,
+            final List<ItemStack> items) {
         final Block block = w.getBlock(x, y, z);
         final float hardness = block.getBlockHardness(w, x, y, z);
 
@@ -550,8 +560,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
 
             for (final ItemStack itemStack : itemStacks) {
                 final IAEItemStack itemToTest = AEItemStack.create(itemStack);
-                final IAEItemStack overflow =
-                        storage.getItemInventory().injectItems(itemToTest, Actionable.SIMULATE, this.mySrc);
+                final IAEItemStack overflow = storage.getItemInventory()
+                        .injectItems(itemToTest, Actionable.SIMULATE, this.mySrc);
                 if (overflow == null || itemToTest.getStackSize() > overflow.getStackSize()) {
                     canStore = true;
                 }
@@ -564,8 +574,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
         return canStore;
     }
 
-    private void breakBlockAndStoreItems(
-            final WorldServer w, final int x, final int y, final int z, final List<ItemStack> items) {
+    private void breakBlockAndStoreItems(final WorldServer w, final int x, final int y, final int z,
+            final List<ItemStack> items) {
         w.setBlock(x, y, z, Platform.AIR_BLOCK, 0, 3);
 
         final AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x - 0.2, y - 0.2, z - 0.2, x + 1.2, y + 1.2, z + 1.2);

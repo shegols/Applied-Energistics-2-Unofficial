@@ -1,22 +1,22 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.crafting;
+
+import java.util.HashMap;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -36,17 +36,12 @@ import appeng.core.AELog;
 import appeng.hooks.TickHandler;
 import appeng.me.cache.CraftingGridCache;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
+
 import com.google.common.base.Stopwatch;
-import java.util.HashMap;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class CraftingJob implements ICraftingJob, Runnable {
-    private static final String LOG_CRAFTING_JOB =
-            "CraftingJob (%s) issued by %s requesting [%s] using %s bytes took %s ms";
+
+    private static final String LOG_CRAFTING_JOB = "CraftingJob (%s) issued by %s requesting [%s] using %s bytes took %s ms";
     private static final String LOG_MACHINE_SOURCE_DETAILS = "Machine[object=%s, %s]";
 
     private final MECraftingInventory original;
@@ -72,11 +67,7 @@ public class CraftingJob implements ICraftingJob, Runnable {
         return w;
     }
 
-    public CraftingJob(
-            final World w,
-            final IGrid grid,
-            final BaseActionSource actionSrc,
-            final IAEItemStack what,
+    public CraftingJob(final World w, final IGrid grid, final BaseActionSource actionSrc, final IAEItemStack what,
             final ICraftingCallback callback) {
         this.world = this.wrapWorld(w);
         this.output = what.copy();
@@ -152,8 +143,11 @@ public class CraftingJob implements ICraftingJob, Runnable {
 
                 try {
                     final Stopwatch timer = Stopwatch.createStarted();
-                    final MECraftingInventory craftingInventory =
-                            new MECraftingInventory(this.original, true, false, true);
+                    final MECraftingInventory craftingInventory = new MECraftingInventory(
+                            this.original,
+                            true,
+                            false,
+                            true);
                     craftingInventory.ignore(this.output);
 
                     this.availableCheck = new MECraftingInventory(this.original, false, false, false);
@@ -286,8 +280,7 @@ public class CraftingJob implements ICraftingJob, Runnable {
             while (this.running) {
                 try {
                     this.monitor.wait();
-                } catch (final InterruptedException ignored) {
-                }
+                } catch (final InterruptedException ignored) {}
             }
 
             AELog.craftingDebug("main thread is now active");
@@ -346,6 +339,7 @@ public class CraftingJob implements ICraftingJob, Runnable {
     }
 
     private static class TwoIntegers {
+
         private final long perOp = 0;
         private final long times = 0;
     }

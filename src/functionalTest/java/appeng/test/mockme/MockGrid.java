@@ -3,6 +3,7 @@ package appeng.test.mockme;
 import appeng.me.Grid;
 
 public class MockGrid extends Grid {
+
     public final MockGridNode rootNode;
 
     public MockGrid() {

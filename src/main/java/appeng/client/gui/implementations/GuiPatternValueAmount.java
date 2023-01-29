@@ -1,5 +1,13 @@
 package appeng.client.gui.implementations;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+
 import appeng.api.AEApi;
 import appeng.api.definitions.IDefinitions;
 import appeng.api.definitions.IParts;
@@ -20,13 +28,6 @@ import appeng.parts.reporting.PartPatternTerminal;
 import appeng.parts.reporting.PartPatternTerminalEx;
 import appeng.util.calculators.ArithHelper;
 import appeng.util.calculators.Calculator;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class GuiPatternValueAmount extends AEBaseGui {
 
@@ -106,11 +107,19 @@ public class GuiPatternValueAmount extends AEBaseGui {
         if (this.originalGui != null && myIcon != null) {
             this.buttonList.add(
                     this.originalGuiBtn = new GuiTabButton(
-                            this.guiLeft + 154, this.guiTop, myIcon, myIcon.getDisplayName(), itemRender));
+                            this.guiLeft + 154,
+                            this.guiTop,
+                            myIcon,
+                            myIcon.getDisplayName(),
+                            itemRender));
         }
 
         this.amountToSet = new GuiTextField(
-                this.fontRendererObj, this.guiLeft + 62, this.guiTop + 57, 59, this.fontRendererObj.FONT_HEIGHT);
+                this.fontRendererObj,
+                this.guiLeft + 62,
+                this.guiTop + 57,
+                59,
+                this.fontRendererObj.FONT_HEIGHT);
         this.amountToSet.setEnableBackgroundDrawing(false);
         this.amountToSet.setMaxStringLength(16);
         this.amountToSet.setTextColor(GuiColors.CraftAmountToCraft.getColor());
@@ -122,8 +131,8 @@ public class GuiPatternValueAmount extends AEBaseGui {
 
     @Override
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
-        this.fontRendererObj.drawString(
-                GuiText.SelectAmount.getLocal(), 8, 6, GuiColors.CraftAmountSelectAmount.getColor());
+        this.fontRendererObj
+                .drawString(GuiText.SelectAmount.getLocal(), 8, 6, GuiColors.CraftAmountSelectAmount.getColor());
     }
 
     @Override
@@ -185,8 +194,8 @@ public class GuiPatternValueAmount extends AEBaseGui {
                     resultI = (int) ArithHelper.round(resultD, 0);
                 }
 
-                NetworkHandler.instance.sendToServer(
-                        new PacketPatternValueSet(originalGui.ordinal(), resultI, valueIndex));
+                NetworkHandler.instance
+                        .sendToServer(new PacketPatternValueSet(originalGui.ordinal(), resultI, valueIndex));
             }
         } catch (final NumberFormatException e) {
             // nope..
@@ -194,8 +203,9 @@ public class GuiPatternValueAmount extends AEBaseGui {
         }
 
         final boolean isPlus = btn == this.plus1 || btn == this.plus10 || btn == this.plus100 || btn == this.plus1000;
-        final boolean isMinus =
-                btn == this.minus1 || btn == this.minus10 || btn == this.minus100 || btn == this.minus1000;
+        final boolean isMinus = btn == this.minus1 || btn == this.minus10
+                || btn == this.minus100
+                || btn == this.minus1000;
 
         if (isPlus || isMinus) {
             this.addQty(this.getQty(btn));

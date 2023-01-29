@@ -1,19 +1,11 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.api.definitions;
@@ -28,6 +20,7 @@ import appeng.items.materials.MaterialType;
  * Internal implementation for the API materials
  */
 public final class ApiMaterials implements IMaterials {
+
     private final IItemDefinition cell2SpatialPart;
     private final IItemDefinition cell16SpatialPart;
     private final IItemDefinition cell128SpatialPart;
@@ -111,29 +104,29 @@ public final class ApiMaterials implements IMaterials {
         final ItemMultiMaterial itemMultiMaterial = new ItemMultiMaterial();
         constructor.registerItemDefinition(itemMultiMaterial);
 
-        this.cell2SpatialPart =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell2SpatialPart));
-        this.cell16SpatialPart =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell16SpatialPart));
-        this.cell128SpatialPart =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell128SpatialPart));
+        this.cell2SpatialPart = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.Cell2SpatialPart));
+        this.cell16SpatialPart = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.Cell16SpatialPart));
+        this.cell128SpatialPart = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.Cell128SpatialPart));
 
         this.silicon = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Silicon));
         this.skyDust = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.SkyDust));
 
-        this.calcProcessorPress =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CalcProcessorPress));
-        this.engProcessorPress =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.EngProcessorPress));
-        this.logicProcessorPress =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.LogicProcessorPress));
+        this.calcProcessorPress = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.CalcProcessorPress));
+        this.engProcessorPress = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.EngProcessorPress));
+        this.logicProcessorPress = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.LogicProcessorPress));
 
-        this.calcProcessorPrint =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CalcProcessorPrint));
-        this.engProcessorPrint =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.EngProcessorPrint));
-        this.logicProcessorPrint =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.LogicProcessorPrint));
+        this.calcProcessorPrint = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.CalcProcessorPrint));
+        this.engProcessorPrint = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.EngProcessorPrint));
+        this.logicProcessorPrint = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.LogicProcessorPrint));
 
         this.siliconPress = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.SiliconPress));
         this.siliconPrint = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.SiliconPrint));
@@ -147,32 +140,32 @@ public final class ApiMaterials implements IMaterials {
         this.basicCard = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.BasicCard));
         this.advCard = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.AdvCard));
 
-        this.purifiedCertusQuartzCrystal =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.PurifiedCertusQuartzCrystal));
-        this.purifiedNetherQuartzCrystal =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.PurifiedNetherQuartzCrystal));
-        this.purifiedFluixCrystal =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.PurifiedFluixCrystal));
+        this.purifiedCertusQuartzCrystal = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.PurifiedCertusQuartzCrystal));
+        this.purifiedNetherQuartzCrystal = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.PurifiedNetherQuartzCrystal));
+        this.purifiedFluixCrystal = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.PurifiedFluixCrystal));
 
         this.cell1kPart = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell1kPart));
         this.cell4kPart = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell4kPart));
         this.cell16kPart = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell16kPart));
         this.cell64kPart = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell64kPart));
-        this.emptyStorageCell =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.EmptyStorageCell));
+        this.emptyStorageCell = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.EmptyStorageCell));
         this.cell256kPart = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell256kPart));
         this.cell1024kPart = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell1024kPart));
         this.cell4096kPart = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell4096kPart));
         this.cell16384kPart = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Cell16384kPart));
-        this.emptyAdvancedStorageCell =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.EmptyAdvancedStorageCell));
+        this.emptyAdvancedStorageCell = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.EmptyAdvancedStorageCell));
 
         this.cardRedstone = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CardRedstone));
         this.cardSpeed = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CardSpeed));
         this.cardSuperSpeed = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CardSuperSpeed));
         this.cardCapacity = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CardCapacity));
-        this.cardPatternCapacity =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CardPatternCapacity));
+        this.cardPatternCapacity = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.CardPatternCapacity));
         this.cardFuzzy = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CardFuzzy));
         this.cardInverter = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CardInverter));
         this.cardCrafting = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CardCrafting));
@@ -183,29 +176,29 @@ public final class ApiMaterials implements IMaterials {
         this.goldDust = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.GoldDust));
         this.ironDust = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.IronDust));
         this.fluixDust = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.FluixDust));
-        this.certusQuartzDust =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CertusQuartzDust));
-        this.netherQuartzDust =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.NetherQuartzDust));
+        this.certusQuartzDust = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.CertusQuartzDust));
+        this.netherQuartzDust = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.NetherQuartzDust));
 
         this.matterBall = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.MatterBall));
         this.ironNugget = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.IronNugget));
 
-        this.certusQuartzCrystal =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CertusQuartzCrystal));
-        this.certusQuartzCrystalCharged =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.CertusQuartzCrystalCharged));
+        this.certusQuartzCrystal = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.CertusQuartzCrystal));
+        this.certusQuartzCrystalCharged = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.CertusQuartzCrystalCharged));
         this.fluixCrystal = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.FluixCrystal));
         this.fluixPearl = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.FluixPearl));
 
         this.woodenGear = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.WoodenGear));
 
         this.wireless = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Wireless));
-        this.wirelessBooster =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.WirelessBooster));
+        this.wirelessBooster = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.WirelessBooster));
 
-        this.annihilationCore =
-                new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.AnnihilationCore));
+        this.annihilationCore = new DamagedItemDefinition(
+                itemMultiMaterial.createMaterial(MaterialType.AnnihilationCore));
         this.formationCore = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.FormationCore));
 
         this.singularity = new DamagedItemDefinition(itemMultiMaterial.createMaterial(MaterialType.Singularity));

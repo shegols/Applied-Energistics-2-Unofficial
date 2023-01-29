@@ -1,5 +1,12 @@
 package appeng.container.implementations;
 
+import java.io.IOException;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.networking.crafting.ICraftingGrid;
@@ -10,14 +17,11 @@ import appeng.core.AELog;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketCraftingCPUsUpdate;
 import appeng.util.Platform;
+
 import com.google.common.collect.ImmutableSet;
-import java.io.IOException;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import net.minecraft.entity.player.EntityPlayerMP;
 
 public class ContainerCPUTable implements ICraftingCPUSelectorContainer {
+
     private final AEBaseContainer parent;
 
     private ImmutableSet<ICraftingCPU> lastCpuSet = null;
@@ -33,20 +37,16 @@ public class ContainerCPUTable implements ICraftingCPUSelectorContainer {
     private final boolean preferBusyCPUs;
     private final Predicate<CraftingCPUStatus> cpuFilter;
 
-    private static final Comparator<CraftingCPUStatus> CPU_COMPARATOR = Comparator.comparing(
-                    (CraftingCPUStatus e) -> e.getName() == null || e.getName().isEmpty())
-            .thenComparing(e -> e.getName() != null ? e.getName() : "")
-            .thenComparingInt(CraftingCPUStatus::getSerial);
+    private static final Comparator<CraftingCPUStatus> CPU_COMPARATOR = Comparator
+            .comparing((CraftingCPUStatus e) -> e.getName() == null || e.getName().isEmpty())
+            .thenComparing(e -> e.getName() != null ? e.getName() : "").thenComparingInt(CraftingCPUStatus::getSerial);
 
     /**
-     * @param parent Container parent, of which this is a field
-     * @param onCPUChange Called whenever the current CPU is changed
+     * @param parent         Container parent, of which this is a field
+     * @param onCPUChange    Called whenever the current CPU is changed
      * @param preferBusyCPUs Whether busy CPUs should be picked first (e.g. crafting status vs. picking a CPU for a job)
      */
-    public ContainerCPUTable(
-            AEBaseContainer parent,
-            Consumer<ICraftingCPU> onCPUChange,
-            boolean preferBusyCPUs,
+    public ContainerCPUTable(AEBaseContainer parent, Consumer<ICraftingCPU> onCPUChange, boolean preferBusyCPUs,
             Predicate<CraftingCPUStatus> cpuFilter) {
         this.parent = parent;
         this.onCPUChange = onCPUChange;
@@ -159,10 +159,7 @@ public class ContainerCPUTable implements ICraftingCPUSelectorContainer {
     }
 
     public CraftingCPUStatus getSelectedCPU() {
-        return this.cpus.stream()
-                .filter(c -> c.getSerial() == selectedCpuSerial)
-                .findFirst()
-                .orElse(null);
+        return this.cpus.stream().filter(c -> c.getSerial() == selectedCpuSerial).findFirst().orElse(null);
     }
 
     public void handleCPUUpdate(CraftingCPUStatus[] cpus) {

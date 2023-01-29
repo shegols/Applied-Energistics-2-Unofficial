@@ -1,13 +1,16 @@
 package appeng.items.storage;
 
+import java.util.EnumSet;
+
+import net.minecraft.item.ItemStack;
+
 import appeng.api.AEApi;
 import appeng.api.definitions.IItemDefinition;
 import appeng.api.exceptions.MissingDefinition;
 import appeng.core.features.AEFeature;
 import appeng.items.materials.MaterialType;
+
 import com.google.common.base.Optional;
-import java.util.EnumSet;
-import net.minecraft.item.ItemStack;
 
 public class ItemAdvancedStorageCell extends ItemBasicStorageCell {
 
@@ -50,11 +53,7 @@ public class ItemAdvancedStorageCell extends ItemBasicStorageCell {
 
     @Override
     public ItemStack getContainerItem(final ItemStack itemStack) {
-        for (final ItemStack stack : AEApi.instance()
-                .definitions()
-                .materials()
-                .emptyAdvancedStorageCell()
-                .maybeStack(1)
+        for (final ItemStack stack : AEApi.instance().definitions().materials().emptyAdvancedStorageCell().maybeStack(1)
                 .asSet()) {
             return stack;
         }

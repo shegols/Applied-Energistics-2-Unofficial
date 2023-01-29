@@ -11,6 +11,7 @@ import net.minecraft.world.IBlockAccess;
  * @since rv2
  */
 public interface IComparableDefinition {
+
     /**
      * Compare {@link ItemStack} with this
      *

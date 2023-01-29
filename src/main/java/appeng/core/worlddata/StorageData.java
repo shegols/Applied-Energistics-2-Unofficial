@@ -1,34 +1,30 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.worlddata;
 
-import appeng.core.AELog;
-import appeng.me.GridStorage;
-import appeng.me.GridStorageSearch;
-import com.google.common.base.Preconditions;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.WeakHashMap;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+
+import appeng.core.AELog;
+import appeng.me.GridStorage;
+import appeng.me.GridStorageSearch;
+
+import com.google.common.base.Preconditions;
 
 /**
  * @author thatsIch
@@ -36,14 +32,15 @@ import net.minecraftforge.common.config.Property;
  * @since rv3 30.05.2015
  */
 final class StorageData implements IWorldGridStorageData, IOnWorldStartable, IOnWorldStoppable {
+
     private static final String LAST_GRID_STORAGE_CATEGORY = "Counters";
     private static final String LAST_GRID_STORAGE_KEY = "lastGridStorage";
     private static final int LAST_GRID_STORAGE_DEFAULT = 0;
 
     private static final String GRID_STORAGE_CATEGORY = "gridstorage";
 
-    private final Map<GridStorageSearch, WeakReference<GridStorageSearch>> loadedStorage =
-            new WeakHashMap<GridStorageSearch, WeakReference<GridStorageSearch>>(10);
+    private final Map<GridStorageSearch, WeakReference<GridStorageSearch>> loadedStorage = new WeakHashMap<GridStorageSearch, WeakReference<GridStorageSearch>>(
+            10);
     private final Configuration config;
 
     private long lastGridStorage;
@@ -118,8 +115,7 @@ final class StorageData implements IWorldGridStorageData, IOnWorldStartable, IOn
     @Override
     public void onWorldStart() {
         final String lastString = this.config
-                .get(LAST_GRID_STORAGE_CATEGORY, LAST_GRID_STORAGE_KEY, LAST_GRID_STORAGE_DEFAULT)
-                .getString();
+                .get(LAST_GRID_STORAGE_CATEGORY, LAST_GRID_STORAGE_KEY, LAST_GRID_STORAGE_DEFAULT).getString();
 
         try {
             this.lastGridStorage = Long.parseLong(lastString);
@@ -135,13 +131,9 @@ final class StorageData implements IWorldGridStorageData, IOnWorldStartable, IOn
         // populate new data
         for (final GridStorageSearch gs : this.loadedStorage.keySet()) {
             final GridStorage thisStorage = gs.getGridStorage().get();
-            if (thisStorage != null
-                    && thisStorage.getGrid() != null
-                    && !thisStorage.getGrid().isEmpty()) {
+            if (thisStorage != null && thisStorage.getGrid() != null && !thisStorage.getGrid().isEmpty()) {
                 final String value = thisStorage.getValue();
-                this.config
-                        .get(GRID_STORAGE_CATEGORY, String.valueOf(thisStorage.getID()), value)
-                        .set(value);
+                this.config.get(GRID_STORAGE_CATEGORY, String.valueOf(thisStorage.getID()), value).set(value);
             }
         }
 

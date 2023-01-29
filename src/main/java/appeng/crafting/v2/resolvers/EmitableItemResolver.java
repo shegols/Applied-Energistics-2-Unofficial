@@ -1,22 +1,24 @@
 package appeng.crafting.v2.resolvers;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.crafting.MECraftingInventory;
 import appeng.crafting.v2.CraftingContext;
 import appeng.crafting.v2.CraftingRequest;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
-import java.util.Collections;
-import java.util.List;
-import javax.annotation.Nonnull;
 
 public class EmitableItemResolver implements CraftingRequestResolver<IAEItemStack> {
+
     public static class EmitItemTask extends CraftingTask<IAEItemStack> {
 
         public EmitItemTask(CraftingRequest<IAEItemStack> request) {
-            super(
-                    request,
-                    CraftingTask.PRIORITY_CRAFTING_EMITTER); // conjure items for calculations out of thin air as a last
+            super(request, CraftingTask.PRIORITY_CRAFTING_EMITTER); // conjure items for calculations out of thin air as
+                                                                    // a last
         }
 
         @Override
@@ -48,8 +50,8 @@ public class EmitableItemResolver implements CraftingRequestResolver<IAEItemStac
         }
 
         @Override
-        public void startOnCpu(
-                CraftingContext context, CraftingCPUCluster cpuCluster, MECraftingInventory craftingInv) {
+        public void startOnCpu(CraftingContext context, CraftingCPUCluster cpuCluster,
+                MECraftingInventory craftingInv) {
             cpuCluster.addEmitable(this.request.stack.copy());
         }
 
@@ -61,8 +63,8 @@ public class EmitableItemResolver implements CraftingRequestResolver<IAEItemStac
 
     @Nonnull
     @Override
-    public List<CraftingTask> provideCraftingRequestResolvers(
-            @Nonnull CraftingRequest<IAEItemStack> request, @Nonnull CraftingContext context) {
+    public List<CraftingTask> provideCraftingRequestResolvers(@Nonnull CraftingRequest<IAEItemStack> request,
+            @Nonnull CraftingContext context) {
         if (context.craftingGrid.canEmitFor(request.stack)) {
             return Collections.singletonList(new EmitItemTask(request));
         } else {

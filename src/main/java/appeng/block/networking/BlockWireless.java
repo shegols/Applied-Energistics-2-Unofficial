@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.block.networking;
+
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.block.AEBaseTileBlock;
 import appeng.client.render.blocks.RenderBlockWireless;
@@ -28,14 +30,6 @@ import appeng.tile.networking.TileWireless;
 import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockWireless extends AEBaseTileBlock implements ICustomCollision {
 
@@ -55,16 +49,8 @@ public class BlockWireless extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public boolean onBlockActivated(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final EntityPlayer p,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onBlockActivated(final World w, final int x, final int y, final int z, final EntityPlayer p,
+            final int side, final float hitX, final float hitY, final float hitZ) {
         final TileWireless tg = this.getTileEntity(w, x, y, z);
 
         if (tg != null && !p.isSneaking()) {
@@ -78,8 +64,8 @@ public class BlockWireless extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(
-            final World w, final int x, final int y, final int z, final Entity e, final boolean isVisual) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final int x, final int y,
+            final int z, final Entity e, final boolean isVisual) {
         final TileWireless tile = this.getTileEntity(w, x, y, z);
         if (tile != null) {
             final ForgeDirection forward = tile.getForward();
@@ -138,14 +124,8 @@ public class BlockWireless extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public void addCollidingBlockToList(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final AxisAlignedBB bb,
-            final List<AxisAlignedBB> out,
-            final Entity e) {
+    public void addCollidingBlockToList(final World w, final int x, final int y, final int z, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         final TileWireless tile = this.getTileEntity(w, x, y, z);
         if (tile != null) {
             final ForgeDirection forward = tile.getForward();

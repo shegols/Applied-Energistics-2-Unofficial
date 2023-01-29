@@ -1,26 +1,15 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
 
-import appeng.block.storage.BlockSkyChest;
-import appeng.client.render.BaseBlockRender;
-import appeng.tile.storage.TileSkyChest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -29,16 +18,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import appeng.block.storage.BlockSkyChest;
+import appeng.client.render.BaseBlockRender;
+import appeng.tile.storage.TileSkyChest;
+
 public class RenderBlockSkyChest extends BaseBlockRender<BlockSkyChest, TileSkyChest> {
 
-    private static final ResourceLocation SKY_STONE_CHEST =
-            new ResourceLocation("appliedenergistics2", "textures/models/skychest.png");
-    private static final ResourceLocation SKY_BLOCK_CHEST =
-            new ResourceLocation("appliedenergistics2", "textures/models/skyblockchest.png");
-    private static final ResourceLocation[] METADATA_TO_TEXTURE = {SKY_STONE_CHEST, SKY_BLOCK_CHEST};
+    private static final ResourceLocation SKY_STONE_CHEST = new ResourceLocation(
+            "appliedenergistics2",
+            "textures/models/skychest.png");
+    private static final ResourceLocation SKY_BLOCK_CHEST = new ResourceLocation(
+            "appliedenergistics2",
+            "textures/models/skyblockchest.png");
+    private static final ResourceLocation[] METADATA_TO_TEXTURE = { SKY_STONE_CHEST, SKY_BLOCK_CHEST };
 
     private final ModelChest model = new ModelChest();
 
@@ -47,12 +43,8 @@ public class RenderBlockSkyChest extends BaseBlockRender<BlockSkyChest, TileSkyC
     }
 
     @Override
-    public void renderInventory(
-            final BlockSkyChest blk,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockSkyChest blk, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -74,26 +66,14 @@ public class RenderBlockSkyChest extends BaseBlockRender<BlockSkyChest, TileSkyC
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockSkyChest blk,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer) {
+    public boolean renderInWorld(final BlockSkyChest blk, final IBlockAccess world, final int x, final int y,
+            final int z, final RenderBlocks renderer) {
         return true;
     }
 
     @Override
-    public void renderTile(
-            final BlockSkyChest block,
-            final TileSkyChest skyChest,
-            final Tessellator tess,
-            final double x,
-            final double y,
-            final double z,
-            final float partialTick,
-            final RenderBlocks renderer) {
+    public void renderTile(final BlockSkyChest block, final TileSkyChest skyChest, final Tessellator tess,
+            final double x, final double y, final double z, final float partialTick, final RenderBlocks renderer) {
         if (skyChest == null || !skyChest.hasWorldObj()) {
             return;
         }

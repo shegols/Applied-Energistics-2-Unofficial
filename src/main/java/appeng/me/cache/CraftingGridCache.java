@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.cache;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.stream.StreamSupport;
+
+import net.minecraft.world.World;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -50,21 +52,15 @@ import appeng.tile.crafting.TileCraftingStorageTile;
 import appeng.tile.crafting.TileCraftingTile;
 import appeng.util.ItemSorters;
 import appeng.util.item.OreListMultiMap;
+
 import com.google.common.collect.*;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-import java.util.stream.StreamSupport;
-import net.minecraft.world.World;
 
 public class CraftingGridCache
         implements ICraftingGrid, ICraftingProviderHelper, ICellProvider, IMEInventoryHandler<IAEStack> {
 
     private static final ExecutorService CRAFTING_POOL;
     private static final Comparator<ICraftingPatternDetails> COMPARATOR = new Comparator<ICraftingPatternDetails>() {
+
         @Override
         public int compare(final ICraftingPatternDetails firstDetail, final ICraftingPatternDetails nextDetail) {
             return nextDetail.getPriority() - firstDetail.getPriority();
@@ -94,8 +90,8 @@ public class CraftingGridCache
     private final Set<IAEItemStack> emitableItems = new HashSet<IAEItemStack>();
     private final Map<String, CraftingLinkNexus> craftingLinks = new HashMap<String, CraftingLinkNexus>();
     private final Multimap<IAEStack, CraftingWatcher> interests = HashMultimap.create();
-    private final GenericInterestManager<CraftingWatcher> interestManager =
-            new GenericInterestManager<CraftingWatcher>(this.interests);
+    private final GenericInterestManager<CraftingWatcher> interestManager = new GenericInterestManager<CraftingWatcher>(
+            this.interests);
     private IStorageGrid storageGrid;
     private IEnergyGrid energyGrid;
     private boolean updateList = false;
@@ -121,8 +117,7 @@ public class CraftingGridCache
             this.updateCPUClusters();
         }
 
-        final Iterator<CraftingLinkNexus> craftingLinkIterator =
-                this.craftingLinks.values().iterator();
+        final Iterator<CraftingLinkNexus> craftingLinkIterator = this.craftingLinks.values().iterator();
         while (craftingLinkIterator.hasNext()) {
             if (craftingLinkIterator.next().isDead(this.grid, this)) {
                 craftingLinkIterator.remove();
@@ -244,7 +239,9 @@ public class CraftingGridCache
         setPatternsFromCraftingMethods();
 
         this.storageGrid.postAlterationOfStoredItems(
-                StorageChannel.ITEMS, this.craftableItems.keySet(), new BaseActionSource());
+                StorageChannel.ITEMS,
+                this.craftableItems.keySet(),
+                new BaseActionSource());
     }
 
     /** Only for unit test usage */
@@ -287,8 +284,7 @@ public class CraftingGridCache
         this.craftingCPUClusters.clear();
 
         for (Object cls : StreamSupport.stream(grid.getMachinesClasses().spliterator(), false)
-                .filter(c -> TileCraftingStorageTile.class.isAssignableFrom(c))
-                .toArray()) {
+                .filter(c -> TileCraftingStorageTile.class.isAssignableFrom(c)).toArray()) {
             for (final IGridNode cst : this.grid.getMachines((Class<? extends IGridHost>) cls)) {
                 final TileCraftingStorageTile tile = (TileCraftingStorageTile) cst.getMachine();
                 final CraftingCPUCluster cluster = (CraftingCPUCluster) tile.getCluster();
@@ -429,19 +425,15 @@ public class CraftingGridCache
     }
 
     @Override
-    public ImmutableCollection<ICraftingPatternDetails> getCraftingFor(
-            final IAEItemStack whatToCraft,
-            final ICraftingPatternDetails details,
-            final int slotIndex,
-            final World world) {
+    public ImmutableCollection<ICraftingPatternDetails> getCraftingFor(final IAEItemStack whatToCraft,
+            final ICraftingPatternDetails details, final int slotIndex, final World world) {
         final ImmutableList<ICraftingPatternDetails> res = this.craftableItems.get(whatToCraft);
 
         if (res == null) {
             if (details != null && details.isCraftable()) {
                 for (final IAEItemStack ais : this.craftableItems.keySet()) {
-                    if (ais.getItem() == whatToCraft.getItem()
-                            && (!ais.getItem().getHasSubtypes()
-                                    || ais.getItemDamage() == whatToCraft.getItemDamage())) {
+                    if (ais.getItem() == whatToCraft.getItem() && (!ais.getItem().getHasSubtypes()
+                            || ais.getItemDamage() == whatToCraft.getItemDamage())) {
                         if (details.isValidItemForSlot(slotIndex, ais.getItemStack(), world)) {
                             return this.craftableItems.get(ais);
                         }
@@ -463,12 +455,8 @@ public class CraftingGridCache
     }
 
     @Override
-    public Future<ICraftingJob> beginCraftingJob(
-            final World world,
-            final IGrid grid,
-            final BaseActionSource actionSrc,
-            final IAEItemStack slotItem,
-            final ICraftingCallback cb) {
+    public Future<ICraftingJob> beginCraftingJob(final World world, final IGrid grid, final BaseActionSource actionSrc,
+            final IAEItemStack slotItem, final ICraftingCallback cb) {
         if (world == null || grid == null || actionSrc == null || slotItem == null) {
             throw new IllegalArgumentException("Invalid Crafting Job Request");
         }
@@ -489,12 +477,8 @@ public class CraftingGridCache
     }
 
     @Override
-    public ICraftingLink submitJob(
-            final ICraftingJob job,
-            final ICraftingRequester requestingMachine,
-            final ICraftingCPU target,
-            final boolean prioritizePower,
-            final BaseActionSource src) {
+    public ICraftingLink submitJob(final ICraftingJob job, final ICraftingRequester requestingMachine,
+            final ICraftingCPU target, final boolean prioritizePower, final BaseActionSource src) {
         if (job.isSimulation()) {
             return null;
         }
@@ -514,12 +498,12 @@ public class CraftingGridCache
             }
 
             Collections.sort(validCpusClusters, new Comparator<CraftingCPUCluster>() {
+
                 private int compareInternal(CraftingCPUCluster firstCluster, CraftingCPUCluster nextCluster) {
-                    int comparison =
-                            ItemSorters.compareLong(nextCluster.getCoProcessors(), firstCluster.getCoProcessors());
-                    if (comparison == 0)
-                        comparison = ItemSorters.compareLong(
-                                nextCluster.getAvailableStorage(), firstCluster.getAvailableStorage());
+                    int comparison = ItemSorters
+                            .compareLong(nextCluster.getCoProcessors(), firstCluster.getCoProcessors());
+                    if (comparison == 0) comparison = ItemSorters
+                            .compareLong(nextCluster.getAvailableStorage(), firstCluster.getAvailableStorage());
                     if (comparison == 0) return nextCluster.getName().compareTo(firstCluster.getName());
                     else return comparison;
                 }

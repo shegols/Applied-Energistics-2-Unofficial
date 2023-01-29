@@ -1,22 +1,26 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.misc;
+
+import java.io.IOException;
+import java.util.EnumSet;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -52,17 +56,9 @@ import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.inv.WrapperInventoryRange;
 import appeng.util.item.AEItemStack;
+
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import java.util.EnumSet;
-import java.util.List;
-import javax.annotation.Nullable;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * @author AlgorithmX2
@@ -73,9 +69,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileInscriber extends AENetworkPowerTile implements IGridTickable, IUpgradeableHost, IConfigManagerHost {
 
     private final int maxProcessingTime = 100;
-    private final int[] top = {0};
-    private final int[] bottom = {1};
-    private final int[] sides = {2, 3};
+    private final int[] top = { 0 };
+    private final int[] bottom = { 1 };
+    private final int[] sides = { 2, 3 };
     private final AppEngInternalInventory inv = new AppEngInternalInventory(this, 4);
     private final IConfigManager settings;
     private final UpgradeInventory upgrades;
@@ -92,8 +88,7 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
         this.getProxy().setIdlePowerUsage(0);
         this.settings = new ConfigManager(this);
 
-        final ITileDefinition inscriberDefinition =
-                AEApi.instance().definitions().blocks().inscriber();
+        final ITileDefinition inscriberDefinition = AEApi.instance().definitions().blocks().inscriber();
         this.upgrades = new DefinitionUpgradeInventory(inscriberDefinition, this, this.getUpgradeSlots());
     }
 
@@ -134,8 +129,7 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
 
         for (int num = 0; num < this.inv.getSizeInventory(); num++) {
             if ((slot & (1 << num)) > 0) {
-                this.inv.setInventorySlotContents(
-                        num, AEItemStack.loadItemStackFromPacket(data).getItemStack());
+                this.inv.setInventorySlotContents(num, AEItemStack.loadItemStackFromPacket(data).getItemStack());
             } else {
                 this.inv.setInventorySlotContents(num, null);
             }
@@ -208,8 +202,7 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
                 return true;
             }
 
-            for (final ItemStack optionals :
-                    AEApi.instance().registries().inscriber().getOptionals()) {
+            for (final ItemStack optionals : AEApi.instance().registries().inscriber().getOptionals()) {
                 if (Platform.isSameItemPrecise(optionals, itemstack)) {
                     return true;
                 }
@@ -220,11 +213,7 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removed,
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc, final ItemStack removed,
             final ItemStack added) {
         try {
             if (mc != InvOperation.markDirty) {
@@ -297,8 +286,7 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
             return null;
         }
 
-        final IComparableDefinition namePress =
-                AEApi.instance().definitions().materials().namePress();
+        final IComparableDefinition namePress = AEApi.instance().definitions().materials().namePress();
         final boolean isNameA = namePress.isSameAs(plateA);
         final boolean isNameB = namePress.isSameAs(plateB);
 
@@ -339,24 +327,17 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
             }
         }
 
-        for (final IInscriberRecipe recipe :
-                AEApi.instance().registries().inscriber().getRecipes()) {
+        for (final IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
 
             final boolean matchA = (plateA == null && !recipe.getTopOptional().isPresent())
-                    || (Platform.isSameItemPrecise(
-                                    plateA, recipe.getTopOptional().orNull()))
-                            && // and...
+                    || (Platform.isSameItemPrecise(plateA, recipe.getTopOptional().orNull())) && // and...
                             (plateB == null && !recipe.getBottomOptional().isPresent())
-                                    | (Platform.isSameItemPrecise(
-                                            plateB, recipe.getBottomOptional().orNull()));
+                                    | (Platform.isSameItemPrecise(plateB, recipe.getBottomOptional().orNull()));
 
             final boolean matchB = (plateB == null && !recipe.getTopOptional().isPresent())
-                    || (Platform.isSameItemPrecise(
-                                    plateB, recipe.getTopOptional().orNull()))
-                            && // and...
+                    || (Platform.isSameItemPrecise(plateB, recipe.getTopOptional().orNull())) && // and...
                             (plateA == null && !recipe.getBottomOptional().isPresent())
-                                    | (Platform.isSameItemPrecise(
-                                            plateA, recipe.getBottomOptional().orNull()));
+                                    | (Platform.isSameItemPrecise(plateA, recipe.getBottomOptional().orNull()));
 
             if (matchA || matchB) {
                 for (final ItemStack option : recipe.getInputs()) {
@@ -377,8 +358,8 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
                 final IInscriberRecipe out = this.getTask();
                 if (out != null) {
                     final ItemStack outputCopy = out.getOutput().copy();
-                    final InventoryAdaptor ad = InventoryAdaptor.getAdaptor(
-                            new WrapperInventoryRange(this.inv, 3, 1, true), ForgeDirection.UNKNOWN);
+                    final InventoryAdaptor ad = InventoryAdaptor
+                            .getAdaptor(new WrapperInventoryRange(this.inv, 3, 1, true), ForgeDirection.UNKNOWN);
 
                     if (ad.addItems(outputCopy) == null) {
                         this.setProcessingTime(0);
@@ -430,8 +411,8 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
                 final IInscriberRecipe out = this.getTask();
                 if (out != null) {
                     final ItemStack outputCopy = out.getOutput().copy();
-                    final InventoryAdaptor ad = InventoryAdaptor.getAdaptor(
-                            new WrapperInventoryRange(this.inv, 3, 1, true), ForgeDirection.UNKNOWN);
+                    final InventoryAdaptor ad = InventoryAdaptor
+                            .getAdaptor(new WrapperInventoryRange(this.inv, 3, 1, true), ForgeDirection.UNKNOWN);
                     if (ad.simulateAdd(outputCopy) == null) {
                         this.setSmash(true);
                         this.finalStep = 0;

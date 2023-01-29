@@ -1,22 +1,22 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
+
+import java.util.Random;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
 import appeng.block.solids.BlockQuartzGlass;
@@ -24,12 +24,6 @@ import appeng.client.render.BaseBlockRender;
 import appeng.client.texture.ExtraBlockTextures;
 import appeng.client.texture.OffsetIcon;
 import appeng.tile.AEBaseTile;
-import java.util.Random;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class RenderQuartzGlass extends BaseBlockRender<BlockQuartzGlass, AEBaseTile> {
 
@@ -53,12 +47,8 @@ public class RenderQuartzGlass extends BaseBlockRender<BlockQuartzGlass, AEBaseT
     }
 
     @Override
-    public void renderInventory(
-            final BlockQuartzGlass block,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockQuartzGlass block, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         renderer.overrideBlockTexture = ExtraBlockTextures.GlassFrame.getIcon();
         super.renderInventory(block, is, renderer, type, obj);
         renderer.overrideBlockTexture = null;
@@ -66,13 +56,8 @@ public class RenderQuartzGlass extends BaseBlockRender<BlockQuartzGlass, AEBaseT
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockQuartzGlass imb,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer) {
+    public boolean renderInWorld(final BlockQuartzGlass imb, final IBlockAccess world, final int x, final int y,
+            final int z, final RenderBlocks renderer) {
         renderer.setRenderBounds(0, 0, 0, 1, 1, 1);
 
         final int cx = Math.abs(x % 10);
@@ -87,8 +72,10 @@ public class RenderQuartzGlass extends BaseBlockRender<BlockQuartzGlass, AEBaseT
                 renderer.overrideBlockTexture = new OffsetIcon(imb.getIcon(0, 0), u / 2, v / 2);
                 break;
             case 1:
-                renderer.overrideBlockTexture =
-                        new OffsetIcon(ExtraBlockTextures.BlockQuartzGlassB.getIcon(), u / 2, v / 2);
+                renderer.overrideBlockTexture = new OffsetIcon(
+                        ExtraBlockTextures.BlockQuartzGlassB.getIcon(),
+                        u / 2,
+                        v / 2);
                 break;
             case 2:
                 renderer.overrideBlockTexture = new OffsetIcon(ExtraBlockTextures.BlockQuartzGlassC.getIcon(), u, v);
@@ -134,15 +121,8 @@ public class RenderQuartzGlass extends BaseBlockRender<BlockQuartzGlass, AEBaseT
         return result;
     }
 
-    private void renderEdge(
-            final BlockQuartzGlass imb,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer,
-            final ForgeDirection side,
-            final ForgeDirection direction) {
+    private void renderEdge(final BlockQuartzGlass imb, final IBlockAccess world, final int x, final int y, final int z,
+            final RenderBlocks renderer, final ForgeDirection side, final ForgeDirection direction) {
         if (!this.isFlush(imb, world, x + side.offsetX, y + side.offsetY, z + side.offsetZ)) {
             if (!this.isFlush(imb, world, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ)) {
                 float minX = 0.5f + (side.offsetX + direction.offsetX) / 2.0f;
@@ -213,13 +193,13 @@ public class RenderQuartzGlass extends BaseBlockRender<BlockQuartzGlass, AEBaseT
         }
     }
 
-    private boolean isFlush(
-            final BlockQuartzGlass imb, final IBlockAccess world, final int x, final int y, final int z) {
+    private boolean isFlush(final BlockQuartzGlass imb, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return this.isGlass(imb, world, x, y, z);
     }
 
-    private boolean isGlass(
-            final BlockQuartzGlass imb, final IBlockAccess world, final int x, final int y, final int z) {
+    private boolean isGlass(final BlockQuartzGlass imb, final IBlockAccess world, final int x, final int y,
+            final int z) {
         return this.isQuartzGlass(world, x, y, z) || this.isVibrantQuartzGlass(world, x, y, z);
     }
 

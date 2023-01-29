@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.crafting;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -29,13 +30,6 @@ import appeng.container.ContainerNull;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
 import appeng.util.Platform;
 import cpw.mods.fml.common.FMLCommonHandler;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 public class CraftingTreeProcess {
 
@@ -52,12 +46,8 @@ public class CraftingTreeProcess {
     private boolean fullSimulation;
     private long bytes = 0;
 
-    public CraftingTreeProcess(
-            final ICraftingGrid cc,
-            final CraftingJob job,
-            final ICraftingPatternDetails details,
-            final CraftingTreeNode craftingTreeNode,
-            final int depth) {
+    public CraftingTreeProcess(final ICraftingGrid cc, final CraftingJob job, final ICraftingPatternDetails details,
+            final CraftingTreeNode craftingTreeNode, final int depth) {
         this.parent = craftingTreeNode;
         this.details = details;
         this.job = job;
@@ -109,7 +99,8 @@ public class CraftingTreeProcess {
                     final IAEItemStack part = list[x];
                     if (part != null) {
                         this.nodes.put(
-                                new CraftingTreeNode(cc, job, part.copy(), this, x, depth + 1), part.getStackSize());
+                                new CraftingTreeNode(cc, job, part.copy(), this, x, depth + 1),
+                                part.getStackSize());
                     }
                 }
             } else {
@@ -174,9 +165,10 @@ public class CraftingTreeProcess {
                 ic.setInventorySlotContents(entry.getKey().getSlot(), stack.getItemStack());
             }
 
-            FMLCommonHandler.instance()
-                    .firePlayerCraftingEvent(
-                            Platform.getPlayer((WorldServer) this.world), this.details.getOutput(ic, this.world), ic);
+            FMLCommonHandler.instance().firePlayerCraftingEvent(
+                    Platform.getPlayer((WorldServer) this.world),
+                    this.details.getOutput(ic, this.world),
+                    ic);
 
             for (int x = 0; x < ic.getSizeInventory(); x++) {
                 ItemStack is = ic.getStackInSlot(x);
@@ -257,9 +249,8 @@ public class CraftingTreeProcess {
         }
     }
 
-    void setJob(
-            final MECraftingInventory storage, final CraftingCPUCluster craftingCPUCluster, final BaseActionSource src)
-            throws CraftBranchFailure {
+    void setJob(final MECraftingInventory storage, final CraftingCPUCluster craftingCPUCluster,
+            final BaseActionSource src) throws CraftBranchFailure {
         craftingCPUCluster.addCrafting(this.details, this.crafts);
 
         for (final CraftingTreeNode pro : this.nodes.keySet()) {

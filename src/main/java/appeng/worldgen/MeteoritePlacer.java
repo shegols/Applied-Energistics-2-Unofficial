@@ -1,34 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.worldgen;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.IBlockDefinition;
-import appeng.api.definitions.IBlocks;
-import appeng.api.definitions.IMaterials;
-import appeng.core.AEConfig;
-import appeng.core.features.AEFeature;
-import appeng.core.worlddata.WorldData;
-import appeng.util.InventoryAdaptor;
-import appeng.util.Platform;
-import appeng.worldgen.meteorite.*;
 import java.util.*;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -41,7 +24,19 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
+import appeng.api.AEApi;
+import appeng.api.definitions.IBlockDefinition;
+import appeng.api.definitions.IBlocks;
+import appeng.api.definitions.IMaterials;
+import appeng.core.AEConfig;
+import appeng.core.features.AEFeature;
+import appeng.core.worlddata.WorldData;
+import appeng.util.InventoryAdaptor;
+import appeng.util.Platform;
+import appeng.worldgen.meteorite.*;
+
 public final class MeteoritePlacer {
+
     private static final int SKYSTONE_SPAWN_LIMIT = 12;
 
     private static final long SEED_OFFSET_CHEST_LOOT = 1;
@@ -164,7 +159,10 @@ public final class MeteoritePlacer {
         if (dataSeed == 0) {
             // Generate a position-based seed
             Platform.seedFromGrid(
-                    rng, world.getWorld().getSeed(), meteoriteBlob.getInteger("x"), meteoriteBlob.getInteger("z"));
+                    rng,
+                    world.getWorld().getSeed(),
+                    meteoriteBlob.getInteger("x"),
+                    meteoriteBlob.getInteger("z"));
             while (dataSeed == 0) {
                 dataSeed = rng.nextLong();
             }
@@ -245,11 +243,15 @@ public final class MeteoritePlacer {
             }
         }
 
-        for (final Object o : w.getWorld()
-                .getEntitiesWithinAABB(
-                        EntityItem.class,
-                        AxisAlignedBB.getBoundingBox(
-                                w.minX(x - 30), y - 5, w.minZ(z - 30), w.maxX(x + 30), y + 30, w.maxZ(z + 30)))) {
+        for (final Object o : w.getWorld().getEntitiesWithinAABB(
+                EntityItem.class,
+                AxisAlignedBB.getBoundingBox(
+                        w.minX(x - 30),
+                        y - 5,
+                        w.minZ(z - 30),
+                        w.maxX(x + 30),
+                        y + 30,
+                        w.maxZ(z + 30)))) {
             final Entity e = (Entity) o;
             e.setDead();
         }
@@ -270,8 +272,7 @@ public final class MeteoritePlacer {
                     final double dz = k - z;
 
                     if (dx * dx * 0.7 + dy * dy * (j > y ? 1.4 : 0.8) + dz * dz * 0.7 < this.squaredMeteoriteSize) {
-                        for (final Block skyStoneBlock :
-                                skyStoneDefinition.maybeBlock().asSet()) {
+                        for (final Block skyStoneBlock : skyStoneDefinition.maybeBlock().asSet()) {
                             this.putter.put(w, i, j, k, skyStoneBlock);
                         }
                     }
@@ -324,8 +325,7 @@ public final class MeteoritePlacer {
                     switch (lootRng.nextInt(3)) {
                         case 0:
                             final int amount = 1 + lootRng.nextInt(SKYSTONE_SPAWN_LIMIT);
-                            for (final ItemStack skyStoneStack :
-                                    skyStoneDefinition.maybeStack(amount).asSet()) {
+                            for (final ItemStack skyStoneStack : skyStoneDefinition.maybeStack(amount).asSet()) {
                                 ap.addItems(skyStoneStack);
                             }
                             break;
@@ -475,8 +475,7 @@ public final class MeteoritePlacer {
 
             world.done();
 
-            WorldData.instance()
-                    .spawnData()
+            WorldData.instance().spawnData()
                     .addNearByMeteorites(world.getWorld().provider.dimensionId, x >> 4, z >> 4, this.settings);
             return true;
         }

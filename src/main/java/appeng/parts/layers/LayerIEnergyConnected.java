@@ -1,14 +1,5 @@
 package appeng.parts.layers;
 
-import appeng.api.parts.IPart;
-import appeng.api.parts.LayerBase;
-import appeng.integration.IntegrationType;
-import appeng.parts.p2p.IPartGT5Power;
-import appeng.transformer.annotations.Integration;
-import gregtech.api.interfaces.tileentity.IEnergyConnected;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Utility;
-import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -19,8 +10,19 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import appeng.api.parts.IPart;
+import appeng.api.parts.LayerBase;
+import appeng.integration.IntegrationType;
+import appeng.parts.p2p.IPartGT5Power;
+import appeng.transformer.annotations.Integration;
+import gregtech.api.interfaces.tileentity.IEnergyConnected;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GT_Utility;
+import ic2.api.energy.tile.IEnergySink;
+
 @Integration.Interface(iname = IntegrationType.GT, iface = "gregtech.api.interfaces.tileentity.IEnergyConnected")
 public class LayerIEnergyConnected extends LayerBase implements IEnergyConnected {
+
     public LayerIEnergyConnected() {}
 
     public long injectEnergyUnits(byte side, long voltage, long amperage) {
@@ -33,12 +35,9 @@ public class LayerIEnergyConnected extends LayerBase implements IEnergyConnected
                 TileEntity source = this.getTileEntityAtSide(side);
                 if (source != null && ((IEnergySink) part).acceptsEnergyFrom(source, dir)) {
                     long rUsedAmperes;
-                    for (rUsedAmperes = 0L;
-                            amperage > rUsedAmperes
-                                    && ((IEnergySink) part).getDemandedEnergy() > 0.0D
-                                    && ((IEnergySink) part).injectEnergy(dir, (double) voltage, (double) voltage)
-                                            < (double) voltage;
-                            ++rUsedAmperes) {}
+                    for (rUsedAmperes = 0L; amperage > rUsedAmperes && ((IEnergySink) part).getDemandedEnergy() > 0.0D
+                            && ((IEnergySink) part).injectEnergy(dir, (double) voltage, (double) voltage)
+                                    < (double) voltage; ++rUsedAmperes) {}
 
                     return rUsedAmperes;
                 }
@@ -247,8 +246,7 @@ public class LayerIEnergyConnected extends LayerBase implements IEnergyConnected
     }
 
     public final TileEntity getTileEntityAtSideAndDistance(byte aSide, int aDistance) {
-        return aDistance == 1
-                ? this.getTileEntityAtSide(aSide)
+        return aDistance == 1 ? this.getTileEntityAtSide(aSide)
                 : this.getTileEntity(
                         this.getOffsetX(aSide, aDistance),
                         this.getOffsetY(aSide, aDistance),
@@ -320,20 +318,17 @@ public class LayerIEnergyConnected extends LayerBase implements IEnergyConnected
     }
 
     public final Block getBlock(int aX, int aY, int aZ) {
-        return this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
-                ? Blocks.air
+        return this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ) ? Blocks.air
                 : this.worldObj.getBlock(aX, aY, aZ);
     }
 
     public final byte getMetaID(int aX, int aY, int aZ) {
-        return this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
-                ? 0
+        return this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ) ? 0
                 : (byte) this.worldObj.getBlockMetadata(aX, aY, aZ);
     }
 
     public final byte getLightLevel(int aX, int aY, int aZ) {
-        return this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
-                ? 0
+        return this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ) ? 0
                 : (byte) ((int) (this.worldObj.getLightBrightness(aX, aY, aZ) * 15.0F));
     }
 
@@ -353,8 +348,7 @@ public class LayerIEnergyConnected extends LayerBase implements IEnergyConnected
     }
 
     public final TileEntity getTileEntity(int aX, int aY, int aZ) {
-        return this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
-                ? null
+        return this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ) ? null
                 : this.worldObj.getTileEntity(aX, aY, aZ);
     }
 
@@ -362,8 +356,7 @@ public class LayerIEnergyConnected extends LayerBase implements IEnergyConnected
         int tX = this.getOffsetX(aSide, 1);
         int tY = this.getOffsetY(aSide, 1);
         int tZ = this.getOffsetZ(aSide, 1);
-        return this.crossedChunkBorder(tX, tZ) && !this.worldObj.blockExists(tX, tY, tZ)
-                ? null
+        return this.crossedChunkBorder(tX, tZ) && !this.worldObj.blockExists(tX, tY, tZ) ? null
                 : this.worldObj.getTileEntity(tX, tY, tZ);
     }
 

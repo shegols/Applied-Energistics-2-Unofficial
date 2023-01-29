@@ -1,24 +1,15 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.slot;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -27,6 +18,8 @@ import net.minecraft.item.*;
 import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class AppEngCraftingSlot extends AppEngSlot {
 
@@ -45,13 +38,8 @@ public class AppEngCraftingSlot extends AppEngSlot {
      */
     private int amountCrafted;
 
-    public AppEngCraftingSlot(
-            final EntityPlayer par1EntityPlayer,
-            final IInventory par2IInventory,
-            final IInventory par3IInventory,
-            final int par4,
-            final int par5,
-            final int par6) {
+    public AppEngCraftingSlot(final EntityPlayer par1EntityPlayer, final IInventory par2IInventory,
+            final IInventory par3IInventory, final int par4, final int par5, final int par6) {
         super(par3IInventory, par4, par5, par6);
         this.thePlayer = par1EntityPlayer;
         this.craftMatrix = par2IInventory;
@@ -139,8 +127,7 @@ public class AppEngCraftingSlot extends AppEngSlot {
                 if (itemstack1.getItem().hasContainerItem(itemstack1)) {
                     final ItemStack itemstack2 = itemstack1.getItem().getContainerItem(itemstack1);
 
-                    if (itemstack2 != null
-                            && itemstack2.isItemStackDamageable()
+                    if (itemstack2 != null && itemstack2.isItemStackDamageable()
                             && itemstack2.getItemDamage() > itemstack2.getMaxDamage()) {
                         MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(this.thePlayer, itemstack2));
                         continue;

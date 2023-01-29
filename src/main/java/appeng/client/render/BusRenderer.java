@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.parts.IAlphaPassItem;
 import appeng.api.parts.IFacadePart;
@@ -29,15 +34,6 @@ import appeng.facade.IFacadeItem;
 import appeng.util.Platform;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Nullable;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class BusRenderer implements IItemRenderer {
@@ -52,8 +48,8 @@ public class BusRenderer implements IItemRenderer {
     }
 
     @Override
-    public boolean shouldUseRenderHelper(
-            final ItemRenderType type, final ItemStack item, final ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(final ItemRenderType type, final ItemStack item,
+            final ItemRendererHelper helper) {
         return true;
     }
 
@@ -69,8 +65,7 @@ public class BusRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_LIGHTING);
 
-        if (AEConfig.instance.isFeatureEnabled(AEFeature.AlphaPass)
-                && item.getItem() instanceof IAlphaPassItem
+        if (AEConfig.instance.isFeatureEnabled(AEFeature.AlphaPass) && item.getItem() instanceof IAlphaPassItem
                 && ((IAlphaPassItem) item.getItem()).useAlphaPass(item)) {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -110,8 +105,8 @@ public class BusRenderer implements IItemRenderer {
 
         BusRenderHelper.INSTANCE.setOrientation(ForgeDirection.EAST, ForgeDirection.UP, ForgeDirection.SOUTH);
 
-        this.getRenderer().uvRotateBottom = this.getRenderer().uvRotateEast = this.getRenderer().uvRotateNorth =
-                this.getRenderer().uvRotateSouth = this.getRenderer().uvRotateTop = this.getRenderer().uvRotateWest = 0;
+        this.getRenderer().uvRotateBottom = this.getRenderer().uvRotateEast = this.getRenderer().uvRotateNorth = this
+                .getRenderer().uvRotateSouth = this.getRenderer().uvRotateTop = this.getRenderer().uvRotateWest = 0;
         this.getRenderer().useInventoryTint = false;
         this.getRenderer().overrideBlockTexture = null;
 
@@ -140,8 +135,8 @@ public class BusRenderer implements IItemRenderer {
             }
         }
 
-        this.getRenderer().uvRotateBottom = this.getRenderer().uvRotateEast = this.getRenderer().uvRotateNorth =
-                this.getRenderer().uvRotateSouth = this.getRenderer().uvRotateTop = this.getRenderer().uvRotateWest = 0;
+        this.getRenderer().uvRotateBottom = this.getRenderer().uvRotateEast = this.getRenderer().uvRotateNorth = this
+                .getRenderer().uvRotateSouth = this.getRenderer().uvRotateTop = this.getRenderer().uvRotateWest = 0;
 
         GL11.glPopAttrib();
         GL11.glPopMatrix();

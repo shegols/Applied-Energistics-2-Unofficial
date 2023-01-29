@@ -1,12 +1,14 @@
 package appeng.server.subcommands;
 
-import appeng.core.AEConfig;
-import appeng.server.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 
+import appeng.core.AEConfig;
+import appeng.server.ISubCommand;
+
 public class ToggleDebugTiming implements ISubCommand {
+
     @Override
     public String getHelp(MinecraftServer srv) {
         return "commands.ae2.ToggleDebugTiming";

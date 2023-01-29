@@ -1,22 +1,21 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.reporting;
+
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.implementations.ICraftingPatternItem;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -28,13 +27,9 @@ import appeng.helpers.Reflected;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.tile.inventory.BiggerAppEngInventory;
 import appeng.tile.inventory.InvOperation;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class PartPatternTerminal extends AbstractPartTerminal {
+
     private static final CableBusTextures FRONT_BRIGHT_ICON = CableBusTextures.PartPatternTerm_Bright;
     private static final CableBusTextures FRONT_DARK_ICON = CableBusTextures.PartPatternTerm_Dark;
     private static final CableBusTextures FRONT_COLORED_ICON = CableBusTextures.PartPatternTerm_Colored;
@@ -103,12 +98,8 @@ public class PartPatternTerminal extends AbstractPartTerminal {
     }
 
     @Override
-    public void onChangeInventory(
-            final IInventory inv,
-            final int slot,
-            final InvOperation mc,
-            final ItemStack removedStack,
-            final ItemStack newStack) {
+    public void onChangeInventory(final IInventory inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         if (inv == this.pattern && slot == 1) {
 
             final ItemStack stack = this.pattern.getStackInSlot(1);
@@ -118,8 +109,8 @@ public class PartPatternTerminal extends AbstractPartTerminal {
                 final NBTTagCompound encodedValue = stack.getTagCompound();
 
                 if (encodedValue != null) {
-                    final ICraftingPatternDetails details = pattern.getPatternForItem(
-                            stack, this.getHost().getTile().getWorldObj());
+                    final ICraftingPatternDetails details = pattern
+                            .getPatternForItem(stack, this.getHost().getTile().getWorldObj());
                     final boolean substitute = encodedValue.getBoolean("substitute");
                     final boolean beSubstitute = encodedValue.getBoolean("beSubstitute");
                     final boolean isCrafting = encodedValue.getBoolean("crafting");
@@ -128,8 +119,8 @@ public class PartPatternTerminal extends AbstractPartTerminal {
 
                     if (details == null) {
                         inItems = PatternHelper.loadIAEItemStackFromNBT(encodedValue.getTagList("in", 10), true, null);
-                        outItems =
-                                PatternHelper.loadIAEItemStackFromNBT(encodedValue.getTagList("out", 10), true, null);
+                        outItems = PatternHelper
+                                .loadIAEItemStackFromNBT(encodedValue.getTagList("out", 10), true, null);
                     } else {
                         inItems = details.getInputs();
                         outItems = details.getOutputs();

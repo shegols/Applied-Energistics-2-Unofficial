@@ -1,22 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.input.Mouse;
 
 import appeng.api.config.InsertionMode;
 import appeng.api.config.Settings;
@@ -32,9 +29,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketConfigButton;
 import appeng.core.sync.packets.PacketSwitchGuis;
 import appeng.helpers.IInterfaceHost;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.input.Mouse;
 
 public class GuiInterface extends GuiUpgradeable {
 
@@ -50,8 +44,12 @@ public class GuiInterface extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.priority =
-                new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16, GuiText.Priority.getLocal(), itemRender);
+        this.priority = new GuiTabButton(
+                this.guiLeft + 154,
+                this.guiTop,
+                2 + 4 * 16,
+                GuiText.Priority.getLocal(),
+                itemRender);
         this.buttonList.add(this.priority);
 
         this.BlockMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.BLOCK, YesNo.NO);
@@ -66,8 +64,11 @@ public class GuiInterface extends GuiUpgradeable {
                 GuiText.InterfaceTerminalHint.getLocal());
         this.buttonList.add(this.interfaceMode);
 
-        this.insertionMode =
-                new GuiImgButton(this.guiLeft - 18, this.guiTop + 44, Settings.INSERTION_MODE, InsertionMode.DEFAULT);
+        this.insertionMode = new GuiImgButton(
+                this.guiLeft - 18,
+                this.guiTop + 44,
+                Settings.INSERTION_MODE,
+                InsertionMode.DEFAULT);
         this.buttonList.add(this.insertionMode);
     }
 
@@ -86,7 +87,10 @@ public class GuiInterface extends GuiUpgradeable {
         }
 
         this.fontRendererObj.drawString(
-                this.getGuiDisplayName(GuiText.Interface.getLocal()), 8, 6, GuiColors.InterfaceTitle.getColor());
+                this.getGuiDisplayName(GuiText.Interface.getLocal()),
+                8,
+                6,
+                GuiColors.InterfaceTitle.getColor());
     }
 
     @Override

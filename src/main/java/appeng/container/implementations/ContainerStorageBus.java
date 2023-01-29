@@ -1,22 +1,20 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.container.implementations;
+
+import java.util.Iterator;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -29,10 +27,6 @@ import appeng.container.slot.SlotRestrictedInput;
 import appeng.parts.misc.PartStorageBus;
 import appeng.util.Platform;
 import appeng.util.iterators.NullIterator;
-import java.util.Iterator;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 
 public class ContainerStorageBus extends ContainerUpgradeable {
 
@@ -67,41 +61,46 @@ public class ContainerStorageBus extends ContainerUpgradeable {
         }
 
         final IInventory upgrades = this.getUpgradeable().getInventoryByName("upgrades");
-        this.addSlotToContainer((new SlotRestrictedInput(
-                        SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0, 187, 8, this.getInventoryPlayer()))
-                .setNotDraggable());
-        this.addSlotToContainer((new SlotRestrictedInput(
+        this.addSlotToContainer(
+                (new SlotRestrictedInput(
+                        SlotRestrictedInput.PlacableItemType.UPGRADES,
+                        upgrades,
+                        0,
+                        187,
+                        8,
+                        this.getInventoryPlayer())).setNotDraggable());
+        this.addSlotToContainer(
+                (new SlotRestrictedInput(
                         SlotRestrictedInput.PlacableItemType.UPGRADES,
                         upgrades,
                         1,
                         187,
                         8 + 18,
-                        this.getInventoryPlayer()))
-                .setNotDraggable());
-        this.addSlotToContainer((new SlotRestrictedInput(
+                        this.getInventoryPlayer())).setNotDraggable());
+        this.addSlotToContainer(
+                (new SlotRestrictedInput(
                         SlotRestrictedInput.PlacableItemType.UPGRADES,
                         upgrades,
                         2,
                         187,
                         8 + 18 * 2,
-                        this.getInventoryPlayer()))
-                .setNotDraggable());
-        this.addSlotToContainer((new SlotRestrictedInput(
+                        this.getInventoryPlayer())).setNotDraggable());
+        this.addSlotToContainer(
+                (new SlotRestrictedInput(
                         SlotRestrictedInput.PlacableItemType.UPGRADES,
                         upgrades,
                         3,
                         187,
                         8 + 18 * 3,
-                        this.getInventoryPlayer()))
-                .setNotDraggable());
-        this.addSlotToContainer((new SlotRestrictedInput(
+                        this.getInventoryPlayer())).setNotDraggable());
+        this.addSlotToContainer(
+                (new SlotRestrictedInput(
                         SlotRestrictedInput.PlacableItemType.UPGRADES,
                         upgrades,
                         4,
                         187,
                         8 + 18 * 4,
-                        this.getInventoryPlayer()))
-                .setNotDraggable());
+                        this.getInventoryPlayer())).setNotDraggable());
     }
 
     @Override
@@ -119,8 +118,7 @@ public class ContainerStorageBus extends ContainerUpgradeable {
         this.verifyPermissions(SecurityPermissions.BUILD, false);
 
         if (Platform.isServer()) {
-            this.setFuzzyMode(
-                    (FuzzyMode) this.getUpgradeable().getConfigManager().getSetting(Settings.FUZZY_MODE));
+            this.setFuzzyMode((FuzzyMode) this.getUpgradeable().getConfigManager().getSetting(Settings.FUZZY_MODE));
             this.setReadWriteMode(
                     (AccessRestriction) this.getUpgradeable().getConfigManager().getSetting(Settings.ACCESS));
             this.setStorageFilter(
@@ -154,8 +152,7 @@ public class ContainerStorageBus extends ContainerUpgradeable {
 
         Iterator<IAEItemStack> i = new NullIterator<IAEItemStack>();
         if (cellInv != null) {
-            final IItemList<IAEItemStack> list =
-                    cellInv.getAvailableItems(AEApi.instance().storage().createItemList());
+            final IItemList<IAEItemStack> list = cellInv.getAvailableItems(AEApi.instance().storage().createItemList());
             i = list.iterator();
         }
 

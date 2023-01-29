@@ -1,22 +1,19 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts.automation;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Vec3;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -45,12 +42,9 @@ import appeng.util.item.AEItemStack;
 import appeng.util.prioitylist.OreFilteredList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Vec3;
 
 public class PartImportBus extends PartSharedItemBus implements IInventoryDestination {
+
     private final BaseActionSource source;
     private IMEInventory<IAEItemStack> destination = null;
     private IAEItemStack lastItemChecked = null;
@@ -112,8 +106,8 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderStatic(
-            final int x, final int y, final int z, final IPartRenderHelper rh, final RenderBlocks renderer) {
+    public void renderStatic(final int x, final int y, final int z, final IPartRenderHelper rh,
+            final RenderBlocks renderer) {
         this.setRenderCache(rh.useSimplifiedRendering(x, y, z, this, this.getRenderCache()));
         rh.setTexture(
                 CableBusTextures.PartImportSides.getIcon(),
@@ -167,7 +161,10 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
     @Override
     public TickingRequest getTickingRequest(final IGridNode node) {
         return new TickingRequest(
-                TickRates.ImportBus.getMin(), TickRates.ImportBus.getMax(), this.getHandler() == null, false);
+                TickRates.ImportBus.getMin(),
+                TickRates.ImportBus.getMax(),
+                this.getHandler() == null,
+                false);
     }
 
     @Override
@@ -189,13 +186,12 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
         if (myAdaptor != null) {
             try {
                 this.itemToSend = this.calculateItemsToSend();
-                this.itemToSend = Math.min(this.itemToSend, (int) (0.01
-                        + this.getProxy()
-                                .getEnergy()
+                this.itemToSend = Math.min(
+                        this.itemToSend,
+                        (int) (0.01 + this.getProxy().getEnergy()
                                 .extractAEPower(this.itemToSend, Actionable.SIMULATE, PowerMultiplier.CONFIG)));
 
-                final IMEMonitor<IAEItemStack> inv =
-                        this.getProxy().getStorage().getItemInventory();
+                final IMEMonitor<IAEItemStack> inv = this.getProxy().getStorage().getItemInventory();
                 final IEnergyGrid energy = this.getProxy().getEnergy();
 
                 boolean configured = false;
@@ -216,8 +212,7 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
                     if (filterPredicate == null) filterPredicate = OreFilteredList.makeFilter(oreFilterString);
                     for (ItemSlot slot : myAdaptor) {
                         if (this.itemToSend <= 0) break;
-                        if (slot.isExtractable()
-                                && filterPredicate != null
+                        if (slot.isExtractable() && filterPredicate != null
                                 && filterPredicate.test(slot.getAEItemStack())) {
                             while (this.itemToSend > 0) {
                                 if (this.importStuff(myAdaptor, slot.getAEItemStack(), inv, energy, fzMode)) break;
@@ -243,12 +238,8 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
         return this.worked ? TickRateModulation.FASTER : TickRateModulation.SLOWER;
     }
 
-    private boolean importStuff(
-            final InventoryAdaptor myAdaptor,
-            final IAEItemStack whatToImport,
-            final IMEMonitor<IAEItemStack> inv,
-            final IEnergySource energy,
-            final FuzzyMode fzMode) {
+    private boolean importStuff(final InventoryAdaptor myAdaptor, final IAEItemStack whatToImport,
+            final IMEMonitor<IAEItemStack> inv, final IEnergySource energy, final FuzzyMode fzMode) {
         final int toSend = this.calculateMaximumAmountToImport(myAdaptor, whatToImport, inv, fzMode);
         final ItemStack newItems;
 
@@ -260,14 +251,15 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
                     this.configDestination(inv));
         } else {
             newItems = myAdaptor.removeItems(
-                    toSend, whatToImport == null ? null : whatToImport.getItemStack(), this.configDestination(inv));
+                    toSend,
+                    whatToImport == null ? null : whatToImport.getItemStack(),
+                    this.configDestination(inv));
         }
 
         if (newItems != null) {
             newItems.stackSize = (int) (Math.min(
-                            newItems.stackSize,
-                            energy.extractAEPower(newItems.stackSize, Actionable.SIMULATE, PowerMultiplier.CONFIG))
-                    + 0.01);
+                    newItems.stackSize,
+                    energy.extractAEPower(newItems.stackSize, Actionable.SIMULATE, PowerMultiplier.CONFIG)) + 0.01);
             this.itemToSend -= newItems.stackSize;
 
             if (this.lastItemChecked == null || !this.lastItemChecked.isSameType(newItems)) {
@@ -276,8 +268,8 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
                 this.lastItemChecked.setStackSize(newItems.stackSize);
             }
 
-            final IAEItemStack failed =
-                    Platform.poweredInsert(energy, this.destination, this.lastItemChecked, this.source);
+            final IAEItemStack failed = Platform
+                    .poweredInsert(energy, this.destination, this.lastItemChecked, this.source);
 
             if (failed != null) {
                 myAdaptor.addItems(failed.getItemStack());
@@ -292,11 +284,8 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
         return false;
     }
 
-    private int calculateMaximumAmountToImport(
-            final InventoryAdaptor myAdaptor,
-            final IAEItemStack whatToImport,
-            final IMEMonitor<IAEItemStack> inv,
-            final FuzzyMode fzMode) {
+    private int calculateMaximumAmountToImport(final InventoryAdaptor myAdaptor, final IAEItemStack whatToImport,
+            final IMEMonitor<IAEItemStack> inv, final FuzzyMode fzMode) {
         final int toSend = Math.min(this.itemToSend, 64);
         final ItemStack itemStackToImport;
 
@@ -313,8 +302,8 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
         } else {
             simResult = myAdaptor.simulateRemove(toSend, itemStackToImport, this.configDestination(inv));
         }
-        itemAmountNotStorable =
-                this.destination.injectItems(AEItemStack.create(simResult), Actionable.SIMULATE, this.source);
+        itemAmountNotStorable = this.destination
+                .injectItems(AEItemStack.create(simResult), Actionable.SIMULATE, this.source);
 
         if (itemAmountNotStorable != null) {
             return (int) Math.min(simResult.stackSize - itemAmountNotStorable.getStackSize(), toSend);

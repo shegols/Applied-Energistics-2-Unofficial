@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.implementations;
+
+import java.text.NumberFormat;
+import java.util.*;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.AEApi;
 import appeng.api.storage.ITerminalHost;
@@ -43,14 +45,8 @@ import appeng.parts.reporting.PartPatternTerminalEx;
 import appeng.parts.reporting.PartTerminal;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
+
 import com.google.common.base.Joiner;
-import java.text.NumberFormat;
-import java.util.*;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolder {
 
@@ -118,8 +114,13 @@ public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolde
     public void initGui() {
         super.initGui();
 
-        this.start =
-                new GuiButton(0, this.guiLeft + 162, this.guiTop + this.ySize - 25, 50, 20, GuiText.Start.getLocal());
+        this.start = new GuiButton(
+                0,
+                this.guiLeft + 162,
+                this.guiTop + this.ySize - 25,
+                50,
+                20,
+                GuiText.Start.getLocal());
         this.start.enabled = false;
         this.buttonList.add(this.start);
 
@@ -133,8 +134,13 @@ public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolde
         this.selectCPU.enabled = false;
         this.buttonList.add(this.selectCPU);
 
-        this.cancel =
-                new GuiButton(0, this.guiLeft + 6, this.guiTop + this.ySize - 25, 50, 20, GuiText.Cancel.getLocal());
+        this.cancel = new GuiButton(
+                0,
+                this.guiLeft + 6,
+                this.guiTop + this.ySize - 25,
+                50,
+                20,
+                GuiText.Cancel.getLocal());
         this.buttonList.add(this.cancel);
     }
 
@@ -188,9 +194,7 @@ public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolde
         if (this.ccc.getSelectedCpu() >= 0) // && status.selectedCpu < status.cpus.size() )
         {
             if (this.ccc.getName().length() > 0) {
-                final String name = this.ccc
-                        .getName()
-                        .substring(0, Math.min(20, this.ccc.getName().length()));
+                final String name = this.ccc.getName().substring(0, Math.min(20, this.ccc.getName().length()));
                 btnTextText = GuiText.CraftingCPU.getLocal() + ": " + name;
             } else {
                 btnTextText = GuiText.CraftingCPU.getLocal() + ": #" + this.ccc.getSelectedCpu();
@@ -214,10 +218,13 @@ public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolde
 
         final long BytesUsed = this.ccc.getUsedBytes();
         final String byteUsed = NumberFormat.getInstance().format(BytesUsed);
-        final String Add =
-                BytesUsed > 0 ? (byteUsed + ' ' + GuiText.BytesUsed.getLocal()) : GuiText.CalculatingWait.getLocal();
+        final String Add = BytesUsed > 0 ? (byteUsed + ' ' + GuiText.BytesUsed.getLocal())
+                : GuiText.CalculatingWait.getLocal();
         this.fontRendererObj.drawString(
-                GuiText.CraftingPlan.getLocal() + " - " + Add, 8, 7, GuiColors.CraftConfirmCraftingPlan.getColor());
+                GuiText.CraftingPlan.getLocal() + " - " + Add,
+                8,
+                7,
+                GuiColors.CraftConfirmCraftingPlan.getColor());
 
         String dsp = null;
 
@@ -227,7 +234,9 @@ public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolde
             dsp = this.ccc.getCpuAvailableBytes() > 0
                     ? (GuiText.Bytes.getLocal() + ": "
                             + NumberFormat.getInstance().format(this.ccc.getCpuAvailableBytes())
-                            + " : " + GuiText.CoProcessors.getLocal() + ": "
+                            + " : "
+                            + GuiText.CoProcessors.getLocal()
+                            + ": "
                             + NumberFormat.getInstance().format(this.ccc.getCpuCoProcessors()))
                     : GuiText.Bytes.getLocal() + ": N/A : " + GuiText.CoProcessors.getLocal() + ": N/A";
         }
@@ -287,8 +296,9 @@ public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolde
                             GuiColors.CraftConfirmFromStorage.getColor());
 
                     if (this.tooltip == z - viewStart) {
-                        lineList.add(GuiText.FromStorage.getLocal() + ": "
-                                + NumberFormat.getInstance().format(stored.getStackSize()));
+                        lineList.add(
+                                GuiText.FromStorage.getLocal() + ": "
+                                        + NumberFormat.getInstance().format(stored.getStackSize()));
                     }
 
                     downY += 5;
@@ -306,8 +316,9 @@ public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolde
                             GuiColors.CraftConfirmMissing.getColor());
 
                     if (this.tooltip == z - viewStart) {
-                        lineList.add(GuiText.Missing.getLocal() + ": "
-                                + NumberFormat.getInstance().format(missingStack.getStackSize()));
+                        lineList.add(
+                                GuiText.Missing.getLocal() + ": "
+                                        + NumberFormat.getInstance().format(missingStack.getStackSize()));
                     }
 
                     red = true;
@@ -325,8 +336,9 @@ public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolde
                             GuiColors.CraftConfirmToCraft.getColor());
 
                     if (this.tooltip == z - viewStart) {
-                        lineList.add(GuiText.ToCraft.getLocal() + ": "
-                                + NumberFormat.getInstance().format(pendingStack.getStackSize()));
+                        lineList.add(
+                                GuiText.ToCraft.getLocal() + ": "
+                                        + NumberFormat.getInstance().format(pendingStack.getStackSize()));
                     }
                 }
 

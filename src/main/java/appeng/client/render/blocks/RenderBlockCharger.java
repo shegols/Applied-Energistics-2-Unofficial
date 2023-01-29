@@ -1,31 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.blocks;
 
-import appeng.api.util.IOrientable;
-import appeng.block.misc.BlockCharger;
-import appeng.client.render.BaseBlockRender;
-import appeng.client.texture.ExtraBlockTextures;
-import appeng.core.AELog;
-import appeng.tile.misc.TileCharger;
-import appeng.util.Platform;
 import java.util.EnumSet;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -34,8 +20,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import appeng.api.util.IOrientable;
+import appeng.block.misc.BlockCharger;
+import appeng.client.render.BaseBlockRender;
+import appeng.client.texture.ExtraBlockTextures;
+import appeng.core.AELog;
+import appeng.tile.misc.TileCharger;
+import appeng.util.Platform;
 
 public class RenderBlockCharger extends BaseBlockRender<BlockCharger, TileCharger> {
 
@@ -44,12 +39,8 @@ public class RenderBlockCharger extends BaseBlockRender<BlockCharger, TileCharge
     }
 
     @Override
-    public void renderInventory(
-            final BlockCharger blk,
-            final ItemStack is,
-            final RenderBlocks renderer,
-            final ItemRenderType type,
-            final Object[] obj) {
+    public void renderInventory(final BlockCharger blk, final ItemStack is, final RenderBlocks renderer,
+            final ItemRenderType type, final Object[] obj) {
         final Tessellator tess = Tessellator.instance;
 
         renderer.renderAllFaces = true;
@@ -81,13 +72,8 @@ public class RenderBlockCharger extends BaseBlockRender<BlockCharger, TileCharge
     }
 
     @Override
-    public boolean renderInWorld(
-            final BlockCharger block,
-            final IBlockAccess world,
-            final int x,
-            final int y,
-            final int z,
-            final RenderBlocks renderer) {
+    public boolean renderInWorld(final BlockCharger block, final IBlockAccess world, final int x, final int y,
+            final int z, final RenderBlocks renderer) {
         this.preRenderInWorld(block, world, x, y, z, renderer);
 
         final IOrientable te = this.getOrientable(block, world, x, y, z);
@@ -128,15 +114,8 @@ public class RenderBlockCharger extends BaseBlockRender<BlockCharger, TileCharge
     }
 
     @Override
-    public void renderTile(
-            final BlockCharger block,
-            final TileCharger tile,
-            final Tessellator tess,
-            final double x,
-            final double y,
-            final double z,
-            final float f,
-            final RenderBlocks renderer) {
+    public void renderTile(final BlockCharger block, final TileCharger tile, final Tessellator tess, final double x,
+            final double y, final double z, final float f, final RenderBlocks renderer) {
         if (tile == null) {
             return;
         }

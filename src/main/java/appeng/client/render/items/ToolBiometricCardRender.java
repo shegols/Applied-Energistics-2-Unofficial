@@ -1,33 +1,28 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render.items;
 
-import appeng.api.implementations.items.IBiometricCard;
-import appeng.api.util.AEColor;
-import appeng.client.texture.ExtraItemTextures;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import appeng.api.implementations.items.IBiometricCard;
+import appeng.api.util.AEColor;
+import appeng.client.texture.ExtraItemTextures;
+
+import com.mojang.authlib.GameProfile;
 
 public class ToolBiometricCardRender implements IItemRenderer {
 
@@ -37,8 +32,8 @@ public class ToolBiometricCardRender implements IItemRenderer {
     }
 
     @Override
-    public boolean shouldUseRenderHelper(
-            final ItemRenderType type, final ItemStack item, final ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(final ItemRenderType type, final ItemStack item,
+            final ItemRendererHelper helper) {
         return helper == ItemRendererHelper.ENTITY_BOBBING || helper == ItemRendererHelper.ENTITY_ROTATION;
     }
 
@@ -74,7 +69,14 @@ public class ToolBiometricCardRender implements IItemRenderer {
             GL11.glTranslatef(-0.5F, -0.3F, 0.01F);
             final float f12 = 0.0625F;
             ItemRenderer.renderItemIn2D(
-                    tessellator, f5, f6, f4, f7, par2Icon.getIconWidth(), par2Icon.getIconHeight(), f12);
+                    tessellator,
+                    f5,
+                    f6,
+                    f4,
+                    f7,
+                    par2Icon.getIconWidth(),
+                    par2Icon.getIconHeight(),
+                    f12);
 
             GL11.glDisable(GL11.GL_CULL_FACE);
             GL11.glColor4f(1, 1, 1, 1.0F);

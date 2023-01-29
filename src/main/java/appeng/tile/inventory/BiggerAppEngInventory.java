@@ -1,8 +1,9 @@
 package appeng.tile.inventory;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import appeng.core.AELog;
 import appeng.util.Platform;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class BiggerAppEngInventory extends AppEngInternalInventory {
 
@@ -20,8 +21,7 @@ public class BiggerAppEngInventory extends AppEngInternalInventory {
                 }
 
                 target.setTag("#" + x, c);
-            } catch (final Exception ignored) {
-            }
+            } catch (final Exception ignored) {}
         }
     }
 

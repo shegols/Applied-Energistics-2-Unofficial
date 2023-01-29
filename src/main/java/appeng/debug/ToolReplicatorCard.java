@@ -1,32 +1,17 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.debug;
 
-import appeng.api.networking.IGrid;
-import appeng.api.networking.IGridHost;
-import appeng.api.networking.IGridNode;
-import appeng.api.networking.spatial.ISpatialCache;
-import appeng.api.util.DimensionalCoord;
-import appeng.core.features.AEFeature;
-import appeng.items.AEBaseItem;
-import appeng.util.Platform;
 import java.util.EnumSet;
+
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,23 +24,24 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 
+import appeng.api.networking.IGrid;
+import appeng.api.networking.IGridHost;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.spatial.ISpatialCache;
+import appeng.api.util.DimensionalCoord;
+import appeng.core.features.AEFeature;
+import appeng.items.AEBaseItem;
+import appeng.util.Platform;
+
 public class ToolReplicatorCard extends AEBaseItem {
+
     public ToolReplicatorCard() {
         this.setFeature(EnumSet.of(AEFeature.UnsupportedDeveloperTools, AEFeature.Creative));
     }
 
     @Override
-    public boolean onItemUseFirst(
-            final ItemStack stack,
-            final EntityPlayer player,
-            final World world,
-            int x,
-            int y,
-            int z,
-            final int side,
-            final float hitX,
-            final float hitY,
-            final float hitZ) {
+    public boolean onItemUseFirst(final ItemStack stack, final EntityPlayer player, final World world, int x, int y,
+            int z, final int side, final float hitX, final float hitY, final float hitZ) {
         if (ForgeEventFactory.onItemUseStart(player, stack, 1) <= 0) return true;
 
         if (Platform.isClient()) {
@@ -122,8 +108,8 @@ public class ToolReplicatorCard extends AEBaseItem {
                                             world.setBlock(i + rel_x, j + rel_y, k + rel_z, blk, meta, 4);
 
                                             if (blk != null && blk.hasTileEntity(meta)) {
-                                                final TileEntity ote =
-                                                        src_w.getTileEntity(min_x + i, min_y + j, min_z + k);
+                                                final TileEntity ote = src_w
+                                                        .getTileEntity(min_x + i, min_y + j, min_z + k);
                                                 final TileEntity nte = blk.createTileEntity(world, meta);
                                                 final NBTTagCompound data = new NBTTagCompound();
                                                 ote.writeToNBT(data);

@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.fmp;
+
+import java.io.IOException;
+import java.util.*;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.implementations.parts.IPartCable;
 import appeng.api.networking.IGridNode;
@@ -44,17 +49,6 @@ import codechicken.multipart.*;
 import codechicken.multipart.scalatraits.TIInventoryTile;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import java.io.IOException;
-import java.util.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Implementing these might help improve visuals for hollow covers
@@ -62,6 +56,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * TSlottedPart,ISidedHollowConnect
  */
 public class CableBusPart extends JCuboidPart implements JNormalOcclusion, IMaskedRedstonePart, AEMultiTile {
+
     private static final ThreadLocal<Boolean> DISABLE_FACADE_OCCLUSION = new ThreadLocal<Boolean>();
     private static final double SHORTER = 6.0 / 16.0;
     private static final double LONGER = 10.0 / 16.0;
@@ -69,24 +64,23 @@ public class CableBusPart extends JCuboidPart implements JNormalOcclusion, IMask
     private static final double MAX_DIRECTION = 1.0;
     private static final Cuboid6[] SIDE_TESTS = {
 
-        // DOWN(0, -1, 0),
-        new Cuboid6(SHORTER, MIN_DIRECTION, SHORTER, LONGER, SHORTER, LONGER),
+            // DOWN(0, -1, 0),
+            new Cuboid6(SHORTER, MIN_DIRECTION, SHORTER, LONGER, SHORTER, LONGER),
 
-        // UP(0, 1, 0),
-        new Cuboid6(SHORTER, LONGER, SHORTER, LONGER, MAX_DIRECTION, LONGER),
+            // UP(0, 1, 0),
+            new Cuboid6(SHORTER, LONGER, SHORTER, LONGER, MAX_DIRECTION, LONGER),
 
-        // NORTH(0, 0, -1),
-        new Cuboid6(SHORTER, SHORTER, MIN_DIRECTION, LONGER, LONGER, SHORTER),
+            // NORTH(0, 0, -1),
+            new Cuboid6(SHORTER, SHORTER, MIN_DIRECTION, LONGER, LONGER, SHORTER),
 
-        // SOUTH(0, 0, 1),
-        new Cuboid6(SHORTER, SHORTER, LONGER, LONGER, LONGER, MAX_DIRECTION),
+            // SOUTH(0, 0, 1),
+            new Cuboid6(SHORTER, SHORTER, LONGER, LONGER, LONGER, MAX_DIRECTION),
 
-        // WEST(-1, 0, 0),
-        new Cuboid6(MIN_DIRECTION, SHORTER, SHORTER, SHORTER, LONGER, LONGER),
+            // WEST(-1, 0, 0),
+            new Cuboid6(MIN_DIRECTION, SHORTER, SHORTER, SHORTER, LONGER, LONGER),
 
-        // EAST(1, 0, 0),
-        new Cuboid6(LONGER, SHORTER, SHORTER, MAX_DIRECTION, LONGER, LONGER),
-    };
+            // EAST(1, 0, 0),
+            new Cuboid6(LONGER, SHORTER, SHORTER, MAX_DIRECTION, LONGER, LONGER), };
 
     /**
      * Mask for {@link IMaskedRedstonePart#getConnectionMask(int)}
@@ -320,7 +314,12 @@ public class CableBusPart extends JCuboidPart implements JNormalOcclusion, IMask
             final List<AxisAlignedBB> boxes = new ArrayList<AxisAlignedBB>();
 
             final BusCollisionHelper bch = new BusCollisionHelper(
-                    boxes, ForgeDirection.EAST, ForgeDirection.UP, ForgeDirection.SOUTH, null, true);
+                    boxes,
+                    ForgeDirection.EAST,
+                    ForgeDirection.UP,
+                    ForgeDirection.SOUTH,
+                    null,
+                    true);
 
             for (final ForgeDirection whichSide : ForgeDirection.values()) {
                 final IPart fPart = this.getPart(whichSide);
@@ -383,8 +382,7 @@ public class CableBusPart extends JCuboidPart implements JNormalOcclusion, IMask
         for (final ForgeDirection side : ForgeDirection.values()) {
             if (this.getPart(side) != null) {
                 mask |= 1 << side.ordinal();
-            } else if (side != ForgeDirection.UNKNOWN
-                    && this.getFacadeContainer().getFacade(side) != null) {
+            } else if (side != ForgeDirection.UNKNOWN && this.getFacadeContainer().getFacade(side) != null) {
                 mask |= 1 << side.ordinal();
             }
         }
@@ -542,8 +540,7 @@ public class CableBusPart extends JCuboidPart implements JNormalOcclusion, IMask
             ((TIInventoryTile) this.tile()).rebuildSlotMap();
         }
 
-        if (this.world() != null
-                && this.world().blockExists(this.x(), this.y(), this.z())
+        if (this.world() != null && this.world().blockExists(this.x(), this.y(), this.z())
                 && !CableBusContainer.isLoading()) {
             Platform.notifyBlocksOfNeighbors(this.world(), this.x(), this.y(), this.z());
         }

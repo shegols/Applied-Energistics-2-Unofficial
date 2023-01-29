@@ -1,22 +1,21 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me;
+
+import java.util.Arrays;
+import java.util.EnumSet;
+
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.logging.log4j.Level;
 
 import appeng.api.exceptions.ExistingConnectionException;
 import appeng.api.exceptions.FailedConnection;
@@ -35,15 +34,10 @@ import appeng.core.features.AEFeature;
 import appeng.me.pathfinding.IPathItem;
 import appeng.util.Platform;
 import appeng.util.ReadOnlyCollection;
-import java.util.Arrays;
-import java.util.EnumSet;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.apache.logging.log4j.Level;
 
 public class GridConnection implements IGridConnection, IPathItem {
 
-    private static final String EXISTING_CONNECTION_MESSAGE =
-            "Connection between node [machine=%s, %s] and [machine=%s, %s] on [%s] already exists.";
+    private static final String EXISTING_CONNECTION_MESSAGE = "Connection between node [machine=%s, %s] and [machine=%s, %s] on [%s] already exists.";
 
     private static final MENetworkChannelsChanged EVENT = new MENetworkChannelsChanged();
     private int channelData = 0;
@@ -65,10 +59,12 @@ public class GridConnection implements IGridConnection, IPathItem {
 
                 AELog.info(
                         "Security audit 1 failed at [%s] belonging to player [id=%d]",
-                        aCoordinates.toString(), a.getPlayerID());
+                        aCoordinates.toString(),
+                        a.getPlayerID());
                 AELog.info(
                         "Security audit 2 failed at [%s] belonging to player [id=%d]",
-                        bCoordinates.toString(), b.getPlayerID());
+                        bCoordinates.toString(),
+                        b.getPlayerID());
             }
 
             throw new SecurityConnectionException();
@@ -79,15 +75,19 @@ public class GridConnection implements IGridConnection, IPathItem {
         }
 
         if (a.hasConnection(b) || b.hasConnection(a)) {
-            final String aMachineClass =
-                    a.getGridBlock().getMachine().getClass().getSimpleName();
-            final String bMachineClass =
-                    b.getGridBlock().getMachine().getClass().getSimpleName();
+            final String aMachineClass = a.getGridBlock().getMachine().getClass().getSimpleName();
+            final String bMachineClass = b.getGridBlock().getMachine().getClass().getSimpleName();
             final String aCoordinates = a.getGridBlock().getLocation().toString();
             final String bCoordinates = b.getGridBlock().getLocation().toString();
 
-            throw new ExistingConnectionException(String.format(
-                    EXISTING_CONNECTION_MESSAGE, aMachineClass, aCoordinates, bMachineClass, bCoordinates, fromAtoB));
+            throw new ExistingConnectionException(
+                    String.format(
+                            EXISTING_CONNECTION_MESSAGE,
+                            aMachineClass,
+                            aCoordinates,
+                            bMachineClass,
+                            bCoordinates,
+                            fromAtoB));
         }
 
         this.sideA = a;
@@ -127,8 +127,7 @@ public class GridConnection implements IGridConnection, IPathItem {
     }
 
     private boolean isNetworkABetter(final GridNode a, final GridNode b) {
-        return a.getMyGrid().getPriority() > b.getMyGrid().getPriority()
-                || a.getMyGrid().size() > b.getMyGrid().size();
+        return a.getMyGrid().getPriority() > b.getMyGrid().getPriority() || a.getMyGrid().size() > b.getMyGrid().size();
     }
 
     @Override

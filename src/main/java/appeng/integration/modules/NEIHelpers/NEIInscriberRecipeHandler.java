@@ -1,22 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.integration.modules.NEIHelpers;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.AEApi;
 import appeng.api.features.IInscriberRecipe;
@@ -28,14 +31,6 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.api.IRecipeOverlayRenderer;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 /**
  * @author AlgorithmX2
@@ -47,15 +42,14 @@ public class NEIInscriberRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        this.transferRects.add(
-                new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(84, 23, 24, 18), "inscriber"));
+        this.transferRects
+                .add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(84, 23, 24, 18), "inscriber"));
     }
 
     @Override
     public void loadCraftingRecipes(final String outputId, final Object... results) {
         if ((outputId.equals("inscriber")) && (this.getClass() == NEIInscriberRecipeHandler.class)) {
-            for (final IInscriberRecipe recipe :
-                    AEApi.instance().registries().inscriber().getRecipes()) {
+            for (final IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
                 final CachedInscriberRecipe cachedRecipe = new CachedInscriberRecipe(recipe);
                 cachedRecipe.computeVisuals();
                 this.arecipes.add(cachedRecipe);
@@ -67,8 +61,7 @@ public class NEIInscriberRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(final ItemStack result) {
-        for (final IInscriberRecipe recipe :
-                AEApi.instance().registries().inscriber().getRecipes()) {
+        for (final IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
             if (NEIServerUtils.areStacksSameTypeCrafting(recipe.getOutput(), result)) {
                 final CachedInscriberRecipe cachedRecipe = new CachedInscriberRecipe(recipe);
                 cachedRecipe.computeVisuals();
@@ -79,8 +72,7 @@ public class NEIInscriberRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(final ItemStack ingredient) {
-        for (final IInscriberRecipe recipe :
-                AEApi.instance().registries().inscriber().getRecipes()) {
+        for (final IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
             final CachedInscriberRecipe cachedRecipe = new CachedInscriberRecipe(recipe);
 
             if ((cachedRecipe.contains(cachedRecipe.ingredients, ingredient.getItem()))) {

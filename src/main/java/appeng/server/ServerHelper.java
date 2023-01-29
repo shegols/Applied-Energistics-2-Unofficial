@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.server;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
 
 import appeng.api.parts.CableRenderMode;
 import appeng.block.AEBaseBlock;
@@ -28,17 +33,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.items.tools.ToolNetworkTool;
 import appeng.util.Platform;
 import cpw.mods.fml.common.FMLCommonHandler;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
 
 public class ServerHelper extends CommonHelper {
 
@@ -71,14 +65,8 @@ public class ServerHelper extends CommonHelper {
     }
 
     @Override
-    public void sendToAllNearExcept(
-            final EntityPlayer p,
-            final double x,
-            final double y,
-            final double z,
-            final double dist,
-            final World w,
-            final AppEngPacket packet) {
+    public void sendToAllNearExcept(final EntityPlayer p, final double x, final double y, final double z,
+            final double dist, final World w, final AppEngPacket packet) {
         if (Platform.isClient()) {
             return;
         }
@@ -99,13 +87,8 @@ public class ServerHelper extends CommonHelper {
     }
 
     @Override
-    public void spawnEffect(
-            final EffectType type,
-            final World worldObj,
-            final double posX,
-            final double posY,
-            final double posZ,
-            final Object o) {
+    public void spawnEffect(final EffectType type, final World worldObj, final double posX, final double posY,
+            final double posZ, final Object o) {
         // :P
     }
 

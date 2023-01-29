@@ -1,5 +1,13 @@
 package appeng.crafting.v2;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import net.minecraft.world.World;
+
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.networking.crafting.ICraftingCallback;
@@ -13,16 +21,10 @@ import appeng.crafting.v2.CraftingRequest.SubstitutionMode;
 import appeng.crafting.v2.resolvers.CraftingTask;
 import appeng.hooks.TickHandler;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import net.minecraft.world.World;
 
 /**
- * A new, self-contained implementation of the crafting calculator.
- * Does an iterative search on the crafting recipe tree.
+ * A new, self-contained implementation of the crafting calculator. Does an iterative search on the crafting recipe
+ * tree.
  */
 public class CraftingJobV2 implements ICraftingJob, Future<ICraftingJob> {
 
@@ -40,12 +42,8 @@ public class CraftingJobV2 implements ICraftingJob, Future<ICraftingJob> {
 
     protected State state = State.RUNNING;
 
-    public CraftingJobV2(
-            final World world,
-            final IGrid meGrid,
-            final BaseActionSource actionSource,
-            final IAEItemStack what,
-            final ICraftingCallback callback) {
+    public CraftingJobV2(final World world, final IGrid meGrid, final BaseActionSource actionSource,
+            final IAEItemStack what, final ICraftingCallback callback) {
         this.context = new CraftingContext(world, meGrid, actionSource);
         this.callback = callback;
         this.originalRequest = new CraftingRequest<>(what, SubstitutionMode.PRECISE_FRESH, IAEItemStack.class, true);

@@ -1,33 +1,29 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.services.version;
 
-import appeng.services.version.exceptions.*;
-import com.google.common.base.Preconditions;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
 import javax.annotation.Nonnull;
+
+import appeng.services.version.exceptions.*;
+
+import com.google.common.base.Preconditions;
 
 /**
  * can parse a version in form of rv2-beta-8 or rv2.beta.8
  */
 public final class VersionParser {
+
     private static final Pattern PATTERN_DOT = Pattern.compile("\\.");
     private static final Pattern PATTERN_DASH = Pattern.compile("-");
     private static final Pattern PATTERN_REVISION = Pattern.compile("[^0-9]+");
@@ -70,9 +66,8 @@ public final class VersionParser {
     }
 
     /**
-     * parses the {@link Version} out of the split.
-     * The split must have a length of 3,
-     * representing revision, channel and build.
+     * parses the {@link Version} out of the split. The split must have a length of 3, representing revision, channel
+     * and build.
      *
      * @param splitRaw raw version split with length of 3
      * @return {@link Version} represented by the splitRaw
@@ -127,8 +122,7 @@ public final class VersionParser {
      * @throws InvalidChannelException if not one of {@link Channel} values.
      */
     private Channel parseChannel(@Nonnull final String rawChannel) throws InvalidChannelException {
-        if (!(rawChannel.equalsIgnoreCase(Channel.Alpha.name())
-                || rawChannel.equalsIgnoreCase(Channel.Beta.name())
+        if (!(rawChannel.equalsIgnoreCase(Channel.Alpha.name()) || rawChannel.equalsIgnoreCase(Channel.Beta.name())
                 || rawChannel.equalsIgnoreCase(Channel.Stable.name()))) {
             throw new InvalidChannelException();
         }

@@ -1,22 +1,27 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.tile.networking;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.parts.IFacadeContainer;
@@ -39,17 +44,6 @@ import appeng.tile.TileEvent;
 import appeng.tile.events.TileEventType;
 import appeng.util.Platform;
 import io.netty.buffer.ByteBuf;
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomCollision {
 
@@ -90,8 +84,7 @@ public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomColl
     protected void updateTileSetting() {
         if (this.getCableBus().isRequiresDynamicRender()) {
             try {
-                final TileCableBus tcb =
-                        (TileCableBus) BlockCableBus.getTesrTile().newInstance();
+                final TileCableBus tcb = (TileCableBus) BlockCableBus.getTesrTile().newInstance();
                 tcb.copyFrom(this);
                 this.getWorldObj().setTileEntity(this.xCoord, this.yCoord, this.zCoord, tcb);
             } catch (final Throwable ignored) {
@@ -239,8 +232,8 @@ public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomColl
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(
-            final World w, final int x, final int y, final int z, final Entity e, final boolean visual) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final int x, final int y,
+            final int z, final Entity e, final boolean visual) {
         return this.getCableBus().getSelectedBoundingBoxesFromPool(false, true, e, visual);
     }
 
@@ -277,8 +270,8 @@ public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomColl
     @Override
     public void cleanup() {
         if (IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.ImmibisMicroblocks)) {
-            final IImmibisMicroblocks imb =
-                    (IImmibisMicroblocks) IntegrationRegistry.INSTANCE.getInstance(IntegrationType.ImmibisMicroblocks);
+            final IImmibisMicroblocks imb = (IImmibisMicroblocks) IntegrationRegistry.INSTANCE
+                    .getInstance(IntegrationType.ImmibisMicroblocks);
             if (imb != null && imb.leaveParts(this)) {
                 return;
             }
@@ -288,14 +281,8 @@ public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomColl
     }
 
     @Override
-    public void addCollidingBlockToList(
-            final World w,
-            final int x,
-            final int y,
-            final int z,
-            final AxisAlignedBB bb,
-            final List<AxisAlignedBB> out,
-            final Entity e) {
+    public void addCollidingBlockToList(final World w, final int x, final int y, final int z, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         for (final AxisAlignedBB bx : this.getSelectedBoundingBoxesFromPool(w, x, y, z, e, false)) {
             out.add(AxisAlignedBB.getBoundingBox(bx.minX, bx.minY, bx.minZ, bx.maxX, bx.maxY, bx.maxZ));
         }
@@ -303,8 +290,7 @@ public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomColl
 
     @Override
     public void notifyNeighbors() {
-        if (this.worldObj != null
-                && this.worldObj.blockExists(this.xCoord, this.yCoord, this.zCoord)
+        if (this.worldObj != null && this.worldObj.blockExists(this.xCoord, this.yCoord, this.zCoord)
                 && !CableBusContainer.isLoading()) {
             Platform.notifyBlocksOfNeighbors(this.worldObj, this.xCoord, this.yCoord, this.zCoord);
         }

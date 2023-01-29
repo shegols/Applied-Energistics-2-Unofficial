@@ -1,5 +1,9 @@
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.world.World;
+
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.security.BaseActionSource;
@@ -9,11 +13,9 @@ import appeng.api.storage.ITerminalHost;
 import appeng.container.AEBaseContainer;
 import appeng.container.slot.SlotInaccessible;
 import appeng.tile.inventory.AppEngInternalInventory;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.world.World;
 
 public class ContainerPatternValueAmount extends AEBaseContainer {
+
     private final Slot patternValue;
     private int valueIndex;
 

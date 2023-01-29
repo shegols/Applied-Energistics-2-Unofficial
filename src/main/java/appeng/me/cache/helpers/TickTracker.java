@@ -1,22 +1,18 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.cache.helpers;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.crash.CrashReportCategory;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.ticking.IGridTickable;
@@ -24,8 +20,6 @@ import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.util.DimensionalCoord;
 import appeng.me.cache.TickManagerCache;
 import appeng.parts.AEBasePart;
-import javax.annotation.Nonnull;
-import net.minecraft.crash.CrashReportCategory;
 
 public class TickTracker implements Comparable<TickTracker> {
 
@@ -39,11 +33,7 @@ public class TickTracker implements Comparable<TickTracker> {
     private long lastTick;
     private int currentRate;
 
-    public TickTracker(
-            final TickingRequest req,
-            final IGridNode node,
-            final IGridTickable gt,
-            final long currentTick,
+    public TickTracker(final TickingRequest req, final IGridNode node, final IGridTickable gt, final long currentTick,
             final TickManagerCache tickManagerCache) {
         this.request = req;
         this.gt = gt;
@@ -85,10 +75,8 @@ public class TickTracker implements Comparable<TickTracker> {
         crashreportcategory.addCrashSection("CurrentTickRate", this.getCurrentRate());
         crashreportcategory.addCrashSection("MinTickRate", this.getRequest().minTickRate);
         crashreportcategory.addCrashSection("MaxTickRate", this.getRequest().maxTickRate);
-        crashreportcategory.addCrashSection(
-                "MachineType", this.getGridTickable().getClass().getName());
-        crashreportcategory.addCrashSection(
-                "GridBlockType", this.getNode().getGridBlock().getClass().getName());
+        crashreportcategory.addCrashSection("MachineType", this.getGridTickable().getClass().getName());
+        crashreportcategory.addCrashSection("GridBlockType", this.getNode().getGridBlock().getClass().getName());
         crashreportcategory.addCrashSection("ConnectedSides", this.getNode().getConnectedSides());
 
         final DimensionalCoord dc = this.getNode().getGridBlock().getLocation();

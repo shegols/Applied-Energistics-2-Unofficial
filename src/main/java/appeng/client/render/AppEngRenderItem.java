@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.render;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.opengl.GL11;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.core.AEConfig;
@@ -24,13 +26,6 @@ import appeng.core.localization.GuiText;
 import appeng.util.ISlimReadableNumberConverter;
 import appeng.util.IWideReadableNumberConverter;
 import appeng.util.ReadableNumberConverter;
-import javax.annotation.Nonnull;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
 
 /**
  * @author AlgorithmX2
@@ -39,19 +34,15 @@ import org.lwjgl.opengl.GL11;
  * @since rv0
  */
 public class AppEngRenderItem extends RenderItem {
+
     private static final ISlimReadableNumberConverter SLIM_CONVERTER = ReadableNumberConverter.INSTANCE;
     private static final IWideReadableNumberConverter WIDE_CONVERTER = ReadableNumberConverter.INSTANCE;
 
     private IAEItemStack aeStack = null;
 
     @Override
-    public void renderItemOverlayIntoGUI(
-            final FontRenderer fontRenderer,
-            final TextureManager textureManager,
-            final ItemStack is,
-            final int par4,
-            final int par5,
-            final String par6Str) {
+    public void renderItemOverlayIntoGUI(final FontRenderer fontRenderer, final TextureManager textureManager,
+            final ItemStack is, final int par4, final int par5, final String par6Str) {
         if (is != null) {
             final float scaleFactor = AEConfig.instance.useTerminalUseLargeFont() ? 0.85f : 0.5f;
             final float inverseScaleFactor = 1.0f / scaleFactor;
@@ -96,9 +87,9 @@ public class AppEngRenderItem extends RenderItem {
                 GL11.glPushMatrix();
                 GL11.glScaled(scaleFactor, scaleFactor, scaleFactor);
 
-                final int X = (int)
-                        (((float) par4 + offset + 16.0f - fontRenderer.getStringWidth(craftLabelText) * scaleFactor)
-                                * inverseScaleFactor);
+                final int X = (int) (((float) par4 + offset
+                        + 16.0f
+                        - fontRenderer.getStringWidth(craftLabelText) * scaleFactor) * inverseScaleFactor);
                 final int Y = (int) (((float) par5 + offset + 16.0f - 7.0f * scaleFactor) * inverseScaleFactor);
                 fontRenderer.drawStringWithShadow(craftLabelText, X, Y, 16777215);
 
@@ -117,9 +108,9 @@ public class AppEngRenderItem extends RenderItem {
                 GL11.glPushMatrix();
                 GL11.glScaled(scaleFactor, scaleFactor, scaleFactor);
 
-                final int X =
-                        (int) (((float) par4 + offset + 16.0f - fontRenderer.getStringWidth(stackSize) * scaleFactor)
-                                * inverseScaleFactor);
+                final int X = (int) (((float) par4 + offset
+                        + 16.0f
+                        - fontRenderer.getStringWidth(stackSize) * scaleFactor) * inverseScaleFactor);
                 final int Y = (int) (((float) par5 + offset + 16.0f - 7.0f * scaleFactor) * inverseScaleFactor);
                 fontRenderer.drawStringWithShadow(stackSize, X, Y, 16777215);
 
@@ -132,13 +123,8 @@ public class AppEngRenderItem extends RenderItem {
         }
     }
 
-    private void renderQuad(
-            final Tessellator par1Tessellator,
-            final int par2,
-            final int par3,
-            final int par4,
-            final int par5,
-            final int par6) {
+    private void renderQuad(final Tessellator par1Tessellator, final int par2, final int par3, final int par4,
+            final int par5, final int par6) {
         par1Tessellator.startDrawingQuads();
         par1Tessellator.setColorOpaque_I(par6);
         par1Tessellator.addVertex(par2, par3, 0.0D);

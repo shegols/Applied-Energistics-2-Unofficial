@@ -1,5 +1,9 @@
 package appeng.crafting.v2.resolvers;
 
+import java.util.*;
+
+import javax.annotation.Nonnull;
+
 import appeng.api.config.Actionable;
 import appeng.api.config.FuzzyMode;
 import appeng.api.storage.data.IAEItemStack;
@@ -9,11 +13,11 @@ import appeng.crafting.MECraftingInventory;
 import appeng.crafting.v2.CraftingContext;
 import appeng.crafting.v2.CraftingRequest;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
-import java.util.*;
-import javax.annotation.Nonnull;
 
 public class ExtractItemResolver implements CraftingRequestResolver<IAEItemStack> {
+
     public static class ExtractItemTask extends CraftingTask<IAEItemStack> {
+
         public final List<IAEItemStack> removedFromSystem = new ArrayList<>();
         public final List<IAEItemStack> removedFromByproducts = new ArrayList<>();
 
@@ -46,7 +50,9 @@ public class ExtractItemResolver implements CraftingRequestResolver<IAEItemStack
             if (exactMatching != null) {
                 final long requestSize = Math.min(request.remainingToProcess, exactMatching.getStackSize());
                 final IAEItemStack extracted = source.extractItems(
-                        exactMatching.copy().setStackSize(requestSize), Actionable.MODULATE, context.actionSource);
+                        exactMatching.copy().setStackSize(requestSize),
+                        Actionable.MODULATE,
+                        context.actionSource);
                 if (extracted != null && extracted.getStackSize() > 0) {
                     request.fulfill(this, extracted, context);
                     removedList.add(extracted.copy());
@@ -55,8 +61,8 @@ public class ExtractItemResolver implements CraftingRequestResolver<IAEItemStack
         }
 
         private void extractFuzzy(CraftingContext context, MECraftingInventory source, List<IAEItemStack> removedList) {
-            Collection<IAEItemStack> fuzzyMatching =
-                    source.getItemList().findFuzzy(request.stack, FuzzyMode.IGNORE_ALL);
+            Collection<IAEItemStack> fuzzyMatching = source.getItemList()
+                    .findFuzzy(request.stack, FuzzyMode.IGNORE_ALL);
             for (final IAEItemStack candidate : fuzzyMatching) {
                 if (candidate == null) {
                     continue;
@@ -64,7 +70,9 @@ public class ExtractItemResolver implements CraftingRequestResolver<IAEItemStack
                 if (request.acceptableSubstituteFn.test(candidate)) {
                     final long requestSize = Math.min(request.remainingToProcess, candidate.getStackSize());
                     final IAEItemStack extracted = source.extractItems(
-                            candidate.copy().setStackSize(requestSize), Actionable.MODULATE, context.actionSource);
+                            candidate.copy().setStackSize(requestSize),
+                            Actionable.MODULATE,
+                            context.actionSource);
                     if (extracted == null || extracted.getStackSize() <= 0) {
                         continue;
                     }
@@ -87,15 +95,17 @@ public class ExtractItemResolver implements CraftingRequestResolver<IAEItemStack
             return originalAmount - amount;
         }
 
-        private long partialRefundFrom(
-                CraftingContext context, long amount, List<IAEItemStack> source, MECraftingInventory target) {
+        private long partialRefundFrom(CraftingContext context, long amount, List<IAEItemStack> source,
+                MECraftingInventory target) {
             final Iterator<IAEItemStack> removedIt = source.iterator();
             while (removedIt.hasNext() && amount > 0) {
                 final IAEItemStack available = removedIt.next();
                 final long availAmount = available.getStackSize();
                 if (availAmount > amount) {
                     target.injectItems(
-                            available.copy().setStackSize(amount), Actionable.MODULATE, context.actionSource);
+                            available.copy().setStackSize(amount),
+                            Actionable.MODULATE,
+                            context.actionSource);
                     available.setStackSize(availAmount - amount);
                     amount = 0;
                 } else {
@@ -126,8 +136,8 @@ public class ExtractItemResolver implements CraftingRequestResolver<IAEItemStack
         }
 
         @Override
-        public void startOnCpu(
-                CraftingContext context, CraftingCPUCluster cpuCluster, MECraftingInventory craftingInv) {
+        public void startOnCpu(CraftingContext context, CraftingCPUCluster cpuCluster,
+                MECraftingInventory craftingInv) {
             for (IAEItemStack stack : removedFromSystem) {
                 if (stack.getStackSize() > 0) {
                     IAEItemStack extracted = craftingInv.extractItems(stack, Actionable.MODULATE, context.actionSource);
@@ -142,17 +152,21 @@ public class ExtractItemResolver implements CraftingRequestResolver<IAEItemStack
         @Override
         public String toString() {
             return "ExtractItemTask{" + "request="
-                    + request + ", removedFromSystem="
-                    + removedFromSystem + ", priority="
-                    + priority + ", state="
-                    + state + '}';
+                    + request
+                    + ", removedFromSystem="
+                    + removedFromSystem
+                    + ", priority="
+                    + priority
+                    + ", state="
+                    + state
+                    + '}';
         }
     }
 
     @Nonnull
     @Override
-    public List<CraftingTask> provideCraftingRequestResolvers(
-            @Nonnull CraftingRequest<IAEItemStack> request, @Nonnull CraftingContext context) {
+    public List<CraftingTask> provideCraftingRequestResolvers(@Nonnull CraftingRequest<IAEItemStack> request,
+            @Nonnull CraftingContext context) {
         if (request.substitutionMode == CraftingRequest.SubstitutionMode.PRECISE_FRESH) {
             return Collections.emptyList();
         } else {

@@ -1,22 +1,23 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.me.storage;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map.Entry;
+import java.util.NavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
+
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -32,20 +33,12 @@ import appeng.api.storage.data.IItemList;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.inv.ItemSlot;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map.Entry;
-import java.util.NavigableMap;
-import java.util.concurrent.ConcurrentSkipListMap;
-import net.minecraft.item.ItemStack;
 
 public class MEMonitorIInventory implements IMEMonitor<IAEItemStack> {
 
     private final InventoryAdaptor adaptor;
     private final IItemList<IAEItemStack> list = AEApi.instance().storage().createItemList();
-    private final HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners =
-            new HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object>();
+    private final HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = new HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object>();
     private final NavigableMap<Integer, CachedItemStack> memory;
     private BaseActionSource mySource;
     private StorageFilter mode = StorageFilter.EXTRACTABLE_ONLY;
@@ -131,8 +124,8 @@ public class MEMonitorIInventory implements IMEMonitor<IAEItemStack> {
             final CachedItemStack old = this.memory.get(is.getSlot());
             high = Math.max(high, is.getSlot());
 
-            final ItemStack newIS =
-                    !is.isExtractable() && this.getMode() == StorageFilter.EXTRACTABLE_ONLY ? null : is.getItemStack();
+            final ItemStack newIS = !is.isExtractable() && this.getMode() == StorageFilter.EXTRACTABLE_ONLY ? null
+                    : is.getItemStack();
             final ItemStack oldIS = old == null ? null : old.itemStack;
 
             if (this.isDifferent(newIS, oldIS)) {
@@ -210,8 +203,8 @@ public class MEMonitorIInventory implements IMEMonitor<IAEItemStack> {
     private void postDifference(final Iterable<IAEItemStack> a) {
         // AELog.info( a.getItemStack().getUnlocalizedName() + " @ " + a.getStackSize() );
         if (a != null) {
-            final Iterator<Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object>> i =
-                    this.listeners.entrySet().iterator();
+            final Iterator<Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object>> i = this.listeners.entrySet()
+                    .iterator();
             while (i.hasNext()) {
                 final Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object> l = i.next();
                 final IMEMonitorHandlerReceiver<IAEItemStack> key = l.getKey();

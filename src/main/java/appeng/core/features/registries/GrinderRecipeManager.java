@@ -1,22 +1,24 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.core.features.registries;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.features.IGrinderEntry;
 import appeng.api.features.IGrinderRegistry;
@@ -26,16 +28,9 @@ import appeng.core.features.registries.entries.AppEngGrinderRecipe;
 import appeng.recipes.ores.IOreListener;
 import appeng.recipes.ores.OreDictionaryHandler;
 import appeng.util.Platform;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public final class GrinderRecipeManager implements IGrinderRegistry, IOreListener {
+
     private final List<IGrinderEntry> recipes;
     private final Map<ItemStack, String> ores;
     private final Map<ItemStack, String> ingots;
@@ -82,42 +77,56 @@ public final class GrinderRecipeManager implements IGrinderRegistry, IOreListene
             return;
         }
 
-        this.log("Allow Grinding of " + Platform.getItemDisplayName(in) + " to " + Platform.getItemDisplayName(out)
-                + " for " + cost);
+        this.log(
+                "Allow Grinding of " + Platform
+                        .getItemDisplayName(in) + " to " + Platform.getItemDisplayName(out) + " for " + cost);
         this.injectRecipe(new AppEngGrinderRecipe(this.copy(in), this.copy(out), cost));
     }
 
     @Override
-    public void addRecipe(
-            final ItemStack in, final ItemStack out, final ItemStack optional, final float chance, final int cost) {
+    public void addRecipe(final ItemStack in, final ItemStack out, final ItemStack optional, final float chance,
+            final int cost) {
         if (in == null || (optional == null && out == null)) {
             this.log("Invalid Grinder Recipe Specified.");
             return;
         }
 
-        this.log("Allow Grinding of " + Platform.getItemDisplayName(in) + " to " + Platform.getItemDisplayName(out)
-                + " with optional " + Platform.getItemDisplayName(optional) + " for " + cost);
+        this.log(
+                "Allow Grinding of " + Platform.getItemDisplayName(in)
+                        + " to "
+                        + Platform.getItemDisplayName(out)
+                        + " with optional "
+                        + Platform.getItemDisplayName(optional)
+                        + " for "
+                        + cost);
         this.injectRecipe(new AppEngGrinderRecipe(this.copy(in), this.copy(out), this.copy(optional), chance, cost));
     }
 
     @Override
-    public void addRecipe(
-            final ItemStack in,
-            final ItemStack out,
-            final ItemStack optional,
-            final float chance,
-            final ItemStack optional2,
-            final float chance2,
-            final int cost) {
+    public void addRecipe(final ItemStack in, final ItemStack out, final ItemStack optional, final float chance,
+            final ItemStack optional2, final float chance2, final int cost) {
         if (in == null || (optional == null && out == null && optional2 == null)) {
             this.log("Invalid Grinder Recipe Specified.");
             return;
         }
 
-        this.log("Allow Grinding of " + Platform.getItemDisplayName(in) + " to " + Platform.getItemDisplayName(out)
-                + " with optional " + Platform.getItemDisplayName(optional) + " for " + cost);
-        this.injectRecipe(new AppEngGrinderRecipe(
-                this.copy(in), this.copy(out), this.copy(optional), this.copy(optional2), chance, chance2, cost));
+        this.log(
+                "Allow Grinding of " + Platform.getItemDisplayName(in)
+                        + " to "
+                        + Platform.getItemDisplayName(out)
+                        + " with optional "
+                        + Platform.getItemDisplayName(optional)
+                        + " for "
+                        + cost);
+        this.injectRecipe(
+                new AppEngGrinderRecipe(
+                        this.copy(in),
+                        this.copy(out),
+                        this.copy(optional),
+                        this.copy(optional2),
+                        chance,
+                        chance2,
+                        cost));
     }
 
     private void injectRecipe(final AppEngGrinderRecipe appEngGrinderRecipe) {
@@ -143,8 +152,10 @@ public final class GrinderRecipeManager implements IGrinderRegistry, IOreListene
         if (input != null) {
             for (final IGrinderEntry r : this.recipes) {
                 if (Platform.isSameItem(input, r.getInput())) {
-                    this.log("Recipe for " + input.getUnlocalizedName() + " found "
-                            + Platform.getItemDisplayName(r.getOutput()));
+                    this.log(
+                            "Recipe for " + input.getUnlocalizedName()
+                                    + " found "
+                                    + Platform.getItemDisplayName(r.getOutput()));
                     return r;
                 }
             }
@@ -243,8 +254,7 @@ public final class GrinderRecipeManager implements IGrinderRegistry, IOreListene
 
     @Override
     public void oreRegistered(final String name, final ItemStack item) {
-        if (name.startsWith("ore")
-                || name.startsWith("crystal")
+        if (name.startsWith("ore") || name.startsWith("crystal")
                 || name.startsWith("gem")
                 || name.startsWith("ingot")
                 || name.startsWith("dust")) {

@@ -1,22 +1,25 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.util.item;
+
+import java.io.*;
+import java.security.InvalidParameterException;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.storage.StorageChannel;
@@ -28,14 +31,6 @@ import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import java.io.*;
-import java.security.InvalidParameterException;
-import java.util.List;
-import javax.annotation.Nullable;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
 
 public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemStack, Comparable<AEItemStack> {
 
@@ -69,8 +64,8 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
          */
 
         /*
-         * Super hackery.
-         * is.itemID = appeng.api.Materials.matQuartz.itemID; damageValue = is.getItemDamage(); is.itemID = itemID;
+         * Super hackery. is.itemID = appeng.api.Materials.matQuartz.itemID; damageValue = is.getItemDamage(); is.itemID
+         * = itemID;
          */
 
         /*
@@ -190,8 +185,7 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
         /*
          * if ( id != null && id instanceof NBTTagShort ) ((NBTTagShort) id).data = (short) this.def.item.itemID; else
          */
-        i.setShort("id", (short)
-                Item.itemRegistry.getIDForObject(this.getDefinition().getItem()));
+        i.setShort("id", (short) Item.itemRegistry.getIDForObject(this.getDefinition().getItem()));
 
         /*
          * if ( Count != null && Count instanceof NBTTagByte ) ((NBTTagByte) Count).data = (byte) 0; else
@@ -247,10 +241,10 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
                         } else if (mode == FuzzyMode.PERCENT_99) {
                             return (a.getItemDamageForDisplay() > 1) == (b.getItemDamageForDisplay() > 1);
                         } else {
-                            final float percentDamageOfA =
-                                    1.0f - (float) a.getItemDamageForDisplay() / (float) a.getMaxDamage();
-                            final float percentDamageOfB =
-                                    1.0f - (float) b.getItemDamageForDisplay() / (float) b.getMaxDamage();
+                            final float percentDamageOfA = 1.0f
+                                    - (float) a.getItemDamageForDisplay() / (float) a.getMaxDamage();
+                            final float percentDamageOfB = 1.0f
+                                    - (float) b.getItemDamageForDisplay() / (float) b.getMaxDamage();
 
                             return (percentDamageOfA > mode.breakPoint) == (percentDamageOfB > mode.breakPoint);
                         }
@@ -287,10 +281,10 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
                         } else if (mode == FuzzyMode.PERCENT_99) {
                             return (a.getItemDamageForDisplay() > 1) == (o.getItemDamageForDisplay() > 1);
                         } else {
-                            final float percentDamageOfA =
-                                    1.0f - (float) a.getItemDamageForDisplay() / (float) a.getMaxDamage();
-                            final float percentDamageOfB =
-                                    1.0f - (float) o.getItemDamageForDisplay() / (float) o.getMaxDamage();
+                            final float percentDamageOfA = 1.0f
+                                    - (float) a.getItemDamageForDisplay() / (float) a.getMaxDamage();
+                            final float percentDamageOfB = 1.0f
+                                    - (float) o.getItemDamageForDisplay() / (float) o.getMaxDamage();
 
                             return (percentDamageOfA > mode.breakPoint) == (percentDamageOfB > mode.breakPoint);
                         }
@@ -415,8 +409,7 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
                     return true;
                 }
 
-                if ((ta == null && tb == null)
-                        || (ta != null && ta.hasNoTags() && tb == null)
+                if ((ta == null && tb == null) || (ta != null && ta.hasNoTags() && tb == null)
                         || (tb != null && tb.hasNoTags() && ta == null)
                         || (ta != null && ta.hasNoTags() && tb != null && tb.hasNoTags())) {
                     return true;
@@ -448,28 +441,23 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
             return id;
         }
 
-        final int damageValue =
-                this.getDefinition().getDamageValue() - b.getDefinition().getDamageValue();
+        final int damageValue = this.getDefinition().getDamageValue() - b.getDefinition().getDamageValue();
         if (damageValue != 0) {
             return damageValue;
         }
 
-        final int displayDamage =
-                this.getDefinition().getDisplayDamage() - b.getDefinition().getDisplayDamage();
+        final int displayDamage = this.getDefinition().getDisplayDamage() - b.getDefinition().getDisplayDamage();
         if (displayDamage != 0) {
             return displayDamage;
         }
 
-        return (this.getDefinition().getTagCompound() == b.getDefinition().getTagCompound())
-                ? 0
+        return (this.getDefinition().getTagCompound() == b.getDefinition().getTagCompound()) ? 0
                 : this.compareNBT(b.getDefinition());
     }
 
     private int compareNBT(final AEItemDef b) {
         final int nbt = this.compare(
-                (this.getDefinition().getTagCompound() == null
-                        ? 0
-                        : this.getDefinition().getTagCompound().getHash()),
+                (this.getDefinition().getTagCompound() == null ? 0 : this.getDefinition().getTagCompound().getHash()),
                 (b.getTagCompound() == null ? 0 : b.getTagCompound().getHash()));
         if (nbt == 0) {
             return this.compare(
@@ -507,9 +495,8 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
             return this.getModName(this.getDefinition().getUniqueID());
         }
 
-        return this.getModName(this.getDefinition()
-                .setUniqueID(GameRegistry.findUniqueIdentifierFor(
-                        this.getDefinition().getItem())));
+        return this.getModName(
+                this.getDefinition().setUniqueID(GameRegistry.findUniqueIdentifierFor(this.getDefinition().getItem())));
     }
 
     private String getModName(final UniqueIdentifier uniqueIdentifier) {
@@ -540,8 +527,7 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
                     newDef.setDisplayDamage(1);
                 }
             } else {
-                final int breakpoint =
-                        fuzzy.calculateBreakPoint(this.getDefinition().getMaxDamage());
+                final int breakpoint = fuzzy.calculateBreakPoint(this.getDefinition().getMaxDamage());
                 newDef.setDisplayDamage(breakpoint <= this.getDefinition().getDisplayDamage() ? breakpoint : 0);
             }
 
@@ -573,11 +559,9 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
                     newDef.setDisplayDamage(this.getDefinition().getMaxDamage() + 1);
                 }
             } else {
-                final int breakpoint =
-                        fuzzy.calculateBreakPoint(this.getDefinition().getMaxDamage());
+                final int breakpoint = fuzzy.calculateBreakPoint(this.getDefinition().getMaxDamage());
                 newDef.setDisplayDamage(
-                        this.getDefinition().getDisplayDamage() < breakpoint
-                                ? breakpoint - 1
+                        this.getDefinition().getDisplayDamage() < breakpoint ? breakpoint - 1
                                 : this.getDefinition().getMaxDamage() + 1);
             }
 

@@ -1,5 +1,16 @@
 package appeng.crafting.v2;
 
+import java.util.*;
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingGrid;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -15,24 +26,18 @@ import appeng.me.cluster.implementations.CraftingCPUCluster;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.OreListMultiMap;
+
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MutableClassToInstanceMap;
 import cpw.mods.fml.common.FMLCommonHandler;
-import java.util.*;
-import java.util.function.Supplier;
-import javax.annotation.Nonnull;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 /**
  * A bundle of state for the crafting operation like the ME grid, who requested crafting, etc.
  */
 public final class CraftingContext {
+
     public final World world;
     public final IGrid meGrid;
     public final ICraftingGrid craftingGrid;
@@ -44,14 +49,17 @@ public final class CraftingContext {
      */
     public final MECraftingInventory itemModel;
     /**
-     * An initially blank inventory for keeping all crafting byproduct outputs in.
-     * Extract from here before extracting from {@link CraftingContext#itemModel}. <p>
-     * It is separate from the item model, because at the end of the crafting calculation we must produce a list of items to extract from the system.
-     * When a crafting process puts those items back into the modelled inventory, and another process extract them the calculator would
-     * request withdrawing that byproduct directly from AE when setting up the crafting CPU.
-     * This would be wrong, it should assume that the item will be produced during crafting and does not need to be initially present in the system, which we achieve by separating byproducts.
+     * An initially blank inventory for keeping all crafting byproduct outputs in. Extract from here before extracting
+     * from {@link CraftingContext#itemModel}.
+     * <p>
+     * It is separate from the item model, because at the end of the crafting calculation we must produce a list of
+     * items to extract from the system. When a crafting process puts those items back into the modelled inventory, and
+     * another process extract them the calculator would request withdrawing that byproduct directly from AE when
+     * setting up the crafting CPU. This would be wrong, it should assume that the item will be produced during crafting
+     * and does not need to be initially present in the system, which we achieve by separating byproducts.
      *
-     * @see appeng.crafting.v2.resolvers.ExtractItemResolver ExtractItemResolver - separates the items extracted from AE vs from byproducts for the crafting plan
+     * @see appeng.crafting.v2.resolvers.ExtractItemResolver ExtractItemResolver - separates the items extracted from AE
+     *      vs from byproducts for the crafting plan
      */
     public final MECraftingInventory byproductsInventory;
     /**
@@ -62,6 +70,7 @@ public final class CraftingContext {
     public boolean wasSimulated = false;
 
     public static final class RequestInProcessing<StackType extends IAEStack<StackType>> {
+
         public final CraftingRequest<StackType> request;
         /**
          * Ordered by priority
@@ -151,7 +160,8 @@ public final class CraftingContext {
     }
 
     /**
-     * @return Whether the pattern has complex behavior leaving items in the crafting grid, requiring 1-by-1 simulation using a fake player
+     * @return Whether the pattern has complex behavior leaving items in the crafting grid, requiring 1-by-1 simulation
+     *         using a fake player
      */
     public boolean isPatternComplex(@Nonnull ICraftingPatternDetails pattern) {
         if (!pattern.isCraftable()) {
@@ -172,6 +182,7 @@ public final class CraftingContext {
 
     /**
      * Simulates doing 1 craft with a crafting table.
+     * 
      * @param inputSlots 3x3 crafting matrix contents
      * @return What remains in the 3x3 crafting matrix
      */
@@ -184,11 +195,10 @@ public final class CraftingContext {
             simulatedWorkbench.setInventorySlotContents(i, inputSlots[i] == null ? null : inputSlots[i].getItemStack());
         }
         if (world instanceof WorldServer) {
-            FMLCommonHandler.instance()
-                    .firePlayerCraftingEvent(
-                            Platform.getPlayer((WorldServer) world),
-                            pattern.getOutput(simulatedWorkbench, world),
-                            simulatedWorkbench);
+            FMLCommonHandler.instance().firePlayerCraftingEvent(
+                    Platform.getPlayer((WorldServer) world),
+                    pattern.getOutput(simulatedWorkbench, world),
+                    simulatedWorkbench);
         }
         IAEItemStack[] output = new IAEItemStack[9];
         for (int i = 0; i < output.length; i++) {
@@ -258,7 +268,9 @@ public final class CraftingContext {
     }
 
     /**
-     * Gets the list of tasks that have finished executing, sorted topologically (dependencies before the tasks that require them)
+     * Gets the list of tasks that have finished executing, sorted topologically (dependencies before the tasks that
+     * require them)
+     * 
      * @return An unmodifiable list of resolved tasks.
      */
     public List<CraftingTask> getResolvedTasks() {
@@ -267,6 +279,7 @@ public final class CraftingContext {
 
     /**
      * Gets all requests that have been added to the context.
+     * 
      * @return An unmodifiable list of the requests.
      */
     public List<RequestInProcessing<?>> getLiveRequests() {
@@ -289,9 +302,11 @@ public final class CraftingContext {
     }
 
     /**
-     * A task to call queueNextTaskOf after a resolver gets computed to check if more resolving is needed for the same request-in-processing.
+     * A task to call queueNextTaskOf after a resolver gets computed to check if more resolving is needed for the same
+     * request-in-processing.
      */
     private final class CheckOtherResolversTask<T extends IAEStack<T>> extends CraftingTask<T> {
+
         private final RequestInProcessing<?> myRequest;
 
         public CheckOtherResolversTask(RequestInProcessing<T> myRequest) {
@@ -329,17 +344,20 @@ public final class CraftingContext {
         }
 
         @Override
-        public void startOnCpu(
-                CraftingContext context, CraftingCPUCluster cpuCluster, MECraftingInventory craftingInv) {
+        public void startOnCpu(CraftingContext context, CraftingCPUCluster cpuCluster,
+                MECraftingInventory craftingInv) {
             // no-op
         }
 
         @Override
         public String toString() {
             return "CheckOtherResolversTask{" + "myRequest="
-                    + myRequest + ", priority="
-                    + priority + ", state="
-                    + state + '}';
+                    + myRequest
+                    + ", priority="
+                    + priority
+                    + ", state="
+                    + state
+                    + '}';
         }
     }
 }

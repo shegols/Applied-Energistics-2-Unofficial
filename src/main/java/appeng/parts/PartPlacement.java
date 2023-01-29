@@ -1,45 +1,18 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.parts;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.IBlockDefinition;
-import appeng.api.definitions.IItems;
-import appeng.api.parts.*;
-import appeng.api.util.DimensionalCoord;
-import appeng.core.CommonHelper;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.PacketClick;
-import appeng.core.sync.packets.PacketPartPlacement;
-import appeng.facade.IFacadeItem;
-import appeng.integration.IntegrationRegistry;
-import appeng.integration.IntegrationType;
-import appeng.integration.abstraction.IBuildCraftTransport;
-import appeng.integration.abstraction.IFMP;
-import appeng.integration.abstraction.IImmibisMicroblocks;
-import appeng.util.LookDirection;
-import appeng.util.Platform;
-import com.google.common.base.Optional;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import java.util.LinkedList;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.client.Minecraft;
@@ -58,22 +31,37 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.BlockEvent;
 
+import appeng.api.AEApi;
+import appeng.api.definitions.IBlockDefinition;
+import appeng.api.definitions.IItems;
+import appeng.api.parts.*;
+import appeng.api.util.DimensionalCoord;
+import appeng.core.CommonHelper;
+import appeng.core.sync.network.NetworkHandler;
+import appeng.core.sync.packets.PacketClick;
+import appeng.core.sync.packets.PacketPartPlacement;
+import appeng.facade.IFacadeItem;
+import appeng.integration.IntegrationRegistry;
+import appeng.integration.IntegrationType;
+import appeng.integration.abstraction.IBuildCraftTransport;
+import appeng.integration.abstraction.IFMP;
+import appeng.integration.abstraction.IImmibisMicroblocks;
+import appeng.util.LookDirection;
+import appeng.util.Platform;
+
+import com.google.common.base.Optional;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+
 public class PartPlacement {
 
     private static float eyeHeight = 0.0f;
     private final ThreadLocal<Object> placing = new ThreadLocal<Object>();
     private boolean wasCanceled = false;
 
-    public static boolean place(
-            final ItemStack held,
-            final int x,
-            final int y,
-            final int z,
-            final int face,
-            final EntityPlayer player,
-            final World world,
-            PlaceType pass,
-            final int depth) {
+    public static boolean place(final ItemStack held, final int x, final int y, final int z, final int face,
+            final EntityPlayer player, final World world, PlaceType pass, final int depth) {
         if (depth > 3) {
             return false;
         }
@@ -99,11 +87,19 @@ public class PartPlacement {
                     final MovingObjectPosition mop = block.collisionRayTrace(world, x, y, z, dir.getA(), dir.getB());
                     if (mop != null) {
                         final List<ItemStack> is = new LinkedList<ItemStack>();
-                        final SelectedPart sp =
-                                selectPart(player, host, mop.hitVec.addVector(-mop.blockX, -mop.blockY, -mop.blockZ));
+                        final SelectedPart sp = selectPart(
+                                player,
+                                host,
+                                mop.hitVec.addVector(-mop.blockX, -mop.blockY, -mop.blockZ));
 
                         BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(
-                                x, y, z, world, block, world.getBlockMetadata(x, y, z), player);
+                                x,
+                                y,
+                                z,
+                                world,
+                                block,
+                                world.getBlockMetadata(x, y, z),
+                                player);
                         MinecraftForge.EVENT_BUS.post(event);
                         if (event.isCanceled()) {
                             return false;
@@ -170,8 +166,8 @@ public class PartPlacement {
                         }
                     } else {
                         player.swingItem();
-                        NetworkHandler.instance.sendToServer(
-                                new PacketPartPlacement(x, y, z, face, getEyeOffset(player)));
+                        NetworkHandler.instance
+                                .sendToServer(new PacketPartPlacement(x, y, z, face, getEyeOffset(player)));
                         return true;
                     }
                 }
@@ -183,8 +179,7 @@ public class PartPlacement {
             host = ((IFMP) IntegrationRegistry.INSTANCE.getInstance(IntegrationType.FMP)).getOrCreateHost(tile);
         }
 
-        if (host == null
-                && tile != null
+        if (host == null && tile != null
                 && IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.ImmibisMicroblocks)) {
             host = ((IImmibisMicroblocks) IntegrationRegistry.INSTANCE.getInstance(IntegrationType.ImmibisMicroblocks))
                     .getOrCreateHost(player, face, tile);
@@ -202,8 +197,8 @@ public class PartPlacement {
                     if (sPart != null && sPart.part != null) {
                         if (sPart.part.onShiftActivate(player, mop.hitVec)) {
                             if (world.isRemote) {
-                                NetworkHandler.instance.sendToServer(
-                                        new PacketPartPlacement(x, y, z, face, getEyeOffset(player)));
+                                NetworkHandler.instance
+                                        .sendToServer(new PacketPartPlacement(x, y, z, face, getEyeOffset(player)));
                             }
                             return true;
                         }
@@ -220,8 +215,7 @@ public class PartPlacement {
         int te_y = y;
         int te_z = z;
 
-        final IBlockDefinition multiPart =
-                AEApi.instance().definitions().blocks().multiPart();
+        final IBlockDefinition multiPart = AEApi.instance().definitions().blocks().multiPart();
         if (host == null && pass == PlaceType.PLACE_ITEM) {
             ForgeDirection offset = ForgeDirection.UNKNOWN;
 
@@ -246,12 +240,10 @@ public class PartPlacement {
                 host = ((IFMP) IntegrationRegistry.INSTANCE.getInstance(IntegrationType.FMP)).getOrCreateHost(tile);
             }
 
-            if (host == null
-                    && tile != null
+            if (host == null && tile != null
                     && IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.ImmibisMicroblocks)) {
-                host = ((IImmibisMicroblocks)
-                                IntegrationRegistry.INSTANCE.getInstance(IntegrationType.ImmibisMicroblocks))
-                        .getOrCreateHost(player, face, tile);
+                host = ((IImmibisMicroblocks) IntegrationRegistry.INSTANCE
+                        .getInstance(IntegrationType.ImmibisMicroblocks)).getOrCreateHost(player, face, tile);
             }
 
             final Optional<ItemStack> maybeMultiPartStack = multiPart.maybeStack(1);
@@ -259,28 +251,24 @@ public class PartPlacement {
             final Optional<ItemBlock> maybeMultiPartItemBlock = multiPart.maybeItemBlock();
 
             final boolean hostIsNotPresent = host == null;
-            final boolean multiPartPresent = maybeMultiPartBlock.isPresent()
-                    && maybeMultiPartStack.isPresent()
+            final boolean multiPartPresent = maybeMultiPartBlock.isPresent() && maybeMultiPartStack.isPresent()
                     && maybeMultiPartItemBlock.isPresent();
             final boolean canMultiPartBePlaced = maybeMultiPartBlock.get().canPlaceBlockAt(world, te_x, te_y, te_z);
 
-            if (hostIsNotPresent
-                    && multiPartPresent
+            if (hostIsNotPresent && multiPartPresent
                     && canMultiPartBePlaced
-                    && maybeMultiPartItemBlock
-                            .get()
-                            .placeBlockAt(
-                                    maybeMultiPartStack.get(),
-                                    player,
-                                    world,
-                                    te_x,
-                                    te_y,
-                                    te_z,
-                                    side.ordinal(),
-                                    0.5f,
-                                    0.5f,
-                                    0.5f,
-                                    0)) {
+                    && maybeMultiPartItemBlock.get().placeBlockAt(
+                            maybeMultiPartStack.get(),
+                            player,
+                            world,
+                            te_x,
+                            te_y,
+                            te_z,
+                            side.ordinal(),
+                            0.5f,
+                            0.5f,
+                            0.5f,
+                            0)) {
                 if (!world.isRemote) {
                     tile = world.getTileEntity(te_x, te_y, te_z);
 
@@ -326,8 +314,7 @@ public class PartPlacement {
                             side.getOpposite().ordinal(),
                             player,
                             world,
-                            pass == PlaceType.INTERACT_FIRST_PASS
-                                    ? PlaceType.INTERACT_SECOND_PASS
+                            pass == PlaceType.INTERACT_FIRST_PASS ? PlaceType.INTERACT_SECOND_PASS
                                     : PlaceType.PLACE_ITEM,
                             depth + 1);
                 }
@@ -340,8 +327,10 @@ public class PartPlacement {
             final LookDirection dir = Platform.getPlayerRay(player, getEyeOffset(player));
             final MovingObjectPosition mop = block.collisionRayTrace(world, x, y, z, dir.getA(), dir.getB());
             if (mop != null) {
-                final SelectedPart sp =
-                        selectPart(player, host, mop.hitVec.addVector(-mop.blockX, -mop.blockY, -mop.blockZ));
+                final SelectedPart sp = selectPart(
+                        player,
+                        host,
+                        mop.hitVec.addVector(-mop.blockX, -mop.blockY, -mop.blockZ));
 
                 if (sp.part != null) {
                     if (!player.isSneaking() && sp.part.onActivate(player, mop.hitVec)) {
@@ -356,7 +345,9 @@ public class PartPlacement {
             }
 
             BlockEvent.PlaceEvent event = new BlockEvent.PlaceEvent(
-                    BlockSnapshot.getBlockSnapshot(world, x, y, z), world.getBlock(x, y, z), player);
+                    BlockSnapshot.getBlockSnapshot(world, x, y, z),
+                    world.getBlock(x, y, z),
+                    player);
             MinecraftForge.EVENT_BUS.post(event);
             if (event.isCanceled()) {
                 return false;
@@ -412,8 +403,8 @@ public class PartPlacement {
         }
 
         if (IntegrationRegistry.INSTANCE.isEnabled(IntegrationType.BuildCraftTransport)) {
-            final IBuildCraftTransport bc = (IBuildCraftTransport)
-                    IntegrationRegistry.INSTANCE.getInstance(IntegrationType.BuildCraftTransport);
+            final IBuildCraftTransport bc = (IBuildCraftTransport) IntegrationRegistry.INSTANCE
+                    .getInstance(IntegrationType.BuildCraftTransport);
             if (bc.isFacade(held)) {
                 return bc.createFacadePart(held, side);
             }
@@ -460,8 +451,8 @@ public class PartPlacement {
                 supportedItem |= items.colorApplicator().isSameAs(held);
 
                 if (event.entityPlayer.isSneaking() && held != null && supportedItem) {
-                    NetworkHandler.instance.sendToServer(
-                            new PacketClick(event.x, event.y, event.z, event.face, 0, 0, 0));
+                    NetworkHandler.instance
+                            .sendToServer(new PacketClick(event.x, event.y, event.z, event.face, 0, 0, 0));
                 }
             }
         } else if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.isRemote) {

@@ -1,28 +1,21 @@
 /*
- * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
- *
- * Applied Energistics 2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Applied Energistics 2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * This file is part of Applied Energistics 2. Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved. Applied
+ * Energistics 2 is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+ * later version. Applied Energistics 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+ * Public License for more details. You should have received a copy of the GNU Lesser General Public License along with
+ * Applied Energistics 2. If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
 package appeng.client.gui.widgets;
 
-import appeng.container.interfaces.IProgressProvider;
-import appeng.core.localization.GuiText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
+
+import appeng.container.interfaces.IProgressProvider;
+import appeng.core.localization.GuiText;
 
 public class GuiProgressBar extends GuiButton implements ITooltip {
 
@@ -34,30 +27,13 @@ public class GuiProgressBar extends GuiButton implements ITooltip {
     private final String titleName;
     private String fullMsg;
 
-    public GuiProgressBar(
-            final IProgressProvider source,
-            final String texture,
-            final int posX,
-            final int posY,
-            final int u,
-            final int y,
-            final int width,
-            final int height,
-            final Direction dir) {
+    public GuiProgressBar(final IProgressProvider source, final String texture, final int posX, final int posY,
+            final int u, final int y, final int width, final int height, final Direction dir) {
         this(source, texture, posX, posY, u, y, width, height, dir, null);
     }
 
-    public GuiProgressBar(
-            final IProgressProvider source,
-            final String texture,
-            final int posX,
-            final int posY,
-            final int u,
-            final int y,
-            final int width,
-            final int height,
-            final Direction dir,
-            final String title) {
+    public GuiProgressBar(final IProgressProvider source, final String texture, final int posX, final int posY,
+            final int u, final int y, final int width, final int height, final Direction dir, final String title) {
         super(posX, posY, width, "");
         this.source = source;
         this.xPosition = posX;
@@ -112,8 +88,7 @@ public class GuiProgressBar extends GuiButton implements ITooltip {
             return this.fullMsg;
         }
 
-        return (this.titleName != null ? this.titleName : "")
-                + '\n'
+        return (this.titleName != null ? this.titleName : "") + '\n'
                 + this.source.getCurrentProgress()
                 + ' '
                 + GuiText.Of.getLocal()
