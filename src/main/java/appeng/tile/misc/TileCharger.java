@@ -53,7 +53,7 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable {
     public TileCharger() {
         this.getProxy().setValidSides(EnumSet.noneOf(ForgeDirection.class));
         this.getProxy().setFlags();
-        this.setInternalMaxPower(1500);
+        this.setInternalMaxPower(25600);
         this.getProxy().setIdlePowerUsage(0);
     }
 
@@ -133,12 +133,12 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable {
                 }
                 this.tickTickTimer = 20; // keep ticking...
             }
-        } else if (this.getInternalCurrentPower() == getInternalMaxPower()
+        } else if (this.getInternalCurrentPower() >= getInternalMaxPower() / 16
                 && materials.certusQuartzCrystal().isSameAs(myItem)) {
                     if (Platform.getRandomFloat() > 0.8f) // simulate wait
                     {
                         this.extractAEPower(
-                                this.getInternalMaxPower() / PowerMultiplier.CONFIG.multiplier,
+                                (this.getInternalMaxPower() / 16) / PowerMultiplier.CONFIG.multiplier,
                                 Actionable.MODULATE,
                                 PowerMultiplier.CONFIG); // 1500
 
@@ -176,7 +176,7 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable {
             final IMaterials materials = AEApi.instance().definitions().materials();
 
             if (materials.certusQuartzCrystal().isSameAs(myItem)) {
-                this.extractAEPower(this.getInternalMaxPower(), Actionable.MODULATE, PowerMultiplier.CONFIG); // 1500
+                this.extractAEPower(this.getInternalMaxPower() / 16, Actionable.MODULATE, PowerMultiplier.CONFIG); // 1500
 
                 for (final ItemStack charged : materials.certusQuartzCrystalCharged().maybeStack(myItem.stackSize)
                         .asSet()) {
