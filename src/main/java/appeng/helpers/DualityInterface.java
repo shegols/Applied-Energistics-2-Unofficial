@@ -25,6 +25,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -82,6 +84,7 @@ import appeng.util.item.AEItemStack;
 import cofh.api.transport.IItemDuct;
 
 import com.google.common.collect.ImmutableSet;
+import cpw.mods.fml.common.Loader;
 
 public class DualityInterface implements IGridTickable, IStorageMonitorable, IInventoryDestination, IAEAppEngInventory,
         IConfigManagerHost, ICraftingProvider, IUpgradeableHost, IPriorityHost {
@@ -116,6 +119,7 @@ public class DualityInterface implements IGridTickable, IStorageMonitorable, IIn
     private List<ItemStack> waitingToSend = null;
     private IMEInventory<IAEItemStack> destination;
     private boolean isWorking = false;
+    protected static final boolean EIO = Loader.isModLoaded("EnderIO");
 
     public DualityInterface(final AENetworkProxy networkProxy, final IInterfaceHost ih) {
         this.gridProxy = networkProxy;
@@ -523,7 +527,7 @@ public class DualityInterface implements IGridTickable, IStorageMonitorable, IIn
                 ItemStack Result = whatToSend;
                 if (ad != null) {
                     Result = ad.addItems(whatToSend, getInsertionMode());
-                } else if (te instanceof IItemDuct) {
+                } else if (EIO && te instanceof IItemDuct) {
                     Result = ((IItemDuct) te).insertItem(s.getOpposite(), whatToSend);
                 }
                 if (Result == null) {
@@ -768,9 +772,33 @@ public class DualityInterface implements IGridTickable, IStorageMonitorable, IIn
         return true;
     }
 
-    private boolean inventoryCountsAsEmpty(TileEntity te, InventoryAdaptor ad) {
+    private boolean gtMachineNoFluid(TileEntity te, ForgeDirection side) {
+        if (te instanceof IFluidHandler) {
+            FluidTankInfo[] infos = ((IFluidHandler) te).getTankInfo(side);
+            if (infos != null) {
+                for (FluidTankInfo info : infos) {
+                    if (info.fluid != null && info.fluid.amount > 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean shouldCheckFluid() {
+        String hostName = this.iHost.getClass().getName();
+        return hostName.contains("TileFluidInterface") || hostName.contains("PartFluidInterface");
+    }
+
+    private boolean inventoryCountsAsEmpty(TileEntity te, InventoryAdaptor ad, ForgeDirection side) {
         String name = te.getBlockType().getUnlocalizedName();
-        return (name.equals("gt.blockmachines") || name.equals("tile.interface")) && gtMachineHasOnlyCircuit(ad);
+        boolean isEmpty = (name.equals("gt.blockmachines") || name.equals("tile.interface"))
+                && gtMachineHasOnlyCircuit(ad);
+        if (shouldCheckFluid()) {
+            isEmpty = isEmpty && gtMachineNoFluid(te, side);
+        }
+        return isEmpty;
     }
 
     @Override
@@ -809,7 +837,8 @@ public class DualityInterface implements IGridTickable, IStorageMonitorable, IIn
 
             final InventoryAdaptor ad = InventoryAdaptor.getAdaptor(te, s.getOpposite());
             if (ad != null) {
-                if (this.isBlocking() && ad.containsItems() && !inventoryCountsAsEmpty(te, ad)) continue;
+                if (this.isBlocking() && ad.containsItems() && !inventoryCountsAsEmpty(te, ad, s.getOpposite()))
+                    continue;
 
                 if (acceptsItems(ad, table, getInsertionMode())) {
                     for (int x = 0; x < table.getSizeInventory(); x++) {
@@ -821,7 +850,7 @@ public class DualityInterface implements IGridTickable, IStorageMonitorable, IIn
                     this.pushItemsOut(possibleDirections);
                     return true;
                 }
-            } else if (te instanceof IItemDuct) {
+            } else if (EIO && te instanceof IItemDuct) {
                 boolean hadAcceptedSome = false;
                 for (int x = 0; x < table.getSizeInventory(); x++) {
                     final ItemStack is = table.getStackInSlot(x);
@@ -866,7 +895,7 @@ public class DualityInterface implements IGridTickable, IStorageMonitorable, IIn
                 if (te != null && te.getClass().getName().equals("li.cil.oc.common.tileentity.Adapter")) continue;
                 final InventoryAdaptor ad = InventoryAdaptor.getAdaptor(te, s.getOpposite());
                 if (ad != null) {
-                    if (ad.simulateRemove(1, null, null) == null || inventoryCountsAsEmpty(te, ad)) {
+                    if (ad.simulateRemove(1, null, null) == null || inventoryCountsAsEmpty(te, ad, s.getOpposite())) {
                         allAreBusy = false;
                         break;
                     }
