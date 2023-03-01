@@ -32,6 +32,7 @@ public class CraftingV2Tests {
     final int SIMPLE_SIMULATION_TIMEOUT_MS = 100;
 
     final ItemStack bronzePlate, bronzeDoublePlate, bronzeIngot, gtHammer;
+    final ItemStack ironDust, ironIngot, ironPlate, goldDust, goldIngot, goldBlock;
 
     public CraftingV2Tests() {
         bronzePlate = Materials.Bronze.getPlates(1);
@@ -39,6 +40,12 @@ public class CraftingV2Tests {
         bronzeIngot = Materials.Bronze.getIngots(1);
         gtHammer = GT_MetaGenerated_Tool_01.INSTANCE
                 .getToolWithStats(GT_MetaGenerated_Tool_01.HARDHAMMER, 1, Materials.VanadiumSteel, null, null);
+        ironDust = Materials.Iron.getDust(1);
+        ironIngot = Materials.Iron.getIngots(1);
+        ironPlate = Materials.Iron.getPlates(1);
+        goldDust = Materials.Gold.getDust(1);
+        goldIngot = Materials.Gold.getIngots(1);
+        goldBlock = Materials.Gold.getBlocks(1);
 
         if (!DimensionManager.isDimensionRegistered(256)) {
             DimensionManager.registerProviderType(256, WorldProviderSurface.class, false);
@@ -353,5 +360,56 @@ public class CraftingV2Tests {
                 job,
                 AEItemStack.create(withSize(bronzePlate.copy(), 2)),
                 AEItemStack.create(withSize(bronzeDoublePlate.copy(), 0)).setCountRequestable(1));
+    }
+
+    @Test
+    void differentMissingAmounts() {
+        MockAESystem aeSystem = new MockAESystem(dummyWorld);
+        aeSystem.addStoredItem(withSize(ironIngot, 32));
+        aeSystem.addStoredItem(withSize(goldIngot, 64));
+        aeSystem.newProcessingPattern().addInput(withSize(ironIngot, 2)).addInput(new ItemStack(Items.gold_ingot, 2))
+                .addOutput(new ItemStack(Blocks.gold_block)).buildAndAdd();
+
+        final CraftingJobV2 job = aeSystem.makeCraftingJob(new ItemStack(Blocks.gold_block, 100));
+        simulateJobAndCheck(job, SIMPLE_SIMULATION_TIMEOUT_MS);
+        assertEquals(true, job.isSimulation());
+        assertJobPlanEquals(
+                job,
+                AEItemStack.create(withSize(goldIngot, 200)),
+                AEItemStack.create(withSize(ironIngot, 200)),
+                AEItemStack.create(withSize(goldBlock, 0)).setCountRequestable(100));
+    }
+
+    @Test
+    void complexRecipeChain() {
+        MockAESystem aeSystem = new MockAESystem(dummyWorld);
+        aeSystem.addStoredItem(withSize(ironDust, 2 * 64));
+        aeSystem.addStoredItem(withSize(goldDust, 3 * 64));
+        aeSystem.newProcessingPattern().addInput(withSize(ironDust, 2)) //
+                .addOutput(withSize(ironIngot, 1)) //
+                .buildAndAdd();
+        aeSystem.newProcessingPattern().addInput(withSize(ironIngot, 1)) //
+                .addOutput(withSize(ironPlate, 1)) //
+                .buildAndAdd();
+        aeSystem.newProcessingPattern().addInput(withSize(ironPlate, 1)) //
+                .addInput(withSize(goldDust, 2)) //
+                .addOutput(withSize(goldIngot, 1)) //
+                .buildAndAdd();
+        aeSystem.newProcessingPattern().addInput(withSize(goldIngot, 9)) //
+                .addInput(withSize(ironPlate, 1)) //
+                .addOutput(withSize(goldBlock, 1)) //
+                .buildAndAdd();
+
+        final CraftingJobV2 job = aeSystem.makeCraftingJob(new ItemStack(Blocks.gold_block, 100));
+        simulateJobAndCheck(job, SIMPLE_SIMULATION_TIMEOUT_MS);
+        assertEquals(true, job.isSimulation());
+        assertJobPlanEquals(
+                job,
+                AEItemStack.create(withSize(ironDust, 2000)),
+                AEItemStack.create(withSize(goldDust, 1800)),
+                AEItemStack.create(withSize(ironIngot, 0)).setCountRequestable(1000),
+                AEItemStack.create(withSize(ironPlate, 0)).setCountRequestable(1000),
+                AEItemStack.create(withSize(goldIngot, 0)).setCountRequestable(900),
+                AEItemStack.create(withSize(goldBlock, 0)).setCountRequestable(100));
     }
 }
