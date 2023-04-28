@@ -11,10 +11,7 @@
 package appeng.parts;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.crash.CrashReportCategory;
@@ -420,7 +417,7 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
                 x,
                 y,
                 z,
-                this.side.flag,
+                getSideIndexFromDirection(this.side),
                 player.getEntityWorld());
         if (event.isCanceled()) return false;
 
@@ -439,7 +436,7 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
                 x,
                 y,
                 z,
-                this.side.flag,
+                getSideIndexFromDirection(this.side),
                 player.getEntityWorld());
         if (event.isCanceled()) return false;
 
@@ -497,5 +494,12 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
 
     public void setRenderCache(final ISimplifiedBundle renderCache) {
         this.renderCache = renderCache;
+    }
+
+    private static int getSideIndexFromDirection(ForgeDirection direction) {
+        if (direction == ForgeDirection.UNKNOWN || direction == null) {
+            return -1;
+        }
+        return direction.ordinal();
     }
 }
