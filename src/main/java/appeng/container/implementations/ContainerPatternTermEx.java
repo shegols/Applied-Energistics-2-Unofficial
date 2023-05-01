@@ -135,6 +135,7 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
         this.patternSlotOUT.setStackLimit(1);
 
         this.bindPlayerInventory(ip, 0, 0);
+        if (getPatternTerminal().hasRefillerUpgrade()) refillBlankPatterns(patternSlotIN);
     }
 
     public void encodeAndMoveToInventory(boolean encodeWholeStack) {
@@ -150,6 +151,7 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
                 getPlayerInv().player.entityDropItem(output, 0);
             }
             this.patternSlotOUT.putStack(null);
+            if (getPatternTerminal().hasRefillerUpgrade()) refillBlankPatterns(patternSlotIN);
         }
     }
 
@@ -186,6 +188,7 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
                 output = encodedPatternStack;
                 this.patternSlotOUT.putStack(output);
             }
+            if (getPatternTerminal().hasRefillerUpgrade()) refillBlankPatterns(patternSlotIN);
         }
 
         // encode the slot.
@@ -325,7 +328,8 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
 
     @Override
     public void onSlotChange(final Slot s) {
-        if (s == this.patternSlotOUT && Platform.isServer()) {
+        if (!Platform.isServer()) return;
+        if (s == this.patternSlotOUT) {
             inverted = patternTerminal.isInverted();
 
             for (final Object crafter : this.crafters) {
@@ -341,6 +345,9 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
             }
 
             this.detectAndSendChanges();
+        } else if (s == patternRefiller && patternRefiller.getStack() != null) {
+            refillBlankPatterns(patternSlotIN);
+            detectAndSendChanges();
         }
     }
 
@@ -409,5 +416,9 @@ public class ContainerPatternTermEx extends ContainerMEMonitorable
             }
             this.detectAndSendChanges();
         }
+    }
+
+    public boolean isAPatternTerminal() {
+        return true;
     }
 }

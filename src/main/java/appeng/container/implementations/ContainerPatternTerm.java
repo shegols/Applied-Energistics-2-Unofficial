@@ -135,6 +135,7 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
 
         this.bindPlayerInventory(ip, 0, 0);
         this.updateOrderOfOutputSlots();
+        if (getPatternTerminal().hasRefillerUpgrade()) refillBlankPatterns(patternSlotIN);
     }
 
     private void updateOrderOfOutputSlots() {
@@ -197,6 +198,7 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
                 getPlayerInv().player.entityDropItem(output, 0);
             }
             this.patternSlotOUT.putStack(null);
+            if (getPatternTerminal().hasRefillerUpgrade()) refillBlankPatterns(patternSlotIN);
         }
     }
 
@@ -233,6 +235,7 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
                 output = encodedPatternStack;
                 this.patternSlotOUT.putStack(output);
             }
+            if (getPatternTerminal().hasRefillerUpgrade()) refillBlankPatterns(patternSlotIN);
         }
 
         // encode the slot.
@@ -465,7 +468,8 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
 
     @Override
     public void onSlotChange(final Slot s) {
-        if (s == this.patternSlotOUT && Platform.isServer()) {
+        if (!Platform.isServer()) return;
+        if (s == this.patternSlotOUT) {
             for (final Object crafter : this.crafters) {
                 final ICrafting icrafting = (ICrafting) crafter;
 
@@ -478,6 +482,9 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
                 ((EntityPlayerMP) icrafting).isChangingQuantityOnly = false;
             }
             this.detectAndSendChanges();
+        } else if (s == patternRefiller && patternRefiller.getStack() != null) {
+            refillBlankPatterns(patternSlotIN);
+            detectAndSendChanges();
         }
     }
 
@@ -584,5 +591,9 @@ public class ContainerPatternTerm extends ContainerMEMonitorable
             }
             this.detectAndSendChanges();
         }
+    }
+
+    public boolean isAPatternTerminal() {
+        return true;
     }
 }
