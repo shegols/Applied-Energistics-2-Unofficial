@@ -432,6 +432,11 @@ gui.tooltips.appliedenergistics2.SidelessModeSidedDesc=Each fluid is accessible 
 gui.tooltips.appliedenergistics2.SidelessModeSideless=Sideless Mode
 gui.tooltips.appliedenergistics2.SidelessModeSidelessDesc=All fluids are accessible from all sides
 
+gui.tooltips.appliedenergistics2.AdvancedBlockingModeDefault=Default Blocking Mode
+gui.tooltips.appliedenergistics2.AdvancedBlockingModeDefaultDesc=Blocking interfaces follow follow normal blocking rules (ignore circuits, etc.)
+gui.tooltips.appliedenergistics2.AdvancedBlockingModeAll=Loose Mode
+gui.tooltips.appliedenergistics2.AdvancedBlockingModeAllDesc=Blocking interfaces will block on any item in this ME system.
+
 # Units
 gui.appliedenergistics2.units.appliedenergstics=AE
 gui.appliedenergistics2.units.ic2=Energy Units
@@ -515,6 +520,7 @@ item.appliedenergistics2.ItemMaterial.CardSpeed.name=Acceleration Card
 item.appliedenergistics2.ItemMaterial.CardSuperSpeed.name=Hyper-Acceleration Card
 item.appliedenergistics2.ItemMaterial.CardOreFilter.name=Oredictionary Filter Card
 item.appliedenergistics2.ItemMaterial.CardPatternRefiller.name=Pattern Refiller Card
+item.appliedenergistics2.ItemMaterial.CardAdvancedBlocking.name=Advanced Blocking Card
 
 item.appliedenergistics2.ItemMaterial.Cell2SpatialPart.name=2³ Spatial Component
 item.appliedenergistics2.ItemMaterial.Cell16SpatialPart.name=16³ Spatial Component
