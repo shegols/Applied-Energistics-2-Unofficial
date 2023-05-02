@@ -244,8 +244,7 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
             boolean capture = false;
 
             switch (this.getSide()) {
-                case DOWN:
-                case UP:
+                case DOWN, UP -> {
                     if (entity.posX > this.getTile().xCoord && entity.posX < this.getTile().xCoord + 1) {
                         if (entity.posZ > this.getTile().zCoord && entity.posZ < this.getTile().zCoord + 1) {
                             if ((entity.posY > this.getTile().yCoord + 0.9 && this.getSide() == ForgeDirection.UP)
@@ -255,9 +254,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                             }
                         }
                     }
-                    break;
-                case SOUTH:
-                case NORTH:
+                }
+                case SOUTH, NORTH -> {
                     if (entity.posX > this.getTile().xCoord && entity.posX < this.getTile().xCoord + 1) {
                         if (entity.posY > this.getTile().yCoord && entity.posY < this.getTile().yCoord + 1) {
                             if ((entity.posZ > this.getTile().zCoord + 0.9 && this.getSide() == ForgeDirection.SOUTH)
@@ -267,9 +265,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                             }
                         }
                     }
-                    break;
-                case EAST:
-                case WEST:
+                }
+                case EAST, WEST -> {
                     if (entity.posZ > this.getTile().zCoord && entity.posZ < this.getTile().zCoord + 1) {
                         if (entity.posY > this.getTile().yCoord && entity.posY < this.getTile().yCoord + 1) {
                             if ((entity.posX > this.getTile().xCoord + 0.9 && this.getSide() == ForgeDirection.EAST)
@@ -279,10 +276,9 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                             }
                         }
                     }
-                    break;
-                default:
-                    // umm?
-                    break;
+                }
+                default -> {}
+                // umm?
             }
 
             if (capture) {
@@ -579,8 +575,7 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
 
         final AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x - 0.2, y - 0.2, z - 0.2, x + 1.2, y + 1.2, z + 1.2);
         for (final Object ei : w.getEntitiesWithinAABB(EntityItem.class, box)) {
-            if (ei instanceof EntityItem) {
-                final EntityItem entityItem = (EntityItem) ei;
+            if (ei instanceof EntityItem entityItem) {
                 this.storeEntityItem(entityItem);
             }
         }

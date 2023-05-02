@@ -88,9 +88,7 @@ public class MultiCraftingTracker {
                             return true;
                         }
                     }
-                } catch (final InterruptedException e) {
-                    // :P
-                } catch (final ExecutionException e) {
+                } catch (final InterruptedException | ExecutionException e) {
                     // :P
                 }
             } else {
@@ -110,7 +108,7 @@ public class MultiCraftingTracker {
             return ImmutableSet.of();
         }
 
-        return ImmutableSet.copyOf(new NonNullArrayIterator<ICraftingLink>(this.links));
+        return ImmutableSet.copyOf(new NonNullArrayIterator<>(this.links));
     }
 
     public void jobStateChange(final ICraftingLink link) {
@@ -213,6 +211,7 @@ public class MultiCraftingTracker {
         for (final Future<ICraftingJob> job : this.jobs) {
             if (job != null) {
                 hasStuff = true;
+                break;
             }
         }
 

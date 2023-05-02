@@ -67,7 +67,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ToolColorApplicator extends AEBasePoweredItem
         implements IStorageCell, IItemGroup, IBlockTool, IMouseWheelItem {
 
-    private static final Map<Integer, AEColor> ORE_TO_COLOR = new HashMap<Integer, AEColor>();
+    private static final Map<Integer, AEColor> ORE_TO_COLOR = new HashMap<>();
 
     static {
         for (final AEColor col : AEColor.values()) {
@@ -80,7 +80,7 @@ public class ToolColorApplicator extends AEBasePoweredItem
     }
 
     public ToolColorApplicator() {
-        super(AEConfig.instance.colorApplicatorBattery, Optional.<String>absent());
+        super(AEConfig.instance.colorApplicatorBattery, Optional.absent());
         this.setFeature(EnumSet.of(AEFeature.ColorApplicator, AEFeature.PoweredTools));
         if (Platform.isClient()) {
             MinecraftForgeClient.registerItemRenderer(this, new ToolColorApplicatorRender());
@@ -203,8 +203,7 @@ public class ToolColorApplicator extends AEBasePoweredItem
             return AEColor.Transparent;
         }
 
-        if (paintBall.getItem() instanceof ItemPaintBall) {
-            final ItemPaintBall ipb = (ItemPaintBall) paintBall.getItem();
+        if (paintBall.getItem() instanceof ItemPaintBall ipb) {
             return ipb.getColor(paintBall);
         } else {
             final int[] id = OreDictionary.getOreIDs(paintBall);
@@ -245,19 +244,13 @@ public class ToolColorApplicator extends AEBasePoweredItem
                     newColor = firstItem.getItemStack();
                 }
             } else {
-                final LinkedList<IAEItemStack> list = new LinkedList<IAEItemStack>();
+                final LinkedList<IAEItemStack> list = new LinkedList<>();
 
                 for (final IAEItemStack i : itemList) {
                     list.add(i);
                 }
 
-                Collections.sort(list, new Comparator<IAEItemStack>() {
-
-                    @Override
-                    public int compare(final IAEItemStack a, final IAEItemStack b) {
-                        return ItemSorters.compareInt(a.getItemDamage(), b.getItemDamage());
-                    }
-                });
+                list.sort((a, b) -> ItemSorters.compareInt(a.getItemDamage(), b.getItemDamage()));
 
                 if (list.size() <= 0) {
                     return null;

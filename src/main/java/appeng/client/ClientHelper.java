@@ -131,7 +131,7 @@ public class ClientHelper extends ServerHelper {
     @Override
     public List<EntityPlayer> getPlayers() {
         if (Platform.isClient()) {
-            final List<EntityPlayer> o = new ArrayList<EntityPlayer>();
+            final List<EntityPlayer> o = new ArrayList<>();
             o.add(Minecraft.getMinecraft().thePlayer);
             return o;
         } else {
@@ -144,25 +144,31 @@ public class ClientHelper extends ServerHelper {
             final double posZ, final Object o) {
         if (AEConfig.instance.enableEffects) {
             switch (effect) {
-                case Assembler:
+                case Assembler -> {
                     this.spawnAssembler(worldObj, posX, posY, posZ, o);
                     return;
-                case Vibrant:
+                }
+                case Vibrant -> {
                     this.spawnVibrant(worldObj, posX, posY, posZ);
                     return;
-                case Crafting:
+                }
+                case Crafting -> {
                     this.spawnCrafting(worldObj, posX, posY, posZ);
                     return;
-                case Energy:
+                }
+                case Energy -> {
                     this.spawnEnergy(worldObj, posX, posY, posZ);
                     return;
-                case Lightning:
+                }
+                case Lightning -> {
                     this.spawnLightning(worldObj, posX, posY, posZ);
                     return;
-                case LightningArc:
+                }
+                case LightningArc -> {
                     this.spawnLightningArc(worldObj, posX, posY, posZ, (Vec3) o);
                     return;
-                default:
+                }
+                default -> {}
             }
         }
     }

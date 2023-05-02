@@ -61,15 +61,9 @@ public final class P2PStateWailaDataProvider extends BasePartWailaDataProvider {
                     int outputs = stateArr[1];
 
                     switch (state) {
-                        case STATE_UNLINKED:
-                            currentToolTip.add(WailaText.P2PUnlinked.getLocal());
-                            break;
-                        case STATE_OUTPUT:
-                            currentToolTip.add(WailaText.P2POutput.getLocal());
-                            break;
-                        case STATE_INPUT:
-                            currentToolTip.add(getOutputText(outputs));
-                            break;
+                        case STATE_UNLINKED -> currentToolTip.add(WailaText.P2PUnlinked.getLocal());
+                        case STATE_OUTPUT -> currentToolTip.add(WailaText.P2POutput.getLocal());
+                        case STATE_INPUT -> currentToolTip.add(getOutputText(outputs));
                     }
                 }
 
@@ -89,8 +83,7 @@ public final class P2PStateWailaDataProvider extends BasePartWailaDataProvider {
     @Override
     public NBTTagCompound getNBTData(final EntityPlayerMP player, final IPart part, final TileEntity te,
             final NBTTagCompound tag, final World world, final int x, final int y, final int z) {
-        if (part instanceof PartP2PTunnel) {
-            final PartP2PTunnel tunnel = (PartP2PTunnel) part;
+        if (part instanceof PartP2PTunnel tunnel) {
 
             if (!tunnel.isPowered()) {
                 return tag;

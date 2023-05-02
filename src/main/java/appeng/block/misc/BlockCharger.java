@@ -83,8 +83,7 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
         }
 
         final AEBaseTile tile = this.getTileEntity(w, x, y, z);
-        if (tile instanceof TileCharger) {
-            final TileCharger tc = (TileCharger) tile;
+        if (tile instanceof TileCharger tc) {
 
             if (AEApi.instance().definitions().materials().certusQuartzCrystalCharged()
                     .isSameAs(tc.getStackInSlot(0))) {
@@ -134,26 +133,13 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
             }
 
             switch (forward) {
-                case DOWN:
-                    bb.maxY = 1;
-                    break;
-                case UP:
-                    bb.minY = 0;
-                    break;
-                case NORTH:
-                    bb.maxZ = 1;
-                    break;
-                case SOUTH:
-                    bb.minZ = 0;
-                    break;
-                case EAST:
-                    bb.minX = 0;
-                    break;
-                case WEST:
-                    bb.maxX = 1;
-                    break;
-                default:
-                    break;
+                case DOWN -> bb.maxY = 1;
+                case UP -> bb.minY = 0;
+                case NORTH -> bb.maxZ = 1;
+                case SOUTH -> bb.minZ = 0;
+                case EAST -> bb.minX = 0;
+                case WEST -> bb.maxX = 1;
+                default -> {}
             }
 
             return Collections.singletonList(bb);

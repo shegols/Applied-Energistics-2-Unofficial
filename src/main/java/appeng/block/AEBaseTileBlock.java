@@ -131,7 +131,7 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements IAEFeature,
     public void breakBlock(final World w, final int x, final int y, final int z, final Block a, final int b) {
         final AEBaseTile te = this.getTileEntity(w, x, y, z);
         if (te != null) {
-            final ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+            final ArrayList<ItemStack> drops = new ArrayList<>();
             if (te.dropItems()) {
                 te.getDrops(w, x, y, z, drops);
             } else {
@@ -161,8 +161,7 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements IAEFeature,
             final int colour) {
         final TileEntity te = this.getTileEntity(world, x, y, z);
 
-        if (te instanceof IColorableTile) {
-            final IColorableTile ct = (IColorableTile) te;
+        if (te instanceof IColorableTile ct) {
             final AEColor c = ct.getColor();
             final AEColor newColor = AEColor.values()[colour];
 
@@ -249,8 +248,7 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements IAEFeature,
                     return false;
                 }
 
-                if (is.getItem() instanceof IMemoryCard && !(this instanceof BlockCableBus)) {
-                    final IMemoryCard memoryCard = (IMemoryCard) is.getItem();
+                if (is.getItem() instanceof IMemoryCard memoryCard && !(this instanceof BlockCableBus)) {
                     if (player.isSneaking()) {
                         final AEBaseTile t = this.getTileEntity(w, x, y, z);
                         if (t != null) {

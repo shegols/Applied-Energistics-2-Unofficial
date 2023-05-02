@@ -77,10 +77,9 @@ public class CraftingJobV2 implements ICraftingJob, Future<ICraftingJob>, ITreeS
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if (!(rawJob instanceof CraftingJobV2)) {
+        if (!(rawJob instanceof CraftingJobV2 job)) {
             throw new UnsupportedOperationException("Invalid job type deserialized: " + rawJob.getClass());
         }
-        final CraftingJobV2 job = (CraftingJobV2) rawJob;
         while (serializer.hasWork()) {
             try {
                 serializer.doWork();
@@ -273,15 +272,11 @@ public class CraftingJobV2 implements ICraftingJob, Future<ICraftingJob>, ITreeS
         } catch (Exception e) {
             throw new ExecutionException(e);
         }
-        switch (this.state) {
-            case RUNNING:
-                throw new TimeoutException();
-            case CANCELLED:
-                throw new InterruptedException();
-            case FINISHED:
-                return this;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch (this.state) {
+            case RUNNING -> throw new TimeoutException();
+            case CANCELLED -> throw new InterruptedException();
+            case FINISHED -> this;
+            default -> throw new IllegalStateException();
+        };
     }
 }

@@ -163,7 +163,7 @@ public class NEIAEShapedRecipeHandler extends TemplateRecipeHandler {
 
         public CachedShapedRecipe(final ShapedRecipe recipe) {
             this.result = new PositionedStack(recipe.getRecipeOutput(), 119, 24);
-            this.ingredients = new ArrayList<PositionedStack>();
+            this.ingredients = new ArrayList<>();
             this.setIngredients(recipe.getWidth(), recipe.getHeight(), recipe.getIngredients());
         }
 
@@ -183,9 +183,7 @@ public class NEIAEShapedRecipeHandler extends TemplateRecipeHandler {
                                     false);
                             stack.setMaxSize(1);
                             this.ingredients.add(stack);
-                        } catch (final RegistrationError ignored) {
-
-                        } catch (final MissingIngredientError ignored) {
+                        } catch (final RegistrationError | MissingIngredientError ignored) {
 
                         }
                     }

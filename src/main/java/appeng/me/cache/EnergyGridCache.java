@@ -30,14 +30,14 @@ import appeng.me.energy.EnergyWatcher;
 
 public class EnergyGridCache implements IEnergyGrid {
 
-    private final TreeSet<EnergyThreshold> interests = new TreeSet<EnergyThreshold>();
+    private final TreeSet<EnergyThreshold> interests = new TreeSet<>();
     private final double AvgLength = 40.0;
-    private final Set<IAEPowerStorage> providers = new LinkedHashSet<IAEPowerStorage>();
-    private final Set<IAEPowerStorage> requesters = new LinkedHashSet<IAEPowerStorage>();
+    private final Set<IAEPowerStorage> providers = new LinkedHashSet<>();
+    private final Set<IAEPowerStorage> requesters = new LinkedHashSet<>();
     private final Multiset<IEnergyGridProvider> energyGridProviders = HashMultiset.create();
     private final IGrid myGrid;
-    private final HashMap<IGridNode, IEnergyWatcher> watchers = new HashMap<IGridNode, IEnergyWatcher>();
-    private final Set<IEnergyGrid> localSeen = new HashSet<IEnergyGrid>();
+    private final HashMap<IGridNode, IEnergyWatcher> watchers = new HashMap<>();
+    private final Set<IEnergyGrid> localSeen = new HashSet<>();
     /**
      * estimated power available.
      */
@@ -97,16 +97,16 @@ public class EnergyGridCache implements IEnergyGrid {
     public void EnergyNodeChanges(final MENetworkPowerStorage ev) {
         if (ev.storage.isAEPublicPowerStorage()) {
             switch (ev.type) {
-                case PROVIDE_POWER:
+                case PROVIDE_POWER -> {
                     if (ev.storage.getPowerFlow() != AccessRestriction.WRITE) {
                         this.providers.add(ev.storage);
                     }
-                    break;
-                case REQUEST_POWER:
+                }
+                case REQUEST_POWER -> {
                     if (ev.storage.getPowerFlow() != AccessRestriction.READ) {
                         this.requesters.add(ev.storage);
                     }
-                    break;
+                }
             }
         } else {
             (new RuntimeException("Attempt to ask the IEnergyGrid to charge a non public energy store."))
@@ -282,8 +282,7 @@ public class EnergyGridCache implements IEnergyGrid {
             final Iterator<IEnergyGridProvider> i = this.energyGridProviders.iterator();
             while (amt > 0 && i.hasNext()) {
                 final IEnergyGridProvider what = i.next();
-                final Set<IEnergyGrid> listCopy = new HashSet<IEnergyGrid>();
-                listCopy.addAll(seen);
+                final Set<IEnergyGrid> listCopy = new HashSet<>(seen);
 
                 final double cannotHold = what.injectAEPower(amt, Actionable.SIMULATE, listCopy);
                 what.injectAEPower(amt - cannotHold, mode, seen);
@@ -428,8 +427,7 @@ public class EnergyGridCache implements IEnergyGrid {
         this.drainPerTick -= gridNode.getPreviousDraw();
 
         // power storage.
-        if (machine instanceof IAEPowerStorage) {
-            final IAEPowerStorage ps = (IAEPowerStorage) machine;
+        if (machine instanceof IAEPowerStorage ps) {
             if (ps.isAEPublicPowerStorage()) {
                 if (ps.getPowerFlow() != AccessRestriction.WRITE) {
                     this.globalMaxPower -= ps.getAEMaxPower();
@@ -471,8 +469,7 @@ public class EnergyGridCache implements IEnergyGrid {
         this.drainPerTick += gridNode.getPreviousDraw();
 
         // power storage
-        if (machine instanceof IAEPowerStorage) {
-            final IAEPowerStorage ps = (IAEPowerStorage) machine;
+        if (machine instanceof IAEPowerStorage ps) {
             if (ps.isAEPublicPowerStorage()) {
                 final double max = ps.getAEMaxPower();
                 final double current = ps.getAECurrentPower();
@@ -492,8 +489,7 @@ public class EnergyGridCache implements IEnergyGrid {
             }
         }
 
-        if (machine instanceof IEnergyWatcherHost) {
-            final IEnergyWatcherHost swh = (IEnergyWatcherHost) machine;
+        if (machine instanceof IEnergyWatcherHost swh) {
             final EnergyWatcher iw = new EnergyWatcher(this, swh);
             this.watchers.put(node, iw);
             swh.updateWatcher(iw);

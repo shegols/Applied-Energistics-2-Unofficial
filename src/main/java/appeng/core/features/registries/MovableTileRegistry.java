@@ -25,11 +25,11 @@ import appeng.spatial.DefaultSpatialHandler;
 
 public class MovableTileRegistry implements IMovableRegistry {
 
-    private final HashSet<Block> blacklisted = new HashSet<Block>();
+    private final HashSet<Block> blacklisted = new HashSet<>();
 
-    private final HashMap<Class<? extends TileEntity>, IMovableHandler> Valid = new HashMap<Class<? extends TileEntity>, IMovableHandler>();
-    private final LinkedList<Class<? extends TileEntity>> test = new LinkedList<Class<? extends TileEntity>>();
-    private final LinkedList<IMovableHandler> handlers = new LinkedList<IMovableHandler>();
+    private final HashMap<Class<? extends TileEntity>, IMovableHandler> Valid = new HashMap<>();
+    private final LinkedList<Class<? extends TileEntity>> test = new LinkedList<>();
+    private final LinkedList<IMovableHandler> handlers = new LinkedList<>();
     private final DefaultSpatialHandler dsh = new DefaultSpatialHandler();
 
     private final IMovableHandler nullHandler = new DefaultSpatialHandler();
@@ -109,8 +109,7 @@ public class MovableTileRegistry implements IMovableRegistry {
 
     @Override
     public void doneMoving(final TileEntity te) {
-        if (te instanceof IMovableTile) {
-            final IMovableTile mt = (IMovableTile) te;
+        if (te instanceof IMovableTile mt) {
             mt.doneMoving();
         }
     }

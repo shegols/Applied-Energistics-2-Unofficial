@@ -75,12 +75,12 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
     private final WorldCoord min;
     private final WorldCoord max;
     private final int[] usedOps = new int[3];
-    private final Map<ICraftingPatternDetails, TaskProgress> tasks = new HashMap<ICraftingPatternDetails, TaskProgress>();
+    private final Map<ICraftingPatternDetails, TaskProgress> tasks = new HashMap<>();
     // INSTANCE sate
-    private final LinkedList<TileCraftingTile> tiles = new LinkedList<TileCraftingTile>();
-    private final LinkedList<TileCraftingTile> storage = new LinkedList<TileCraftingTile>();
-    private final LinkedList<TileCraftingMonitorTile> status = new LinkedList<TileCraftingMonitorTile>();
-    private final HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = new HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object>();
+    private final LinkedList<TileCraftingTile> tiles = new LinkedList<>();
+    private final LinkedList<TileCraftingTile> storage = new LinkedList<>();
+    private final LinkedList<TileCraftingMonitorTile> status = new LinkedList<>();
+    private final HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = new HashMap<>();
     private final HashMap<IAEItemStack, List<DimensionalCoord>> providers = new HashMap<>();
     private ICraftingLink myLastLink;
     private String myName = "";
@@ -827,13 +827,10 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
 
     @Override
     public boolean isBusy() {
-        final Iterator<Entry<ICraftingPatternDetails, TaskProgress>> i = this.tasks.entrySet().iterator();
 
-        while (i.hasNext()) {
-            if (i.next().getValue().value <= 0) {
-                i.remove();
-            }
-        }
+        this.tasks.entrySet().removeIf(
+                iCraftingPatternDetailsTaskProgressEntry -> iCraftingPatternDetailsTaskProgressEntry.getValue().value
+                        <= 0);
 
         return !this.tasks.isEmpty() || !this.waitingFor.isEmpty();
     }
@@ -905,12 +902,12 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
 
     public void getListOfItem(final IItemList<IAEItemStack> list, final CraftingItemList whichList) {
         switch (whichList) {
-            case ACTIVE:
+            case ACTIVE -> {
                 for (final IAEItemStack ais : this.waitingFor) {
                     list.add(ais);
                 }
-                break;
-            case PENDING:
+            }
+            case PENDING -> {
                 for (final Entry<ICraftingPatternDetails, TaskProgress> t : this.tasks.entrySet()) {
                     for (IAEItemStack ais : t.getKey().getCondensedOutputs()) {
                         ais = ais.copy();
@@ -918,18 +915,13 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                         list.add(ais);
                     }
                 }
-                break;
-            case STORAGE:
+            }
+            case STORAGE -> this.inventory.getAvailableItems(list);
+            default -> {
                 this.inventory.getAvailableItems(list);
-                break;
-            default:
-            case ALL:
-                this.inventory.getAvailableItems(list);
-
                 for (final IAEItemStack ais : this.waitingFor) {
                     list.add(ais);
                 }
-
                 for (final Entry<ICraftingPatternDetails, TaskProgress> t : this.tasks.entrySet()) {
                     for (IAEItemStack ais : t.getKey().getCondensedOutputs()) {
                         ais = ais.copy();
@@ -937,7 +929,7 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                         list.add(ais);
                     }
                 }
-                break;
+            }
         }
     }
 
@@ -963,20 +955,15 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
     public IAEItemStack getItemStack(final IAEItemStack what, final CraftingItemList storage2) {
         IAEItemStack is;
         switch (storage2) {
-            case STORAGE:
-                is = this.inventory.getItemList().findPrecise(what);
-                break;
-            case ACTIVE:
-                is = this.waitingFor.findPrecise(what);
-                break;
-            case PENDING:
+            case STORAGE -> is = this.inventory.getItemList().findPrecise(what);
+            case ACTIVE -> is = this.waitingFor.findPrecise(what);
+            case PENDING -> {
                 CraftingGridCache cache = null;
                 if (this.getGrid() != null) {
                     cache = this.getGrid().getCache(ICraftingGrid.class);
                 }
                 is = what.copy();
                 is.setStackSize(0);
-
                 for (final Entry<ICraftingPatternDetails, TaskProgress> t : this.tasks.entrySet()) {
                     for (final IAEItemStack ais : t.getKey().getCondensedOutputs()) {
                         if (ais.equals(is)) {
@@ -993,11 +980,8 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
                         }
                     }
                 }
-
-                break;
-            default:
-            case ALL:
-                throw new IllegalStateException("Invalid Operation");
+            }
+            default -> throw new IllegalStateException("Invalid Operation");
         }
 
         if (is != null) {
@@ -1098,8 +1082,7 @@ public final class CraftingCPUCluster implements IAECluster, ICraftingCPU {
         for (int x = 0; x < list.tagCount(); x++) {
             final NBTTagCompound item = list.getCompoundTagAt(x);
             final IAEItemStack pattern = AEItemStack.loadItemStackFromNBT(item);
-            if (pattern != null && pattern.getItem() instanceof ICraftingPatternItem) {
-                final ICraftingPatternItem cpi = (ICraftingPatternItem) pattern.getItem();
+            if (pattern != null && pattern.getItem() instanceof ICraftingPatternItem cpi) {
                 final ICraftingPatternDetails details = cpi.getPatternForItem(pattern.getItemStack(), this.getWorld());
                 if (details != null) {
                     final TaskProgress tp = new TaskProgress();

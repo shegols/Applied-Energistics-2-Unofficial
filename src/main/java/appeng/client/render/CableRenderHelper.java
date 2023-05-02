@@ -66,7 +66,7 @@ public class CableRenderHelper {
             /**
              * snag list of boxes...
              */
-            final List<AxisAlignedBB> boxes = new ArrayList<AxisAlignedBB>();
+            final List<AxisAlignedBB> boxes = new ArrayList<>();
 
             for (final ForgeDirection s : ForgeDirection.values()) {
                 final IPart part = cableBusContainer.getPart(s);
@@ -99,6 +99,7 @@ public class CableRenderHelper {
 
                 if (o >= 2) {
                     useThinFacades = true;
+                    break;
                 }
             }
 
@@ -153,42 +154,41 @@ public class CableRenderHelper {
         final ForgeDirection az;
 
         switch (s) {
-            case DOWN:
+            case DOWN -> {
                 ax = ForgeDirection.EAST;
                 ay = ForgeDirection.NORTH;
                 az = ForgeDirection.DOWN;
-                break;
-            case UP:
+            }
+            case UP -> {
                 ax = ForgeDirection.EAST;
                 ay = ForgeDirection.SOUTH;
                 az = ForgeDirection.UP;
-                break;
-            case EAST:
+            }
+            case EAST -> {
                 ax = ForgeDirection.SOUTH;
                 ay = ForgeDirection.UP;
                 az = ForgeDirection.EAST;
-                break;
-            case WEST:
+            }
+            case WEST -> {
                 ax = ForgeDirection.NORTH;
                 ay = ForgeDirection.UP;
                 az = ForgeDirection.WEST;
-                break;
-            case NORTH:
+            }
+            case NORTH -> {
                 ax = ForgeDirection.WEST;
                 ay = ForgeDirection.UP;
                 az = ForgeDirection.NORTH;
-                break;
-            case SOUTH:
+            }
+            case SOUTH -> {
                 ax = ForgeDirection.EAST;
                 ay = ForgeDirection.UP;
                 az = ForgeDirection.SOUTH;
-                break;
-            case UNKNOWN:
-            default:
+            }
+            default -> {
                 ax = ForgeDirection.EAST;
                 ay = ForgeDirection.UP;
                 az = ForgeDirection.SOUTH;
-                break;
+            }
         }
 
         BusRenderHelper.INSTANCE.setOrientation(ax, ay, az);
@@ -205,42 +205,41 @@ public class CableRenderHelper {
                 final ForgeDirection az;
 
                 switch (s) {
-                    case DOWN:
+                    case DOWN -> {
                         ax = ForgeDirection.EAST;
                         ay = ForgeDirection.NORTH;
                         az = ForgeDirection.DOWN;
-                        break;
-                    case UP:
+                    }
+                    case UP -> {
                         ax = ForgeDirection.EAST;
                         ay = ForgeDirection.SOUTH;
                         az = ForgeDirection.UP;
-                        break;
-                    case EAST:
+                    }
+                    case EAST -> {
                         ax = ForgeDirection.SOUTH;
                         ay = ForgeDirection.UP;
                         az = ForgeDirection.EAST;
-                        break;
-                    case WEST:
+                    }
+                    case WEST -> {
                         ax = ForgeDirection.NORTH;
                         ay = ForgeDirection.UP;
                         az = ForgeDirection.WEST;
-                        break;
-                    case NORTH:
+                    }
+                    case NORTH -> {
                         ax = ForgeDirection.WEST;
                         ay = ForgeDirection.UP;
                         az = ForgeDirection.NORTH;
-                        break;
-                    case SOUTH:
+                    }
+                    case SOUTH -> {
                         ax = ForgeDirection.EAST;
                         ay = ForgeDirection.UP;
                         az = ForgeDirection.SOUTH;
-                        break;
-                    case UNKNOWN:
-                    default:
+                    }
+                    default -> {
                         ax = ForgeDirection.EAST;
                         ay = ForgeDirection.UP;
                         az = ForgeDirection.SOUTH;
-                        break;
+                    }
                 }
 
                 BusRenderHelper.INSTANCE.setOrientation(ax, ay, az);

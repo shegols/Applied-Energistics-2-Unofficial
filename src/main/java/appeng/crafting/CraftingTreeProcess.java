@@ -36,7 +36,7 @@ public class CraftingTreeProcess {
     private final CraftingTreeNode parent;
     final ICraftingPatternDetails details;
     private final CraftingJob job;
-    private final Map<CraftingTreeNode, Long> nodes = new HashMap<CraftingTreeNode, Long>();
+    private final Map<CraftingTreeNode, Long> nodes = new HashMap<>();
     private final int depth;
     boolean possible = true;
     private World world;
@@ -80,6 +80,7 @@ public class CraftingTreeProcess {
                 for (final IAEItemStack a : details.getCondensedOutputs()) {
                     if (g != null && a != null && a.equals(g)) {
                         isAnInput = true;
+                        break;
                     }
                 }
 
@@ -126,6 +127,7 @@ public class CraftingTreeProcess {
                 for (final IAEItemStack a : details.getCondensedOutputs()) {
                     if (g != null && a != null && a.equals(g)) {
                         isAnInput = true;
+                        break;
                     }
                 }
 

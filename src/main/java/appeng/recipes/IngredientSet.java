@@ -57,8 +57,7 @@ public class IngredientSet implements IIngredient {
             return new ItemStack[0];
         }
 
-        final List<ItemStack> out = new LinkedList<ItemStack>();
-        out.addAll(this.items);
+        final List<ItemStack> out = new LinkedList<>(this.items);
 
         if (out.isEmpty()) {
             throw new MissingIngredientError(this.toString() + " - group could not be resolved to any items.");
@@ -68,7 +67,7 @@ public class IngredientSet implements IIngredient {
             is.stackSize = this.qty;
         }
 
-        return out.toArray(new ItemStack[out.size()]);
+        return out.toArray(new ItemStack[0]);
     }
 
     @Override

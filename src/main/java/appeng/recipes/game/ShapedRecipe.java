@@ -52,8 +52,7 @@ public class ShapedRecipe implements IRecipe, IRecipeBakeable {
             }
         }
 
-        if (recipe[idx] instanceof String[]) {
-            final String[] parts = ((String[]) recipe[idx]);
+        if (recipe[idx] instanceof String[]parts) {
             idx++;
 
             for (final String s : parts) {
@@ -63,8 +62,7 @@ public class ShapedRecipe implements IRecipe, IRecipeBakeable {
 
             this.height = parts.length;
         } else {
-            while (recipe[idx] instanceof String) {
-                final String s = (String) recipe[idx];
+            while (recipe[idx] instanceof String s) {
                 idx++;
                 shape.append(s);
                 this.width = s.length();
@@ -81,7 +79,7 @@ public class ShapedRecipe implements IRecipe, IRecipeBakeable {
             throw new IllegalStateException(ret.toString());
         }
 
-        final Map<Character, IIngredient> itemMap = new HashMap<Character, IIngredient>();
+        final Map<Character, IIngredient> itemMap = new HashMap<>();
 
         for (; idx < recipe.length; idx += 2) {
             final Character chr = (Character) recipe[idx];
@@ -176,9 +174,7 @@ public class ShapedRecipe implements IRecipe, IRecipeBakeable {
                         for (final ItemStack item : ((IIngredient) target).getItemStackSet()) {
                             matched = matched || this.checkItemEquals(item, slot);
                         }
-                    } catch (final RegistrationError e) {
-                        // :P
-                    } catch (final MissingIngredientError e) {
+                    } catch (final RegistrationError | MissingIngredientError e) {
                         // :P
                     }
 

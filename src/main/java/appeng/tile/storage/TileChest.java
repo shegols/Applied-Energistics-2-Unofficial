@@ -168,17 +168,19 @@ public class TileChest extends AENetworkPowerTile
         }
 
         switch (channel) {
-            case FLUIDS:
+            case FLUIDS -> {
                 if (this.fluidCell == null) {
                     throw NO_HANDLER;
                 }
                 return this.fluidCell;
-            case ITEMS:
+            }
+            case ITEMS -> {
                 if (this.itemCell == null) {
                     throw NO_HANDLER;
                 }
                 return this.itemCell;
-            default:
+            }
+            default -> {}
         }
 
         return null;
@@ -500,7 +502,7 @@ public class TileChest extends AENetworkPowerTile
                 // :P
             }
         }
-        return new ArrayList<IMEInventoryHandler>();
+        return new ArrayList<>();
     }
 
     @Override

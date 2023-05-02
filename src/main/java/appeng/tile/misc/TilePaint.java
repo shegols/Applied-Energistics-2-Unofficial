@@ -12,7 +12,6 @@ package appeng.tile.misc;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -79,7 +78,7 @@ public class TilePaint extends AEBaseTile {
             return;
         }
 
-        this.dots = new ArrayList(howMany);
+        this.dots = new ArrayList<>(howMany);
         for (int x = 0; x < howMany; x++) {
             this.dots.add(new Splotch(in));
         }
@@ -141,13 +140,7 @@ public class TilePaint extends AEBaseTile {
     }
 
     private void removeSide(final ForgeDirection side) {
-        final Iterator<Splotch> i = this.dots.iterator();
-        while (i.hasNext()) {
-            final Splotch s = i.next();
-            if (s.getSide() == side) {
-                i.remove();
-            }
-        }
+        this.dots.removeIf(s -> s.getSide() == side);
 
         this.markForUpdate();
         this.markDirty();
@@ -201,7 +194,7 @@ public class TilePaint extends AEBaseTile {
             final boolean lit = ipb.isLumen(type);
 
             if (this.dots == null) {
-                this.dots = new ArrayList<Splotch>();
+                this.dots = new ArrayList<>();
             }
 
             if (this.dots.size() > 20) {

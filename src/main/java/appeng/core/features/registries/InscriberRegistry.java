@@ -34,9 +34,9 @@ public final class InscriberRegistry implements IInscriberRegistry {
     private final Set<ItemStack> inputs;
 
     public InscriberRegistry() {
-        this.inputs = new HashSet<ItemStack>();
-        this.optionals = new HashSet<ItemStack>();
-        this.recipes = new HashSet<IInscriberRecipe>();
+        this.inputs = new HashSet<>();
+        this.optionals = new HashSet<>();
+        this.recipes = new HashSet<>();
     }
 
     @Nonnull
@@ -79,12 +79,7 @@ public final class InscriberRegistry implements IInscriberRegistry {
 
     @Override
     public void removeRecipe(final IInscriberRecipe toBeRemovedRecipe) {
-        for (final Iterator<IInscriberRecipe> iterator = this.recipes.iterator(); iterator.hasNext();) {
-            final IInscriberRecipe recipe = iterator.next();
-            if (recipe.equals(toBeRemovedRecipe)) {
-                iterator.remove();
-            }
-        }
+        this.recipes.removeIf(recipe -> recipe.equals(toBeRemovedRecipe));
     }
 
     /**
@@ -102,7 +97,7 @@ public final class InscriberRegistry implements IInscriberRegistry {
         @Nonnull
         @Override
         public Builder withInputs(@Nonnull final Collection<ItemStack> inputs) {
-            this.inputs = new ArrayList<ItemStack>(inputs.size());
+            this.inputs = new ArrayList<>(inputs.size());
             this.inputs.addAll(inputs);
 
             return this;

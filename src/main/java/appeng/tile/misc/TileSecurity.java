@@ -70,7 +70,7 @@ public class TileSecurity extends AENetworkTile implements ITerminalHost, IAEApp
     private final AppEngInternalInventory configSlot = new AppEngInternalInventory(this, 1);
     private final IConfigManager cm = new ConfigManager(this);
     private final SecurityInventory inventory = new SecurityInventory(this);
-    private final MEMonitorHandler<IAEItemStack> securityMonitor = new MEMonitorHandler<IAEItemStack>(this.inventory);
+    private final MEMonitorHandler<IAEItemStack> securityMonitor = new MEMonitorHandler<>(this.inventory);
     private long securityKey;
     private AEColor paintedColor = AEColor.Transparent;
     private boolean isActive = false;
@@ -263,8 +263,7 @@ public class TileSecurity extends AENetworkTile implements ITerminalHost, IAEApp
         for (final IAEItemStack ais : this.inventory.getStoredItems()) {
             final ItemStack is = ais.getItemStack();
             final Item i = is.getItem();
-            if (i instanceof IBiometricCard) {
-                final IBiometricCard bc = (IBiometricCard) i;
+            if (i instanceof IBiometricCard bc) {
                 bc.registerPermissions(new PlayerSecurityWrapper(playerPerms), pr, is);
             }
         }

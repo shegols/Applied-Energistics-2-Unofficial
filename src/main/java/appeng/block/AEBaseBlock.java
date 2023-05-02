@@ -61,7 +61,7 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
     private BlockRenderInfo renderInfo;
 
     protected AEBaseBlock(final Material mat) {
-        this(mat, Optional.<String>absent());
+        this(mat, Optional.absent());
         this.setLightOpacity(255);
         this.setLightLevel(0);
         this.setHardness(2.2F);
@@ -115,7 +115,7 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
      */
     @SideOnly(Side.CLIENT)
     protected BaseBlockRender<? extends AEBaseBlock, ? extends AEBaseTile> getRenderer() {
-        return new BaseBlockRender<AEBaseBlock, AEBaseTile>();
+        return new BaseBlockRender<>();
     }
 
     IIcon unmappedGetIcon(final IBlockAccess w, final int x, final int y, final int z, final int s) {
@@ -178,11 +178,11 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
     @SuppressWarnings("unchecked")
     // NOTE: WAS FINAL, changed for Immibis
     public void addCollisionBoxesToList(final World w, final int x, final int y, final int z, final AxisAlignedBB bb,
-            final List out, final Entity e) {
+            final List<AxisAlignedBB> out, final Entity e) {
         final ICustomCollision collisionHandler = this.getCustomCollision(w, x, y, z);
 
         if (collisionHandler != null && bb != null) {
-            final List<AxisAlignedBB> tmp = new ArrayList<AxisAlignedBB>();
+            final List<AxisAlignedBB> tmp = new ArrayList<>();
             collisionHandler.addCollidingBlockToList(w, x, y, z, bb, tmp, e);
             for (final AxisAlignedBB b : tmp) {
                 b.minX += x;
@@ -331,8 +331,7 @@ public abstract class AEBaseBlock extends Block implements IAEFeature {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public final void getSubBlocks(final Item item, final CreativeTabs tabs, final List itemStacks) {
+    public final void getSubBlocks(final Item item, final CreativeTabs tabs, final List<ItemStack> itemStacks) {
         this.getCheckedSubBlocks(item, tabs, itemStacks);
     }
 

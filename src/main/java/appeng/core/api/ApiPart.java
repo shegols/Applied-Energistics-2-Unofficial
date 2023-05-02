@@ -49,10 +49,10 @@ import appeng.util.Platform;
 
 public class ApiPart implements IPartHelper {
 
-    private final Map<String, Class> tileImplementations = new HashMap<String, Class>();
-    private final Map<Class<?>, String> interfaces2Layer = new HashMap<Class<?>, String>();
-    private final Map<String, Class> roots = new HashMap<String, Class>();
-    private final List<String> desc = new LinkedList<String>();
+    private final Map<String, Class> tileImplementations = new HashMap<>();
+    private final Map<Class<?>, String> interfaces2Layer = new HashMap<>();
+    private final Map<String, Class> roots = new HashMap<>();
+    private final List<String> desc = new LinkedList<>();
 
     public void initFMPSupport() {
         for (final Class layerInterface : this.interfaces2Layer.keySet()) {
@@ -203,8 +203,7 @@ public class ApiPart implements IPartHelper {
     }
 
     private void processNode(final AbstractInsnNode next, final String nePar) {
-        if (next instanceof MethodInsnNode) {
-            final MethodInsnNode min = (MethodInsnNode) next;
+        if (next instanceof MethodInsnNode min) {
             if (min.owner.equals("appeng/api/parts/LayerBase")) {
                 min.owner = nePar;
             }
@@ -278,7 +277,7 @@ public class ApiPart implements IPartHelper {
 
     private static class DefaultPackageClassNameRemapper extends Remapper {
 
-        private final HashMap<String, String> inputOutput = new HashMap<String, String>();
+        private final HashMap<String, String> inputOutput = new HashMap<>();
 
         @Override
         public String map(final String typeName) {

@@ -118,10 +118,7 @@ public class ContainerMEMonitorable extends AEBaseContainer
                         this.networkNode = node;
                         final IGrid g = node.getGrid();
                         if (g != null) {
-                            this.setPowerSource(
-                                    new ChannelPowerSrc(
-                                            this.networkNode,
-                                            (IEnergySource) g.getCache(IEnergyGrid.class)));
+                            this.setPowerSource(new ChannelPowerSrc(this.networkNode, g.getCache(IEnergyGrid.class)));
                         }
                     }
                 }
@@ -329,8 +326,7 @@ public class ContainerMEMonitorable extends AEBaseContainer
     @Override
     public void onListUpdate() {
         for (final Object c : this.crafters) {
-            if (c instanceof ICrafting) {
-                final ICrafting cr = (ICrafting) c;
+            if (c instanceof ICrafting cr) {
                 this.queueInventory(cr);
             }
         }

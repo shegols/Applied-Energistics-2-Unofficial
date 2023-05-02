@@ -48,13 +48,12 @@ public class LayerISidedInventory extends LayerBase implements ISidedInventory {
     public void notifyNeighbors() {
         // cache of inventory state.
 
-        List<ISidedInventory> inventories = new ArrayList<ISidedInventory>();
+        List<ISidedInventory> inventories = new ArrayList<>();
         int slotCount = 0;
 
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             final IPart bp = this.getPart(side);
-            if (bp instanceof ISidedInventory) {
-                final ISidedInventory part = (ISidedInventory) bp;
+            if (bp instanceof ISidedInventory part) {
                 slotCount += part.getSizeInventory();
                 inventories.add(part);
             }
@@ -66,7 +65,7 @@ public class LayerISidedInventory extends LayerBase implements ISidedInventory {
             inventories = null;
         } else {
             sideData = new int[][] { NULL_SIDES, NULL_SIDES, NULL_SIDES, NULL_SIDES, NULL_SIDES, NULL_SIDES };
-            slots = new ArrayList<InvSot>(Collections.nCopies(slotCount, (InvSot) null));
+            slots = new ArrayList<>(Collections.nCopies(slotCount, null));
 
             int offsetForLayer = 0;
             int offsetForPart = 0;

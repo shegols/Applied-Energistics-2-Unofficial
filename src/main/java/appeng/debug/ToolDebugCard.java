@@ -83,7 +83,7 @@ public class ToolDebugCard extends AEBaseItem {
                     final IPathingGrid pg = g.getCache(IPathingGrid.class);
                     if (pg.getControllerState() == ControllerState.CONTROLLER_ONLINE) {
 
-                        Set<IGridNode> next = new HashSet<IGridNode>();
+                        Set<IGridNode> next = new HashSet<>();
                         next.add(node);
 
                         final int maxLength = 10000;
@@ -91,7 +91,7 @@ public class ToolDebugCard extends AEBaseItem {
                         int length = 0;
                         outer: while (!next.isEmpty()) {
                             final Iterable<IGridNode> current = next;
-                            next = new HashSet<IGridNode>();
+                            next = new HashSet<>();
 
                             for (final IGridNode n : current) {
                                 if (n.getMachine() instanceof TileController) {
@@ -154,8 +154,7 @@ public class ToolDebugCard extends AEBaseItem {
                 }
             }
 
-            if (te instanceof IAEPowerStorage) {
-                final IAEPowerStorage ps = (IAEPowerStorage) te;
+            if (te instanceof IAEPowerStorage ps) {
                 this.outputMsg(player, "Energy: " + ps.getAECurrentPower() + " / " + ps.getAEMaxPower());
 
                 if (te instanceof IGridHost) {

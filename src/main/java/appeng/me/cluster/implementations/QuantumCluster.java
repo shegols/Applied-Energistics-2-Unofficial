@@ -20,6 +20,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.WorldEvent;
 
+import com.google.common.collect.Iterators;
+
 import appeng.api.AEApi;
 import appeng.api.events.LocatableEventAnnounce;
 import appeng.api.events.LocatableEventAnnounce.LocatableEvent;
@@ -31,7 +33,6 @@ import appeng.api.util.WorldCoord;
 import appeng.me.cache.helpers.ConnectionWrapper;
 import appeng.me.cluster.IAECluster;
 import appeng.tile.qnb.TileQuantumBridge;
-import appeng.util.iterators.ChainedIterator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class QuantumCluster implements ILocatable, IAECluster {
@@ -93,9 +94,8 @@ public class QuantumCluster implements ILocatable, IAECluster {
 
         boolean shutdown = false;
 
-        if (myOtherSide instanceof QuantumCluster) {
+        if (myOtherSide instanceof QuantumCluster sideB) {
             final QuantumCluster sideA = this;
-            final QuantumCluster sideB = (QuantumCluster) myOtherSide;
 
             if (sideA.isActive() && sideB.isActive()) {
                 if (this.connection != null && this.connection.getConnection() != null) {
@@ -207,16 +207,7 @@ public class QuantumCluster implements ILocatable, IAECluster {
 
     @Override
     public Iterator<IGridHost> getTiles() {
-        return new ChainedIterator<IGridHost>(
-                this.getRing()[0],
-                this.getRing()[1],
-                this.getRing()[2],
-                this.getRing()[3],
-                this.getRing()[4],
-                this.getRing()[5],
-                this.getRing()[6],
-                this.getRing()[7],
-                this.center);
+        return Iterators.concat(Iterators.forArray(getRing()), Iterators.singletonIterator(center));
     }
 
     public boolean isCorner(final TileQuantumBridge tileQuantumBridge) {

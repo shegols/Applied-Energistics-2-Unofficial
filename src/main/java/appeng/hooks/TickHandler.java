@@ -48,13 +48,13 @@ import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 public class TickHandler {
 
     public static final TickHandler INSTANCE = new TickHandler();
-    private final Queue<IWorldCallable<?>> serverQueue = new LinkedList<IWorldCallable<?>>();
+    private final Queue<IWorldCallable<?>> serverQueue = new LinkedList<>();
     private final Multimap<World, ICraftingJob> craftingJobs = LinkedListMultimap.create();
-    private final WeakHashMap<World, Queue<IWorldCallable<?>>> callQueue = new WeakHashMap<World, Queue<IWorldCallable<?>>>();
+    private final WeakHashMap<World, Queue<IWorldCallable<?>>> callQueue = new WeakHashMap<>();
     private final HandlerRep server = new HandlerRep();
     private final HandlerRep client = new HandlerRep();
-    private final HashMap<Integer, PlayerColor> cliPlayerColors = new HashMap<Integer, PlayerColor>();
-    private final HashMap<Integer, PlayerColor> srvPlayerColors = new HashMap<Integer, PlayerColor>();
+    private final HashMap<Integer, PlayerColor> cliPlayerColors = new HashMap<>();
+    private final HashMap<Integer, PlayerColor> srvPlayerColors = new HashMap<>();
     private CableRenderMode crm = CableRenderMode.Standard;
     // must be a thread safe collection since this can be called from finalizer thread
     private final BlockingDeque<Integer> callListToDelete = new LinkedBlockingDeque<>();
@@ -74,12 +74,7 @@ public class TickHandler {
         if (w == null) {
             this.serverQueue.add(c);
         } else {
-            Queue<IWorldCallable<?>> queue = this.callQueue.get(w);
-
-            if (queue == null) {
-                queue = new LinkedList<IWorldCallable<?>>();
-                this.callQueue.put(w, queue);
-            }
+            Queue<IWorldCallable<?>> queue = this.callQueue.computeIfAbsent(w, k -> new LinkedList<>());
 
             queue.add(c);
         }
@@ -125,7 +120,7 @@ public class TickHandler {
     public void unloadWorld(final WorldEvent.Unload ev) {
         if (Platform.isServer()) // for no there is no reason to care about this on the client...
         {
-            final LinkedList<IGridNode> toDestroy = new LinkedList<IGridNode>();
+            final LinkedList<IGridNode> toDestroy = new LinkedList<>();
 
             for (final Grid g : this.getRepo().networks) {
                 for (final IGridNode n : g.getNodes()) {
@@ -170,13 +165,7 @@ public class TickHandler {
                 final Collection<ICraftingJob> jobSet = this.craftingJobs.get(wte.world);
                 if (!jobSet.isEmpty()) {
                     final int simTime = Math.max(1, AEConfig.instance.craftingCalculationTimePerTick / jobSet.size());
-                    final Iterator<ICraftingJob> i = jobSet.iterator();
-                    while (i.hasNext()) {
-                        final ICraftingJob cj = i.next();
-                        if (!cj.simulateFor(simTime)) {
-                            i.remove();
-                        }
-                    }
+                    jobSet.removeIf(cj -> !cj.simulateFor(simTime));
                 }
             }
         }
@@ -260,12 +249,12 @@ public class TickHandler {
 
     private static class HandlerRep {
 
-        private Queue<AEBaseTile> tiles = new LinkedList<AEBaseTile>();
+        private Queue<AEBaseTile> tiles = new LinkedList<>();
 
         private Collection<Grid> networks = new NetworkList();
 
         private void clear() {
-            this.tiles = new LinkedList<AEBaseTile>();
+            this.tiles = new LinkedList<>();
             this.networks = new NetworkList();
         }
     }

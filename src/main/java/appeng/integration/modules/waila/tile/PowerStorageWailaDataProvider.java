@@ -50,7 +50,7 @@ public final class PowerStorageWailaDataProvider extends BaseWailaDataProvider {
      * <p/>
      * The cache will be updated from the server.
      */
-    private final TObjectLongMap<TileEntity> cache = new TObjectLongHashMap<TileEntity>();
+    private final TObjectLongMap<TileEntity> cache = new TObjectLongHashMap<>();
 
     /**
      * Adds the current and max power to the tool tip Will ignore if the tile has an energy buffer ( &gt; 0 )
@@ -68,8 +68,7 @@ public final class PowerStorageWailaDataProvider extends BaseWailaDataProvider {
         ((ITaggedList<String, String>) currentToolTip).removeEntries("RFEnergyStorage");
 
         final TileEntity te = accessor.getTileEntity();
-        if (te instanceof IAEPowerStorage) {
-            final IAEPowerStorage storage = (IAEPowerStorage) te;
+        if (te instanceof IAEPowerStorage storage) {
 
             final double maxPower = storage.getAEMaxPower();
             if (maxPower > 0) {
@@ -106,8 +105,7 @@ public final class PowerStorageWailaDataProvider extends BaseWailaDataProvider {
     @Override
     public NBTTagCompound getNBTData(final EntityPlayerMP player, final TileEntity te, final NBTTagCompound tag,
             final World world, final int x, final int y, final int z) {
-        if (te instanceof IAEPowerStorage) {
-            final IAEPowerStorage storage = (IAEPowerStorage) te;
+        if (te instanceof IAEPowerStorage storage) {
 
             if (storage.getAEMaxPower() > 0) {
                 final long internalCurrentPower = (long) (100 * storage.getAECurrentPower());

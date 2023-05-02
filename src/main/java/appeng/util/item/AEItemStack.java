@@ -398,8 +398,7 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
             return ((AEItemStack) ia).getDefinition().equals(this.getDefinition()); // && def.tagCompound ==
             // ((AEItemStack)
             // ia).def.tagCompound;
-        } else if (ia instanceof ItemStack) {
-            final ItemStack is = (ItemStack) ia;
+        } else if (ia instanceof ItemStack is) {
 
             if (is.getItem() == this.getDefinition().getItem()
                     && is.getItemDamage() == this.getDefinition().getDamageValue()) {
@@ -468,11 +467,11 @@ public final class AEItemStack extends AEStack<IAEItemStack> implements IAEItemS
     }
 
     private int compare(final int l, final int m) {
-        return l < m ? -1 : (l > m ? 1 : 0);
+        return Integer.compare(l, m);
     }
 
     @SideOnly(Side.CLIENT)
-    public List getToolTip() {
+    public List<String> getToolTip() {
         if (this.getDefinition().getTooltip() != null) {
             return this.getDefinition().getTooltip();
         }

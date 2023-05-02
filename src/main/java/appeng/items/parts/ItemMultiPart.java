@@ -10,7 +10,6 @@
 
 package appeng.items.parts;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -58,7 +57,7 @@ public final class ItemMultiPart extends AEBaseItem implements IPartItem, IItemG
     public ItemMultiPart(final IPartHelper partHelper) {
         Preconditions.checkNotNull(partHelper);
 
-        this.registered = new HashMap<Integer, PartTypeWithVariant>(INITIAL_REGISTERED_CAPACITY);
+        this.registered = new HashMap<>(INITIAL_REGISTERED_CAPACITY);
 
         this.nameResolver = new NameResolver(this.getClass());
         this.setFeature(EnumSet.of(AEFeature.Core));
@@ -218,9 +217,8 @@ public final class ItemMultiPart extends AEBaseItem implements IPartItem, IItemG
     @Override
     protected void getCheckedSubItems(final Item sameItem, final CreativeTabs creativeTab,
             final List<ItemStack> itemStacks) {
-        final List<Entry<Integer, PartTypeWithVariant>> types = new ArrayList<Entry<Integer, PartTypeWithVariant>>(
-                this.registered.entrySet());
-        Collections.sort(types, REGISTERED_COMPARATOR);
+        final List<Entry<Integer, PartTypeWithVariant>> types = new ArrayList<>(this.registered.entrySet());
+        types.sort(REGISTERED_COMPARATOR);
 
         for (final Entry<Integer, PartTypeWithVariant> part : types) {
             itemStacks.add(new ItemStack(this, 1, part.getKey()));
@@ -263,22 +261,7 @@ public final class ItemMultiPart extends AEBaseItem implements IPartItem, IItemG
             }
 
             return type.getConstructor().newInstance(is);
-        } catch (final InstantiationException e) {
-            throw new IllegalStateException(
-                    "Unable to construct IBusPart from IBusItem : " + part.getName()
-                            + " ; Possibly didn't have correct constructor( ItemStack )",
-                    e);
-        } catch (final IllegalAccessException e) {
-            throw new IllegalStateException(
-                    "Unable to construct IBusPart from IBusItem : " + part.getName()
-                            + " ; Possibly didn't have correct constructor( ItemStack )",
-                    e);
-        } catch (final InvocationTargetException e) {
-            throw new IllegalStateException(
-                    "Unable to construct IBusPart from IBusItem : " + part.getName()
-                            + " ; Possibly didn't have correct constructor( ItemStack )",
-                    e);
-        } catch (final NoSuchMethodException e) {
+        } catch (final ReflectiveOperationException e) {
             throw new IllegalStateException(
                     "Unable to construct IBusPart from IBusItem : " + part.getName()
                             + " ; Possibly didn't have correct constructor( ItemStack )",
@@ -308,19 +291,19 @@ public final class ItemMultiPart extends AEBaseItem implements IPartItem, IItemG
             if (stack.getItem() == this) {
                 final PartType pt = this.getTypeByStack(stack);
                 switch (pt) {
-                    case ImportBus:
+                    case ImportBus -> {
                         importBus = true;
                         if (u == pt) {
                             group = true;
                         }
-                        break;
-                    case ExportBus:
+                    }
+                    case ExportBus -> {
                         exportBus = true;
                         if (u == pt) {
                             group = true;
                         }
-                        break;
-                    default:
+                    }
+                    default -> {}
                 }
             }
         }

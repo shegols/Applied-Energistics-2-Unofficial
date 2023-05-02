@@ -27,9 +27,9 @@ import appeng.parts.p2p.PartP2PTunnelME;
 public class P2PCache implements IGridCache {
 
     private final IGrid myGrid;
-    private final HashMap<Long, PartP2PTunnel> inputs = new HashMap<Long, PartP2PTunnel>();
+    private final HashMap<Long, PartP2PTunnel> inputs = new HashMap<>();
     private final Multimap<Long, PartP2PTunnel> outputs = LinkedHashMultimap.create();
-    private final TunnelCollection NullColl = new TunnelCollection<PartP2PTunnel>(null, null);
+    private final TunnelCollection NullColl = new TunnelCollection<>(null, null);
 
     public P2PCache(final IGrid g) {
         this.myGrid = g;
@@ -60,14 +60,13 @@ public class P2PCache implements IGridCache {
 
     @Override
     public void removeNode(final IGridNode node, final IGridHost machine) {
-        if (machine instanceof PartP2PTunnel) {
+        if (machine instanceof PartP2PTunnel t) {
             if (machine instanceof PartP2PTunnelME) {
                 if (!node.hasFlag(GridFlags.REQUIRE_CHANNEL)) {
                     return;
                 }
             }
 
-            final PartP2PTunnel t = (PartP2PTunnel) machine;
             // AELog.info( "rmv-" + (t.output ? "output: " : "input: ") + t.freq
             // );
 
@@ -83,14 +82,13 @@ public class P2PCache implements IGridCache {
 
     @Override
     public void addNode(final IGridNode node, final IGridHost machine) {
-        if (machine instanceof PartP2PTunnel) {
+        if (machine instanceof PartP2PTunnel t) {
             if (machine instanceof PartP2PTunnelME) {
                 if (!node.hasFlag(GridFlags.REQUIRE_CHANNEL)) {
                     return;
                 }
             }
 
-            final PartP2PTunnel t = (PartP2PTunnel) machine;
             // AELog.info( "add-" + (t.output ? "output: " : "input: ") + t.freq
             // );
 

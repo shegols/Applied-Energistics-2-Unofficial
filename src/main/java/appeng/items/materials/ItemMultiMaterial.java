@@ -59,7 +59,7 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
 
     private static final int KILO_SCALAR = 1024;
 
-    private final Map<Integer, MaterialType> dmgToMaterial = new HashMap<Integer, MaterialType>();
+    private final Map<Integer, MaterialType> dmgToMaterial = new HashMap<>();
     private final NameResolver nameResolver;
 
     public ItemMultiMaterial() {
@@ -86,14 +86,13 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
 
         final Upgrades u = this.getType(stack);
         if (u != null) {
-            final List<String> textList = new LinkedList<String>();
+            final List<String> textList = new LinkedList<>();
             for (final Entry<ItemStack, Integer> j : u.getSupported().entrySet()) {
                 String name = null;
 
                 final int limit = j.getValue();
 
-                if (j.getKey().getItem() instanceof IItemGroup) {
-                    final IItemGroup ig = (IItemGroup) j.getKey().getItem();
+                if (j.getKey().getItem() instanceof IItemGroup ig) {
                     final String str = ig.getUnlocalizedGroupName(u.getSupported().keySet(), j.getKey());
                     if (str != null) {
                         name = Platform.gui_localize(str) + (limit > 1 ? " (" + limit + ')' : "");
@@ -111,7 +110,7 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
 
             final Pattern p = Pattern.compile("(\\d+)[^\\d]");
             final SlightlyBetterSort s = new SlightlyBetterSort(p);
-            Collections.sort(textList, s);
+            textList.sort(s);
             lines.addAll(textList);
         }
     }
@@ -125,30 +124,19 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
 
     @Override
     public Upgrades getType(final ItemStack itemstack) {
-        switch (this.getTypeByStack(itemstack)) {
-            case CardOreFilter:
-                return Upgrades.ORE_FILTER;
-            case CardPatternCapacity:
-                return Upgrades.PATTERN_CAPACITY;
-            case CardCapacity:
-                return Upgrades.CAPACITY;
-            case CardFuzzy:
-                return Upgrades.FUZZY;
-            case CardRedstone:
-                return Upgrades.REDSTONE;
-            case CardSpeed:
-                return Upgrades.SPEED;
-            case CardSuperSpeed:
-                return Upgrades.SUPERSPEED;
-            case CardInverter:
-                return Upgrades.INVERTER;
-            case CardCrafting:
-                return Upgrades.CRAFTING;
-            case CardPatternRefiller:
-                return Upgrades.PATTERN_REFILLER;
-            default:
-                return null;
-        }
+        return switch (this.getTypeByStack(itemstack)) {
+            case CardOreFilter -> Upgrades.ORE_FILTER;
+            case CardPatternCapacity -> Upgrades.PATTERN_CAPACITY;
+            case CardCapacity -> Upgrades.CAPACITY;
+            case CardFuzzy -> Upgrades.FUZZY;
+            case CardRedstone -> Upgrades.REDSTONE;
+            case CardSpeed -> Upgrades.SPEED;
+            case CardSuperSpeed -> Upgrades.SUPERSPEED;
+            case CardInverter -> Upgrades.INVERTER;
+            case CardCrafting -> Upgrades.CRAFTING;
+            case CardPatternRefiller -> Upgrades.PATTERN_REFILLER;
+            default -> null;
+        };
     }
 
     public IStackSrc createMaterial(final MaterialType mat) {
@@ -247,13 +235,7 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
     protected void getCheckedSubItems(final Item sameItem, final CreativeTabs creativeTab,
             final List<ItemStack> itemStacks) {
         final List<MaterialType> types = Arrays.asList(MaterialType.values());
-        Collections.sort(types, new Comparator<MaterialType>() {
-
-            @Override
-            public int compare(final MaterialType o1, final MaterialType o2) {
-                return o1.name().compareTo(o2.name());
-            }
-        });
+        types.sort(Comparator.comparing(Enum::name));
 
         for (final MaterialType mat : types) {
             if (mat.getDamageValue() >= 0 && mat.isRegistered() && mat.getItemInstance() == this) {
@@ -293,8 +275,7 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
                 upgrades = ((ISegmentedInventory) te).getInventoryByName("upgrades");
             }
 
-            if (upgrades != null && is != null && is.getItem() instanceof IUpgradeModule) {
-                final IUpgradeModule um = (IUpgradeModule) is.getItem();
+            if (upgrades != null && is != null && is.getItem() instanceof IUpgradeModule um) {
                 final Upgrades u = um.getType(is);
 
                 if (u != null) {
@@ -345,15 +326,19 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
     @Override
     public int getBytes(final ItemStack is) {
         switch (this.getTypeByStack(is)) {
-            case Cell1kPart:
+            case Cell1kPart -> {
                 return KILO_SCALAR;
-            case Cell4kPart:
+            }
+            case Cell4kPart -> {
                 return KILO_SCALAR * 4;
-            case Cell16kPart:
+            }
+            case Cell16kPart -> {
                 return KILO_SCALAR * 16;
-            case Cell64kPart:
+            }
+            case Cell64kPart -> {
                 return KILO_SCALAR * 64;
-            default:
+            }
+            default -> {}
         }
         return 0;
     }
@@ -361,12 +346,10 @@ public final class ItemMultiMaterial extends AEBaseItem implements IStorageCompo
     @Override
     public boolean isStorageComponent(final ItemStack is) {
         switch (this.getTypeByStack(is)) {
-            case Cell1kPart:
-            case Cell4kPart:
-            case Cell16kPart:
-            case Cell64kPart:
+            case Cell1kPart, Cell4kPart, Cell16kPart, Cell64kPart -> {
                 return true;
-            default:
+            }
+            default -> {}
         }
         return false;
     }

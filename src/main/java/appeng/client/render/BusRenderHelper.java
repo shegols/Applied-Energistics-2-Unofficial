@@ -65,7 +65,7 @@ public final class BusRenderHelper implements IPartRenderHelper {
     public BusRenderHelper() {
         this.bbc = new BoundBoxCalculator(this);
         this.noAlphaPass = !AEConfig.instance.isFeatureEnabled(AEFeature.AlphaPass);
-        this.bbr = new BaseBlockRender<AEBaseBlock, AEBaseTile>();
+        this.bbr = new BaseBlockRender<>();
         this.renderingForPass = 0;
         this.currentPass = 0;
         this.itemsRendered = 0;
@@ -94,23 +94,15 @@ public final class BusRenderHelper implements IPartRenderHelper {
     }
 
     public double getBound(final ForgeDirection side) {
-        switch (side) {
-            default:
-            case UNKNOWN:
-                return 0.5;
-            case DOWN:
-                return this.minY;
-            case EAST:
-                return this.maxX;
-            case NORTH:
-                return this.minZ;
-            case SOUTH:
-                return this.maxZ;
-            case UP:
-                return this.maxY;
-            case WEST:
-                return this.minX;
-        }
+        return switch (side) {
+            default -> 0.5;
+            case DOWN -> this.minY;
+            case EAST -> this.maxX;
+            case NORTH -> this.minZ;
+            case SOUTH -> this.maxZ;
+            case UP -> this.maxY;
+            case WEST -> this.minX;
+        };
     }
 
     public void setRenderColor(final int color) {

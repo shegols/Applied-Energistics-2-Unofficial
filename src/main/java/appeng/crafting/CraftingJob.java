@@ -47,7 +47,7 @@ public class CraftingJob implements ICraftingJob, Runnable {
     private final World world;
     private final IItemList<IAEItemStack> crafting = AEApi.instance().storage().createItemList();
     private final IItemList<IAEItemStack> missing = AEApi.instance().storage().createItemList();
-    private final HashMap<String, TwoIntegers> opsAndMultiplier = new HashMap<String, TwoIntegers>();
+    private final HashMap<String, TwoIntegers> opsAndMultiplier = new HashMap<>();
     private final Object monitor = new Object();
     private final Stopwatch watch = Stopwatch.createUnstarted();
     private CraftingTreeNode tree;
@@ -159,10 +159,8 @@ public class CraftingJob implements ICraftingJob, Runnable {
                     }
 
                     this.logCraftingJob("simulate", timer);
-                } catch (final CraftBranchFailure e1) {
+                } catch (final CraftBranchFailure | CraftingCalculationFailure e1) {
                     AELog.debug(e1);
-                } catch (final CraftingCalculationFailure f) {
-                    AELog.debug(f);
                 } catch (final InterruptedException e1) {
                     AELog.crafting("Crafting calculation canceled.");
                     this.finish();
@@ -311,8 +309,7 @@ public class CraftingJob implements ICraftingJob, Runnable {
                 final DimensionalCoord location = actionableNode.getGridBlock().getLocation();
 
                 actionSource = String.format(LOG_MACHINE_SOURCE_DETAILS, machine, location);
-            } else if (this.actionSrc instanceof PlayerSource) {
-                final PlayerSource source = (PlayerSource) this.actionSrc;
+            } else if (this.actionSrc instanceof PlayerSource source) {
                 final EntityPlayer player = source.player;
 
                 actionSource = player.toString();

@@ -22,7 +22,7 @@ import appeng.core.AELog;
 
 public final class GridCacheRegistry implements IGridCacheRegistry {
 
-    private final Map<Class<? extends IGridCache>, Class<? extends IGridCache>> caches = new HashMap<Class<? extends IGridCache>, Class<? extends IGridCache>>();
+    private final Map<Class<? extends IGridCache>, Class<? extends IGridCache>> caches = new HashMap<>();
 
     @Override
     public void registerGridCache(final Class<? extends IGridCache> iface,
@@ -40,7 +40,7 @@ public final class GridCacheRegistry implements IGridCacheRegistry {
 
     @Override
     public HashMap<Class<? extends IGridCache>, IGridCache> createCacheInstance(final IGrid g) {
-        final HashMap<Class<? extends IGridCache>, IGridCache> map = new HashMap<Class<? extends IGridCache>, IGridCache>();
+        final HashMap<Class<? extends IGridCache>, IGridCache> map = new HashMap<>();
 
         for (final Class<? extends IGridCache> iface : this.caches.keySet()) {
             try {
@@ -49,13 +49,7 @@ public final class GridCacheRegistry implements IGridCacheRegistry {
             } catch (final NoSuchMethodException e) {
                 AELog.error("Grid Caches must have a constructor with IGrid as the single param.");
                 throw new IllegalArgumentException(e);
-            } catch (final InvocationTargetException e) {
-                AELog.error("Grid Caches must have a constructor with IGrid as the single param.");
-                throw new IllegalStateException(e);
-            } catch (final InstantiationException e) {
-                AELog.error("Grid Caches must have a constructor with IGrid as the single param.");
-                throw new IllegalStateException(e);
-            } catch (final IllegalAccessException e) {
+            } catch (final InvocationTargetException | IllegalAccessException | InstantiationException e) {
                 AELog.error("Grid Caches must have a constructor with IGrid as the single param.");
                 throw new IllegalStateException(e);
             }

@@ -54,7 +54,7 @@ public class NEICraftingHandler implements IOverlayHandler {
                 }
                 NetworkHandler.instance.sendToServer(packet);
             }
-        } catch (final Exception ignored) {} catch (final Error ignored) {}
+        } catch (final Exception | Error ignored) {}
     }
 
     // if the packet becomes too large, limit each slot contents to 3k
@@ -72,11 +72,11 @@ public class NEICraftingHandler implements IOverlayHandler {
             final int col = (positionedStack.relx - 25) / 18;
             final int row = (positionedStack.rely - 6) / 18;
             if (positionedStack.items != null && positionedStack.items.length > 0) {
-                for (final Slot slot : (List<Slot>) gui.inventorySlots.inventorySlots) {
+                for (final Slot slot : gui.inventorySlots.inventorySlots) {
                     if (slot instanceof SlotCraftingMatrix || slot instanceof SlotFakeCraftingMatrix) {
                         if (slot.getSlotIndex() == col + row * 3) {
                             final NBTTagList tags = new NBTTagList();
-                            final List<ItemStack> list = new LinkedList<ItemStack>();
+                            final List<ItemStack> list = new LinkedList<>();
 
                             // prefer pure crystals.
                             for (int x = 0; x < positionedStack.items.length; x++) {

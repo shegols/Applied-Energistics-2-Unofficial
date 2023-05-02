@@ -10,7 +10,6 @@
 
 package appeng.spatial;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -45,11 +44,11 @@ public class CachedPlane {
     private final int y_size;
     private final Chunk[][] myChunks;
     private final Column[][] myColumns;
-    private final LinkedList<TileEntity> tiles = new LinkedList<TileEntity>();
-    private final LinkedList<NextTickListEntry> ticks = new LinkedList<NextTickListEntry>();
+    private final LinkedList<TileEntity> tiles = new LinkedList<>();
+    private final LinkedList<NextTickListEntry> ticks = new LinkedList<>();
     private final World world;
     private final IMovableRegistry reg = AEApi.instance().registries().movable();
-    private final LinkedList<WorldCoord> updates = new LinkedList<WorldCoord>();
+    private final LinkedList<WorldCoord> updates = new LinkedList<>();
     private final IBlockDefinition matrixFrame = AEApi.instance().definitions().blocks().matrixFrame();
     private int verticalBits;
 
@@ -100,13 +99,13 @@ public class CachedPlane {
 
         for (int cx = 0; cx < this.cx_size; cx++) {
             for (int cz = 0; cz < this.cz_size; cz++) {
-                final LinkedList<Entry<ChunkPosition, TileEntity>> rawTiles = new LinkedList<Entry<ChunkPosition, TileEntity>>();
-                final LinkedList<ChunkPosition> deadTiles = new LinkedList<ChunkPosition>();
+                final LinkedList<ChunkPosition> deadTiles = new LinkedList<>();
 
                 final Chunk c = w.getChunkFromChunkCoords(minCX + cx, minCZ + cz);
                 this.myChunks[cx][cz] = c;
 
-                rawTiles.addAll(((HashMap<ChunkPosition, TileEntity>) c.chunkTileEntityMap).entrySet());
+                final LinkedList<Entry<ChunkPosition, TileEntity>> rawTiles = new LinkedList<>(
+                        c.chunkTileEntityMap.entrySet());
                 for (final Entry<ChunkPosition, TileEntity> tx : rawTiles) {
                     final ChunkPosition cp = tx.getKey();
                     final TileEntity te = tx.getValue();
@@ -375,6 +374,7 @@ public class CachedPlane {
             for (final Block matrixFrameBlock : CachedPlane.this.matrixFrame.maybeBlock().asSet()) {
                 if (blk[0] == matrixFrameBlock) {
                     blk[0] = Platform.AIR_BLOCK;
+                    break;
                 }
             }
 
@@ -404,7 +404,7 @@ public class CachedPlane {
 
         private void setSkip(final int yCoord) {
             if (this.skipThese == null) {
-                this.skipThese = new LinkedList<Integer>();
+                this.skipThese = new LinkedList<>();
             }
             this.skipThese.add(yCoord);
         }

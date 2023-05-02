@@ -43,8 +43,8 @@ public class PatternHelper implements ICraftingPatternDetails, Comparable<Patter
     private final boolean isCrafting;
     private final boolean canSubstitute;
     private final boolean canBeSubstitute;
-    private final Set<TestLookup> failCache = new HashSet<TestLookup>();
-    private final Set<TestLookup> passCache = new HashSet<TestLookup>();
+    private final Set<TestLookup> failCache = new HashSet<>();
+    private final Set<TestLookup> passCache = new HashSet<>();
     private final IAEItemStack pattern;
     private int priority = 0;
 
@@ -64,8 +64,8 @@ public class PatternHelper implements ICraftingPatternDetails, Comparable<Patter
         this.patternItem = is;
         this.pattern = AEItemStack.create(is);
 
-        final List<IAEItemStack> in = new ArrayList<IAEItemStack>();
-        final List<IAEItemStack> out = new ArrayList<IAEItemStack>();
+        final List<IAEItemStack> in = new ArrayList<>();
+        final List<IAEItemStack> out = new ArrayList<>();
 
         for (int x = 0; x < inTag.tagCount(); x++) {
             final NBTTagCompound tag = inTag.getCompoundTagAt(x);
@@ -116,8 +116,8 @@ public class PatternHelper implements ICraftingPatternDetails, Comparable<Patter
             }
         }
 
-        this.outputs = out.toArray(new IAEItemStack[out.size()]);
-        this.inputs = in.toArray(new IAEItemStack[in.size()]);
+        this.outputs = out.toArray(new IAEItemStack[0]);
+        this.inputs = in.toArray(new IAEItemStack[0]);
 
         this.condensedInputs = convertToCondensedList(this.inputs);
         this.condensedOutputs = convertToCondensedList(this.outputs);
@@ -149,13 +149,13 @@ public class PatternHelper implements ICraftingPatternDetails, Comparable<Patter
         final TestStatus result = this.getStatus(slotIndex, i);
 
         switch (result) {
-            case ACCEPT:
+            case ACCEPT -> {
                 return true;
-            case DECLINE:
+            }
+            case DECLINE -> {
                 return false;
-            case TEST:
-            default:
-                break;
+            }
+            default -> {}
         }
 
         for (int x = 0; x < this.crafting.getSizeInventory(); x++) {
@@ -333,8 +333,7 @@ public class PatternHelper implements ICraftingPatternDetails, Comparable<Patter
         public boolean equals(final Object obj) {
             final boolean equality;
 
-            if (obj instanceof TestLookup) {
-                final TestLookup b = (TestLookup) obj;
+            if (obj instanceof TestLookup b) {
 
                 equality = b.slot == this.slot && b.ref == this.ref;
             } else {
@@ -347,7 +346,7 @@ public class PatternHelper implements ICraftingPatternDetails, Comparable<Patter
 
     public static IAEItemStack[] loadIAEItemStackFromNBT(final NBTTagList tags, boolean saveOrder,
             final ItemStack unknownItem) {
-        final List<IAEItemStack> items = new ArrayList<IAEItemStack>();
+        final List<IAEItemStack> items = new ArrayList<>();
 
         for (int x = 0; x < tags.tagCount(); x++) {
             final NBTTagCompound tag = tags.getCompoundTagAt(x);
@@ -369,11 +368,11 @@ public class PatternHelper implements ICraftingPatternDetails, Comparable<Patter
             }
         }
 
-        return items.toArray(new IAEItemStack[items.size()]);
+        return items.toArray(new IAEItemStack[0]);
     }
 
     public static IAEItemStack[] convertToCondensedList(final IAEItemStack[] items) {
-        final Map<IAEItemStack, IAEItemStack> tmp = new HashMap<IAEItemStack, IAEItemStack>();
+        final Map<IAEItemStack, IAEItemStack> tmp = new HashMap<>();
 
         for (final IAEItemStack io : items) {
 
@@ -390,6 +389,6 @@ public class PatternHelper implements ICraftingPatternDetails, Comparable<Patter
             }
         }
 
-        return tmp.values().toArray(new IAEItemStack[tmp.size()]);
+        return tmp.values().toArray(new IAEItemStack[0]);
     }
 }

@@ -73,8 +73,7 @@ public class Ingredient implements IIngredient {
                 } else {
                     try {
                         final Object ro = AEApi.instance().registries().recipes().resolveItem(this.nameSpace, tmpName);
-                        if (ro instanceof ResolverResult) {
-                            final ResolverResult rr = (ResolverResult) ro;
+                        if (ro instanceof ResolverResult rr) {
                             tmpName = rr.itemName;
                             sel = rr.damageValue;
                             this.nbt = rr.compound;
@@ -168,7 +167,7 @@ public class Ingredient implements IIngredient {
 
         if (this.nameSpace.equalsIgnoreCase("oreDictionary")) {
             final List<ItemStack> ores = OreDictionary.getOres(this.itemName);
-            final ItemStack[] set = ores.toArray(new ItemStack[ores.size()]);
+            final ItemStack[] set = ores.toArray(new ItemStack[0]);
 
             // clone and set qty.
             for (int x = 0; x < set.length; x++) {

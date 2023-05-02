@@ -39,7 +39,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BusRenderer implements IItemRenderer {
 
     public static final BusRenderer INSTANCE = new BusRenderer();
-    private static final Map<Integer, IPart> RENDER_PART = new HashMap<Integer, IPart>();
+    private static final Map<Integer, IPart> RENDER_PART = new HashMap<>();
     private final RenderBlocksWorkaround renderer = new RenderBlocksWorkaround();
 
     @Override
@@ -110,8 +110,7 @@ public class BusRenderer implements IItemRenderer {
         this.getRenderer().useInventoryTint = false;
         this.getRenderer().overrideBlockTexture = null;
 
-        if (item.getItem() instanceof IFacadeItem) {
-            final IFacadeItem fi = (IFacadeItem) item.getItem();
+        if (item.getItem() instanceof IFacadeItem fi) {
             final IFacadePart fp = fi.createPartFromItemStack(item, ForgeDirection.SOUTH);
 
             if (type == ItemRenderType.EQUIPPED_FIRST_PERSON) {

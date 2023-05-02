@@ -12,7 +12,6 @@ package appeng.services.version.github;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -60,11 +59,7 @@ public final class ReleaseFetcher {
             final FormattedRelease latestFitRelease = this.getLatestFitRelease(releases);
 
             return latestFitRelease;
-        } catch (final VersionCheckerException e) {
-            AELog.debug(e);
-        } catch (MalformedURLException e) {
-            AELog.debug(e);
-        } catch (IOException e) {
+        } catch (final VersionCheckerException | IOException e) {
             AELog.debug(e);
         }
 

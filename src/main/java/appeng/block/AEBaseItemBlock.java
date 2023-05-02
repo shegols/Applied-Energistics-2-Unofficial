@@ -57,8 +57,7 @@ public class AEBaseItemBlock extends ItemBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public final void addInformation(final ItemStack itemStack, final EntityPlayer player, final List toolTip,
+    public final void addInformation(final ItemStack itemStack, final EntityPlayer player, final List<String> toolTip,
             final boolean advancedTooltips) {
         this.addCheckedInformation(itemStack, player, toolTip, advancedTooltips);
     }
@@ -106,21 +105,12 @@ public class AEBaseItemBlock extends ItemBlock {
 
                 final byte rotation = (byte) (MathHelper.floor_double((player.rotationYaw * 4F) / 360F + 2.5D) & 3);
 
-                switch (rotation) {
-                    default:
-                    case 0:
-                        forward = ForgeDirection.SOUTH;
-                        break;
-                    case 1:
-                        forward = ForgeDirection.WEST;
-                        break;
-                    case 2:
-                        forward = ForgeDirection.NORTH;
-                        break;
-                    case 3:
-                        forward = ForgeDirection.EAST;
-                        break;
-                }
+                forward = switch (rotation) {
+                    default -> ForgeDirection.SOUTH;
+                    case 1 -> ForgeDirection.WEST;
+                    case 2 -> ForgeDirection.NORTH;
+                    case 3 -> ForgeDirection.EAST;
+                };
 
                 if (player.rotationPitch > 65) {
                     up = forward.getOpposite();

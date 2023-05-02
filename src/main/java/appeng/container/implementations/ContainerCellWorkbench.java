@@ -150,8 +150,7 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
                 if (this.prevStack != is) {
                     // if the bars changed an item was probably made, so just send shit!
                     for (final Object s : this.inventorySlots) {
-                        if (s instanceof OptionalSlotRestrictedInput) {
-                            final OptionalSlotRestrictedInput sri = (OptionalSlotRestrictedInput) s;
+                        if (s instanceof OptionalSlotRestrictedInput sri) {
                             icrafting.sendSlotContents(this, sri.slotNumber, sri.getStack());
                         }
                     }
@@ -211,7 +210,7 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
                 null,
                 StorageChannel.ITEMS);
 
-        Iterator<IAEItemStack> i = new NullIterator<IAEItemStack>();
+        Iterator<IAEItemStack> i = new NullIterator<>();
         if (cellInv != null) {
             final IItemList<IAEItemStack> list = cellInv.getAvailableItems(AEApi.instance().storage().createItemList());
             i = list.iterator();

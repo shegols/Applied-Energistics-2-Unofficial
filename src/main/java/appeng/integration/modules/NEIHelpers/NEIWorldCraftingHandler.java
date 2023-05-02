@@ -37,9 +37,9 @@ import codechicken.nei.recipe.IUsageHandler;
 
 public class NEIWorldCraftingHandler implements ICraftingHandler, IUsageHandler {
 
-    private final Map<IItemDefinition, String> details = new HashMap<IItemDefinition, String>();
-    private final List<IItemDefinition> offsets = new LinkedList<IItemDefinition>();
-    private final List<PositionedStack> outputs = new LinkedList<PositionedStack>();
+    private final Map<IItemDefinition, String> details = new HashMap<>();
+    private final List<IItemDefinition> offsets = new LinkedList<>();
+    private final List<PositionedStack> outputs = new LinkedList<>();
 
     private ItemStack target;
 
@@ -71,12 +71,12 @@ public class NEIWorldCraftingHandler implements ICraftingHandler, IUsageHandler 
 
     @Override
     public List<PositionedStack> getIngredientStacks(final int recipeIndex) {
-        return new ArrayList<PositionedStack>();
+        return new ArrayList<>();
     }
 
     @Override
     public List<PositionedStack> getOtherStacks(final int recipeIndex) {
-        return new ArrayList<PositionedStack>();
+        return new ArrayList<>();
     }
 
     @Override
@@ -147,9 +147,7 @@ public class NEIWorldCraftingHandler implements ICraftingHandler, IUsageHandler 
     private NEIWorldCraftingHandler newInstance() {
         try {
             return this.getClass().newInstance();
-        } catch (final InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (final IllegalAccessException e) {
+        } catch (final InstantiationException | IllegalAccessException e) {
             throw new IllegalStateException(e);
         }
     }

@@ -36,8 +36,8 @@ public class SpatialPylonCache implements ISpatialCache {
     private DimensionalCoord captureMin;
     private DimensionalCoord captureMax;
     private boolean isValid = false;
-    private List<TileSpatialIOPort> ioPorts = new LinkedList<TileSpatialIOPort>();
-    private HashMap<SpatialPylonCluster, SpatialPylonCluster> clusters = new HashMap<SpatialPylonCluster, SpatialPylonCluster>();
+    private List<TileSpatialIOPort> ioPorts = new LinkedList<>();
+    private HashMap<SpatialPylonCluster, SpatialPylonCluster> clusters = new HashMap<>();
 
     public SpatialPylonCache(final IGrid g) {
         this.myGrid = g;
@@ -50,8 +50,8 @@ public class SpatialPylonCache implements ISpatialCache {
 
     private void reset(final IGrid grid) {
 
-        this.clusters = new HashMap<SpatialPylonCluster, SpatialPylonCluster>();
-        this.ioPorts = new LinkedList<TileSpatialIOPort>();
+        this.clusters = new HashMap<>();
+        this.ioPorts = new LinkedList<>();
 
         for (final IGridNode gm : grid.getMachines(TileSpatialIOPort.class)) {
             this.ioPorts.add((TileSpatialIOPort) gm.getMachine());
@@ -99,33 +99,22 @@ public class SpatialPylonCache implements ISpatialCache {
 
             for (final SpatialPylonCluster cl : this.clusters.values()) {
                 switch (cl.getCurrentAxis()) {
-                    case X:
-                        this.isValid = this.isValid
-                                && ((this.captureMax.y == cl.getMin().y || this.captureMin.y == cl.getMax().y)
-                                        || (this.captureMax.z == cl.getMin().z || this.captureMin.z == cl.getMax().z))
-                                && ((this.captureMax.y == cl.getMax().y || this.captureMin.y == cl.getMin().y)
-                                        || (this.captureMax.z == cl.getMax().z || this.captureMin.z == cl.getMin().z));
-
-                        break;
-                    case Y:
-                        this.isValid = this.isValid
-                                && ((this.captureMax.x == cl.getMin().x || this.captureMin.x == cl.getMax().x)
-                                        || (this.captureMax.z == cl.getMin().z || this.captureMin.z == cl.getMax().z))
-                                && ((this.captureMax.x == cl.getMax().x || this.captureMin.x == cl.getMin().x)
-                                        || (this.captureMax.z == cl.getMax().z || this.captureMin.z == cl.getMin().z));
-
-                        break;
-                    case Z:
-                        this.isValid = this.isValid
-                                && ((this.captureMax.y == cl.getMin().y || this.captureMin.y == cl.getMax().y)
-                                        || (this.captureMax.x == cl.getMin().x || this.captureMin.x == cl.getMax().x))
-                                && ((this.captureMax.y == cl.getMax().y || this.captureMin.y == cl.getMin().y)
-                                        || (this.captureMax.x == cl.getMax().x || this.captureMin.x == cl.getMin().x));
-
-                        break;
-                    case UNFORMED:
-                        this.isValid = false;
-                        break;
+                    case X -> this.isValid = this.isValid
+                            && ((this.captureMax.y == cl.getMin().y || this.captureMin.y == cl.getMax().y)
+                                    || (this.captureMax.z == cl.getMin().z || this.captureMin.z == cl.getMax().z))
+                            && ((this.captureMax.y == cl.getMax().y || this.captureMin.y == cl.getMin().y)
+                                    || (this.captureMax.z == cl.getMax().z || this.captureMin.z == cl.getMin().z));
+                    case Y -> this.isValid = this.isValid
+                            && ((this.captureMax.x == cl.getMin().x || this.captureMin.x == cl.getMax().x)
+                                    || (this.captureMax.z == cl.getMin().z || this.captureMin.z == cl.getMax().z))
+                            && ((this.captureMax.x == cl.getMax().x || this.captureMin.x == cl.getMin().x)
+                                    || (this.captureMax.z == cl.getMax().z || this.captureMin.z == cl.getMin().z));
+                    case Z -> this.isValid = this.isValid
+                            && ((this.captureMax.y == cl.getMin().y || this.captureMin.y == cl.getMax().y)
+                                    || (this.captureMax.x == cl.getMin().x || this.captureMin.x == cl.getMax().x))
+                            && ((this.captureMax.y == cl.getMax().y || this.captureMin.y == cl.getMin().y)
+                                    || (this.captureMax.x == cl.getMax().x || this.captureMin.x == cl.getMin().x));
+                    case UNFORMED -> this.isValid = false;
                 }
             }
 

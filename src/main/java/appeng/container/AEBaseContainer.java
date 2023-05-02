@@ -67,12 +67,12 @@ public abstract class AEBaseContainer extends Container {
 
     private final InventoryPlayer invPlayer;
     private final BaseActionSource mySrc;
-    private final HashSet<Integer> locked = new HashSet<Integer>();
+    private final HashSet<Integer> locked = new HashSet<>();
     private final TileEntity tileEntity;
     private final IPart part;
     private final IGuiItemObject obj;
-    private final List<PacketPartialItem> dataChunks = new LinkedList<PacketPartialItem>();
-    private final HashMap<Integer, SyncData> syncData = new HashMap<Integer, SyncData>();
+    private final List<PacketPartialItem> dataChunks = new LinkedList<>();
+    private final HashMap<Integer, SyncData> syncData = new HashMap<>();
     private boolean isContainerValid = true;
     private String customName;
     private ContainerOpenContext openContext;
@@ -210,7 +210,7 @@ public abstract class AEBaseContainer extends Container {
                 CompressedStreamTools.writeCompressed(item, stream);
 
                 final int maxChunkSize = 30000;
-                final List<byte[]> miniPackets = new LinkedList<byte[]>();
+                final List<byte[]> miniPackets = new LinkedList<>();
 
                 final byte[] data = stream.toByteArray();
 
@@ -349,8 +349,7 @@ public abstract class AEBaseContainer extends Container {
 
     @Override
     protected Slot addSlotToContainer(final Slot newSlot) {
-        if (newSlot instanceof AppEngSlot) {
-            final AppEngSlot s = (AppEngSlot) newSlot;
+        if (newSlot instanceof AppEngSlot s) {
             s.setContainer(this);
             return super.addSlotToContainer(newSlot);
         } else {
@@ -405,7 +404,7 @@ public abstract class AEBaseContainer extends Container {
                 return null;
             }
 
-            final List<Slot> selectedSlots = new ArrayList<Slot>();
+            final List<Slot> selectedSlots = new ArrayList<>();
 
             /**
              * Gather a list of valid destinations.
@@ -626,23 +625,21 @@ public abstract class AEBaseContainer extends Container {
                 final ItemStack hand = player.inventory.getItemStack();
 
                 switch (action) {
-                    case PICKUP_OR_SET_DOWN:
+                    case PICKUP_OR_SET_DOWN -> {
                         if (hand == null) {
                             s.putStack(null);
                         } else {
                             s.putStack(hand.copy());
                         }
-
-                        break;
-                    case PLACE_SINGLE:
+                    }
+                    case PLACE_SINGLE -> {
                         if (hand != null) {
                             final ItemStack is = hand.copy();
                             is.stackSize = 1;
                             s.putStack(is);
                         }
-
-                        break;
-                    case SPLIT_OR_PLACE_SINGLE:
+                    }
+                    case SPLIT_OR_PLACE_SINGLE -> {
                         ItemStack is = s.getStack();
                         if (is != null) {
                             if (hand == null) {
@@ -662,13 +659,8 @@ public abstract class AEBaseContainer extends Container {
                             is.stackSize = 1;
                             s.putStack(is);
                         }
-
-                        break;
-                    case CREATIVE_DUPLICATE:
-                    case MOVE_REGION:
-                    case SHIFT_CLICK:
-                    default:
-                        break;
+                    }
+                    default -> {}
                 }
             }
 
@@ -676,7 +668,7 @@ public abstract class AEBaseContainer extends Container {
                 if (s instanceof SlotPatternTerm) return;
                 // SlotPatternTerm should't transfer its ItemStack to the Player
 
-                final List<Slot> from = new LinkedList<Slot>();
+                final List<Slot> from = new LinkedList<>();
 
                 for (final Object j : this.inventorySlots) {
                     if (j instanceof Slot && j.getClass() == s.getClass()) {
@@ -696,11 +688,10 @@ public abstract class AEBaseContainer extends Container {
         final IAEItemStack slotItem = this.clientRequestedTargetItem;
 
         switch (action) {
-            case SHIFT_CLICK:
+            case SHIFT_CLICK -> {
                 if (this.getPowerSource() == null || this.getCellInventory() == null) {
                     return;
                 }
-
                 if (slotItem != null) {
                     IAEItemStack ais = slotItem.copy();
                     ItemStack myItem = ais.getItemStack();
@@ -724,15 +715,13 @@ public abstract class AEBaseContainer extends Container {
                         adp.addItems(ais.getItemStack());
                     }
                 }
-                break;
-            case ROLL_DOWN:
+            }
+            case ROLL_DOWN -> {
                 if (this.getPowerSource() == null || this.getCellInventory() == null) {
                     return;
                 }
-
                 final int releaseQty = 1;
                 final ItemStack isg = player.inventory.getItemStack();
-
                 if (isg != null && releaseQty > 0) {
                     IAEItemStack ais = AEApi.instance().storage().createItemStack(isg);
                     ais.setStackSize(1);
@@ -752,14 +741,11 @@ public abstract class AEBaseContainer extends Container {
                         this.updateHeld(player);
                     }
                 }
-
-                break;
-            case ROLL_UP:
-            case PICKUP_SINGLE:
+            }
+            case ROLL_UP, PICKUP_SINGLE -> {
                 if (this.getPowerSource() == null || this.getCellInventory() == null) {
                     return;
                 }
-
                 if (slotItem != null) {
                     int liftQty = 1;
                     final ItemStack item = player.inventory.getItemStack();
@@ -793,12 +779,11 @@ public abstract class AEBaseContainer extends Container {
                         }
                     }
                 }
-                break;
-            case PICKUP_OR_SET_DOWN:
+            }
+            case PICKUP_OR_SET_DOWN -> {
                 if (this.getPowerSource() == null || this.getCellInventory() == null) {
                     return;
                 }
-
                 if (player.inventory.getItemStack() == null) {
                     if (slotItem != null) {
                         IAEItemStack ais = slotItem.copy();
@@ -826,13 +811,11 @@ public abstract class AEBaseContainer extends Container {
                     }
                     this.updateHeld(player);
                 }
-
-                break;
-            case SPLIT_OR_PLACE_SINGLE:
+            }
+            case SPLIT_OR_PLACE_SINGLE -> {
                 if (this.getPowerSource() == null || this.getCellInventory() == null) {
                     return;
                 }
-
                 if (player.inventory.getItemStack() == null) {
                     if (slotItem != null) {
                         IAEItemStack ais = slotItem.copy();
@@ -871,21 +854,19 @@ public abstract class AEBaseContainer extends Container {
                         this.updateHeld(player);
                     }
                 }
-
-                break;
-            case CREATIVE_DUPLICATE:
+            }
+            case CREATIVE_DUPLICATE -> {
                 if (player.capabilities.isCreativeMode && slotItem != null) {
                     final ItemStack is = slotItem.getItemStack();
                     is.stackSize = is.getMaxStackSize();
                     player.inventory.setItemStack(is);
                     this.updateHeld(player);
                 }
-                break;
-            case MOVE_REGION:
+            }
+            case MOVE_REGION -> {
                 if (this.getPowerSource() == null || this.getCellInventory() == null) {
                     return;
                 }
-
                 if (slotItem != null) {
                     final int playerInv = 9 * 4;
                     for (int slotNum = 0; slotNum < playerInv; slotNum++) {
@@ -914,10 +895,8 @@ public abstract class AEBaseContainer extends Container {
                         }
                     }
                 }
-
-                break;
-            default:
-                break;
+            }
+            default -> {}
         }
     }
 

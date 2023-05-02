@@ -81,7 +81,7 @@ public class GridNode implements IGridNode, IPathItem {
 
         final IGridNode gn = this;
 
-        Collections.sort(this.connections, new ConnectionComparator(gn));
+        this.connections.sort(new ConnectionComparator(gn));
     }
 
     void removeConnection(final IGridConnection gridConnection) {
@@ -123,14 +123,13 @@ public class GridNode implements IGridNode, IPathItem {
 
         CraftingGridCache.pauseRebuilds();
 
-        LinkedList<GridNode> nextRun = new LinkedList<GridNode>();
+        LinkedList<GridNode> nextRun = new LinkedList<>();
         nextRun.add(this);
 
         this.visitorIterationNumber = tracker;
 
-        if (g instanceof IGridConnectionVisitor) {
-            final LinkedList<IGridConnection> nextConn = new LinkedList<IGridConnection>();
-            final IGridConnectionVisitor gcv = (IGridConnectionVisitor) g;
+        if (g instanceof IGridConnectionVisitor gcv) {
+            final LinkedList<IGridConnection> nextConn = new LinkedList<>();
 
             while (!nextRun.isEmpty()) {
                 while (!nextConn.isEmpty()) {
@@ -138,7 +137,7 @@ public class GridNode implements IGridNode, IPathItem {
                 }
 
                 final Iterable<GridNode> thisRun = nextRun;
-                nextRun = new LinkedList<GridNode>();
+                nextRun = new LinkedList<>();
 
                 for (final GridNode n : thisRun) {
                     n.visitorConnection(tracker, g, nextRun, nextConn);
@@ -147,7 +146,7 @@ public class GridNode implements IGridNode, IPathItem {
         } else {
             while (!nextRun.isEmpty()) {
                 final Iterable<GridNode> thisRun = nextRun;
-                nextRun = new LinkedList<GridNode>();
+                nextRun = new LinkedList<>();
 
                 for (final GridNode n : thisRun) {
                     n.visitorNode(tracker, g, nextRun);
@@ -246,7 +245,7 @@ public class GridNode implements IGridNode, IPathItem {
 
     @Override
     public IReadOnlyCollection<IGridConnection> getConnections() {
-        return new ReadOnlyCollection<IGridConnection>(this.connections);
+        return new ReadOnlyCollection<>(this.connections);
     }
 
     @Override

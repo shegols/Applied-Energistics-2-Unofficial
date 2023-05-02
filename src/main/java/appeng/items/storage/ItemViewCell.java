@@ -43,7 +43,7 @@ public class ItemViewCell extends AEBaseItem implements ICellWorkbenchItem {
     public static IPartitionList<IAEItemStack> createFilter(final ItemStack[] list) {
         IPartitionList<IAEItemStack> myPartitionList = null;
 
-        final MergedPriorityList<IAEItemStack> myMergedList = new MergedPriorityList<IAEItemStack>();
+        final MergedPriorityList<IAEItemStack> myMergedList = new MergedPriorityList<>();
 
         for (final ItemStack currentViewCell : list) {
             if (currentViewCell == null) {
@@ -66,16 +66,10 @@ public class ItemViewCell extends AEBaseItem implements ICellWorkbenchItem {
                         final Upgrades u = ((IUpgradeModule) is.getItem()).getType(is);
                         if (u != null) {
                             switch (u) {
-                                case FUZZY:
-                                    hasFuzzy = true;
-                                    break;
-                                case INVERTER:
-                                    hasInverter = true;
-                                    break;
-                                case ORE_FILTER:
-                                    hasOreFilter = true;
-                                    break;
-                                default:
+                                case FUZZY -> hasFuzzy = true;
+                                case INVERTER -> hasInverter = true;
+                                case ORE_FILTER -> hasOreFilter = true;
+                                default -> {}
                             }
                         }
                     }
@@ -95,11 +89,9 @@ public class ItemViewCell extends AEBaseItem implements ICellWorkbenchItem {
 
                     if (!priorityList.isEmpty()) {
                         if (hasFuzzy) {
-                            myMergedList.addNewList(
-                                    new FuzzyPriorityList<IAEItemStack>(priorityList, fzMode),
-                                    !hasInverter);
+                            myMergedList.addNewList(new FuzzyPriorityList<>(priorityList, fzMode), !hasInverter);
                         } else {
-                            myMergedList.addNewList(new PrecisePriorityList<IAEItemStack>(priorityList), !hasInverter);
+                            myMergedList.addNewList(new PrecisePriorityList<>(priorityList), !hasInverter);
                         }
                     }
                 }

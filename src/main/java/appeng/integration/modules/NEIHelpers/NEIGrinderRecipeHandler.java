@@ -111,8 +111,7 @@ public class NEIGrinderRecipeHandler extends TemplateRecipeHandler {
         super.drawForeground(recipe);
         if (this.arecipes.size() > recipe) {
             final CachedRecipe cr = this.arecipes.get(recipe);
-            if (cr instanceof CachedGrindStoneRecipe) {
-                final CachedGrindStoneRecipe cachedRecipe = (CachedGrindStoneRecipe) cr;
+            if (cr instanceof CachedGrindStoneRecipe cachedRecipe) {
                 if (cachedRecipe.hasOptional) {
                     final FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
                     final int width = fr.getStringWidth(cachedRecipe.displayChance);
@@ -163,7 +162,7 @@ public class NEIGrinderRecipeHandler extends TemplateRecipeHandler {
 
         public CachedGrindStoneRecipe(final IGrinderEntry recipe) {
             this.result = new PositionedStack(recipe.getOutput(), -30 + 107, 47);
-            this.ingredients = new ArrayList<PositionedStack>();
+            this.ingredients = new ArrayList<>();
 
             final ItemStack optionalOutput = recipe.getOptionalOutput();
             final int optionalChancePercent = (int) (recipe.getOptionalChance() * 100);

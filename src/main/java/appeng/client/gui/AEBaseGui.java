@@ -65,9 +65,9 @@ import cpw.mods.fml.common.ObfuscationReflectionHelper;
 public abstract class AEBaseGui extends GuiContainer {
 
     private static boolean switchingGuis;
-    private final List<InternalSlotME> meSlots = new LinkedList<InternalSlotME>();
+    private final List<InternalSlotME> meSlots = new LinkedList<>();
     // drag y
-    private final Set<Slot> drag_click = new HashSet<Slot>();
+    private final Set<Slot> drag_click = new HashSet<>();
     private final AppEngRenderItem aeRenderItem = new AppEngRenderItem();
     private GuiScrollbar scrollBar = null;
     private boolean disableShiftClick = false;
@@ -106,12 +106,7 @@ public abstract class AEBaseGui extends GuiContainer {
         super.initGui();
 
         final List<Slot> slots = this.getInventorySlots();
-        final Iterator<Slot> i = slots.iterator();
-        while (i.hasNext()) {
-            if (i.next() instanceof SlotME) {
-                i.remove();
-            }
-        }
+        slots.removeIf(slot -> slot instanceof SlotME);
 
         for (final InternalSlotME me : this.meSlots) {
             slots.add(new SlotME(me));
@@ -252,8 +247,7 @@ public abstract class AEBaseGui extends GuiContainer {
 
         final List<Slot> slots = this.getInventorySlots();
         for (final Slot slot : slots) {
-            if (slot instanceof OptionalSlotFake) {
-                final OptionalSlotFake fs = (OptionalSlotFake) slot;
+            if (slot instanceof OptionalSlotFake fs) {
                 if (fs.renderDisabled()) {
                     if (fs.isEnabled()) {
                         this.drawTexturedModalRect(
@@ -450,28 +444,20 @@ public abstract class AEBaseGui extends GuiContainer {
             InventoryAction action = null;
 
             switch (mouseButton) {
-                case 0: // pickup / set-down.
+                case 0 -> // pickup / set-down.
                 {
                     ItemStack heldStack = player.inventory.getItemStack();
                     if (slot.getStack() == null && heldStack != null) action = InventoryAction.SPLIT_OR_PLACE_SINGLE;
                     else if (slot.getStack() != null && (heldStack == null || heldStack.stackSize <= 1))
                         action = InventoryAction.PICKUP_OR_SET_DOWN;
                 }
-                    break;
-                case 1:
-                    action = ctrlDown == 1 ? InventoryAction.PICKUP_SINGLE : InventoryAction.SHIFT_CLICK;
-                    break;
-
-                case 3: // creative dupe:
+                case 1 -> action = ctrlDown == 1 ? InventoryAction.PICKUP_SINGLE : InventoryAction.SHIFT_CLICK;
+                case 3 -> { // creative dupe:
                     if (player.capabilities.isCreativeMode) {
                         action = InventoryAction.CREATIVE_DUPLICATE;
                     }
-
-                    break;
-
-                default:
-                case 4: // drop item:
-                case 6:
+                } // drop item:
+                default -> {}
             }
 
             if (action != null) {
@@ -490,23 +476,20 @@ public abstract class AEBaseGui extends GuiContainer {
             IAEItemStack stack = null;
 
             switch (mouseButton) {
-                case 0: // pickup / set-down.
+                case 0 -> { // pickup / set-down.
                     action = ctrlDown == 1 ? InventoryAction.SPLIT_OR_PLACE_SINGLE : InventoryAction.PICKUP_OR_SET_DOWN;
                     stack = ((SlotME) slot).getAEStack();
-
                     if (stack != null && action == InventoryAction.PICKUP_OR_SET_DOWN
                             && stack.getStackSize() == 0
                             && player.inventory.getItemStack() == null) {
                         action = InventoryAction.AUTO_CRAFT;
                     }
-
-                    break;
-                case 1:
+                }
+                case 1 -> {
                     action = ctrlDown == 1 ? InventoryAction.PICKUP_SINGLE : InventoryAction.SHIFT_CLICK;
                     stack = ((SlotME) slot).getAEStack();
-                    break;
-
-                case 3: // creative dupe:
+                }
+                case 3 -> { // creative dupe:
                     stack = ((SlotME) slot).getAEStack();
                     if (stack != null && stack.isCraftable()) {
                         action = InventoryAction.AUTO_CRAFT;
@@ -516,11 +499,8 @@ public abstract class AEBaseGui extends GuiContainer {
                             action = InventoryAction.CREATIVE_DUPLICATE;
                         }
                     }
-                    break;
-
-                default:
-                case 4: // drop item:
-                case 6:
+                } // drop item:
+                default -> {}
             }
 
             if (action != null) {
@@ -748,9 +728,8 @@ public abstract class AEBaseGui extends GuiContainer {
         } else {
             try {
                 final ItemStack is = s.getStack();
-                if (s instanceof AppEngSlot && (((AppEngSlot) s).renderIconWithItem() || is == null)
+                if (s instanceof AppEngSlot aes && (((AppEngSlot) s).renderIconWithItem() || is == null)
                         && (((AppEngSlot) s).shouldDisplay())) {
-                    final AppEngSlot aes = (AppEngSlot) s;
                     if (aes.getIcon() >= 0) {
                         this.bindTexture("guis/states.png");
 
@@ -909,7 +888,7 @@ public abstract class AEBaseGui extends GuiContainer {
 
     protected void addItemTooltip(ItemStack is, List<String> lineList) {
         if (isShiftKeyDown()) {
-            List l = is.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+            List<String> l = is.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
             if (!l.isEmpty()) l.remove(0);
             lineList.addAll(l);
         } else {
@@ -948,12 +927,12 @@ public abstract class AEBaseGui extends GuiContainer {
         super.drawCreativeTabHoveringText(tabName, mouseX, mouseY);
     }
 
-    public void drawHoveringText(List textLines, int x, int y) {
+    public void drawHoveringText(List<String> textLines, int x, int y) {
         super.func_146283_a(textLines, x, y);
     }
 
     @Override
-    public void drawHoveringText(List textLines, int x, int y, FontRenderer font) {
+    public void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font) {
         super.drawHoveringText(textLines, x, y, font);
     }
 

@@ -91,7 +91,7 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
         if (this.getProxy().isActive()) {
             return (TunnelCollection<T>) this.getProxy().getP2P().getOutputs(this.getFrequency(), this.getClass());
         }
-        return new TunnelCollection<T>(new ArrayList<T>(), this.getClass());
+        return new TunnelCollection<>(new ArrayList<>(), this.getClass());
     }
 
     @Override
@@ -216,10 +216,9 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
         // AELog.info( "ID:" + id.toString() + " : " + is.getItemDamage() );
 
         final TunnelType tt = AEApi.instance().registries().p2pTunnel().getTunnelTypeByItem(is);
-        if (is != null && is.getItem() instanceof IMemoryCard) {
+        if (is != null && is.getItem() instanceof IMemoryCard mc) {
             if (ForgeEventFactory.onItemUseStart(player, is, 1) <= 0) return false;
 
-            final IMemoryCard mc = (IMemoryCard) is.getItem();
             final NBTTagCompound data = mc.getData(is);
 
             final ItemStack newType = ItemStack.loadItemStackFromNBT(data);
@@ -233,8 +232,7 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
                         final ForgeDirection dir = this.getHost().addPart(newType, this.getSide(), player);
                         final IPart newBus = this.getHost().getPart(dir);
 
-                        if (newBus instanceof PartP2PTunnel) {
-                            final PartP2PTunnel<?> newTunnel = (PartP2PTunnel<?>) newBus;
+                        if (newBus instanceof PartP2PTunnel<?>newTunnel) {
                             newTunnel.setOutput(true);
 
                             try {
@@ -264,74 +262,62 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
             final IParts parts = AEApi.instance().definitions().parts();
 
             switch (tt) {
-                case LIGHT:
+                case LIGHT -> {
                     for (final ItemStack stack : parts.p2PTunnelLight().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                case RF_POWER:
+                }
+                case RF_POWER -> {
                     for (final ItemStack stack : parts.p2PTunnelRF().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                case FLUID:
+                }
+                case FLUID -> {
                     for (final ItemStack stack : parts.p2PTunnelLiquids().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                case IC2_POWER:
+                }
+                case IC2_POWER -> {
                     for (final ItemStack stack : parts.p2PTunnelEU().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                case ITEM:
+                }
+                case ITEM -> {
                     for (final ItemStack stack : parts.p2PTunnelItems().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                case ME:
+                }
+                case ME -> {
                     for (final ItemStack stack : parts.p2PTunnelME().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                case REDSTONE:
+                }
+                case REDSTONE -> {
                     for (final ItemStack stack : parts.p2PTunnelRedstone().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                case COMPUTER_MESSAGE:
+                }
+                case COMPUTER_MESSAGE -> {
                     for (final ItemStack stack : parts.p2PTunnelOpenComputers().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                case PRESSURE:
+                }
+                case PRESSURE -> {
                     for (final ItemStack stack : parts.p2PTunnelPneumaticCraft().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                case GT_POWER:
+                }
+                case GT_POWER -> {
                     for (final ItemStack stack : parts.p2PTunnelGregtech().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                case ME_INTERFACE:
+                }
+                case ME_INTERFACE -> {
                     for (final ItemStack stack : parts.p2PTunnelMEInterface().maybeStack(1).asSet()) {
                         newType = stack;
                     }
-                    break;
-
-                default:
-                    break;
+                }
+                default -> {}
             }
 
             if (newType != null && !Platform.isSameItem(newType, this.getItemStack())) {
@@ -343,8 +329,7 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
                 final ForgeDirection dir = this.getHost().addPart(newType, this.getSide(), player);
                 final IPart newBus = this.getHost().getPart(dir);
 
-                if (newBus instanceof PartP2PTunnel<?>) {
-                    final PartP2PTunnel<?> newTunnel = (PartP2PTunnel<?>) newBus;
+                if (newBus instanceof PartP2PTunnel<?>newTunnel) {
                     newTunnel.setOutput(oldOutput);
                     newTunnel.onTunnelNetworkChange();
 
@@ -402,10 +387,9 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
     @Override
     public boolean onPartShiftActivate(final EntityPlayer player, final Vec3 pos) {
         final ItemStack is = player.inventory.getCurrentItem();
-        if (is != null && is.getItem() instanceof IMemoryCard) {
+        if (is != null && is.getItem() instanceof IMemoryCard mc) {
             if (ForgeEventFactory.onItemUseStart(player, is, 1) <= 0) return false;
 
-            final IMemoryCard mc = (IMemoryCard) is.getItem();
             final NBTTagCompound data = new NBTTagCompound();
 
             long newFreq = this.getFrequency();

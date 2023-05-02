@@ -30,7 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public final class WorldRender implements ISimpleBlockRenderingHandler {
 
     public static final WorldRender INSTANCE = new WorldRender();
-    private final Map<AEBaseBlock, BaseBlockRender> blockRenders = new HashMap<AEBaseBlock, BaseBlockRender>();
+    private final Map<AEBaseBlock, BaseBlockRender> blockRenders = new HashMap<>();
     private final int renderID = RenderingRegistry.getNextAvailableRenderId();
     private final RenderBlocks renderer = new RenderBlocks();
     private boolean hasError = false;
@@ -71,8 +71,7 @@ public final class WorldRender implements ISimpleBlockRenderingHandler {
 
     void renderItemBlock(final ItemStack item, final ItemRenderType type, final Object[] data) {
         final Block blk = Block.getBlockFromItem(item.getItem());
-        if (blk instanceof AEBaseBlock) {
-            final AEBaseBlock block = (AEBaseBlock) blk;
+        if (blk instanceof AEBaseBlock block) {
             this.renderer.setRenderBoundsFromBlock(block);
 
             this.renderer.uvRotateBottom = this.renderer.uvRotateEast = this.renderer.uvRotateNorth = this.renderer.uvRotateSouth = this.renderer.uvRotateTop = this.renderer.uvRotateWest = 0;

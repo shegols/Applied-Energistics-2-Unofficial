@@ -13,7 +13,6 @@ package appeng.client.me;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.regex.Pattern;
@@ -44,8 +43,8 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 public class ItemRepo {
 
     private final IItemList<IAEItemStack> list = AEApi.instance().storage().createItemList();
-    private final ArrayList<IAEItemStack> view = new ArrayList<IAEItemStack>();
-    private final ArrayList<ItemStack> dsp = new ArrayList<ItemStack>();
+    private final ArrayList<IAEItemStack> view = new ArrayList<>();
+    private final ArrayList<ItemStack> dsp = new ArrayList<>();
     private final IScrollSource src;
     private final ISortSource sortSrc;
 
@@ -133,20 +132,12 @@ public class ItemRepo {
         if (this.innerSearch.length() == 0) {
             searchWhat = SearchMode.ITEM;
         } else {
-            switch (this.innerSearch.substring(0, 1)) {
-                case "#":
-                    searchWhat = SearchMode.TOOLTIPS;
-                    break;
-                case "@":
-                    searchWhat = SearchMode.MOD;
-                    break;
-                case "$":
-                    searchWhat = SearchMode.ORE;
-                    break;
-                default:
-                    searchWhat = SearchMode.ITEM;
-                    break;
-            }
+            searchWhat = switch (this.innerSearch.substring(0, 1)) {
+                case "#" -> SearchMode.TOOLTIPS;
+                case "@" -> SearchMode.MOD;
+                case "$" -> SearchMode.ORE;
+                default -> SearchMode.ITEM;
+            };
             if (searchWhat != SearchMode.ITEM) this.innerSearch = this.innerSearch.substring(1);
         }
         Pattern m = null;
@@ -187,21 +178,15 @@ public class ItemRepo {
             }
             String dspName = null;
             switch (searchWhat) {
-                case MOD:
-                    dspName = Platform.getModId(is);
-                    break;
-                case ORE:
+                case MOD -> dspName = Platform.getModId(is);
+                case ORE -> {
                     OreReference ore = OreHelper.INSTANCE.isOre(is.getItemStack());
                     if (ore != null) {
                         dspName = String.join(" ", ore.getEquivalents());
                     }
-                    break;
-                case TOOLTIPS:
-                    dspName = String.join(" ", ((List<String>) Platform.getTooltip(is)));
-                    break;
-                default:
-                    dspName = Platform.getItemDisplayName(is);
-                    break;
+                }
+                case TOOLTIPS -> dspName = String.join(" ", ((List<String>) Platform.getTooltip(is)));
+                default -> dspName = Platform.getItemDisplayName(is);
             }
 
             if (dspName == null) continue;
@@ -235,13 +220,13 @@ public class ItemRepo {
         ItemSorters.init();
 
         if (SortBy == SortOrder.MOD) {
-            Collections.sort(this.view, ItemSorters.CONFIG_BASED_SORT_BY_MOD);
+            this.view.sort(ItemSorters.CONFIG_BASED_SORT_BY_MOD);
         } else if (SortBy == SortOrder.AMOUNT) {
-            Collections.sort(this.view, ItemSorters.CONFIG_BASED_SORT_BY_SIZE);
+            this.view.sort(ItemSorters.CONFIG_BASED_SORT_BY_SIZE);
         } else if (SortBy == SortOrder.INVTWEAKS) {
-            Collections.sort(this.view, ItemSorters.CONFIG_BASED_SORT_BY_INV_TWEAKS);
+            this.view.sort(ItemSorters.CONFIG_BASED_SORT_BY_INV_TWEAKS);
         } else {
-            Collections.sort(this.view, ItemSorters.CONFIG_BASED_SORT_BY_NAME);
+            this.view.sort(ItemSorters.CONFIG_BASED_SORT_BY_NAME);
         }
 
         for (final IAEItemStack is : this.view) {
