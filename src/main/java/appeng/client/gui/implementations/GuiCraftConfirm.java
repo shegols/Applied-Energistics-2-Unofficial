@@ -33,6 +33,7 @@ import appeng.client.gui.AEBaseGui;
 import appeng.client.gui.widgets.*;
 import appeng.container.implementations.ContainerCraftConfirm;
 import appeng.container.implementations.CraftingCPUStatus;
+import appeng.core.AEConfig;
 import appeng.core.AELog;
 import appeng.core.localization.ButtonToolTips;
 import appeng.core.localization.GuiColors;
@@ -116,7 +117,7 @@ public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolde
     private final List<IAEItemStack> visual = new ArrayList<>();
 
     private DisplayMode displayMode = DisplayMode.LIST;
-    private boolean tallMode = true;
+    private boolean tallMode;
 
     private GuiBridge OriginalGui;
     private GuiButton cancel;
@@ -133,6 +134,7 @@ public class GuiCraftConfirm extends AEBaseGui implements ICraftingCPUTableHolde
     public GuiCraftConfirm(final InventoryPlayer inventoryPlayer, final ITerminalHost te) {
         super(new ContainerCraftConfirm(inventoryPlayer, te));
         this.craftingTree = new GuiCraftingTree(this, 9, 19, 203, 192);
+        this.tallMode = AEConfig.instance.getConfigManager().getSetting(Settings.TERMINAL_STYLE) == TerminalStyle.TALL;
         recalculateScreenSize();
 
         scrollbar = new GuiScrollbar();
