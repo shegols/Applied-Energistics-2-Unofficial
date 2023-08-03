@@ -10,6 +10,8 @@
 
 package appeng.me.storage;
 
+import javax.annotation.Nonnull;
+
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.config.IncludeExclude;
@@ -99,6 +101,15 @@ public class MEInventoryHandler<T extends IAEStack<T>> implements IMEInventoryHa
         }
 
         return this.internal.getAvailableItems(out);
+    }
+
+    @Override
+    public T getAvailableItem(@Nonnull T request) {
+        if (!this.hasReadAccess) {
+            return null;
+        }
+
+        return this.internal.getAvailableItem(request);
     }
 
     @Override

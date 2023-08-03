@@ -1,5 +1,7 @@
 package appeng.me.storage;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -92,6 +94,11 @@ public class VoidCellInventory extends MEInventoryHandler<IAEItemStack> {
     @Override
     public IItemList<IAEItemStack> getAvailableItems(IItemList<IAEItemStack> out) {
         return out;
+    }
+
+    @Override
+    public IAEItemStack getAvailableItem(@Nonnull IAEItemStack request) {
+        return null;
     }
 
     @Override
