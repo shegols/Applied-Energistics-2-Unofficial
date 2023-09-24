@@ -32,6 +32,7 @@ import appeng.core.sync.packets.PacketMEInventoryUpdate;
 import appeng.core.sync.packets.PacketMatterCannon;
 import appeng.core.sync.packets.PacketMockExplosion;
 import appeng.core.sync.packets.PacketMultiPart;
+import appeng.core.sync.packets.PacketNEIBookmark;
 import appeng.core.sync.packets.PacketNEIDragClick;
 import appeng.core.sync.packets.PacketNEIRecipe;
 import appeng.core.sync.packets.PacketNewStorageDimension;
@@ -108,7 +109,8 @@ public class AppEngPacketHandlerBase {
         PACKET_PATTERN_VALUE(PacketPatternValueSet.class),
         PACKET_CRAFTING_REMAINING_OPERATIONS(PacketCraftingRemainingOperations.class),
         PACKET_CRAFTING_ITEM_INTERFACE(PacketCraftingItemInterface.class),
-        PACKET_CRAFTING_TREE_DATA(PacketCraftingTreeData.class);
+        PACKET_CRAFTING_TREE_DATA(PacketCraftingTreeData.class),
+        PACKET_NEI_BOOKMARK(PacketNEIBookmark.class);
 
         private final Class<? extends AppEngPacket> packetClass;
         private final Constructor<? extends AppEngPacket> packetConstructor;
