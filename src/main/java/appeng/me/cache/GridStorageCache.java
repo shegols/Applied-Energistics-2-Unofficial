@@ -46,12 +46,10 @@ import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.core.AEConfig;
 import appeng.me.helpers.GenericInterestManager;
-import appeng.me.storage.CellInventoryHandler;
 import appeng.me.storage.DriveWatcher;
 import appeng.me.storage.ItemWatcher;
 import appeng.me.storage.MEInventoryHandler;
 import appeng.me.storage.NetworkInventoryHandler;
-import appeng.me.storage.VoidCellInventory;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.tile.storage.TileChest;
 import appeng.tile.storage.TileDrive;
@@ -94,6 +92,9 @@ public class GridStorageCache implements IStorageGrid {
     private long essentiaCellCount;
     private int ticksCount;
     private int networkBytesUpdateFrequency;
+    private static final int CELL_RED = 3;
+    private static final int CELL_ORANGE = 2;
+    private static final int CELL_GREEN = 1;
 
     public GridStorageCache(final IGrid g) {
         this.myGrid = g;
@@ -383,7 +384,7 @@ public class GridStorageCache implements IStorageGrid {
         try {
             for (ICellProvider icp : this.activeCellProviders) {
                 if (icp instanceof TileDrive) {
-                    // All Item Cell
+                    // Item cells
                     for (IMEInventoryHandler<?> meih : icp.getCellArray(StorageChannel.ITEMS)) {
                         // exclude void cell
                         if (((DriveWatcher<IAEItemStack>) meih).getInternal() instanceof ICellCacheRegistry iccr) {
@@ -392,18 +393,47 @@ public class GridStorageCache implements IStorageGrid {
                                 itemBytesTotal += iccr.getTotalBytes();
                                 itemBytesUsed += iccr.getUsedBytes();
                                 switch (iccr.getCellStatus()) {
-                                    case 1 -> itemCellG++;
-                                    case 2 -> itemCellO++;
-                                    case 3 -> itemCellR++;
+                                    case CELL_GREEN -> itemCellG++;
+                                    case CELL_ORANGE -> itemCellO++;
+                                    case CELL_RED -> itemCellR++;
                                 }
                                 itemTypesTotal += iccr.getTotalTypes();
                                 itemTypesUsed += iccr.getUsedTypes();
+                                itemCellCount++;
                             }
                         }
-                        itemCellCount++;
                     }
-                    // TODO
+                    // Essentia and Fluid cells
                     for (IMEInventoryHandler<?> meih : icp.getCellArray(StorageChannel.FLUIDS)) {
+                        // exclude void cell
+                        if (((DriveWatcher<IAEItemStack>) meih).getInternal() instanceof ICellCacheRegistry iccr) {
+                            // exclude creative cell
+                            if (iccr.canGetInv()) {
+                                if (iccr.getCellType() == ICellCacheRegistry.TYPE.FLUID) {
+                                    fluidBytesTotal += iccr.getTotalBytes();
+                                    fluidBytesUsed += iccr.getUsedBytes();
+                                    switch (iccr.getCellStatus()) {
+                                        case CELL_GREEN -> fluidCellG++;
+                                        case CELL_ORANGE -> fluidCellO++;
+                                        case CELL_RED -> fluidCellR++;
+                                    }
+                                    fluidTypesTotal += iccr.getTotalTypes();
+                                    fluidTypesUsed += iccr.getUsedTypes();
+                                    fluidCellCount++;
+                                } else if (iccr.getCellType() == ICellCacheRegistry.TYPE.ESSENTIA) {
+                                    essentiaBytesTotal += iccr.getTotalBytes();
+                                    essentiaBytesUsed += iccr.getUsedBytes();
+                                    switch (iccr.getCellStatus()) {
+                                        case CELL_GREEN -> essentiaCellG++;
+                                        case CELL_ORANGE -> essentiaCellO++;
+                                        case CELL_RED -> essentiaCellR++;
+                                    }
+                                    essentiaTypesTotal += iccr.getTotalTypes();
+                                    essentiaTypesUsed += iccr.getUsedTypes();
+                                    essentiaCellCount++;
+                                }
+                            }
+                        }
 
                     }
                 } else if (icp instanceof TileChest tc) {
@@ -412,26 +442,52 @@ public class GridStorageCache implements IStorageGrid {
                     MEInventoryHandler<IAEItemStack> meih = (MEInventoryHandler<IAEItemStack>) AEApi.instance()
                             .registries().cell().getCellInventory(cell, tc, StorageChannel.ITEMS);
                     // exclude void cell
-                    if (meih instanceof VoidCellInventory) {
-                        continue;
-                    } else if (meih instanceof CellInventoryHandler handler) {
+                    if (meih instanceof ICellCacheRegistry iccr) {
                         // exclude creative cell
-                        if (handler.getCellInv() != null) {
-                            itemBytesTotal += handler.getTotalBytes();
-                            itemBytesUsed += handler.getUsedBytes();
-                            switch (handler.getStatusForCell()) {
-                                case 1 -> itemCellG++;
-                                case 2 -> itemCellO++;
-                                case 3 -> itemCellR++;
+                        if (iccr.canGetInv()) {
+                            itemBytesTotal += iccr.getTotalBytes();
+                            itemBytesUsed += iccr.getUsedBytes();
+                            switch (iccr.getCellStatus()) {
+                                case CELL_GREEN -> itemCellG++;
+                                case CELL_ORANGE -> itemCellO++;
+                                case CELL_RED -> itemCellR++;
                             }
-                            itemTypesTotal += handler.getTotalTypes();
-                            itemTypesUsed += handler.getUsedTypes();
+                            itemTypesTotal += iccr.getTotalTypes();
+                            itemTypesUsed += iccr.getUsedTypes();
+                            itemCellCount++;
                         }
-                        itemCellCount++;
                     } else {
-                        // TODO
                         meih = (MEInventoryHandler<IAEItemStack>) AEApi.instance().registries().cell()
                                 .getCellInventory(cell, tc, StorageChannel.FLUIDS);
+                        // exclude void cell
+                        if (meih instanceof ICellCacheRegistry iccr) {
+                            // exclude creative cell
+                            if (iccr.canGetInv()) {
+                                if (iccr.getCellType() == ICellCacheRegistry.TYPE.FLUID) {
+                                    fluidBytesTotal += iccr.getTotalBytes();
+                                    fluidBytesUsed += iccr.getUsedBytes();
+                                    switch (iccr.getCellStatus()) {
+                                        case CELL_GREEN -> fluidCellG++;
+                                        case CELL_ORANGE -> fluidCellO++;
+                                        case CELL_RED -> fluidCellR++;
+                                    }
+                                    fluidTypesTotal += iccr.getTotalTypes();
+                                    fluidTypesUsed += iccr.getUsedTypes();
+                                    fluidCellCount++;
+                                } else if (iccr.getCellType() == ICellCacheRegistry.TYPE.ESSENTIA) {
+                                    essentiaBytesTotal += iccr.getTotalBytes();
+                                    essentiaBytesUsed += iccr.getUsedBytes();
+                                    switch (iccr.getCellStatus()) {
+                                        case CELL_GREEN -> essentiaCellG++;
+                                        case CELL_ORANGE -> essentiaCellO++;
+                                        case CELL_RED -> essentiaCellR++;
+                                    }
+                                    essentiaTypesTotal += iccr.getTotalTypes();
+                                    essentiaTypesUsed += iccr.getUsedTypes();
+                                    essentiaCellCount++;
+                                }
+                            }
+                        }
                     }
                 }
             }
